@@ -10,8 +10,8 @@ LowSpeed=False
 
 
 
-Cruise=True
-#LowSpeed=True
+#Cruise=True
+LowSpeed=True
 
 
 
@@ -22,7 +22,7 @@ import numpy as np
 import sys
 sys.path.append('../../')
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
-from A22DSE.Models.AnFP.Class_II.AnFP.WingDesign.C_L_curve import (C_L_CurveCruise,C_L_CurveLowSpeed)
+from A22DSE.Models.AnFP.Current.Class_II.WingDesign.C_L_curve import (C_L_CurveCruise,C_L_CurveLowSpeed)
 anfp=Conv.ParAnFP
 As=np.array([8,11,anfp.A])
 colors=np.array(['r','g','b','k'])
@@ -42,12 +42,14 @@ for A in As:
     plt.plot([alpha_0*180/np.pi,alpha_linstall*180/np.pi],[0,C_L_max],colors[i],label=lbl)
     plt.plot([alpha_stall*180/np.pi],[C_L_max],colors[i]+'o')
     i+=1
-C_L_alpha=anfp.cl_alpha*180/np.pi
-C_L_max=anfp.cl_max
-alpha_stall=anfp.alpha_stall
+beta=np.sqrt(1-M**2)
+C_L_alpha=anfp.cl_alpha*180/np.pi/beta
+C_L_max=anfp.cl_max/beta
+alpha_stall=anfp.alpha_stall-C_L_max/C_L_alpha*(1-1/beta)
+
 alpha_linstall=C_L_max/C_L_alpha+alpha_0
 plt.plot([alpha_0*180/np.pi,alpha_linstall*180/np.pi],[0,C_L_max],colors[i]+'--',\
-             label='Airfoil (M=0.2 A= '+r'$\infty$)')
+             label='Airfoil (M= '+str(M)+ ' A= '+r'$\infty$)')
 plt.plot([alpha_stall*180/np.pi],[C_L_max],colors[i]+'o')
 
 plt.plot([],[],'ko',label='Actual non-linear stall')
