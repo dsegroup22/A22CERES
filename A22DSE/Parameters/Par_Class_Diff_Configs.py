@@ -142,7 +142,7 @@ while error > 10e-3:
     sold = Conv.ParAnFP.S
     Conv.ParAnFP.CD0 = CD0(Conv)[0]
     Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust,\
-    Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, Conv.AnFP.dfinal, Conv.AnFP.tfinal   = WSandTW(False,Conv,ISA_model)
+    Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, Conv.ParAnFP.dfinal, Conv.ParAnFP.tfinal   = WSandTW(False,Conv,ISA_model)
 
     
     Conv.ParAnFP.Sweep_25, Conv.ParAnFP.Sweep_LE, Conv.ParAnFP.Sweep_50, \
