@@ -60,7 +60,9 @@ Conv.ParPayload.disperRatePerTime = (Conv.ParPayload.m_payload
 /Conv.ParAnFP.t_cruise)
 Conv.ParAnFP.Extrarange = 500*10**3 #[m]
 
-Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust, Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, Conv.AnFP.dfinal, Conv.AnFP.tfinal  = WSandTW(False,Conv,ISA_model)
+
+Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust, Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, \
+                    Conv.ParAnFP.dfinal, Conv.ParAnFP.tfinal  = WSandTW(False,Conv,ISA_model)
 
 
     
