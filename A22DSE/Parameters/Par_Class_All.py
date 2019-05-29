@@ -49,7 +49,7 @@ class ParAnFPLst(object):
         self.fieldlen_land = 2500 #m 
         
         #Operation parameters
-        self.fuelused = 1000        #[kg]  Fuel used per block DUMMY VALUE
+#        self.fuelused = 2400        #[kg]  Fuel used per block DUMMY VALUE
         self.operatingyears = 15    #[years]
         self.flighttime = 4.853     #[hours]                DUMMY VALUE
         self.blockdist = 2409.831     #[Km]                    DUMMY VALUE
