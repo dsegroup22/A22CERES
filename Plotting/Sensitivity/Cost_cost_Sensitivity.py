@@ -87,20 +87,20 @@ def InitSizeCost(Plots, Which_plot,N_cont_lines, N_colours,X_steps,Y_steps):
         Zlst = np.array(Zlst)
         Wlst = np.array(Wlst)
         X, Y = np.meshgrid(firstin, secondin)
-        X = X
+        X = X/1e6
         #CS = ax.contour(X,Y,Zlst,N_cont_lines,colors=['#808080', '#A0A0A0', '#C0C0C0'])
-        CS = ax.contour(X,Y,Zlst,N_cont_lines, colors =['#FFFFFF', '#FFFFFF',\
-        '#FFFFFF', '#FFFFFF','#000000','#000000','#000000','#000000'] )
+        CS = ax.contour(X,Y,Zlst,N_cont_lines, colors = 'black') #colors =['#FFFFFF', '#FFFFFF',\
+        #'#FFFFFF', '#FFFFFF','#000000','#000000','#000000','#000000'] )
                                              
         if (Which_plot ==3 or Which_plot ==4):
-            firstplot = ax.contourf(X, Y, Wlst,N_colours, cmap='Greys_r')
+            firstplot = ax.contourf(X, Y, Wlst,N_colours, cmap='jet')
             labels = ['Operational Costs [Billion $ 2019]']
             #labels and axes and stuff
             cbar = fig.colorbar(firstplot, orientation="vertical", pad=0.2)
             cbar.ax.invert_yaxis()
             cbar.set_label('Total Costs [Billion $ 2019]', labelpad=-40, y=1.05, rotation=0)
         CS.collections[0].set_label(labels[0])
-        CS.collections[4].set_label(labels[0])
+        #CS.collections[4].set_label(labels[0])
         ax.clabel(CS, fontsize=9, inline=1, manual = False)
         plt.legend(loc='upper left')
         plt.show()      
