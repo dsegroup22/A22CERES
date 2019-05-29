@@ -62,7 +62,7 @@ Conv.ParAnFP.Extrarange = 500*10**3 #[m]
 
 
 Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust, Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, \
-                    Conv.ParAnFP.dfinal, Conv.ParAnFP.tfinal  = WSandTW(False,Conv,ISA_model)
+                    Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise  = WSandTW(False,Conv,ISA_model)
 
 
     
