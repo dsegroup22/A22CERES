@@ -166,9 +166,11 @@ def FuelFractions(Aeroplane,atmosphere):
     ##    
 
     wfcruise = wfratio
+    dfinal = d[-1]
+    tfinal = t[-1]
 
     ##plt.show()
-    return wfclimb,wfcruise
+    return wfclimb,wfcruise, dfinal, tfinal
     
     
     
