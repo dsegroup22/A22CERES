@@ -440,6 +440,6 @@ def InitSizeSens(Plots, Which_plot,N_cont_lines, N_colours,X_steps,Y_steps):
 
 
             
-for i in range(0,1):
+for i in range(5,7):
     InitSizeSens(True,i,8,20,12,12)
 

@@ -95,6 +95,7 @@ Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
 
 file_path = 'A22DSE\Parameters\ParametersConv.txt'
 if os.path.isfile(file_path):
+    print('hi')
     with open('A22DSE\Parameters\ParametersConv.txt', 'w') as f:
         print('ParAnFP', file = f)
         print(vars(Conv.ParAnFP), file=f)
