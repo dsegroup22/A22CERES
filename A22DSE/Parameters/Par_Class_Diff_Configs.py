@@ -135,23 +135,27 @@ Conv.ParLayoutConfig.lg_x_nose,Conv.ParLayoutConfig.lg_y_nose,\
 Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
 
 
-
+def ComputeCD0(Aircraft):
 #DETERMINE CD0, AND ITERATE FOR THE MTOW ETC.
-error = 1
-while error > 10e-3:
-    sold = Conv.ParAnFP.S
-    Conv.ParAnFP.CD0 = CD0(Conv)[0]
-    Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust,\
-    Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, Conv.ParAnFP.dfinal, Conv.ParAnFP.tfinal   = WSandTW(False,Conv,ISA_model)
-
+    error = 1
+    while error > 10e-3:
+        Sold = Aircraft.ParAnFP.S
+        AnFP = Aircraft.ParAnFP
+        
+        AnFP.CD0 = CD0(Aircraft)[0]
+        Aircraft.ParStruc.MTOW, Aircraft.ParStruc.FW, AnFP.S, AnFP.Thrust,\
+        AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal\
+        = WSandTW(False,Aircraft,ISA_model)
     
-    Conv.ParAnFP.Sweep_25, Conv.ParAnFP.Sweep_LE, Conv.ParAnFP.Sweep_50, \
-    Conv.ParAnFP.b, Conv.ParAnFP.taper, Conv.ParAnFP.c_r, Conv.ParAnFP.c_t,\
-    Conv.ParAnFP.MAC,Conv.ParAnFP.y_MAC = Wing_Geo(Conv)
-    
-    error = abs((Conv.ParAnFP.S-sold)/sold)
-
-
+        
+        AnFP.Sweep_25, AnFP.Sweep_LE, AnFP.Sweep_50, \
+        AnFP.b, AnFP.taper, AnFP.c_r, AnFP.c_t,\
+        AnFP.MAC,AnFP.y_MAC = Wing_Geo(Aircraft)
+        
+        error = abs((AnFP.S-Sold)/Sold)
+    CD0_opt = AnFP.CD0
+    return CD0_opt
+Conv.ParAnFP.CD0 = ComputeCD0(Conv)
 #Horizontal, Vertical tail design
 
 Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\

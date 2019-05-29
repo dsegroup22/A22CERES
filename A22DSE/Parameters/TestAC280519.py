@@ -17,12 +17,12 @@ TestAC = Aircraft()
 #               Reads .txt file
 # =============================================================================
 
-ParFile = open("28052019AC.txt", 'r')
-ParLst = []
-for line in ParFile:
-    line = line.split()
-    ParLst.append(line)
-    
+#ParFile = open("28052019AC.txt", 'r')
+#ParLst = []
+#for line in ParFile:
+#    line = line.split()
+#    ParLst.append(line)
+#    
 # =============================================================================
 #                            FORMATTING parameter lists
 # =============================================================================
@@ -32,13 +32,6 @@ for line in ParFile:
 # =============================================================================
 
 AnFP = TestAC.ParAnFP
-AnFP.Wing_config = 'high'
-AnFP.A = 14.38
-AnFP.e = 0.85
-AnFP.CD0 = 0.028441657440709874
-AnFP.S = 105.36164874506018
-AnFP.TtoW = 0.79158
-
 AnFP.Wing_config= 'high'
 AnFP.A= 14.38
 AnFP.e= 0.85
