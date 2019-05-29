@@ -17,7 +17,7 @@ TestAC = Aircraft()
 #               Reads .txt file
 # =============================================================================
 
-ParFile = open("ParametersConv.txt", 'r')
+ParFile = open("28052019AC.txt", 'r')
 ParLst = []
 for line in ParFile:
     line = line.split()

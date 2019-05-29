@@ -6,3 +6,6 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
 def test_WSandTW():
     out = WSandTW(False, Conv,ISA_model)
     assert out[0] == Conv.ParStruc.MTOW
+    
+    
+    
