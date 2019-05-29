@@ -514,6 +514,7 @@ def WSandTW(Plots, Aircraft, ISA_model):
         
         plt.show()
         
+        
     return (MTOW, wfratio*MTOW, MTOW/(wsmin/9.80665), TW*MTOW*9.80665, TW, wsmin, dfinal, tfinal)
 
 
