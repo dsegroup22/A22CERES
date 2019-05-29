@@ -28,9 +28,12 @@ def Coper(Aircraft,doc):
     FlightOp=Aircraft.ParAnFP
     
     Rbl=FlightOp.blockdist*Convers.km2nm
+    print (Rbl)
     tflt=FlightOp.flighttime
     tbl=tgm+tflt
+    print (tbl)
     Vbl=Rbl/tbl
+    print (Vbl)
     years=FlightOp.operatingyears
     acpy=par.acmanuy
     ac=0
@@ -72,7 +75,7 @@ def DOCflt(Aircraft, Cman):
     tbl=tgm+tflt
     Vbl=Rbl/tbl
     AH=tbl*250      #Could multiply by 2
-    Wfused=FlightOp.fuelused/Convers.lbs2kg
+    Wfused=Struct.FW/Convers.lbs2kg
     
     #Crew costs
     Cpilot=(1+0.26)/Vbl*par.spil/AH+10/Vbl
