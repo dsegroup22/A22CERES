@@ -496,19 +496,19 @@ def WSandTW(Plots, Aircraft, ISA_model):
     #print('\n MTOW: ', MTOW,'kg', '\n', 'Wing Surface Area: ', MTOW/(wsmin/9.80665),'m^2', '\n', 'Thrust: ', TW*MTOW*9.80665 ,'N', '\n','Payload fraction: ', payratio,'\n','Fuel fraction: ', wfratio,'\n','Wing Loading: ', wsmin, 'N/m^2', '\n','T/W: ', TW )
     if Plots == True:
         
-        plt.plot([WSlanding,WSlanding],[0,2]) #Plot wing loading line for landing
-        plt.plot(ws,TWtakeoff, label='Takeoff T/W') #Plot TW for takeoff
-        plt.plot([0,wsdd2],[max(TWcruise),max(TWcruise)], label='Cruise T/W') #Plot TW for cruise
-        plt.plot([wsdd,wsdd],[0,2],'r--',label='W/S Speed Stability') #Plot wing loading for speed stability at cruise altitude
-        plt.plot([wsdd2,wsdd2],[0,2],'g--',label='W/S Cruise Speed') #Plot wing loading for cruise speed at cruise altitude.
-        plt.plot([wscruisestall,wscruisestall],[0,2],'y--',label='W/S Cruise Stall') #Plot wing loading for stall at cruise altitude and Mmo.
-        plt.plot([wsinit,wsfinal],[TWclimb,TWclimb], label='T/W Climb') #Plot TW for worst case climb gradient.
-        plt.plot(ws,TWceiling, label='T/W Ceiling Climb') #Plot TW for ceiling climb
-        plt.plot(ws,TWcruisemax)
-        #plt.plot([wsmin,wsmin*(0.99*0.99*0.995*struc.wfratioclimb),(1-wfratio)*wsmin],[TW,TW/(0.99*0.99*0.995*struc.wfratioclimb),TW/(1-wfratio)], label='Cruise W/S & T/W Change')
+#        plt.plot([WSlanding,WSlanding],[0,2], label = "T/W Landing") #Plot wing loading line for landing
+#        plt.plot(ws,TWtakeoff, label='Takeoff T/W', color = "darkorange") #Plot TW for takeoff
+#        plt.plot([0,wsdd2],[max(TWcruise),max(TWcruise)], label='Cruise T/W', color = "darkgreen") #Plot TW for cruise
+#        plt.plot([wsdd,wsdd],[0,2],'r--',label='W/S Speed Stability', color = "red") #Plot wing loading for speed stability at cruise altitude
+#        plt.plot([wsdd2,wsdd2],[0,2],'g--',label='W/S Cruise Speed', color = "darkgreen") #Plot wing loading for cruise speed at cruise altitude.
+#        plt.plot([wscruisestall,wscruisestall],[0,2],'y--',label='W/S Cruise Stall') #Plot wing loading for stall at cruise altitude and Mmo.
+#        plt.plot([wsinit,wsfinal],[TWclimb,TWclimb], label='T/W Climb', color = "firebrick") #Plot TW for worst case climb gradient.
+#        plt.plot(ws,TWceiling, label = 'T/W Ceiling Climb', color = "mediumpurple") #Plot TW for ceiling climb
+#        plt.plot(ws,TWcruisemax, label = 'T/W Maximum Operating Mach', color = "blue")
+#        plt.plot([wsmin,wsmin*(0.99*0.99*0.995*struc.wfratioclimb),(1-wfratio)*wsmin],[TW,TW/(0.99*0.99*0.995*struc.wfratioclimb),TW/(1-wfratio)], label='Cruise W/S & T/W Change')
         
-        plt.axis((0,8000,0,1))
-        plt.xlabel('W/S [N/m^2]')
+        plt.axis((0,4000,0,1))
+        plt.xlabel('W/S [N/m²]')
         plt.ylabel('T/W')
         plt.legend()
         
