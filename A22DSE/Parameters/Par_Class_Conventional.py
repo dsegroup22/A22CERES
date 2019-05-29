@@ -19,6 +19,9 @@ from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import (WSand
 from A22DSE.Models.Class_II_Weight.Class_II_Wing import Wing_Geo, Basic_Wing
 from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,PositionsLG_Tri)
 from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
+from A22DSE.Models.POPS.Current.cruisecalculations import CruiseRange,CruiseTime
+from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
+BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
 
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
@@ -27,7 +30,6 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
 #shortcut
 Layout = Conv.ParLayoutConfig
 # =============================================================================
-
 
 
 # =============================================================================
@@ -56,34 +58,13 @@ Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
 # =============================================================================
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Conv.ParPayload.R_cruise=CruiseRange(Conv)
+Conv.ParPayload.t_cruise=CruiseTime(Conv,ISA_model)
+Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
+Conv.ParPayload.m_burner=BurnerMass(Conv)
+Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
+Conv.ParPayload.m_tank=PayloadtankMass(Conv)
+Conv.ParPayload.l_tank=PayloadtankLength(Conv)
 
 
 
