@@ -14,12 +14,15 @@ from A22DSE.Parameters.Par_Class_All import Aircraft
 from A22DSE.Parameters.Par_Class_Atmos import Atmos
 from A22DSE.Models.POPS.Current.cruisecalculations import (CruiseRange,
                                                            CruiseTime)
-from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import (WSandTW)
+from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import (
+        WSandTW)
 from A22DSE.Models.Class_II_Weight.Class_II_Wing import Wing_Geo, Basic_Wing
-from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,PositionsLG_Tri)
+from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,
+                                                           PositionsLG_Tri)
 from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_CD0 import CD0
-from A22DSE.Models.AnFP.Current.AirfoilSelection.airfoilNASASC20712 import Airfoil
+from A22DSE.Models.AnFP.Current.AirfoilSelection.airfoilNASASC20712 import (
+        Airfoil)
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign.C_L_curve import\
  (C_L_CurveCruise,C_L_CurveLowSpeed)
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
