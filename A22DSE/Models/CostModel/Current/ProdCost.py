@@ -94,9 +94,10 @@ def CapcMFunc(Aircraft, ISA_model, CostEngine):
 
 
 def CaedMFunc(Aircraft, ISA_model):
-    #INPUT
-    #OUPUT
-    #DESCRIPTION
+    #INPUT: Aircraft Object, ISA properties calculator
+    #OUPUT: Cost of airframe and engineering design adjusted for inflation
+    #DESCRIPTION: 1 of the 4 parts that consists of the total acq. & man. costs
+    #            AED costs are adjusted for inflation: 1989 - 2019. See Roskam.
 
     par = Aircraft.ParCostLst
     MTOW = Aircraft.ParStruc.MTOW
@@ -129,9 +130,11 @@ def CaedMFunc(Aircraft, ISA_model):
 
 
 def CftoMFunc(Aircraft):
-    #INPUT
-    #OUPUT
-    #DESCRIPTION    
+    #INPUT: Aircraft object
+    #OUPUT: returns the flight test operation costs
+    #DESCRIPTION: Returns the flight test operation costs according to Roskam.
+    #               However, the cost are hard-coded to 0 since the design is
+    #               still in CLass I phase and can be neglected.
     
     
     par = Aircraft.ParCostLst  
@@ -146,27 +149,30 @@ def CftoMFunc(Aircraft):
     return N_m*(COpspH)*tpft*Fftoh
 
 def CfinMFunc(Aircraft, CaedM, CapcM, CftoM):
-    #INPUT
-    #OUPUT
-    #DESCRIPTION 
+    #INPUT: Aircraft and the 3 out 4 parts of the total acq. & man. cost
+    #OUPUT: Returns the cost to finance the Acq. and Man. Cost.
+    #DESCRIPTION: Financing cost is a fixed percentage of the AED, APC, and FTO
+    #            cost, see Roskam.
     
     par = Aircraft.ParCostLst
     FfinM = par.FfinM
     return np.sum([CaedM,CapcM, CftoM])*(FfinM)
 
 def CproMFunc(TotalManCost):
-    #INPUT
-    #OUPUT
-    #DESCRIPTION
+    #INPUT: Total manufacturing cost, i.e. AED, APC, FTO, FIN
+    #OUPUT: Returns the cost of profit
+    #DESCRIPTION: Manufacturers of the aircraft also want a percentage of the
+    #               profit. Therefore, this desired profit is seen as cost.
     
     PercProfit = 0.10
     return TotalManCost*PercProfit
 
 #def CmanFunc(MTOW, Vmax, Nprogram, CostEngine, N_Engine, N_m):
 def CmanFunc(Aircraft, ISA_model, CostEngine):
-    #INPUT
-    #OUPUT
-    #DESCRIPTION
+    #INPUT: Aircraft object, ISA properties object, Cost of Engine
+    #OUPUT: Returns the total manufacturing cost
+    #DESCRIPTION: Calls the cost functions of APC, AED< FTO, FIN to output the 
+    #               total manufacturing cost
     
     CapcM = CapcMFunc(Aircraft, ISA_model, CostEngine)
     CaedM = CaedMFunc(Aircraft, ISA_model)

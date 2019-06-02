@@ -6,14 +6,13 @@ Created on Thu May 16 09:34:25 2019
 """
 
 import sys
-sys.path.append('../../../../../')
-
+import os
+sys.path.append('../../')
+print (os.getcwd())
 import numpy as np
-from A22DSE.Models.AnFP.Class_II.WingDesign.Functions import (OptimalARWing,
-                                                              ComputeCL_eq,
-                                                              CDpCurlFunc
-                                                              )
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
+from A22CERES.A22DSE.Models.AnFP.Class_II.WingDesign.FunctionsPlanform import (
+        OptimalARWing,ComputeCL_eq,CDpCurlFunc)
+from A22CERES.A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
 
 # =============================================================================
 #

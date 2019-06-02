@@ -121,7 +121,7 @@ def ComputeTheta3(Aircraft, ISA_model):
     # CONSTANTS AND VARIABLES
     rh = 0.10               # typical value
     MZFW = Aircraft.ParStruc.MTOW - Aircraft.ParAnFP.fuelused#MZFW = MTOW-Mfuel
-    bref = Aircraft.ParAnFP.b            
+    bref = 100           
     mu_cp = 0.36*np.power((1+Aircraft.ParAnFP.TRw), 0.5)
     n_ult = 2.5
     q_eq = DynamicPressEq(Aircraft, ISA_model)
@@ -205,7 +205,7 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     
     C_T = 0.56*ConversTool.lbs2kg/lbf2N
     Cdi = 0.04                                      #Cranfield report
-    #TODO: Add diameter in class structure
+    #TODO: Add engine diameter in class structure
     Diameter = 1.61                     #[m]
     WfuMTOW = AnFP.fuelused/MTOWi
     mu_T = 0.26
