@@ -39,10 +39,7 @@ def GetMach(Mach, data):
                                       < Mach + 0.01457))
     newdata = data[newdata]
     return newdata
-#def GetDataMdot(file):
-#    read file
-#    get mdot from it 
-    
+
 
 file = open("testfile.txt", "r") 
 file = file.readlines()    
@@ -77,7 +74,3 @@ def GetAltFuelMass(PropDataFunc, AltitudeRange, Aircraft, resolution):
     
     return M_fuel
     
-    
-    
-
-#a = GetEngineProp(1500,0.8)

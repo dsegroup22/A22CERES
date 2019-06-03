@@ -111,6 +111,11 @@ class ParPayloadLst(object):
         self.t_tank = 0.003 #[m]                                                                          payload tank thickness                      by POPS
         self.dispersionrate = 8e-3 #[kg/m]
         
+        
+        self.TotalPayloadYear1 = 0.1e9 #kg
+        self.OperationalDays = 250 #days
+        self.turnaroundtime = 3600 #s  
+        
 class ParCostLst(object):
     
     def __init__(self):

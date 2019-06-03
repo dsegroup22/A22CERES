@@ -1,0 +1,135 @@
+ParAnFP
+{'Wing_config': 'high'
+ 'A': 14.38
+ 'e': 0.85
+ 'CD0': 0.015
+ 'S': 127.06210579845545
+ 'TtoW': 0.5842314911722826
+ 'Mdd': 0.7
+ 'h_cruise': 20000.0
+ 'M_cruise': 0.7
+ 's_cruise': 1250000.0
+ 'V_cruise': 206.52962329893498
+ 't_cruise': 6052.4005226636464
+ 'CL_cruise': 1.2
+ 'CL_max_cruise': 1.5
+ 'c_j': 0.00016666666666666666
+ 'SFC': 0.00016
+ 'LD': 16
+ 'CL_to': 1.8
+ 'CD_to': 0.1
+ 'fieldlen_to': 2500
+ 'rho_SL': 1.225
+ 'T_to': 200000
+ 'Vr': 50
+ 'CL_land': 2.8
+ 'CD_land': 0.3
+ 'fieldlen_land': 2500
+ 'fuelused': 1000
+ 'operatingyears': 15
+ 'flighttime': 4.853
+ 'blockdist': 2409.831
+ 'TRw': 1
+ 'sweep': 25
+ 'AR': 9
+ 'tc': 0.14
+ 'ld': 90
+ 'Cldes': 0.56
+ 'Cd0': 0.007
+ 'Clmax': 1.8
+ 'Cm0': -0.132
+ 'eta_airfoil': 0.95
+ 'max_t_loc': 0.37
+ 'alpha_0': -4.5
+ 'delta_Y': 3.08
+ 'C_L_to_C_l': 0.83
+ 'delta_C_L_max': -0.35
+ 'delta_alpha_C_L_max': 2
+ 'Sweep25': 18.0
+ 'n_engines': 2
+ 'wm_un': 0
+ 'We': 3000
+ 'Extrarange': 500000
+ 'WS': 1514.8691592988437
+ 'Thrust': 112441.19494612285
+ 'Sweep_25': 0.3141592653589793
+ 'Sweep_LE': 0.338141536265473
+ 'Sweep_50': 0.28979739783395075
+ 'b': 42.74521120993309
+ 'taper': 0.4447296681703284
+ 'c_r': 4.1150203345430523
+ 'c_t': 1.8300716278954854
+ 'MAC': 3.118912951514456}
+
+
+ ParPayload
+{'disperRatePerTime': 1.6522369863914796
+ 'airtofuel': 6
+ 'm_sulphur': 10000.0
+ 'rho_sulphur': 1121
+ 'rho_alu': 2700
+ 'd_tank': 1.5
+ 't_tank': 0.003
+ 'dispersionrate': 0.008}
+
+
+ ParCntrl
+{'placeholder': None}
+
+
+ ParCostLst
+{'Cengine': 15000000
+ 'Cairframe': 35000000
+ 'Cavionics': 30000000
+ 'acmanuy': 10
+ 'MHRmapflt': 14
+ 'MHRmengbl': 6
+ 'CEF8919': 2.528888888888889
+ 'CEF7019': 5.548888888888889
+ 'Fmat': 2.25
+ 'ASP': 25000000.0
+ 'rer': 62
+ 'rmr': 34
+ 'rtr': 43
+ 'spil': 60000
+ 'scpil': 45000
+ 'Cfuel': 2
+ 'FD': 6.74
+ 'Fdiff': 1.5
+ 'Fcad': 0.8
+ 'Nrdte': 6
+ 'Nst': 2
+ 'Coil': 15
+ 'Fobs': 1
+ 'Fpror': 0.1
+ 'Ffinr': 0.05
+ 'Ftsf': 0.2
+ 'Nrr': 0.33
+ 'Nrm': 0.9166666666666666
+ 'tpft': 10
+ 'Fftoh': 4.0
+ 'FfinM': 0.1
+ 'Nprogram': 150
+ 'Rlap': 12}
+
+
+ ParStruc
+{'MTOW': 19625.523758846164
+ 'FW': 1679.9675811756513
+ 'N_engines': 2
+ 'tail_angle': 0.2617993877991494
+ 'OEWratio': 0.4048582995951417
+ 'wfratioclimb': 0.96476242895591058
+ 'LG_weight_tot': 446.15041863398028
+ 'LG_weight_nose': 93.719171812791316
+ 'LG_weight_main': 352.43124682118895}
+
+
+ ConversTool
+{'ft2m': 0.3048
+ 'lbs2kg': 0.453592
+ 'mile2m': 1609.34
+ 'gallon2L': 3.78541
+ 'kts2ms': 0.514444444
+ 'km2nm': 0.539956803
+ 'lbftoN': 4.44822162}
