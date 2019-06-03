@@ -53,9 +53,16 @@ Conv.ParLayoutConfig.lg_x_nose_min_F_n, Conv.ParLayoutConfig.lg_x_nose_max_F_n,\
 Conv.ParLayoutConfig.lg_x_nose,Conv.ParLayoutConfig.lg_y_nose,\
 Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
 
+#engine position
 Conv.ParLayoutConfig.m_engine = 5000 # [kg] DUMMY VALUE
 Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
+Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 
+#wing layout -> up for change
+Conv.ParLayoutConfig.x_CoP = 0.45 #[-] dimensionless x/mac DUMMY
+
+#fuel tank layout
+Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
 
 
 # =============================================================================
