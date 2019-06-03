@@ -10,7 +10,6 @@ import sys
 from Relief_Factors_Wing import R_wg,R_en,R_f
 sys.path.append('../../../')
 from A22DSE.Models.STRUC.current.Loadingdiagram import Loading_Diagrams
-from A22DSE.Parameters.Par_Class_Conventional import Conv
 from Relief_Factors_Wing import R_wg,R_en,R_f
 
 def WingWeight(Aircraft):
@@ -32,19 +31,20 @@ def WingWeight(Aircraft):
     t_ref=1
     k_rib=0.5*10**-3
     
-    #still needs safety factors
-    sigma_t=3*10**9
-    sigma_c=1*10**9
+    #includeing safety factors
+    sigma_t=3*10**9/1.5
+    sigma_c=1*10**9/1.5
     
     
     R_in= 1-R_wg(Conv)-R_en(Conv)-R_f(Conv)
     
+    R_ic = 1 #dummy value
     
     rho=2000
     n_ult=2.5
     
     eta_cp=1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper))+0.02*np.sin(Sweep_25)
-    sigma_r=(0.5*(1/sigma_t+1.25/sigma_c))**-1
+    sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
     R_cant=A*(1+taper)/(4*t_c*np.cos(Sweep_EA))
     b_st=b/2/np.cos(Sweep_EA)
 
@@ -71,4 +71,5 @@ def WingWeight(Aircraft):
     W_id_box=I_2_t*n_ult*R_in*MTOW*g*eta_cp*b_st*rho*g/sigma_r*(1.05*R_cant/eta_t+3.67)
     
     W_rib=k_rib*rho*S*g*(t_ref+t_c*(c_r+c_t)/2)
-    return W_id_box,W_rib
+    print (t_c*(c_r+c_t)/2)
+    return eta_cp,W_id_box
