@@ -2,4 +2,15 @@ dist: xenial   # required for Python >= 3.7
 language: python
 python:
   - "3.7"
-script: pytest
+  
+install:
+- pip install matplotlib
+- pip install scipy
+- pip install python-coveralls
+script: 
+-python -m pytest
+- coverage run --source tudaesasII -m py.test
+- coverage report
+
+after_success:
+  - coveralls
