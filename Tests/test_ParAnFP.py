@@ -9,10 +9,9 @@ import sys
 sys.path.append('..')
 from A22DSE.Parameters.Par_Class_Conventional import Conv
 from A22DSE.Parameters.Par_Class_Diff_Configs import ComputeCD0
-from A22DSE.Parameters.TestAC280519 import CreateTestAC
+#from A22DSE.Parameters.TestAC280519 import CreateTestAC
 from A22DSE.Models.Class_II_Weight.Class_II_Wing import Wing_Geo
-
-
+from A22DSE.Parameters.TestAC280519 import TestAC
 def test_CD0():
     ''' 
     INPUT:
