@@ -166,6 +166,15 @@ class ParConvLst(object):
         self.km2nm = 0.539956803 #[-]
         self.lbftoN = 4.44822162 #[1 lbf == 4.448 N]
         
+class ParClassII_CS(object):
+    def __init__(self):
+        """Parameters taken from Torenbeek p 283
+        """
+        self.ksc = 0.64
+        self.conv = 0.768
+        self.LE_slat = 1.2
+        self.lift_dumper = 1.15
+        self.flap_area = None
         
 class ParClassII_LG(object):
     
