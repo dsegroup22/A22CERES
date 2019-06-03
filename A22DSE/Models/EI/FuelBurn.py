@@ -25,7 +25,7 @@ def GetAltitude(altitude, data):
     INPUT: altitude float, data array
     OUTPUT: selection of data at the right altitude
     '''
-    newdata = np.where( np.logical_and(data[:,0] > altitude, data[:,0]\
+    newdata = np.where( np.logical_and(data[:,0] >= altitude, data[:,0]\
                        <altitude + 400))
     newdata = data[newdata]
     return newdata
@@ -35,14 +35,11 @@ def GetMach(Mach, data):
     INPUT: Machnumber, data
     OUTPUT: selection of data at right mach number
     '''
-    newdata = np.where(np.logical_and(data[:,1] > Mach , data[:,1] \
+    newdata = np.where(np.logical_and(data[:,1] >= Mach , data[:,1] \
                                       < Mach + 0.014))
     newdata = data[newdata]
     return newdata
-#def GetDataMdot(file):
-#    read file
-#    get mdot from it 
-    
+
 
 file = open("testfile.txt", "r") 
 file = file.readlines()    
@@ -61,3 +58,4 @@ def GetEngineProp(altitude, Mach):
     return info
 
 a = GetEngineProp(1500,0.8)
+b= GetEngineProp(1000,0.6)
