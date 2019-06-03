@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dsegroup22/A22CERES.svg?branch=master)](https://travis-ci.org/dsegroup22/A22CERES)
+https://travis-ci.org/dsegroup22/A22CERES.svg?branch=master
 
 
 This is a DSE Project.
