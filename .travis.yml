@@ -7,10 +7,11 @@ install:
 - pip install matplotlib
 - pip install scipy
 - pip install python-coveralls
-script: "sbt clean coverage test"
-#python -m pytest
+script:
+ - coverage run -m pytest
 
-after_success: "sbt coveralls"
+after_success: 
+ - coveralls
 
 notifications:
     email:
