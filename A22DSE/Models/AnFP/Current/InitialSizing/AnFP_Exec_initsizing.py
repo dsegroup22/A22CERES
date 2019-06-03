@@ -489,7 +489,6 @@ def WSandTW(Plots, Aircraft, ISA_model):
         wfratio = 1-wfcruise
         payratio = 1-wfratio-struc.OEWratio                                               #Calculation of the payload ratio relative to MTOW
         MTOW = payl.m_payload/payratio
-        
         MTOW = 1.1*MTOW #safety factor
 #MTOW,TW,payratio, wfratio, wsmin, WSlanding, TWtakeoff, wsdd, wsdd2, TWclimb, TWceiling, TWcruise, TWcruisemax, wf = WSandTW()
 

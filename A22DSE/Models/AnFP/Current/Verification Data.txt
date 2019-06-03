@@ -1,0 +1,41 @@
+# =============================================================================
+#                           VERIFICATION VALUES B737-300
+# =============================================================================
+Range = 3148.4*10**3
+hcruise = 9144
+SFC = 0.6
+A = 9.16
+e = 0.7
+Mdd = 0.73
+CD0 = 0.019
+N_Engine = 2
+payload = 14250	
+wfratioclimb = 0.95
+OEWratio = 0.523
+fieldlen_to = 1930
+clto = 2.16 #CL takeoff
+fieldlen_land = 1400	 #Meters
+clland = np.linspace(2.88,2.88,1) #CL Landing
+
+
+
+
+# =============================================================================
+#                           VERIFICATION VALUES F100
+# =============================================================================
+
+Range = 2389*10**3
+hcruise = 10670
+SFC = 0.6
+A = 8.4
+e = 0.8
+Mdd = 0.73
+CD0 = 0.019
+N_Engine = 2
+payload = 11242
+wfratioclimb = 0.95
+OEWratio = 0.5855
+fieldlen_to = 1855
+clto = 2.16 #CL takeoff
+fieldlen_land = 1320	 #Meters
+clland = np.linspace(2.5,2.5,1) #CL Landing
