@@ -64,18 +64,14 @@ def Payload_optimiser_Both(X_steps):
     wf_lst = Payload_optimiser_wf(payload_lst)
     fleetsize_lst = Payload_optimiser_fleet(payload_lst)
     
-    TotalFuelWeightYear1 = wf_lst*fleetsize_lst
-    print(TotalFuelWeightYear1)
+    wf_tot_y1 = wf_lst*fleetsize_lst
     
-    f1 = abs(wf_lst/(wf_lst[-1]-wf_lst[0]))
+    f1 = abs(wf_tot_y1/(wf_tot_y1[-1]-wf_tot_y1[0]))
     f2 = abs(fleetsize_lst/(fleetsize_lst[-1]-fleetsize_lst[0]))  
-    f3 = f1+f2
-    
-    print(wf_lst)
-    print(fleetsize_lst)
-    print(f1)
-    print(f2)      
+    f3 = 0.6*f1+0.4*f2
+  
     return payload_lst, f1,f2,f3
+
 def OptimiserPlotter(X_steps):
     payload_lst, f1,f2,f3 = Payload_optimiser_Both(X_steps)
     
