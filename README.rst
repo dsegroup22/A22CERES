@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/dsegroup22/A22CERES.svg?branch=master)](https://travis-ci.org/dsegroup22/A22CERES)
+
+
 This is a DSE Project.
 
 Note that this project is still in its infancy, and no models or conclusion are to be derived from our current work.
