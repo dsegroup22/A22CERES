@@ -22,7 +22,7 @@ from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
 
-from A22DSE.Models.STRUC.current.loadingdiagram import V,Eliptical
+from A22DSE.Models.STRUC.current.loadingdiagram import V_Diagram,Eliptical
 
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
@@ -52,6 +52,10 @@ Conv.ParLayoutConfig.lg_y_main, Conv.ParLayoutConfig.lg_x_main,\
 Conv.ParLayoutConfig.lg_x_nose_min_F_n, Conv.ParLayoutConfig.lg_x_nose_max_F_n,\
 Conv.ParLayoutConfig.lg_x_nose,Conv.ParLayoutConfig.lg_y_nose,\
 Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
+
+Conv.ParLayoutConfig.m_engine = 5000 # [kg] DUMMY VALUE
+Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
+
 
 
 # =============================================================================
