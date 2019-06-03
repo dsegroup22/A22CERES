@@ -1,0 +1,41 @@
+In this file, document every assumption that you make
+for each model. This concerns things suchs as layout,
+speed regimes, simplifications etc. Keep the assump-
+tions short and concise, elaborate upon them in the
+midterm report.
+
+The assumptions shall be documented in their own
+respective department.
+
+
+=============================================================
+LIST OF ASSUMPTIONS
+=============================================================
+
+------------------------AnFP---------------------------------
+----Flight Profile---
+- assume small aoa and small flight path angle during airbone phase
+- assume small and constant aoa during climb
+- assume constant weight during climb
+
+For Roskam:
+-assume jet transport
+
+
+------------------------STRUC---------------------------------
+
+assumed low wing, wing mounted landing gear.
+assumed wing mounted engines.
+
+
+------------------------CTRL---------------------------------
+
+
+
+------------------------POPS---------------------------------
+- 6:1 air to sulphur ratio (at cruise altitude)
+- rho = 0.088 kg/m3 at cruise altitude
+- T = 216.65 K at cruise altitude
+- a = 295.0 m/s at cruise altitude
+Aluminium sulphur tank
+Cylindrical sulphur tank with semisphere ends
