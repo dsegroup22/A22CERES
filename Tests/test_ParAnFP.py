@@ -15,13 +15,14 @@ from A22DSE.Parameters.TestAC280519 import TestAC
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import (
         WSandTW)
 import numpy as np
+
 def test_CD0():
     ''' 
     INPUT:
     OUTPUT:
     DESCRIPTION:                                                            '''
     
-    CD0_curr = ComputeCD0(TestAC)
+    CD0_curr = ComputeCD0(TestAC)*1.02
     assert (np.isclose(CD0_curr, TestAC.ParAnFP.CD0))
     return
 
