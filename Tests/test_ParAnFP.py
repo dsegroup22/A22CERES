@@ -22,7 +22,7 @@ def test_CD0():
     OUTPUT:
     DESCRIPTION:                                                            '''
     
-    CD0_curr = ComputeCD0(TestAC)*1.02
+    CD0_curr = ComputeCD0(TestAC)
     assert (np.isclose(CD0_curr, TestAC.ParAnFP.CD0))
     return
 
