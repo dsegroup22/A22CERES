@@ -9,7 +9,8 @@ install:
 - pip install python-coveralls
 script: 
 "sbt clean coverage test"
--python -m pytest
+"python -m pytest"
+
 after_success: "sbt coveralls"
 
 notifications:
