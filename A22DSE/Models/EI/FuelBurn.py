@@ -56,6 +56,3 @@ data = np.array(data)
 def GetEngineProp(altitude, Mach):
     info = GetMach(Mach, GetAltitude(altitude, data))
     return info
-
-a = GetEngineProp(1500,0.8)
-b= GetEngineProp(1000,0.6)
