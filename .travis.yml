@@ -7,4 +7,10 @@ install:
 - pip install matplotlib
 - pip install scipy
 - pip install python-coveralls
-script: python -m pytest
+script: 
+-python -m pytest
+- coverage run --source tudaesasII -m py.test
+- coverage report
+
+after_success:
+  - coveralls
