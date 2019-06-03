@@ -22,6 +22,8 @@ from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
 
+from A22DSE.Models.STRUC.current.loadingdiagram import V,Eliptical
+
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)

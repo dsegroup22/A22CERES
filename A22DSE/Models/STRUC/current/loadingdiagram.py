@@ -10,14 +10,28 @@ Created on Wed May 15 16:51:16 2019
 import numpy as np
 
 #eliptical lift distribution
-def eliptical(x,L,b):
-    #function that return an eliptical lift distribution, where L is the max lift and b the span
-    return L**2*(1-(x*2/b)**2)**0.5
-
-def V(Aircraft,m_engine,y_engine,x,L,b,g):
+def eliptical(L,b):
+    #function that returns an eliptical lift distribution, where L is the max lift and b the span
     anfp=Aircraft.ParAnFP
     struc=Aircraft.ParStruc
     b=anfp.span
+    x=np.linspace(-b/2,b/2,1000)
+    return L**2*(1-(x*2/b)**2)**0.5
+
+def Eliptical(Aircraft):
+    #function that returns an eliptical lift distribution, where L is the max lift and b the span
+    anfp=Aircraft.ParAnFP
+    struc=Aircraft.ParStruc
+    MTOW=struc.MTOW
+    b=anfp.b
+    x=np.linspace(0,b/2,1000)
+    return MTOW/(np.pi*b)*np.sqrt(1-4*x**2/b**2)
+
+def V(Aircraft,m_engine,y_engine,L,b,g):
+    anfp=Aircraft.ParAnFP
+    struc=Aircraft.ParStruc
+    b=anfp.span
+    x=np.linspace(-b/2,b/2,1000)
     OEW=struc.MTOW
     m_fuel=struc.FW
     #engines
@@ -25,7 +39,7 @@ def V(Aircraft,m_engine,y_engine,x,L,b,g):
     #fuselage
     V_f=-np.heaviside(x,1)*(OEW-2*m_engine)*g
     #lift
-    liftdistr=eliptical(x,L,b)
+    liftdistr=eliptical(L,b)
     dx=b/len(x)
     V_l=[]
     V_l_i=0
@@ -64,6 +78,6 @@ def V(Aircraft,m_engine,y_engine,x,L,b,g):
 
 
 
-
-x=np.linspace(-40,40,500)
-y=eliptical(x,100,80)
+#
+#x=np.linspace(-40,40,500)
+#y=eliptical(x,100,80)
