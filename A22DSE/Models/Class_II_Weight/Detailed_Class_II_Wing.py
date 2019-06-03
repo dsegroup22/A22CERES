@@ -7,7 +7,6 @@ Created on Mon Jun  3 09:30:41 2019
 import numpy as np
 import scipy.integrate as integrate
 import sys
-from Relief_Factors_Wing import R_wg,R_en,R_f
 sys.path.append('../../../')
 from A22DSE.Models.STRUC.current.Loadingdiagram import Loading_Diagrams
 from math import *
@@ -88,7 +87,7 @@ def WingWeight(Aircraft):
     eta_cp=1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper))+0.02*np.sin(Sweep_25)
     sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
     R_cant=A*(1+taper)/(4*t_c*np.cos(Sweep_EA))
-    b_st=b/2/np.cos(Sweep_EA)
+    b_st=b/np.cos(Sweep_EA)
 
     #not used
     V,M=Loading_Diagrams(Aircraft)
