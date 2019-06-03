@@ -7,10 +7,11 @@ Created on Mon Jun  3 09:30:41 2019
 import numpy as np
 import scipy.integrate as integrate
 import sys
+from Relief_Factors_Wing import R_wg,R_en,R_f
 sys.path.append('../../../')
 from A22DSE.Models.STRUC.current.Loadingdiagram import Loading_Diagrams
 from A22DSE.Parameters.Par_Class_Conventional import Conv
-
+from Relief_Factors_Wing import R_wg,R_en,R_f
 
 def WingWeight(Aircraft):
     anfp=Aircraft.ParAnFP
@@ -36,7 +37,9 @@ def WingWeight(Aircraft):
     sigma_c=1*10**9
     
     
-    R_in=0.8 #dummy
+    R_in= 1-R_wg(Conv)-R_en(Conv)-R_f(Conv)
+    
+    
     rho=2000
     n_ult=2.5
     
@@ -64,9 +67,8 @@ def WingWeight(Aircraft):
     W_IP_T=0.05*W_BL
     
     
-    W_rib=k_rib*rho*S*g*(t_ref+t_c*(c_r+c_t)/2)
-    
     
     W_id_box=I_2_t*n_ult*R_in*MTOW*g*eta_cp*b_st*rho*g/sigma_r*(1.05*R_cant/eta_t+3.67)
     
-    return W_id_box
+    W_rib=k_rib*rho*S*g*(t_ref+t_c*(c_r+c_t)/2)
+    return W_id_box,W_rib
