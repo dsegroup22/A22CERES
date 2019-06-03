@@ -12,12 +12,14 @@ import sys
 sys.path.append('../../../../../')
 #from A22DSE.Parameters.Par_Class_Atmos import Atmos
 #import A22DSE.Parameters.Par_Class_Diff_Configs as Aircraft
-
+from A22DSE.Models.POPS.Current.cruisecalculations import CruiseRange
 
 def FuelFractions(Aeroplane,atmosphere):
 ##    atmosphere = Atmos()
 
-    dt = 1 #[s] time increment
+    m_payload = Aeroplane.ParPayload.m_payload
+    dispersionrate = Aeroplane.ParPayload.dispersionrate
+    dt = 5 #[s] time increment
 
     #atmospheric properties during take-off
     g = atmosphere.g0 #par.get('g_0') #[m/s2] #gravitational acceleration at sea-level
@@ -36,7 +38,8 @@ def FuelFractions(Aeroplane,atmosphere):
 
     haccel = 10000/3.28
     hcruise = Aeroplane.ParAnFP.h_cruise
-    rdump = Aeroplane.ParAnFP.s_cruise + Aeroplane.ParAnFP.Extrarange
+    s_cruise = m_payload/dispersionrate
+    rdump = s_cruise + Aeroplane.ParAnFP.Extrarange
     Mdd = Aeroplane.ParAnFP.Mdd
 
 
@@ -168,7 +171,6 @@ def FuelFractions(Aeroplane,atmosphere):
     wfcruise = wfratio
     dfinal = d[-1]
     tfinal = t[-1]
-    ##plt.show()
     return wfclimb,wfcruise, dfinal, tfinal
     
     

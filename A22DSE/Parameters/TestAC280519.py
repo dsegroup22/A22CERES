@@ -101,15 +101,21 @@ AnFP.C_L_alpha_cruise=7.0967909791035044
 AnFP.C_L_max_cruise=1.071126
 AnFP.alpha_stall_cruise=0.10729780262151969
 
-AnFP.disperRatePerTime=1.6522369863914796
-AnFP.airtofuel=6
-AnFP.m_payload=10000.0
-AnFP.rho_payload=1121
-AnFP.rho_alu=2700
-AnFP.d_tank=1.5
-AnFP.t_tank=0.003
-AnFP.dispersionrate=0.008
-
+#Payloadlst
+ParPayload = TestAC.ParPayload
+ParPayload.disperRatePerTime=1.6522369863914796
+ParPayload.airtofuel=6
+ParPayload.m_payload=10000.0
+ParPayload.rho_payload=1121
+ParPayload.rho_alu=2700
+ParPayload.d_tank=1.5
+ParPayload.t_tank=0.003
+ParPayload.dispersionrate=0.008
+ParPayload.A_inlet = 0.6360911103338089
+ParPayload.m_burner = 409.1935981382335
+ParPayload.V_tank = 8.920606601248885
+ParPayload.m_tank =  211.7702779575339
+ParPayload.l_tank =  5.548030705660274
 #ControlLst
 Cntrl = TestAC.ParCntrl
 Cntrl.placeholder=None
