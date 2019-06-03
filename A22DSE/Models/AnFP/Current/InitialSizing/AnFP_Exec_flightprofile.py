@@ -19,7 +19,7 @@ def FuelFractions(Aeroplane,atmosphere):
 
     m_payload = Aeroplane.ParPayload.m_payload
     dispersionrate = Aeroplane.ParPayload.dispersionrate
-    dt = 1 #[s] time increment
+    dt = 5 #[s] time increment
 
     #atmospheric properties during take-off
     g = atmosphere.g0 #par.get('g_0') #[m/s2] #gravitational acceleration at sea-level
