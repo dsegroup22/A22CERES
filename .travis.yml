@@ -5,4 +5,6 @@ python:
   
 install:
 - pip install matplotlib
+- pip install scipy
+- pip install python-coveralls
 script: python -m pytest
