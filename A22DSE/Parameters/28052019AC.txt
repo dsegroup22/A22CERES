@@ -1,0 +1,212 @@
+ParAnFP
+{'Wing_config': 'high'
+ 'A': 14.38
+ 'e': 0.85
+ 'CD0': 0.028441657440709874
+ 'S': 105.36164874506018
+ 'TtoW': 0.7915872657775996
+ 'Mdd': 0.7
+ 'h_cruise': 20000.0
+ 'M_cruise': 0.7
+ 's_cruise': 1250000.0
+ 'V_cruise': 206.52962329893498
+ 't_cruise': 6052.4005226636464
+ 'CL_cruise': 1.2
+ 'CL_max_cruise': 1.5
+ 'c_j': 0.00016666666666666666
+ 'SFC': 0.00016
+ 'LD': 16
+ 'CL_to': 1.2
+ 'CD_to': 0.1
+ 'fieldlen_to': 2500
+ 'rho_SL': 1.225
+ 'T_to': 200000
+ 'Vr': 50
+ 'CL_land': 1.4
+ 'CD_land': 0.3
+ 'fieldlen_land': 2500
+ 'fuelused': 1000
+ 'operatingyears': 15
+ 'flighttime': 4.853
+ 'blockdist': 2409.831
+ 'Sweep25': 18
+ 'Cldes': 0.56
+ 'eta_airfoil': 0.95
+ 'max_t_loc': 0.37
+ 'alpha_0': -0.07853981633974483
+ 'alpha_stall': 0.23561944901923448
+ 'delta_Y': 3.08
+ 'delta_alpha_C_L_max': 0.03490658503988659
+ 'C_L_to_C_l': 0.83
+ 'delta_C_L_max_cruise': -0.35
+ 'delta_C_L_max_lowspeed': 0
+ 'n_engines': 2
+ 'wm_un': 0
+ 'We': 2484
+ 'Extrarange': 500000
+ 'WS': 2087.9420117239574
+ 'Thrust': 174140.50117458578
+ 'Sweep_25': 0.3141592653589793
+ 'Sweep_LE': 0.338141536265473
+ 'Sweep_50': 0.28979739783395075
+ 'b': 38.92429201609151
+ 'taper': 0.4447296681703284
+ 'c_r': 3.7471859097209754
+ 'c_t': 1.6664847462027395
+ 'MAC': 2.8401188124041226
+ 'y_MAC': 8.484386223548203
+ 'cl_alpha': 0.09967000000000001
+ 'cl_max': 1.7122
+ 'tc': 0.12
+ 'Cd0': 0.008
+ 'cm_0': -0.123
+ 'LD_airfoil': 90
+ 'C_L_alpha_slow': 5.6015543212917294
+ 'C_L_max_slow': 1.421126
+ 'alpha_stall_slow': 0.2100688518162947
+ 'C_L_alpha_cruise': 7.0967909791035044
+ 'C_L_max_cruise': 1.071126
+ 'alpha_stall_cruise': 0.10729780262151969}
+
+
+ ParPayload
+{'disperRatePerTime': 1.6522369863914796
+ 'airtofuel': 6
+ 'm_payload': 10000.0
+ 'rho_payload': 1121
+ 'rho_alu': 2700
+ 'd_tank': 1.5
+ 't_tank': 0.003
+ 'dispersionrate': 0.008}
+
+
+ ParCntrl
+{'placeholder': None}
+
+
+ ParCostLst
+{'Cengine': 15000000
+ 'Cairframe': 35000000
+ 'Cavionics': 30000000
+ 'acmanuy': 10
+ 'MHRmapflt': 14
+ 'MHRmengbl': 6
+ 'CEF8919': 2.528888888888889
+ 'CEF7019': 5.548888888888889
+ 'Fmat': 2.25
+ 'ASP': 25000000.0
+ 'rer': 62
+ 'rmr': 34
+ 'rtr': 43
+ 'spil': 60000
+ 'scpil': 45000
+ 'Cfuel': 2
+ 'FD': 6.74
+ 'Fdiff': 1.5
+ 'Fcad': 0.8
+ 'Nrdte': 6
+ 'Nst': 2
+ 'Coil': 15
+ 'Fobs': 1
+ 'Fpror': 0.1
+ 'Ffinr': 0.05
+ 'Ftsf': 0.2
+ 'Nrr': 0.33
+ 'Nrm': 0.9166666666666666
+ 'tpft': 10
+ 'Fftoh': 4.0
+ 'FfinM': 0.1
+ 'Nprogram': 150
+ 'Rlap': 12}
+
+
+ ParStruc
+{'MTOW': 22432.636306925804
+ 'FW': 2350.5973162675846
+ 'N_engines': 2
+ 'tail_angle': 0.2617993877991494
+ 'OEWratio': 0.4048582995951417
+ 'wfratioclimb': 0.96383652375872975
+ 'fineness_c': 8
+ 'fineness_n': 1.25
+ 'fineness_t': 2.0
+ 'Wf': 2122.2319727509612
+ 'LG_weight_tot': 499.63539133248111
+ 'LG_weight_nose': 102.88385989351049
+ 'LG_weight_main': 396.75153143897063
+ 'Wing_weight': 5129.1127078379141
+ 'Weight_FusGroup': 4279.9696589594678}
+
+
+ ParClassII
+{'A_main': 40
+ 'B_main': 0.16
+ 'C_main': 0.019
+ 'D_main': 1.5e-05
+ 'A_nose': 20
+ 'B_nose': 0.1
+ 'C_nose': 0
+ 'D_nose': 2e-06
+ 'kuc_low_wing': 1.0
+ 'kuc_high_wing': 1.08
+ 'prelim_N_tire_main': 8
+ 'prelim_tire_diam': 0.635
+ 'psi': 0.9948376736367678
+ 'F_n_to_W': array([ 0.08
+  0.15])
+ 'rollreq': 0.13962634015954636
+ 'e_s': 0.3}
+
+
+ ParLayoutConfig
+{'x_begin_emp': 18
+ 'h_fuselage': 1.6140567122346883
+ 'w_fuselage': 2.8245992464107044
+ 'd_fuselage': 2.1351963312637645
+ 'd_cockpit': 2.1351963312637645
+ 'dim_cabin': array([ 1.61405671
+  2.82459925])
+ 'd_engine': 1.6
+ 'd_nacelle_engine': 1.92
+ 'x_lemac': 13.380674143304626
+ 'y_cg': array([ 0.
+  0.])
+ 'z_cg': array([ 1.88876977
+  2.18876977])
+ 'y_nose': 1.44
+ 'z_cg_over_h_fus': 0.6
+ 'y_loc_eng': 7.84552225342896
+ 'l_fuselage': 24.020958726717353
+ 'Sht': 29.567392938934056
+ 'xht': 12.650743393439537
+ 'Aht': 4.15
+ 'trht': 0.442
+ 'Sweep25ht': 28.2
+ 'Wht': 941.40416320401698
+ 'Svt': 20.475894408535702
+ 'xvt': 12.01743133039394
+ 'Avt': 1.3
+ 'trvt': 0.646
+ 'Sweep25vt': 40.2
+ 'Wvt': 716.69813167200846
+ 'x_cg': array([ 14.49067153
+  15.14490023])
+ 'lg_l_main': 1.2203357431371051
+ 'lg_l_nose': 1.2203357431371051
+ 'lg_y_main': 1.5010032103408226
+ 'lg_x_main': 15.515089302480265
+ 'lg_x_nose_min_F_n': 6.2877258349430836
+ 'lg_x_nose_max_F_n': 6.4189707861659819
+ 'lg_x_nose': 6.3533483105545328
+ 'lg_y_nose': 1.44
+ 'xcg_fuselagegroup': 13.706428635994566}
+
+
+ ConversTool
+{'ft2m': 0.3048
+ 'lbs2kg': 0.453592
+ 'mile2m': 1609.34
+ 'gallon2L': 3.78541
+ 'kts2ms': 0.514444444
+ 'km2nm': 0.539956803
+ 'lbftoN': 4.44822162}

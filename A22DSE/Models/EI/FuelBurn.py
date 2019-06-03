@@ -25,8 +25,8 @@ def GetAltitude(altitude, data):
     INPUT: altitude float, data array
     OUTPUT: selection of data at the right altitude
     '''
-    newdata = np.where( np.logical_and(data[:,0] > altitude, data[:,0]\
-                       <altitude + 400))
+    newdata = np.where( np.logical_and(data[:,0] >= altitude, data[:,0]\
+                       <altitude + 416.666667))
     newdata = data[newdata]
     return newdata
 
@@ -36,7 +36,7 @@ def GetMach(Mach, data):
     OUTPUT: selection of data at right mach number
     '''
     newdata = np.where(np.logical_and(data[:,1] > Mach , data[:,1] \
-                                      < Mach + 0.014))
+                                      < Mach + 0.01457))
     newdata = data[newdata]
     return newdata
 #def GetDataMdot(file):
@@ -60,4 +60,24 @@ def GetEngineProp(altitude, Mach):
     info = GetMach(Mach, GetAltitude(altitude, data))
     return info
 
-a = GetEngineProp(1500,0.8)
+def GetAltFuelMass(PropDataFunc, AltitudeRange, Aircraft, resolution):
+    '''
+    INPUT: Engine Prop Func, Numpy linspace altitude range, constant Mach numbr
+    OUTPUT: Compute total fuel burnt (mass) 
+    DESCRIPTION: 
+    '''
+    mdotLst = []
+    for altitude in AltitudeRange:
+        iDataProp = PropDataFunc(altitude, Aircraft.ParAnFP.M_cruise)
+#        print (iDataProp[-1])
+        mdotLst.append(iDataProp[0][-1])
+    
+    M_fuel = GetFuelBurn(mdotLst, resolution)
+    
+    
+    return M_fuel
+    
+    
+    
+
+#a = GetEngineProp(1500,0.8)
