@@ -7,10 +7,13 @@ Created on Wed May 29 14:05:56 2019
 import sys
 import os
 import numpy as np
-from pathlib import Path
-#os.chdir(Path(__file__).parents[1])
-sys.path.append((os.path.abspath('../')))
-print(os.getcwd())
+# =============================================================================
+# from pathlib import Path
+# #os.chdir(Path(__file__).parents[1])
+# sys.path.append((os.path.abspath('../')))
+# print(os.getcwd())
+# =============================================================================
+sys.path.append('../')
 from A22DSE.Parameters.TestAC280519 import TestAC
 from A22DSE.Parameters.Par_Class_Atmos import Atmos
 from A22DSE.Models.POPS.Current.payloadcalculations import *

@@ -67,7 +67,8 @@ def Payload_optimiser_Both(X_steps):
     f2 = abs(fleetsize_lst/(fleetsize_lst[-1]-fleetsize_lst[0]))  
     f2 = fleetsize_lst
     f3 = 0.6*f1+0.4*f2
-  
+    print(f1)
+    print(f2)
     return payload_lst, f1,f2,f3
 
 def OptimiserPlotter(X_steps):
