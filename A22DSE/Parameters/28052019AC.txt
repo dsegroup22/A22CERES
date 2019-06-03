@@ -25,6 +25,7 @@ ParAnFP
  'CL_land': 1.4
  'CD_land': 0.3
  'fieldlen_land': 2500
+ 'fuelused': 1000
  'operatingyears': 15
  'flighttime': 4.853
  'blockdist': 2409.831
@@ -45,8 +46,6 @@ ParAnFP
  'Extrarange': 500000
  'WS': 2087.9420117239574
  'Thrust': 174140.50117458578
- 'dclimbcruise': 2156145.5035929079
- 'tclimbcruise': 10555
  'Sweep_25': 0.3141592653589793
  'Sweep_LE': 0.338141536265473
  'Sweep_50': 0.28979739783395075
@@ -67,9 +66,7 @@ ParAnFP
  'alpha_stall_slow': 0.2100688518162947
  'C_L_alpha_cruise': 7.0967909791035044
  'C_L_max_cruise': 1.071126
- 'alpha_stall_cruise': 0.10729780262151969
- 'dfinal': 2062875.5637519353
- 'tfinal': 10080}
+ 'alpha_stall_cruise': 0.10729780262151969}
 
 
  ParPayload
@@ -80,15 +77,7 @@ ParAnFP
  'rho_alu': 2700
  'd_tank': 1.5
  't_tank': 0.003
- 'dispersionrate': 0.008
- 'TotalPayloadYear1': 100000000.0
- 'OperationalDays': 250
- 'turnaroundtime': 3600
- 'A_inlet': 0.63609111033380894
- 'm_burner': 409.19359813823348
- 'V_tank': 8.920606601248885
- 'm_tank': 211.7702779575339
- 'l_tank': 5.548030705660274}
+ 'dispersionrate': 0.008}
 
 
  ParCntrl
@@ -210,9 +199,7 @@ ParAnFP
  'lg_x_nose_max_F_n': 6.4189707861659819
  'lg_x_nose': 6.3533483105545328
  'lg_y_nose': 1.44
- 'xcg_fuselagegroup': 13.706428635994566
- 'm_engine': 5000
- 'y_engine': 4.865536502011439}
+ 'xcg_fuselagegroup': 13.706428635994566}
 
 
  ConversTool
