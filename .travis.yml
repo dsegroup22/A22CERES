@@ -1,4 +1,4 @@
-dist: xenial   # required for Python >= 3.7
+#dist: xenial   # required for Python >= 3.7
 language: python
 python:
   - "3.7"
@@ -7,9 +7,8 @@ install:
 - pip install matplotlib
 - pip install scipy
 - pip install python-coveralls
-script: 
-"sbt clean coverage test"
-"python -m pytest"
+script: "sbt clean coverage test"
+#python -m pytest
 
 after_success: "sbt coveralls"
 
