@@ -22,7 +22,7 @@ from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
 
-from A22DSE.Models.STRUC.current.loadingdiagram import V_Diagram,Eliptical
+#from A22DSE.Models.STRUC.current.Loadingdiagram import V_Diagram,Eliptical
 
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
@@ -44,6 +44,7 @@ Conv.ParStruc.LG_weight_tot,Conv.ParStruc.LG_weight_nose, \
 Conv.ParStruc.LG_weight_main  = Class_II_Weight_LG(Conv)
 Conv.ParStruc.Wing_weight = Basic_Wing(Conv)
 Layout.x_lemac, Conv.ParStruc.Weight_FusGroup, Layout.xcg_fuselagegroup = oecg(Conv)
+
 
  
 #preliminairy positions for tricycle landing gear (nose and main)
