@@ -22,7 +22,6 @@ from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
 
-from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import WingWeight
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
@@ -59,7 +58,7 @@ Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
 Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 
 #wing layout -> up for change
-Conv.ParLayoutConfig.x_CoP = WingWeight(Conv)[0] #[-] dimensionless x/mac DUMMY
+Conv.ParLayoutConfig.x_CoP = 0.45 #[-] dimensionless x/mac DUMMY
 
 #fuel tank layout
 Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
