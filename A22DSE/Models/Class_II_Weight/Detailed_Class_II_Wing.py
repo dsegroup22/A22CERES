@@ -9,8 +9,7 @@ import scipy.integrate as integrate
 import sys
 sys.path.append('../../../')
 from A22DSE.Models.STRUC.current.Loadingdiagram import Loading_Diagrams
-from A22DSE.Parameters.Par_Class_Conventional import Conv
-from A22DSE.Parameters.Par_Class_Atmos import Atmos
+
 from math import *
 
 def SharedParams(Aircraft):
@@ -169,7 +168,7 @@ def WingWeight(Aircraft):
     #dummy values including safety factors
 
     b,Sweep_EA,S,sigma_t,sigma_c,w_ic,b_st,R_ic,sigma_r=SharedParams(Aircraft)
-    R_in= 1-R_wg(Conv)-R_en(Conv)-R_f(Conv)
+    R_in= 1-R_wg(Aircraft)-R_en(Aircraft)-R_f(Aircraft)
     
     
 

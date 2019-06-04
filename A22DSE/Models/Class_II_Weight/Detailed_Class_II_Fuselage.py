@@ -6,13 +6,7 @@ Created on Mon Jun  3 09:30:41 2019
 """
 import numpy as np
 
-import sys
-sys.path.append('../../../')
 
-from A22DSE.Parameters.Par_Class_Atmos import Atmos
-
-
-from A22DSE.Parameters.Par_Class_Conventional import Conv
 
 def FuselageWeight(Aircraft):
     anfp = Aircraft.ParAnFP
@@ -24,8 +18,8 @@ def FuselageWeight(Aircraft):
 
     l_fuselage=config.l_fuselage
     K_inl=1.25
-    MTOMlbs = struc.MTOW/Conv.ConversTool.lbs2kg
-    q_Dpsf = anfp.q_dive/Conv.ConversTool.psf2Pa
+    MTOMlbs = struc.MTOW/Aircraft.ConversTool.lbs2kg
+    q_Dpsf = anfp.q_dive/Aircraft.ConversTool.psf2Pa
     
     #roskam: equation 5.26 (commercial)
     W_f=2*10.43*K_inl**1.42*(q_Dpsf/100)**0.283*(MTOMlbs/1000)**0.95*\
@@ -48,7 +42,7 @@ def FuselageWeight(Aircraft):
     W_bulkheads=C_shell*d_fuselage**2*l_ref
     W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
     W_f_tor=W_shell+W_bulkheads+W_fl
-    return W_f*Conv.ConversTool.lbf2N,W_f_mil*Conv.ConversTool.lbf2N,W_f_tor
+    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N,W_f_tor
 
 
 
