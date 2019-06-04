@@ -10,36 +10,41 @@ Created on Wed May 15 11:47:32 2019
 # UNFINISHED WORK
 # =============================================================================
 import numpy as np
+    
+#def OptimalARWing(CL, Fprop, phi_3):
+#    ''' INPUT: Eq. lift-coefficient [-], Propulsion weight penalty, phi_3,
+#    semi-analytical relationship, drag-divergence Mach number [-]
+#    , critica Mach number, Sweep angle [rad]
+#    OUTPUT: Aspect Ratio of the wing
+#    DESCRIPTION: Computes the partial optimal AR of the wing using the method
+#    described in Torenbeek CH10. In this method, the AR is optimised in minimum
+#    MTOW (due to wing penalty).'''
+#    eCurl = np.average([0.9,0.95])
+#    Aw = np.power(CL,0.6)*(2*Fprop/(3*np.pi*eCurl))
+#    
+#    return Aw
 
-class airfoil(object):
+def friction_coef(Aircraft):
+    '''
+    INPUT: V_cruise, atmospheric conditions, span, wetted area
+    OUTPUT: friction coefficient
+    DESCRIPTION: Copied from Nikki's CD0 program
+    '''
+    anfp = Aircraft.ParAnFP
+    V = anfp.V_cruise #Cruise speed
+    b = anfp.b #Span
     
-    def __init__(self, tc, LD, Cldes, Cd0, Clmax, Cm0):
-        
-        self.tc = tc
-        self.LD = LD
-        self.Cldes = Cldes
-        self.Cd0 = Cd0
-        self.Clmax = Clmax
-        self.Cm0 = Cm0
+    mu = 1.43226e-5 #dynamic friction
+    rho = 0.0880349 #density
+    nu = mu / rho #kinematic friction
     
-    def ComputeMdd(self):
-        Mcrit = 0.935                   #2nd gen supercrit. airfoil, see TBeek
-        return Mcrit - self.tc - 0.10*np.power(self.cl,1.5)
-        
-        
-
-def OptimalARWing(CL, Fprop, phi_3):
-    ''' INPUT: Eq. lift-coefficient [-], Propulsion weight penalty, phi_3,
-    semi-analytical relationship, drag-divergence Mach number [-]
-    , critica Mach number, Sweep angle [rad]
-    OUTPUT: Aspect Ratio of the wing
-    DESCRIPTION: Computes the partial optimal AR of the wing using the method
-    described in Torenbeek CH10. In this method, the AR is optimised in minimum
-    MTOW (due to wing penalty).'''
-    eCurl = np.average([0.9,0.95])
-    Aw = np.power(CL,0.6)*(2*Fprop/(3*np.pi*eCurl))
+    S_wet = S_wet_wing(Aircraft) + S_wet_fuselage(Aircraft) + \
+    S_wet_tail(Aircraft) + S_wet_engine(Aircraft)
     
-    return Aw
+    Re = (S_wet / b) * V / nu
+    C_fe = 0.00258 + 0.00102*np.exp(-6.28e-9 * Re) + 0.00295*np.exp(-2.01e-8*\
+                                   Re)
+    return C_fe, S_wet
 
 def DynamicPressEq(Aircraft, ISA_model):
     
@@ -49,10 +54,10 @@ def DynamicPressEq(Aircraft, ISA_model):
     h_cruise = AnFP.h_cruise
 #    h_cruise = 11000
     
-    # Compute Mach number   
+    # Compute Mach number
     a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
     Mcruise = AnFP.V_cruise/a
-    P = ISAFunc([h_cruise])[1]   
+    P = ISAFunc([h_cruise])[1]
     
     # Compute dynamic pressure eq.
     q_eq = 0.5*ISA_model.gamma*np.power(Mcruise, 2)*1.025*P
@@ -87,7 +92,31 @@ def ComputeCL_eq(ISA_model, MTOWi, Aircraft):
     
 #    print(CL_hat)
     return CL_hat
-
+def ComputeTheta1(Aircraft, ISA_model):
+    '''
+    INPUT: returns dimless. quasi-analytical parameter for transonic planform
+    sizing
+    OUTPUT: returns theta_1
+    DESCRIPTION: returns theta_1 required for the optimisation and class II
+    sizing of subsonic wing planform design
+    '''
+    #CONSTANTS
+        ##TODO: Get actual fuel mass from NOUT and RICK
+    Mfuel = 10000
+    MZFW  = Aircraft.ParStruc.MTOW - Mfuel
+    rh = 0.10                               # ratio Wing weight / wing horiz.
+    q_des = DynamicPressEq(Aircraft, ISA_model)
+    bref = 100 #m
+    nult = 2.5
+    tc   = Aircraft.ParAnFP.tc
+    taper = Aircraft.ParAnFP.taper
+    nep  = 0.36 * (1 + taper)**0.5
+    sweep = np.deg2rad(5)
+    
+    theta1 = 0.0013*(1+rh)*np.sqrt(MZFW*ISA_model.g0/q_des)/bref *nult*nep /\
+    (tc*np.cos(sweep)**2)
+    
+    return theta1
 def ComputeTheta2(Aircraft, ISA_model):
     '''INPUT:
        OUTPUT: returns dimless. quasi-analytical parameter for transonic
@@ -95,14 +124,15 @@ def ComputeTheta2(Aircraft, ISA_model):
        DESCRIPTION: Returns theta_2 which is a dimensionless quasi-analytical
        parameter used in equation to optimise for transonic and subsonic wing
        planforms in terms of (t/c), AR, sweep, and CL.
-    '''    
+    '''
+    
     #TODO: compute omegaS for composite wing
     
     rh = 0.10                                   # typical value REF Torenbeek
-    q_eq = DynamicPressEq(Aircraft, ISA_model)
+    q_des = DynamicPressEq(Aircraft, ISA_model)
     omegaS = 210  # N/m for ALUMINIUM WING
     
-    return (1+rh)*omegaS/q_eq
+    return (1+rh)*omegaS/q_des
 
 def ComputeTheta3(Aircraft, ISA_model):
     '''INPUT:
@@ -157,12 +187,12 @@ def CDpCurlFunc(Aircraft, ISA_model, Sweepi):
         L = AnFP.MAC
         return u*L/v
 
-
+    
     #DEFINE VARIABLES
     AnFP = Aircraft.ParAnFP
     ISAFunc = ISA_model.ISAFunc
     h_cruise = Aircraft.ParAnFP.h_cruise
-    Re = ComputeRe()
+    Re = ComputeRe()/2.4
     
     #COMPUTE Mach number
     a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
@@ -197,6 +227,7 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     h_cruise = Aircraft.ParAnFP.h_cruise
     ConversTool = Aircraft.ConversTool
     lbf2N       = 4.44822
+    C_T = 0.56*ConversTool.lbs2kg/lbf2N
     Rmis  = Aircraft.ParAnFP.s_cruise       # mission range
     Rlost = False                           # range lost dependent on CdM
                                             # zero below Mcrit
@@ -205,13 +236,11 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     theta = 0.7519                          # rel. density
     a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
     Mcruise = AnFP.V_cruise/a
-    
-    
-    C_T = 0.56*ConversTool.lbs2kg/lbf2N
+    fuelused = 10000.
     Cdi = 0.04                                      #Cranfield report
     #TODO: Add engine diameter in class structure
     Diameter = 1.61                     #[m]
-    WfuMTOW = AnFP.fuelused/MTOWi
+    WfuMTOW = fuelused/MTOWi
     mu_T = 0.26
     T = 113120.                                     #values for IAE V2531
     T_TO = 139360.                                  #values for IAE V2531
@@ -239,11 +268,43 @@ def ComputeAw(Aircraft, ISA_model, MTOWi, Sweepi):
     CL_eq = ComputeCL_eq(ISA_model, MTOWi, Aircraft)
     return np.power((CDpCurl*Fprop+theta2)/theta3, 2/3)/np.power(CL_eq, 1/3)
 
-def FWP(Theta2, Theta3, MTOWi, Sweep):
+def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
+    
+    #prerequisites:
+    sweep = np.deg2rad(5)
+    Fprop = ComputeFprop(Aircraft, ISA_model, MTOWi)
+    CDpcurl = CDpCurlFunc(Aircraft, ISA_model, sweep)
+    e       = Aircraft.ParAnFP.e
+    
+    FWP1 = Theta1*Awi*np.sqrt(Awi/CL)
+    FWP2 = Theta2/CL
+    FWP3 = Fprop * (CDpcurl / CL + CL / (np.pi*Awi*e))
+    
+    FWP = FWP1 + FWP2 + FWP3
+    
+    return FWP
+
+#def ComputeMTOW(Aircraft, ISA_model, MTOWi, Aw, CL, FWP):
+#    from scipy.optimize import fsolve
+#    #TODO 90% is assumed, see eq. 10.15
+#    
+#    W_num = 10000
+#    W_denum = 0.76
+#    sweep = np.deg2rad(5)
+#    Fprop = ComputeFprop(Aircraft, ISA_model, MTOWi)
+#    CDp   = CDpCurlFunc(Aircraft, ISA_model, sweep)
+#    CDpS  = CDp*Aircraft.ParAnFP.S
+#    FWP   = FWP_subsonic(Theta)
+#    
+#    MTOW - (W_num + DynamicPressEq(Aircraft, ISA_model)*Fprop*CDpS)
+#    
+#    return
     
     
-    return None
     
+    
+
+
 
 
     
