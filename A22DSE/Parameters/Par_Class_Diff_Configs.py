@@ -93,9 +93,9 @@ def ClassIAircraft():
     Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust, Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, \
                         Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise, Conv.ParAnFP.TWactcruise  = WSandTW(False,Conv,ISA_model)
     
+    Conv.ParStruc.wfratio = Conv.ParStruc.FW/Conv.ParStruc.MTOW
     
-        
-        
+def ClassI_AndAHalf():
 
     #Geometry: Sweep 0.25, le, 0.50 in radians, Span in meters, taper ratio, root, tip , MAC in meters
     Conv.ParAnFP.Sweep_25, Conv.ParAnFP.Sweep_LE, Conv.ParAnFP.Sweep_50, Conv.ParAnFP.b,Conv.ParAnFP.taper,\
@@ -162,7 +162,7 @@ def ClassIAircraft():
     
     
 
-    Conv.ParAnFP.CD0 = ComputeCD0(Conv)
+    
     #Horizontal, Vertical tail design
     
     Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
@@ -173,7 +173,10 @@ def ClassIAircraft():
     Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ttail(Conv)
 
 
+
 ClassIAircraft()
+ClassI_AndAHalf()
+Conv.ParAnFP.CD0 = ComputeCD0(Conv)
 # 
 # =============================================================================
 
