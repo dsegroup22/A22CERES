@@ -6,9 +6,7 @@ Created on Mon Jun  3 09:30:41 2019
 """
 import numpy as np
 import scipy.integrate as integrate
-import sys
-sys.path.append('../../../')
-from A22DSE.Models.STRUC.current.Loadingdiagram import Loading_Diagrams
+
 
 from math import *
 
@@ -130,7 +128,6 @@ def LE_TE_Weight(Aircraft):
     MTOW = struc.MTOW * g
     b_st=b/np.cos(Sweep_50)
 
-    q_D = 0.5*Atmos.rho*(1.4*anfp.V_cruise)**2
 
     q_D = anfp.q_dive
 

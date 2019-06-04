@@ -82,8 +82,8 @@ Conv.ParPayload.l_tank=PayloadtankLength(Conv)
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
-struc.m_wing=2*Total_Wing(Conv)/ISA_model.g0
-struc.m_fus=FuselageWeight(Conv)[0]/ISA_model.g0
+struc.m_wing=2*Total_Wing(Conv)/ISA_model.g0 # [kg] whole wing (2 sides)
+struc.m_fus=FuselageWeight(Conv)[0]/ISA_model.g0 #[kg]
 
 # =============================================================================
 # #saving object as txt file
