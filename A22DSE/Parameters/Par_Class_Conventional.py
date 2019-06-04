@@ -24,6 +24,10 @@ from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
 
+from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
+from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
+
+
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
@@ -31,7 +35,8 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAirc
 #shortcut
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
-struc = Conv.ParStruc
+struc= Conv.ParStruc
+
 # =============================================================================
 
 
@@ -50,6 +55,10 @@ def ClassIIWeight_OEWratio():
     Conv.ParStruc.LG_weight_tot,Conv.ParStruc.LG_weight_nose, \
     Conv.ParStruc.LG_weight_main  = Class_II_Weight_LG(Conv)
     Conv.ParStruc.Wing_weight = Basic_Wing(Conv)
+    
+    struc.Wing_weight=2*Total_Wing(Conv)/ISA_model.g0 # [kg] whole wing (2 sides)
+    struc.Wf=FuselageWeight(Conv)[0]/ISA_model.g0 #[kg]
+    
     Layout.x_lemac, Conv.ParStruc.Weight_FusGroup,Conv.ParStruc.Weight_WingGroup,\
     Layout.xcg_fuselagegroup = oecg(Conv)
     
@@ -102,7 +111,6 @@ Conv.ParPayload.l_tank=PayloadtankLength(Conv)
 
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
-
 
 
 

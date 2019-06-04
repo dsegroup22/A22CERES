@@ -41,6 +41,7 @@ ISA_model = Atmos()
 
 Conv = Aircraft()
 
+
 def ClassIAircraft():
     #Parameters not determined from functionss
     Conv.ParAnFP.A = 14.38
@@ -54,6 +55,7 @@ def ClassIAircraft():
     Conv.ParAnFP.wm_un = 0          #Undercarriage in the wing on (1) or off (0)
     #Conv.ParAnFP.CD0 = 0.008
     Conv.ParAnFP.We = 2484           #[kg] weight per engine
+
     
     
     #parameters from functions
@@ -68,30 +70,23 @@ def ClassIAircraft():
     
     
     Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust, Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, \
-                        Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise  = WSandTW(False,Conv,ISA_model)
+                        Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise, Conv.ParAnFP.TWactcruise  = WSandTW(False,Conv,ISA_model)
     
     
         
         
+
     #Geometry: Sweep 0.25, le, 0.50 in radians, Span in meters, taper ratio, root, tip , MAC in meters
     Conv.ParAnFP.Sweep_25, Conv.ParAnFP.Sweep_LE, Conv.ParAnFP.Sweep_50, Conv.ParAnFP.b,Conv.ParAnFP.taper,\
     Conv.ParAnFP.c_r, Conv.ParAnFP.c_t, Conv.ParAnFP.MAC, Conv.ParAnFP.y_MAC = Wing_Geo(Conv)
     
+
+
     
-        
-    #Airfoil parameters
-    # =============================================================================
-    # Conv.ParAnFP.cl_alpha = Airfoil(Conv)[0] #clalpha [/deg]
-    # Conv.ParAnFP.cl_max = Airfoil(Conv)[1] #maximum lift coefficient of airfoil [-]
-    # Conv.ParAnFP.tc = Airfoil(Conv)[2] #thickness to chord ratio [-]
-    # Conv.ParAnFP.CD0_airfoil = Airfoil(Conv)[3] #zero-lift drag [-]
-    # =============================================================================
-    
-    Conv.ParAnFP.cl_alpha,Conv.ParAnFP.cl_max,Conv.ParAnFP.tc,Conv.ParAnFP.Cd0, Conv.ParAnFP.cm_0 = Airfoil(Conv)
-    #Conv.ParAnFP.cl_alpha = clalpha [/deg]
-    #Conv.ParAnFP.cl_max = maximum lift coefficient of airfoil [-]
-    #Conv.ParAnFP.tc  thickness to chord ratio [-]
-    #Conv.ParAnFP.Cd0 zero-lift drag [-]
+
+    Conv.ParAnFP.cl_alpha,Conv.ParAnFP.cl_max,Conv.ParAnFP.tc,Conv.ParAnFP.Cd0,\
+    Conv.ParAnFP.cm_0 = Airfoil(Conv)
+
     
     Conv.ParAnFP.LD_airfoil = 90 #lift to drag ratio [-] at Cldes = 0.55 obtained from graph of Cl/Cd
     
@@ -154,7 +149,7 @@ def ClassIAircraft():
             
             AnFP.CD0 = CD0(Aircraft)[0]
             Aircraft.ParStruc.MTOW, Aircraft.ParStruc.FW, AnFP.S, AnFP.Thrust,\
-            AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal\
+            AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal,Conv.ParAnFP.TWactcruise\
             = WSandTW(False,Aircraft,ISA_model)
         
             

@@ -6,20 +6,19 @@ Created on Mon Jun  3 09:30:41 2019
 """
 import numpy as np
 import scipy.integrate as integrate
-import sys
-sys.path.append('../../../')
-from A22DSE.Models.STRUC.current.Loadingdiagram import Loading_Diagrams
-from A22DSE.Parameters.Par_Class_Conventional import Conv
-from A22DSE.Parameters.Par_Class_Atmos import Atmos
+
+
 from math import *
+
+#torenbeek method, exports in Newtons
 
 def SharedParams(Aircraft):
     anfp = Aircraft.ParAnFP
     b=anfp.b
     Sweep_EA=anfp.Sweep_50
     S=anfp.S
-    sigma_t=3*10**9/1.5
-    sigma_c=1*10**9/1.5
+    sigma_t=480*10**6/1.5 #[n/m^2]
+    sigma_c=0.4*sigma_t  #[n/m^2] http://home.iitk.ac.in/~mohite/axial_compressive.pdf
 
     
     w_ic=0.25 #[m]
@@ -35,7 +34,7 @@ def R_wg(Aircraft):
     struc = Aircraft.ParStruc
 
     MTOM = struc.MTOW
-    M_w = struc.Wing_weight #Dummy change functions in diff_configs
+    M_w = 0.115 * struc.MTOW #Dummy change functions in diff_configs
     #y_wg
     #y_cp  
     return M_w/MTOM
@@ -82,7 +81,7 @@ def W_nid(Aircraft):
     
     g = 9.80665 #m/s2
     
-    rho = 2000 #Specific weight wing box DUMMY kg/m3
+    rho = 1600 #Specific weight wing box [kg/m3]
     W_pp = 5000 * g #powerplant weight DUMMY [N]
     
     MTOW = struc.MTOW * g #in Newton
@@ -130,7 +129,10 @@ def LE_TE_Weight(Aircraft):
     Sweep_50 = anfp.Sweep_50
     MTOW = struc.MTOW * g
     b_st=b/np.cos(Sweep_50)
+
+
     q_D = anfp.q_dive
+
     
     Omega_LE = 3.15*k_fle*Omega_ref*(q_D/q_ref)**0.25 \
     * ((MTOW * b_st)/(W_ref*b_ref))**0.145
@@ -165,7 +167,7 @@ def WingWeight(Aircraft):
     #dummy values including safety factors
 
     b,Sweep_EA,S,sigma_t,sigma_c,w_ic,b_st,R_ic,sigma_r=SharedParams(Aircraft)
-    R_in= 1-R_wg(Conv)-R_en(Conv)-R_f(Conv)
+    R_in= 1-R_wg(Aircraft)-R_en(Aircraft)-R_f(Aircraft)
     
     
 
