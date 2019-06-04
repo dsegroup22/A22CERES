@@ -10,13 +10,15 @@ import scipy.integrate as integrate
 
 from math import *
 
+#torenbeek method, exports in Newtons
+
 def SharedParams(Aircraft):
     anfp = Aircraft.ParAnFP
     b=anfp.b
     Sweep_EA=anfp.Sweep_50
     S=anfp.S
-    sigma_t=3*10**9/1.5
-    sigma_c=1*10**9/1.5
+    sigma_t=480*10**6/1.5 #[n/m^2]
+    sigma_c=0.4*sigma_t  #[n/m^2] http://home.iitk.ac.in/~mohite/axial_compressive.pdf
 
     
     w_ic=0.25 #[m]

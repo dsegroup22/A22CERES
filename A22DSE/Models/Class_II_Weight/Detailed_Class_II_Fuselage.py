@@ -6,7 +6,7 @@ Created on Mon Jun  3 09:30:41 2019
 """
 import numpy as np
 
-
+#exports in Newtons
 
 def FuselageWeight(Aircraft):
     anfp = Aircraft.ParAnFP
