@@ -9,6 +9,7 @@ import scipy.integrate as integrate
 import sys
 sys.path.append('../../../')
 from A22DSE.Models.STRUC.current.Loadingdiagram import Loading_Diagrams
+from A22DSE.Parameters.Par_Class_Conventional import Conv
 from math import *
 
 
@@ -77,17 +78,22 @@ def WingWeight(Aircraft):
     #dummy values including safety factors
     sigma_t=3*10**9/1.5
     sigma_c=1*10**9/1.5
+    g=9.80665
     
-    
+    omega_ic=0.25 #[m]
+    b_st=b/np.cos(Sweep_EA)
+
+    R_ic = 1+2*omega_ic*b_st/S
+
     R_in= 1-R_wg(Conv)-R_en(Conv)-R_f(Conv)
     
-    R_ic = 1 #dummy value
+    
 
     
     eta_cp=1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper))+0.02*np.sin(Sweep_25)
     sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
+    sigma_shear=0.5*sigma_r
     R_cant=A*(1+taper)/(4*t_c*np.cos(Sweep_EA))
-    b_st=b/np.cos(Sweep_EA)
 
     #not used
     V,M=Loading_Diagrams(Aircraft)
@@ -96,14 +102,8 @@ def WingWeight(Aircraft):
     W_BL=2*g*rho*integrate.quad(localA,0,b_st)[0]
     
     
-    
-    
-    
-    
     W_BL2=I_2_t*rho*g/sigma_r*n_ult*MTOW*g*R_cant*eta_cp/eta_t*b_st
 
-
-    sigma_shear=0.5*sigma_r
     W_SL=1.2*n_ult*MTOW*g*eta_cp*b_st*rho*g/sigma_shear
 
     W_IP_T=0.05*W_BL
@@ -114,6 +114,6 @@ def WingWeight(Aircraft):
     
     W_rib=k_rib*rho*S*g*(t_ref+t_c*(c_r+c_t)/2)
     print (t_c*(c_r+c_t)/2)
-    return eta_cp,W_id_box
+    return W_id_box,W_rib
 
 
