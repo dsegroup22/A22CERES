@@ -1,0 +1,19 @@
+dist: xenial   # required for Python >= 3.7
+language: python
+python:
+  - "3.7"
+
+install:
+- pip install matplotlib
+- pip install scipy
+- pip install python-coveralls
+script:
+ - coverage run -m pytest
+
+after_success: 
+ - coveralls
+
+notifications:
+    email:
+        recipients:
+            - sai.group22.dse@gmail.com

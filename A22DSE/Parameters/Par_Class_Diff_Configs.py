@@ -140,6 +140,10 @@ Conv.ParLayoutConfig.lg_x_nose,Conv.ParLayoutConfig.lg_y_nose,\
 Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
 
 
+Conv.ParLayoutConfig.m_engine = 5000 # [kg] DUMMY VALUE
+Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
+
+
 def ComputeCD0(Aircraft):
 #DETERMINE CD0, AND ITERATE FOR THE MTOW ETC.
     error = 1
