@@ -12,82 +12,6 @@ from A22DSE.Models.STRUC.current.Loadingdiagram import Loading_Diagrams
 from A22DSE.Parameters.Par_Class_Conventional import Conv
 from math import *
 
-
-def R_wg(Aircraft):
-    #Determines wing relief factor due to structure, can be more precies by
-    #using exact y locations of wing group and CoP
-    anfp = Aircraft.ParAnFP
-    struc = Aircraft.ParStruc
-    config = Aircraft.ParLayoutConfig
-
-    MTOW = struc.MTOW
-    W_w = struc.Wing_weight #Dummy change functions in diff_configs
-    #y_wg
-    #y_cp  
-    return W_w/MTOW
-
-def R_en(Aircraft):
-    #Determines engine relief factor 
-    anfp = Aircraft.ParAnFP
-    struc = Aircraft.ParStruc
-    config = Aircraft.ParLayoutConfig
-
-
-    x_eng = config.x_engine
-    x_cp = config.x_CoP
-    MTOW = struc.MTOW
-    W_eng = config.m_engine
-    return 3 * (x_eng**2 / x_cp) * (W_eng / MTOW)
-
-def R_f(Aircraft):
-    #Determines fuel relief factor, for layout it is necessary that inner
-    #bulkhead coincides with wing root
-    anfp = Aircraft.ParAnFP
-    struc = Aircraft.ParStruc
-    config = Aircraft.ParLayoutConfig
-    
-    b_f = config.b_fueltank
-    b = anfp.b
-    taper = anfp.taper
-    MTOW = struc.MTOW
-    MZF = MTOW - struc.FW
-    return 0.5 * (b_f/b) * (1 + (3 * taper**2)/(1 + 2*taper)) * (1 - MZF/MTOW)
-   
-def W_nid(Aircraft):
-    #Calculate weight penalties for several components
-    #Tapered skin, fail safety margins, engine mouting, connection to the
-    #fuselage, aerolasticity weight
-    struc = Aircraft.ParStruc
-    config = Aircraft.ParLayoutConfig
-    anfp = Aircraft.ParAnfp
-    
-    g = 9.80665 #m/s2
-    
-    rho = 2000 #Specific weight aluminum
-    W_pp = 5000 #powerplant weight
-    
-    MTOW = struc.MTOW
-    Sweep_50 = anfp.Sweep_50
-    W_G = MTOW - struc.MZF
-    n_ult = 2.5
-    x_cp = config.x_CoP
-    n_eng = anfp.n_engines
-    b_st=b/np.cos(Sweep_50)
-
-    #Penalties
-    fail_safety = 0.18 * n_ult * W_G * x_cp * b_st * (rho*g/stress_av)
-    engine = 0.015*(1 + 0.2*n_eng)*W_pp
-    fus_connection = 0.0003 * n_ult * MTOW
-    
-    #Addittional Penalties
-    
-    #aerolasticity = W_ref * (q_D/q_ref) * (b*cos(sweep_LE)/b_ref)**3 * \
-    #(tc_ref)**(-2) * (1 - sin(sweep_50)) * (1 - (M_D * cos (sweep_50)))**(-0.5)
-    #Weight penalty for torsional stiffness of an aluminium wing box (we have composites)
-    #skin_taper = incr * rho * g * S_box // communicate whether we add taper
-    return fail_safety + engine + fus_connection  
-    
-
 def SharedParams(Aircraft):
     anfp = Aircraft.ParAnFP
     struc = Aircraft.ParStruc
@@ -106,7 +30,101 @@ def SharedParams(Aircraft):
     sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
     return b,Sweep_EA,S,sigma_t,sigma_c,omega_ic,b_st,R_ic,sigma_r
 
+def R_wg(Aircraft):
+    #Determines wing relief factor due to structure, can be more precies by
+    #using exact y locations of wing group and CoP
+    anfp = Aircraft.ParAnFP
+    struc = Aircraft.ParStruc
+    config = Aircraft.ParLayoutConfig
 
+    MTOM = struc.MTOW
+    M_w = struc.Wing_weight #Dummy change functions in diff_configs
+    #y_wg
+    #y_cp  
+    return M_w/MTOM
+
+def R_en(Aircraft):
+    #Determines engine relief factor 
+    anfp = Aircraft.ParAnFP
+    struc = Aircraft.ParStruc
+    config = Aircraft.ParLayoutConfig
+    
+    taper = anfp.taper
+    n_ult = 2.5
+    Sweep_25 =anfp.Sweep_25
+
+
+    x_eng = config.x_engine
+    x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
+    +0.02*np.sin(Sweep_25)
+    MTOM = struc.MTOW #kg
+    M_eng = config.m_engine #kg
+    
+    return 3 * (x_eng**2 / x_cp) * (M_eng / MTOM)
+
+def R_f(Aircraft):
+    #Determines fuel relief factor, for layout it is necessary that inner
+    #bulkhead coincides with wing root
+    anfp = Aircraft.ParAnFP
+    struc = Aircraft.ParStruc
+    config = Aircraft.ParLayoutConfig
+    
+    b_f = config.b_fueltank
+    b = anfp.b
+    taper = anfp.taper
+    MTOW = struc.MTOW #kg
+    MZF = MTOW - struc.FW #kg
+    return 0.5 * (b_f/b) * (1 + (3 * taper**2)/(1 + 2*taper)) * (1 - MZF/MTOW)
+   
+def W_nid(Aircraft):
+    #Calculate weight penalties for several components
+    #Tapered skin, fail safety margins, engine mouting, connection to the
+    #fuselage, aerolasticity weight
+    struc = Aircraft.ParStruc
+    config = Aircraft.ParLayoutConfig
+    anfp = Aircraft.ParAnfp
+    
+    g = 9.80665 #m/s2
+    
+    rho = 2000 #Specific weight wing box DUMMY kg/m3
+    W_pp = 5000 * g #powerplant weight DUMMY [N]
+    
+    MTOW = struc.MTOW * g #in Newton
+    Sweep_50 = anfp.Sweep_50
+    W_G = MTOW - (struc.MZF*g) #Gross weight approx ZFW
+    b = anfp.b
+    taper = anfp.taper
+    Sweep_25 = anfp.Sweep_25
+    
+    n_ult = 2.5
+    x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
+    +0.02*np.sin(Sweep_25)
+    n_eng = anfp.n_engines
+    b_st=b/np.cos(Sweep_50)
+    stress_av = SharedParams(Aircraft)[8]
+
+    #Penalties
+    fail_safety = 0.18 * n_ult * W_G * x_cp * b_st * (rho*g/stress_av)
+    engine = 0.015*(1 + 0.2*n_eng)*W_pp
+    fus_connection = 0.0003 * n_ult * MTOW
+    
+    #Addittional Penalties
+    #aerolasticity = W_ref * (q_D/q_ref) * (b*cos(sweep_LE)/b_ref)**3 * \
+    #(tc_ref)**(-2) * (1 - sin(sweep_50)) * (1 - (M_D * cos (sweep_50)))**(-0.5)
+    #Weight penalty for torsional stiffness of an aluminium wing box 
+    #(we have composites)
+    #skin_taper = incr * rho * g * S_box // communicate whether we add taper
+    
+    return fail_safety + engine + fus_connection  
+
+def LE_TE_Weight(Aircraft):
+    #Determines weight of LE and TE based on emperical relations
+    S_ref = 10 #[m2]
+    Omega_ref = 56 #[N/m2]
+    k_fle = 1 #1.3 with slats
+    b_ref = 50 #[m]
+    W_ref = 10**6 #[N]
+    return S_ref
 
 def WingWeight(Aircraft):
     anfp = Aircraft.ParAnFP
