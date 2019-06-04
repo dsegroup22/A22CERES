@@ -78,7 +78,7 @@ def W_nid(Aircraft):
     #Tapered skin, fail safety margins, engine mouting, connection to the
     #fuselage, aerolasticity weight
     struc = Aircraft.ParStruc
-    anfp = Aircraft.ParAnfp
+    anfp = Aircraft.ParAnFP
     
     g = 9.80665 #m/s2
     
@@ -87,7 +87,7 @@ def W_nid(Aircraft):
     
     MTOW = struc.MTOW * g #in Newton
     Sweep_50 = anfp.Sweep_50
-    W_G = MTOW - (struc.MZF*g) #Gross weight approx ZFW
+    W_G = MTOW - (struc.FW*g) #Gross weight approx ZFW
     b = anfp.b
     taper = anfp.taper
     Sweep_25 = anfp.Sweep_25
@@ -130,11 +130,11 @@ def LE_TE_Weight(Aircraft):
     Sweep_50 = anfp.Sweep_50
     MTOW = struc.MTOW * g
     b_st=b/np.cos(Sweep_50)
-    q_D = 0.5*Atmos.rho*(1.4*anfp.V_cruise)**2*anfp.S
+    q_D = anfp.q_dive
     
     Omega_LE = 3.15*k_fle*Omega_ref*(q_D/q_ref)**0.25 \
     * ((MTOW * b_st)/(W_ref*b_ref))**0.145
-    S_LE = b/2 * 0.20 * MAC #DUMMY Equation
+    S_LE = b * 0.20 * MAC #DUMMY Equation
     
     Omega_TE = 2.6 * Omega_ref * ((MTOW * b_st)/(W_ref * b_ref))**0.0544
     #Increase Omega_ref by 40 0r 100 for ss Fowler flap and ds Fowler flap
@@ -197,7 +197,7 @@ def WingWeight(Aircraft):
     return W_id_box,W_rib
 
 def Total_Wing(Aircraft):
-    return W_nid(Aircraft) +sum(WingWeight) + LE_TE_Weight(Aircraft)
+    return W_nid(Aircraft) +sum(WingWeight(Aircraft)) + LE_TE_Weight(Aircraft)
 
 #def control_surfaces(Aircraft):
 #    Omega_ref = 56 #[N/m2]
