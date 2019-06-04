@@ -41,6 +41,27 @@ ISA_model = Atmos()
 
 Conv = Aircraft()
 
+def ComputeCD0(Aircraft):
+#DETERMINE CD0, AND ITERATE FOR THE MTOW ETC.
+    error = 1
+    while error > 10e-3:
+        Sold = Aircraft.ParAnFP.S
+        AnFP = Aircraft.ParAnFP
+        
+        AnFP.CD0 = CD0(Aircraft)[0]
+        Aircraft.ParStruc.MTOW, Aircraft.ParStruc.FW, AnFP.S, AnFP.Thrust,\
+        AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal,Conv.ParAnFP.TWactcruise\
+        = WSandTW(False,Aircraft,ISA_model)
+    
+        
+        AnFP.Sweep_25, AnFP.Sweep_LE, AnFP.Sweep_50, \
+        AnFP.b, AnFP.taper, AnFP.c_r, AnFP.c_t,\
+        AnFP.MAC,AnFP.y_MAC = Wing_Geo(Aircraft)
+        
+        error = abs((AnFP.S-Sold)/Sold)
+    CD0_opt = AnFP.CD0
+    return CD0_opt
+    
 
 def ClassIAircraft():
     #Parameters not determined from functionss
@@ -140,26 +161,7 @@ def ClassIAircraft():
     Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
     
     
-    def ComputeCD0(Aircraft):
-    #DETERMINE CD0, AND ITERATE FOR THE MTOW ETC.
-        error = 1
-        while error > 10e-3:
-            Sold = Aircraft.ParAnFP.S
-            AnFP = Aircraft.ParAnFP
-            
-            AnFP.CD0 = CD0(Aircraft)[0]
-            Aircraft.ParStruc.MTOW, Aircraft.ParStruc.FW, AnFP.S, AnFP.Thrust,\
-            AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal,Conv.ParAnFP.TWactcruise\
-            = WSandTW(False,Aircraft,ISA_model)
-        
-            
-            AnFP.Sweep_25, AnFP.Sweep_LE, AnFP.Sweep_50, \
-            AnFP.b, AnFP.taper, AnFP.c_r, AnFP.c_t,\
-            AnFP.MAC,AnFP.y_MAC = Wing_Geo(Aircraft)
-            
-            error = abs((AnFP.S-Sold)/Sold)
-        CD0_opt = AnFP.CD0
-        return CD0_opt
+
     Conv.ParAnFP.CD0 = ComputeCD0(Conv)
     #Horizontal, Vertical tail design
     
