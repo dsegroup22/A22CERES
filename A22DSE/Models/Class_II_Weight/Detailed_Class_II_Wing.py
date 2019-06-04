@@ -10,12 +10,11 @@ import sys
 sys.path.append('../../../')
 from A22DSE.Models.STRUC.current.Loadingdiagram import Loading_Diagrams
 from A22DSE.Parameters.Par_Class_Conventional import Conv
+from A22DSE.Parameters.Par_Class_Atmos import Atmos
 from math import *
 
 def SharedParams(Aircraft):
     anfp = Aircraft.ParAnFP
-    struc = Aircraft.ParStruc
-    config = Aircraft.ParLayoutConfig
     b=anfp.b
     Sweep_EA=anfp.Sweep_50
     S=anfp.S
@@ -23,19 +22,17 @@ def SharedParams(Aircraft):
     sigma_c=1*10**9/1.5
 
     
-    omega_ic=0.25 #[m]
+    w_ic=0.25 #[m]
     b_st=b/np.cos(Sweep_EA)
 
-    R_ic = 1+2*omega_ic*b_st/S
+    R_ic = 1+2*w_ic*b_st/S
     sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
-    return b,Sweep_EA,S,sigma_t,sigma_c,omega_ic,b_st,R_ic,sigma_r
+    return b,Sweep_EA,S,sigma_t,sigma_c,w_ic,b_st,R_ic,sigma_r
 
 def R_wg(Aircraft):
     #Determines wing relief factor due to structure, can be more precies by
     #using exact y locations of wing group and CoP
-    anfp = Aircraft.ParAnFP
     struc = Aircraft.ParStruc
-    config = Aircraft.ParLayoutConfig
 
     MTOM = struc.MTOW
     M_w = struc.Wing_weight #Dummy change functions in diff_configs
@@ -81,7 +78,6 @@ def W_nid(Aircraft):
     #Tapered skin, fail safety margins, engine mouting, connection to the
     #fuselage, aerolasticity weight
     struc = Aircraft.ParStruc
-    config = Aircraft.ParLayoutConfig
     anfp = Aircraft.ParAnfp
     
     g = 9.80665 #m/s2
@@ -118,37 +114,37 @@ def W_nid(Aircraft):
     return fail_safety + engine + fus_connection  
 
 def LE_TE_Weight(Aircraft):
-    #Determines weight of LE and TE based on emperical relations
-    S_ref = 10 #[m2]
+    #Determines weight of fixed LE and TE based on emperical relations
+    anfp = Aircraft.ParAnFP
+    struc = Aircraft.ParStruc
+    
+    g = 9.80665 #m/s2
     Omega_ref = 56 #[N/m2]
     k_fle = 1 #1.3 with slats
     b_ref = 50 #[m]
     W_ref = 10**6 #[N]
-    return S_ref
-
-def SharedParams(Aircraft):
-    anfp = Aircraft.ParAnFP
-    struc = Aircraft.ParStruc
-    config = Aircraft.ParLayoutConfig
-    b=anfp.b
-    Sweep_EA=anfp.Sweep_50
-    S=anfp.S
-    sigma_t=480*10**6/1.5 # N/m^2
-    sigma_c=0.4*sigma_t # N/m^2 http://home.iitk.ac.in/~mohite/axial_compressive.pdf
-
+    q_ref = 30e3 #[N/m2]
     
-    omega_ic=0.25 #[m]
-    b_st=b/np.cos(Sweep_EA)
-
-    R_ic = 1+2*omega_ic*b_st/S
-    sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
-    return b,Sweep_EA,S,sigma_t,sigma_c,omega_ic,b_st,R_ic,sigma_r
-
+    b = anfp.b
+    MAC = anfp.MAC
+    Sweep_50 = anfp.Sweep_50
+    MTOW = struc.MTOW * g
+    b_st=b/np.cos(Sweep_50)
+    q_D = 0.5*Atmos.rho*(1.4*anfp.V_cruise)**2*anfp.S
+    
+    Omega_LE = 3.15*k_fle*Omega_ref*(q_D/q_ref)**0.25 \
+    * ((MTOW * b_st)/(W_ref*b_ref))**0.145
+    S_LE = b/2 * 0.20 * MAC #DUMMY Equation
+    
+    Omega_TE = 2.6 * Omega_ref * ((MTOW * b_st)/(W_ref * b_ref))**0.0544
+    #Increase Omega_ref by 40 0r 100 for ss Fowler flap and ds Fowler flap
+    #respectively
+    
+    return Omega_LE*S_LE + Omega_TE*S_LE
 
 def WingWeight(Aircraft):
     anfp = Aircraft.ParAnFP
     struc = Aircraft.ParStruc
-    config = Aircraft.ParLayoutConfig
 
     MTOW=struc.MTOW
 
@@ -168,7 +164,7 @@ def WingWeight(Aircraft):
     g=9.80665 #m/s^2
     #dummy values including safety factors
 
-    b,Sweep_EA,S,sigma_t,sigma_c,omega_ic,b_st,R_ic,sigma_r=SharedParams(Aircraft)
+    b,Sweep_EA,S,sigma_t,sigma_c,w_ic,b_st,R_ic,sigma_r=SharedParams(Aircraft)
     R_in= 1-R_wg(Conv)-R_en(Conv)-R_f(Conv)
     
     
@@ -176,21 +172,21 @@ def WingWeight(Aircraft):
     
     eta_cp=1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper))+0.02*np.sin(Sweep_25)
     
-    sigma_shear=0.5*sigma_r
+    #sigma_shear=0.5*sigma_r
     R_cant=A*(1+taper)/(4*t_c*np.cos(Sweep_EA))
 
-    #not used
-    V,M=Loading_Diagrams(Aircraft)
-    A=M/eta_t/sigma_t
-    localA = lambda x:  A[int(round(x/(b/2)))]
-    W_BL=2*g*rho*integrate.quad(localA,0,b_st)[0]
-    
-    
-    W_BL2=I_2_t*rho*g/sigma_r*n_ult*MTOW*g*R_cant*eta_cp/eta_t*b_st
-
-    W_SL=1.2*n_ult*MTOW*g*eta_cp*b_st*rho*g/sigma_shear
-
-    W_IP_T=0.05*W_BL
+#    #not used
+#    V,M=Loading_Diagrams(Aircraft)
+#    A=M/eta_t/sigma_t
+#    localA = lambda x:  A[int(round(x/(b/2)))]
+#    W_BL=2*g*rho*integrate.quad(localA,0,b_st)[0]
+#    
+#    
+#    W_BL2=I_2_t*rho*g/sigma_r*n_ult*MTOW*g*R_cant*eta_cp/eta_t*b_st
+#
+#    W_SL=1.2*n_ult*MTOW*g*eta_cp*b_st*rho*g/sigma_shear
+#
+#    W_IP_T=0.05*W_BL
     
     
     
@@ -200,4 +196,16 @@ def WingWeight(Aircraft):
     
     return W_id_box,W_rib
 
+def Total_Wing(Aircraft):
+    return W_nid(Aircraft) +sum(WingWeight) + LE_TE_Weight(Aircraft)
 
+#def control_surfaces(Aircraft):
+#    Omega_ref = 56 #[N/m2]
+#    k_bal = 1 #1 unbalanced, 1.3 ae balanced, 1.54 mass balanced
+#    S_ail = 20 #DUMMY
+#    S_sp = 20 #DUMMY
+#    S_ref = 10 #m2
+#    
+#    Omega_ail = 3*Omega_ref*k_bal*(S_ail/S_ref)**0.044
+#    Omega_sp = 2.2*Omega_ref*(S_sp/S_ref)**0.032
+#    return Omega_ail*S_ail + Omega_sp*S_sp
