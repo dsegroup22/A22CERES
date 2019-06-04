@@ -35,7 +35,7 @@ def R_wg(Aircraft):
     struc = Aircraft.ParStruc
 
     MTOM = struc.MTOW
-    M_w = struc.Wing_weight #Dummy change functions in diff_configs
+    M_w = 0.115 * struc.MTOW #Dummy change functions in diff_configs
     #y_wg
     #y_cp  
     return M_w/MTOM
@@ -82,7 +82,7 @@ def W_nid(Aircraft):
     
     g = 9.80665 #m/s2
     
-    rho = 2000 #Specific weight wing box DUMMY kg/m3
+    rho = 1600 #Specific weight wing box [kg/m3]
     W_pp = 5000 * g #powerplant weight DUMMY [N]
     
     MTOW = struc.MTOW * g #in Newton
@@ -130,7 +130,7 @@ def LE_TE_Weight(Aircraft):
     Sweep_50 = anfp.Sweep_50
     MTOW = struc.MTOW * g
     b_st=b/np.cos(Sweep_50)
-    q_D = 0.5*Atmos.rho*(1.4*anfp.V_cruise)**2*anfp.S
+    q_D = 0.5*Atmos.rho*(1.4*anfp.V_cruise)**2
     
     Omega_LE = 3.15*k_fle*Omega_ref*(q_D/q_ref)**0.25 \
     * ((MTOW * b_st)/(W_ref*b_ref))**0.145
