@@ -5,8 +5,12 @@ Created on Mon Jun  3 09:30:41 2019
 @author: menno
 """
 import numpy as np
+
 import sys
 sys.path.append('../../../')
+
+from A22DSE.Parameters.Par_Class_Atmos import Atmos
+
 
 from A22DSE.Parameters.Par_Class_Conventional import Conv
 
@@ -17,11 +21,11 @@ def FuselageWeight(Aircraft):
     
     h_fuselage=config.h_fuselage
     w_fuselage=config.w_fuselage
-    
+
     l_fuselage=config.l_fuselage
     K_inl=1.25
     MTOMlbs = struc.MTOW/Conv.ConversTool.lbs2kg
-    
+    q_D = 0.5*Atmos.rho*(1.4*anfp.V_cruise)**2*anfp.S
     
 #    torenbeek method    
 #    l_ref=1.5 #[m]
@@ -36,3 +40,6 @@ def FuselageWeight(Aircraft):
 #    W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
 #    W_fus=W_shell+W_bulkheads+W_fl
     return 
+=======
+
+
