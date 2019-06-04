@@ -153,7 +153,7 @@ def ComputeCD0(Aircraft):
         
         AnFP.CD0 = CD0(Aircraft)[0]
         Aircraft.ParStruc.MTOW, Aircraft.ParStruc.FW, AnFP.S, AnFP.Thrust,\
-        AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal, , Conv.ParAnFP.TWactcruise\
+        AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal, Conv.ParAnFP.TWactcruise\
         = WSandTW(False,Aircraft,ISA_model)
     
         
