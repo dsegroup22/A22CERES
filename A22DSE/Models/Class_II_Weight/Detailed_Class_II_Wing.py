@@ -52,7 +52,42 @@ def R_f(Aircraft):
     MTOW = struc.MTOW
     MZF = MTOW - struc.FW
     return 0.5 * (b_f/b) * (1 + (3 * taper**2)/(1 + 2*taper)) * (1 - MZF/MTOW)
+   
+def W_nid(Aircraft):
+    #Calculate weight penalties for several components
+    #Tapered skin, fail safety margins, engine mouting, connection to the
+    #fuselage, aerolasticity weight
+    struc = Aircraft.ParStruc
+    config = Aircraft.ParLayoutConfig
+    anfp = Aircraft.ParAnfp
     
+    g = 9.80665 #m/s2
+    
+    rho = 2000 #Specific weight aluminum
+    W_pp = 5000 #powerplant weight
+    
+    MTOW = struc.MTOW
+    Sweep_50 = anfp.Sweep_50
+    W_G = MTOW - struc.MZF
+    n_ult = 2.5
+    x_cp = config.x_CoP
+    n_eng = anfp.n_engines
+    b_st=b/np.cos(Sweep_50)
+
+    #Penalties
+    fail_safety = 0.18 * n_ult * W_G * x_cp * b_st * (rho*g/stress_av)
+    engine = 0.015*(1 + 0.2*n_eng)*W_pp
+    fus_connection = 0.0003 * n_ult * MTOW
+    
+    #Addittional Penalties
+    
+    #aerolasticity = W_ref * (q_D/q_ref) * (b*cos(sweep_LE)/b_ref)**3 * \
+    #(tc_ref)**(-2) * (1 - sin(sweep_50)) * (1 - (M_D * cos (sweep_50)))**(-0.5)
+    #Weight penalty for torsional stiffness of an aluminium wing box (we have composites)
+    #skin_taper = incr * rho * g * S_box // communicate whether we add taper
+    return fail_safety + engine + fus_connection  
+    
+
 def SharedParams(Aircraft):
     anfp = Aircraft.ParAnFP
     struc = Aircraft.ParStruc
@@ -70,6 +105,7 @@ def SharedParams(Aircraft):
     R_ic = 1+2*omega_ic*b_st/S
     sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
     return b,Sweep_EA,S,sigma_t,sigma_c,omega_ic,b_st,R_ic,sigma_r
+
 
 
 def WingWeight(Aircraft):
