@@ -106,7 +106,10 @@ Layout = Conv.ParLayoutConfig
 #Layout.l_fuselage = 24 #[m] length of fuselage
 Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = (
         GetTotalFuselageLength(Conv, 24, 2, 0.01))
+Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
 Layout.l_fuselage = np.sum(Layout.l_fuselage)
+
+Layout.h_APU=0.2 #[m] dummy value
 
 Layout.h_fuselage = Layout.dim_cabin[0]
 Layout.w_fuselage = Layout.dim_cabin[1]

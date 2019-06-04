@@ -25,11 +25,11 @@ BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
 
-
+from A22DSE.Models.Layout.Current.Sidearea import Area
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
-from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
-        GetTotalFuselageLength, SurfaceFuselage)
+from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
+
 #shortcut
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
@@ -67,6 +67,7 @@ Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 #fuel tank layout
 Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
 
+Layout.TotalSidearea=Area(Conv)
 
 # =============================================================================
 #                          ITERATE HERE FOR NEW OEW RATIO
