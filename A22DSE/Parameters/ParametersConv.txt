@@ -214,7 +214,6 @@ ParAnFP
  'y_engine': 4.866183931194554
  'xcg_fuselagegroup': 13.707610993520355
  'x_engine': 0.25
- 'x_CoP': 0.45
  'b_fueltank': 31.143577159645147}
 
 
