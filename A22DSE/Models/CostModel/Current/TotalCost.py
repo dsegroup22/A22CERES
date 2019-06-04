@@ -27,9 +27,10 @@ def TotalC(Aircraft, ISA_model):
     doclnr=DOClnr(Aircraft)[0]          #Returns direct operating costs per nm
     frt=DOClnr(Aircraft)[1]
     Cop=Coper(Aircraft,(DOC(docflt,docmaint,docdepr,doclnr,frt)))[0]
+    Copsy1 = Coper(Aircraft,(DOC(docflt,docmaint,docdepr,doclnr,frt)))[2]
     #print ("RnD costs=",RnDCost*1e-9)
     #print ("Manufacturing costs=",Cman*1e-9)
     #print ("Operating costs=",Cop*1e-9)
-    return (sum([RnDCost+Cman+Cop])*1e-9,Cop*1e-9)
+    return (sum([RnDCost+Cman+Cop])*1e-9,Cop*1e-9),Copsy1
 
 #print (TotalC(Can))

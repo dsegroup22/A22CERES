@@ -13,7 +13,7 @@ import os
 import copy
 import numpy as np
 sys.path.append('../../')
-
+#print(os.getcwd())
 from A22DSE.Models.Class_II_Weight.Class_II_LG import Class_II_Weight_LG
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import (WSandTW)
 from A22DSE.Models.Class_II_Weight.Class_II_Wing import Wing_Geo, Basic_Wing
@@ -22,12 +22,18 @@ from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
 
+from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
+from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
+
+
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
 #shortcut
 Layout = Conv.ParLayoutConfig
+anfp = Conv.ParAnFP
+struc= Conv.ParStruc
 # =============================================================================
 
 
@@ -57,8 +63,6 @@ Conv.ParLayoutConfig.m_engine = 5000 # [kg] DUMMY VALUE
 Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
 Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 
-#wing layout -> up for change
-Conv.ParLayoutConfig.x_CoP = 0.45 #[-] dimensionless x/mac DUMMY
 
 #fuel tank layout
 Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
@@ -75,9 +79,11 @@ Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
 Conv.ParPayload.m_tank=PayloadtankMass(Conv)
 Conv.ParPayload.l_tank=PayloadtankLength(Conv)
 
+anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
+anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
-
-
+struc.m_wing=2*Total_Wing(Conv)/ISA_model.g0 # [kg] whole wing (2 sides)
+struc.m_fus=FuselageWeight(Conv)[0]/ISA_model.g0 #[kg]
 
 # =============================================================================
 # #saving object as txt file

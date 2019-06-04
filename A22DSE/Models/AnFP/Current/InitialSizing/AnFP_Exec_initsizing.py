@@ -479,6 +479,11 @@ def WSandTW(Plots, Aircraft, ISA_model):
         
         index = np.where(ws == ws.flat[np.abs(ws - wsmin).argmin()])
         TW = float(max(TWtakeoff[index],TWceiling[index],TWclimb,TWcruisemax[index])) #Choose max TW values
+
+        atmos = ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])
+        TWactcruise = float(max(TWcruisemax[index],TWceiling[index]))*atmos[2]/1.225
+
+        
         Aircraft.ParAnFP.TtoW = TW
         oldwfratioclimb = Aircraft.ParStruc.wfratioclimb
         Aircraft.ParStruc.wfratioclimb, wfcruise, dfinal, tfinal = fp.FuelFractions(Aircraft,ISA_model)
@@ -514,7 +519,7 @@ def WSandTW(Plots, Aircraft, ISA_model):
         plt.show()
         
         
-    return (MTOW, wfratio*MTOW, MTOW/(wsmin/9.80665), TW*MTOW*9.80665, TW, wsmin, dfinal, tfinal)
+    return (MTOW, wfratio*MTOW, MTOW/(wsmin/9.80665), TW*MTOW*9.80665, TW, wsmin, dfinal, tfinal, TWactcruise)
 
 
 
