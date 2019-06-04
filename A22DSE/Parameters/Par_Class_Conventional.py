@@ -13,7 +13,7 @@ import os
 import copy
 import numpy as np
 sys.path.append('../../')
-
+#print(os.getcwd())
 from A22DSE.Models.Class_II_Weight.Class_II_LG import Class_II_Weight_LG
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import (WSandTW)
 from A22DSE.Models.Class_II_Weight.Class_II_Wing import Wing_Geo, Basic_Wing
@@ -28,6 +28,7 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
 #shortcut
 Layout = Conv.ParLayoutConfig
+anfp = Conv.ParAnFP
 # =============================================================================
 
 
@@ -57,8 +58,6 @@ Conv.ParLayoutConfig.m_engine = 5000 # [kg] DUMMY VALUE
 Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
 Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 
-#wing layout -> up for change
-Conv.ParLayoutConfig.x_CoP = 0.45 #[-] dimensionless x/mac DUMMY
 
 #fuel tank layout
 Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
@@ -75,6 +74,8 @@ Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
 Conv.ParPayload.m_tank=PayloadtankMass(Conv)
 Conv.ParPayload.l_tank=PayloadtankLength(Conv)
 
+anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
+anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 
 

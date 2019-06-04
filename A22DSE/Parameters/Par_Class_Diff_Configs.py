@@ -6,10 +6,12 @@ Created on Mon May 13 15:30:54 2019
 """
 import sys
 import os
+#from pathlib import Path
 import copy
 import numpy as np
-sys.path.append('../../')
-
+#sys.path.append('../')
+#os.chdir(Path(__file__).parents[2])
+#print(os.getcwd())
 from A22DSE.Parameters.Par_Class_All import Aircraft
 from A22DSE.Parameters.Par_Class_Atmos import Atmos
 from A22DSE.Models.POPS.Current.cruisecalculations import (CruiseRange,
@@ -96,7 +98,7 @@ Conv.ParAnFP.LD_airfoil = 90 #lift to drag ratio [-] at Cldes = 0.55 obtained fr
 
 
 #PRELIMINAIRY ENGINE POSITION
-Conv.ParLayoutConfig.y_loc_eng = Conv.ParAnFP.b*7/40#b/3 #[m] DUMMY VALUE
+Conv.ParLayoutConfig.y_loc_eng = Conv.ParAnFP.b/8#b/3 #[m] DUMMY VALUE
 
 #PRELIMINAIRY FUSELAGE DESIGN
 Layout = Conv.ParLayoutConfig
@@ -124,7 +126,7 @@ Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
 Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
 Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
 Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
-Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ttail(Conv)
+Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ctail(Conv)
 
 
 

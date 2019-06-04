@@ -164,7 +164,8 @@ class ParConvLst(object):
         self.gallon2L = 3.78541 #[-]
         self.kts2ms = 0.514444444 #[-]
         self.km2nm = 0.539956803 #[-]
-        self.lbftoN = 4.44822162 #[1 lbf == 4.448 N]
+        self.lbf2N = 4.44822162 #[1 lbf = 4.448 N]
+        self.psf2Pa = 47.88 #[1 psf = 47.88 Pa]
         
 class ParClassII_CS(object):
     def __init__(self):
