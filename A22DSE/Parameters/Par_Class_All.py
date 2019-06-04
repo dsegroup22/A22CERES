@@ -93,7 +93,7 @@ class ParStrucLst(object):
             self.tail_angle = 15*np.pi/180 #DUMMY VALUE #[rad] angle of empannage wrt ground
             
             #ratios
-            self.OEWratio = 1/2.47      #[-]
+            self.OEWratio = 0.6      #[-]
             self.wfratioclimb = 0.96
             self.fineness_c = 8
             self.fineness_n = 1.25
