@@ -2,7 +2,7 @@
 """
 Created on Mon Jun  3 09:30:41 2019
 
-@author: menno
+@author: menno & nikki
 """
 import numpy as np
 import scipy.integrate as integrate
@@ -126,6 +126,25 @@ def LE_TE_Weight(Aircraft):
     W_ref = 10**6 #[N]
     return S_ref
 
+def SharedParams(Aircraft):
+    anfp = Aircraft.ParAnFP
+    struc = Aircraft.ParStruc
+    config = Aircraft.ParLayoutConfig
+    b=anfp.b
+    Sweep_EA=anfp.Sweep_50
+    S=anfp.S
+    sigma_t=480*10**6/1.5 # N/m^2
+    sigma_c=0.4*sigma_t # N/m^2 http://home.iitk.ac.in/~mohite/axial_compressive.pdf
+
+    
+    omega_ic=0.25 #[m]
+    b_st=b/np.cos(Sweep_EA)
+
+    R_ic = 1+2*omega_ic*b_st/S
+    sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
+    return b,Sweep_EA,S,sigma_t,sigma_c,omega_ic,b_st,R_ic,sigma_r
+
+
 def WingWeight(Aircraft):
     anfp = Aircraft.ParAnFP
     struc = Aircraft.ParStruc
@@ -144,9 +163,9 @@ def WingWeight(Aircraft):
     I_2_t=0.36
     t_ref=1
     k_rib=0.5*10**-3   
-    rho=2000
+    rho=1600 #kg/m^3
     n_ult=2.5
-    g=9.80665
+    g=9.80665 #m/s^2
     #dummy values including safety factors
 
     b,Sweep_EA,S,sigma_t,sigma_c,omega_ic,b_st,R_ic,sigma_r=SharedParams(Aircraft)
@@ -178,7 +197,7 @@ def WingWeight(Aircraft):
     W_id_box=I_2_t*n_ult*R_in*MTOW*g*eta_cp*b_st*rho*g/sigma_r*(1.05*R_cant/eta_t+3.67)
     
     W_rib=k_rib*rho*S*g*(t_ref+t_c*(c_r+c_t)/2)
-    print (t_c*(c_r+c_t)/2)
+    
     return W_id_box,W_rib
 
 
