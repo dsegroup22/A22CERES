@@ -53,6 +53,24 @@ def R_f(Aircraft):
     MZF = MTOW - struc.FW
     return 0.5 * (b_f/b) * (1 + (3 * taper**2)/(1 + 2*taper)) * (1 - MZF/MTOW)
     
+def SharedParams(Aircraft):
+    anfp = Aircraft.ParAnFP
+    struc = Aircraft.ParStruc
+    config = Aircraft.ParLayoutConfig
+    b=anfp.b
+    Sweep_EA=anfp.Sweep_50
+    S=anfp.S
+    sigma_t=3*10**9/1.5
+    sigma_c=1*10**9/1.5
+
+    
+    omega_ic=0.25 #[m]
+    b_st=b/np.cos(Sweep_EA)
+
+    R_ic = 1+2*omega_ic*b_st/S
+    sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
+    return b,Sweep_EA,S,sigma_t,sigma_c,omega_ic,b_st,R_ic,sigma_r
+
 
 def WingWeight(Aircraft):
     anfp = Aircraft.ParAnFP
@@ -60,10 +78,9 @@ def WingWeight(Aircraft):
     config = Aircraft.ParLayoutConfig
 
     MTOW=struc.MTOW
-    b=anfp.b
-    Sweep_EA=anfp.Sweep_50
+
     Sweep_25=anfp.Sweep_25
-    S=anfp.S
+    
     A=anfp.A
     c_r=anfp.c_r
     c_t=anfp.c_t
@@ -75,23 +92,17 @@ def WingWeight(Aircraft):
     k_rib=0.5*10**-3   
     rho=2000
     n_ult=2.5
-    #dummy values including safety factors
-    sigma_t=3*10**9/1.5
-    sigma_c=1*10**9/1.5
     g=9.80665
-    
-    omega_ic=0.25 #[m]
-    b_st=b/np.cos(Sweep_EA)
+    #dummy values including safety factors
 
-    R_ic = 1+2*omega_ic*b_st/S
-
+    b,Sweep_EA,S,sigma_t,sigma_c,omega_ic,b_st,R_ic,sigma_r=SharedParams(Aircraft)
     R_in= 1-R_wg(Conv)-R_en(Conv)-R_f(Conv)
     
     
 
     
     eta_cp=1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper))+0.02*np.sin(Sweep_25)
-    sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
+    
     sigma_shear=0.5*sigma_r
     R_cant=A*(1+taper)/(4*t_c*np.cos(Sweep_EA))
 
