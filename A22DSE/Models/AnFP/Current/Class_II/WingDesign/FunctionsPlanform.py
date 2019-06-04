@@ -4,8 +4,11 @@ Created on Wed May 15 11:47:32 2019
 
 @author: hksam
 """
-
-
+#sys.path.append('../')
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[6])
+from A22DSE.Models.AnFP.Current.InitialSizing import AnFP_Exec_CD0
 # =============================================================================
 # UNFINISHED WORK
 # =============================================================================
@@ -300,11 +303,13 @@ def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
 #    
 #    return
     
+def ComputeCDpS(Aircraft):
+    S_wet_wing=S_wet_wing(Aircraft)
+    S_wet_fuselage=S_wet_fuselage(Aircraft)
+    S_wet_tail=S_wet_tail(Aircraft)
+    S_wet_engine=
+    S_wet=
+    C_f=
     
-    
-    
-
-
-
-
-    
+    return 0.7*(S_wet_wing+S_wet_fuselage+S_wet_tail+S_wet_engine+S_wet)*C_f
+        

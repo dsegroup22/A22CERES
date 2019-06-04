@@ -149,7 +149,7 @@ def SurfaceFuselage(Aircraft, L_freq, SF0, dSF, ISA_model):
     '''
     INPUT: Aircraft object, req. fuselage length, initial size factor,
     step size, ISA model
-    OUTPUT: Returns wing weight
+    OUTPUT: Returns fuselage weight
     DESCRIPTION: Computes the fuselage weight according to Torenbeek Aircraft
     Design.
     '''    

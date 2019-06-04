@@ -10,53 +10,42 @@ Created on Mon May 27 10:55:52 2019
 
 import sys
 import os
+from pathlib import Path
 import copy
 import numpy as np
-sys.path.append('../../')
-#print(os.getcwd())
-from A22DSE.Models.Class_II_Weight.Class_II_LG import Class_II_Weight_LG
-from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import (WSandTW)
-from A22DSE.Models.Class_II_Weight.Class_II_Wing import Wing_Geo, Basic_Wing
+#sys.path.append('../../')
+os.chdir(Path(__file__).parents[2])
+
+print(os.getcwd())
+
+
 from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,PositionsLG_Tri)
 from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
+from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled import WingSurface_Thrust_FuelWeight
 
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
+from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW
 
-
+from A22DSE.Models.Layout.Current.Sidearea import Area
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
+
+from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
+from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
+
+
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
-#shortcut
+from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf
+
+#shortcuts
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
 struc= Conv.ParStruc
-# =============================================================================
-
 
 # =============================================================================
-#                           CLASS II STARTS HERE
-# =============================================================================
-
-
-#CLass II weights & positions
-Conv.ParStruc.Wf = SurfaceFuselage(Conv, 24, 2, 0.01,ISA_model) # isn't classII
-Conv.ParStruc.LG_weight_tot,Conv.ParStruc.LG_weight_nose, \
-Conv.ParStruc.LG_weight_main  = Class_II_Weight_LG(Conv)
-Conv.ParStruc.Wing_weight = Basic_Wing(Conv)
-Layout.x_lemac, Conv.ParStruc.Weight_FusGroup, Layout.xcg_fuselagegroup = oecg(Conv)
-
-
- 
-#preliminairy positions for tricycle landing gear (nose and main)
-Conv.ParLayoutConfig.lg_l_main,Conv.ParLayoutConfig.lg_l_nose,\
-Conv.ParLayoutConfig.lg_y_main, Conv.ParLayoutConfig.lg_x_main,\
-Conv.ParLayoutConfig.lg_x_nose_min_F_n, Conv.ParLayoutConfig.lg_x_nose_max_F_n,\
-Conv.ParLayoutConfig.lg_x_nose,Conv.ParLayoutConfig.lg_y_nose,\
-Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
 
 #engine position
 Conv.ParLayoutConfig.m_engine = 5000 # [kg] DUMMY VALUE
@@ -67,11 +56,7 @@ Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 #fuel tank layout
 Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
 
-
-# =============================================================================
-#                          ITERATE HERE FOR NEW OEW RATIO
-# =============================================================================
-
+Layout.TotalSidearea=Area(Conv)
 
 Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
 Conv.ParPayload.m_burner=BurnerMass(Conv)
@@ -82,8 +67,41 @@ Conv.ParPayload.l_tank=PayloadtankLength(Conv)
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
-struc.m_wing=2*Total_Wing(Conv)/ISA_model.g0 # [kg] whole wing (2 sides)
-struc.m_fus=FuselageWeight(Conv)[0]/ISA_model.g0 #[kg]
+
+# =============================================================================
+#                           CLASS II WEIGHTS STARTS HERE
+# =============================================================================
+
+def ClassIIWeightIteration():
+    
+    MTOW_old = struc.MTOW
+    struc.MTOW = ClassIIWeight_MTOW(Conv)
+    error = abs((MTOW_old-struc.MTOW)/MTOW_old)
+    
+# =============================================================================
+# # =============================================================================
+# #                          ITERATE HERE FOR NEW MTOW
+# # =============================================================================
+#     
+#     while(error>0.01):
+#          print(struc.MTOW)
+#          WingSurface_Thrust_FuelWeight(Conv)
+#          MTOW_old = struc.MTOW
+#          struc.MTOW = ClassIIWeight_MTOW(Conv)
+#          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
+#     return struc.MTOW
+# =============================================================================
+
+ 
+#preliminairy positions for tricycle landing gear (nose and main)
+Conv.ParLayoutConfig.lg_l_main,Conv.ParLayoutConfig.lg_l_nose,\
+Conv.ParLayoutConfig.lg_y_main, Conv.ParLayoutConfig.lg_x_main,\
+Conv.ParLayoutConfig.lg_x_nose_min_F_n, Conv.ParLayoutConfig.lg_x_nose_max_F_n,\
+Conv.ParLayoutConfig.lg_x_nose,Conv.ParLayoutConfig.lg_y_nose,\
+Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
+
+
+
 
 # =============================================================================
 # #saving object as txt file
