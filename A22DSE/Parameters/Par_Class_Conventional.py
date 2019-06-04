@@ -15,7 +15,10 @@ import copy
 import numpy as np
 #sys.path.append('../../')
 os.chdir(Path(__file__).parents[2])
+
 print(os.getcwd())
+
+
 from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,PositionsLG_Tri)
 from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
@@ -26,7 +29,13 @@ from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
 from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW
 
+from A22DSE.Models.Layout.Current.Sidearea import Area
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
+
+from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
+from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
+
+
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf
@@ -47,6 +56,7 @@ Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 #fuel tank layout
 Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
 
+Layout.TotalSidearea=Area(Conv)
 
 Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
 Conv.ParPayload.m_burner=BurnerMass(Conv)
