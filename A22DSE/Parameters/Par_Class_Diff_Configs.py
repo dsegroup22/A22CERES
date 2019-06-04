@@ -67,7 +67,7 @@ Conv.ParAnFP.Extrarange = 500*10**3 #[m]
 
 
 Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust, Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, \
-                    Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise  = WSandTW(False,Conv,ISA_model)
+                    Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise, Conv.ParAnFP.TWactcruise  = WSandTW(False,Conv,ISA_model)
 
 
     
@@ -153,7 +153,7 @@ def ComputeCD0(Aircraft):
         
         AnFP.CD0 = CD0(Aircraft)[0]
         Aircraft.ParStruc.MTOW, Aircraft.ParStruc.FW, AnFP.S, AnFP.Thrust,\
-        AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal\
+        AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal, , Conv.ParAnFP.TWactcruise\
         = WSandTW(False,Aircraft,ISA_model)
     
         
