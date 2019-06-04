@@ -6,20 +6,19 @@ Created on Mon Jun  3 09:30:41 2019
 """
 import numpy as np
 import scipy.integrate as integrate
-import sys
-sys.path.append('../../../')
-from A22DSE.Models.STRUC.current.Loadingdiagram import Loading_Diagrams
-from A22DSE.Parameters.Par_Class_Conventional import Conv
-from A22DSE.Parameters.Par_Class_Atmos import Atmos
+
+
 from math import *
+
+#torenbeek method, exports in Newtons
 
 def SharedParams(Aircraft):
     anfp = Aircraft.ParAnFP
     b=anfp.b
     Sweep_EA=anfp.Sweep_50
     S=anfp.S
-    sigma_t=3*10**9/1.5
-    sigma_c=1*10**9/1.5
+    sigma_t=480*10**6/1.5 #[n/m^2]
+    sigma_c=0.4*sigma_t  #[n/m^2] http://home.iitk.ac.in/~mohite/axial_compressive.pdf
 
     
     w_ic=0.25 #[m]
@@ -35,7 +34,7 @@ def R_wg(Aircraft):
     struc = Aircraft.ParStruc
 
     MTOM = struc.MTOW
-    M_w = struc.Wing_weight #Dummy change functions in diff_configs
+    M_w = 0.115 * struc.MTOW #Dummy change functions in diff_configs
     #y_wg
     #y_cp  
     return M_w/MTOM
@@ -78,16 +77,16 @@ def W_nid(Aircraft):
     #Tapered skin, fail safety margins, engine mouting, connection to the
     #fuselage, aerolasticity weight
     struc = Aircraft.ParStruc
-    anfp = Aircraft.ParAnfp
+    anfp = Aircraft.ParAnFP
     
     g = 9.80665 #m/s2
     
-    rho = 2000 #Specific weight wing box DUMMY kg/m3
+    rho = 1600 #Specific weight wing box [kg/m3]
     W_pp = 5000 * g #powerplant weight DUMMY [N]
     
     MTOW = struc.MTOW * g #in Newton
     Sweep_50 = anfp.Sweep_50
-    W_G = MTOW - (struc.MZF*g) #Gross weight approx ZFW
+    W_G = MTOW - (struc.FW*g) #Gross weight approx ZFW
     b = anfp.b
     taper = anfp.taper
     Sweep_25 = anfp.Sweep_25
@@ -130,11 +129,14 @@ def LE_TE_Weight(Aircraft):
     Sweep_50 = anfp.Sweep_50
     MTOW = struc.MTOW * g
     b_st=b/np.cos(Sweep_50)
-    q_D = 0.5*Atmos.rho*(1.4*anfp.V_cruise)**2*anfp.S
+
+
+    q_D = anfp.q_dive
+
     
     Omega_LE = 3.15*k_fle*Omega_ref*(q_D/q_ref)**0.25 \
     * ((MTOW * b_st)/(W_ref*b_ref))**0.145
-    S_LE = b/2 * 0.20 * MAC #DUMMY Equation
+    S_LE = b * 0.20 * MAC #DUMMY Equation
     
     Omega_TE = 2.6 * Omega_ref * ((MTOW * b_st)/(W_ref * b_ref))**0.0544
     #Increase Omega_ref by 40 0r 100 for ss Fowler flap and ds Fowler flap
@@ -165,7 +167,7 @@ def WingWeight(Aircraft):
     #dummy values including safety factors
 
     b,Sweep_EA,S,sigma_t,sigma_c,w_ic,b_st,R_ic,sigma_r=SharedParams(Aircraft)
-    R_in= 1-R_wg(Conv)-R_en(Conv)-R_f(Conv)
+    R_in= 1-R_wg(Aircraft)-R_en(Aircraft)-R_f(Aircraft)
     
     
 
@@ -197,7 +199,7 @@ def WingWeight(Aircraft):
     return W_id_box,W_rib
 
 def Total_Wing(Aircraft):
-    return W_nid(Aircraft) +sum(WingWeight) + LE_TE_Weight(Aircraft)
+    return W_nid(Aircraft) +sum(WingWeight(Aircraft)) + LE_TE_Weight(Aircraft)
 
 #def control_surfaces(Aircraft):
 #    Omega_ref = 56 #[N/m2]

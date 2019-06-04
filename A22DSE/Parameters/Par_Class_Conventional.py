@@ -10,10 +10,12 @@ Created on Mon May 27 10:55:52 2019
 
 import sys
 import os
+from pathlib import Path
 import copy
 import numpy as np
-sys.path.append('../../')
-
+#sys.path.append('../../')
+os.chdir(Path(__file__).parents[2])
+print(os.getcwd())
 from A22DSE.Models.Class_II_Weight.Class_II_LG import Class_II_Weight_LG
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import (WSandTW)
 from A22DSE.Models.Class_II_Weight.Class_II_Wing import Wing_Geo, Basic_Wing
@@ -22,12 +24,19 @@ from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
 
+from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
+from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
+
+
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
+from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft
 #shortcut
 Layout = Conv.ParLayoutConfig
+anfp = Conv.ParAnFP
+struc= Conv.ParStruc
+
 # =============================================================================
 
 
@@ -35,15 +44,44 @@ Layout = Conv.ParLayoutConfig
 #                           CLASS II STARTS HERE
 # =============================================================================
 
+# =============================================================================
+#                          ITERATE HERE FOR NEW OEW RATIO
+# =============================================================================
 
-#CLass II weights & positions
-Conv.ParStruc.Wf = SurfaceFuselage(Conv, 24, 2, 0.01,ISA_model) # isn't classII
-Conv.ParStruc.LG_weight_tot,Conv.ParStruc.LG_weight_nose, \
-Conv.ParStruc.LG_weight_main  = Class_II_Weight_LG(Conv)
-Conv.ParStruc.Wing_weight = Basic_Wing(Conv)
-Layout.x_lemac, Conv.ParStruc.Weight_FusGroup, Layout.xcg_fuselagegroup = oecg(Conv)
+def ClassIIWeight_OEWratio():
 
+    #CLass II weights & positions
+    Conv.ParStruc.Wf = SurfaceFuselage(Conv, 24, 2, 0.01,ISA_model) # =fuselage
+    Conv.ParStruc.LG_weight_tot,Conv.ParStruc.LG_weight_nose, \
+    Conv.ParStruc.LG_weight_main  = Class_II_Weight_LG(Conv)
+    Conv.ParStruc.Wing_weight = Basic_Wing(Conv)
+    
+    struc.Wing_weight=2*Total_Wing(Conv)/ISA_model.g0 # [kg] whole wing (2 sides)
+    struc.Wf=FuselageWeight(Conv)[0]/ISA_model.g0 #[kg]
+    
+    Layout.x_lemac, Conv.ParStruc.Weight_FusGroup,Conv.ParStruc.Weight_WingGroup,\
+    Layout.xcg_fuselagegroup = oecg(Conv)
+    
+    OEW = struc.Weight_WingGroup + struc.Weight_FusGroup #[kg]
+    MTOW = OEW + struc.FW + Conv.ParPayload.m_payload
+    
+    OEWratio = OEW/MTOW
+    return OEWratio
 
+def ClassII_Iteration():
+    OEWratio_old = struc.OEWratio
+    struc.OEWratio = ClassIIWeight_OEWratio()
+    error = abs((struc.OEWratio-OEWratio_old)/OEWratio_old)
+    
+    while(error>0.01):
+        print(struc.OEWratio)
+        ClassIAircraft()
+        OEWratio_old = struc.OEWratio
+        
+        struc.OEWratio = ClassIIWeight_OEWratio()
+        
+        error = abs((struc.OEWratio-OEWratio_old)/OEWratio_old)
+    return struc.OEWratio
  
 #preliminairy positions for tricycle landing gear (nose and main)
 Conv.ParLayoutConfig.lg_l_main,Conv.ParLayoutConfig.lg_l_nose,\
@@ -62,9 +100,7 @@ Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
 
 
-# =============================================================================
-#                          ITERATE HERE FOR NEW OEW RATIO
-# =============================================================================
+
 
 
 Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
@@ -73,7 +109,8 @@ Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
 Conv.ParPayload.m_tank=PayloadtankMass(Conv)
 Conv.ParPayload.l_tank=PayloadtankLength(Conv)
 
-
+anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
+anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 
 

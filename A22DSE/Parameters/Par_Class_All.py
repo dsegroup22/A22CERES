@@ -93,7 +93,7 @@ class ParStrucLst(object):
             self.tail_angle = 15*np.pi/180 #DUMMY VALUE #[rad] angle of empannage wrt ground
             
             #ratios
-            self.OEWratio = 1/2.47      #[-]
+            self.OEWratio = 0.6      #[-]
             self.wfratioclimb = 0.96
             self.fineness_c = 8
             self.fineness_n = 1.25
@@ -104,7 +104,7 @@ class ParPayloadLst(object):
     def __init__(self):
         self.disperRatePerTime = None
         self.airtofuel = 6 #[-]                                                                        air to fuel ratio                           by POPS
-        self.m_payload = 10000. #[kg]                                                                  payload mass per flight                     by POPS           
+        self.m_payload = 13600. #[kg]                                                                  payload mass per flight                     by POPS           
         self.rho_payload = 1121 #[kg/m^3]                                                              density of payload                           by POPS
         self.rho_alu = 2700 #[kg/m^3]                                                                  density of aluminium                        by POPS
         self.d_tank = 1.5 #[m]                                                                          payload tank diameter                       by POPS
@@ -164,7 +164,8 @@ class ParConvLst(object):
         self.gallon2L = 3.78541 #[-]
         self.kts2ms = 0.514444444 #[-]
         self.km2nm = 0.539956803 #[-]
-        self.lbftoN = 4.44822162 #[1 lbf == 4.448 N]
+        self.lbf2N = 4.44822162 #[1 lbf = 4.448 N]
+        self.psf2Pa = 47.88 #[1 psf = 47.88 Pa]
         
 class ParClassII_CS(object):
     def __init__(self):
