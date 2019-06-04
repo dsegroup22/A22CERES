@@ -148,7 +148,9 @@ ParAnFP
  'LG_weight_nose': 102.91319433328539
  'LG_weight_main': 396.89502912364367
  'Wing_weight': 5131.023661506361
- 'Weight_FusGroup': 4280.756621119025}
+ 'Weight_FusGroup': 4280.756621119025
+ 'm_wing': 1959.2089682440376
+ 'm_fus': 3338.2223728484523}
 
 
  ParClassII
