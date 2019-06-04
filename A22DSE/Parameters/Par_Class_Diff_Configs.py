@@ -6,12 +6,12 @@ Created on Mon May 13 15:30:54 2019
 """
 import sys
 import os
-from pathlib import Path
+#from pathlib import Path
 import copy
 import numpy as np
 #sys.path.append('../')
-os.chdir(Path(__file__).parents[2])
-print(os.getcwd())
+#os.chdir(Path(__file__).parents[2])
+#print(os.getcwd())
 from A22DSE.Parameters.Par_Class_All import Aircraft
 from A22DSE.Parameters.Par_Class_Atmos import Atmos
 from A22DSE.Models.POPS.Current.cruisecalculations import (CruiseRange,

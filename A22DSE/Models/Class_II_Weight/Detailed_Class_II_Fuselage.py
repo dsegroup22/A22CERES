@@ -25,10 +25,10 @@ def FuselageWeight(Aircraft):
     l_fuselage=config.l_fuselage
     K_inl=1.25
     MTOMlbs = struc.MTOW/Conv.ConversTool.lbs2kg
-    q_D = 0.5*Atmos.rho*(1.4*anfp.V_cruise)**2*anfp.S
+    q_Dpsf = anfp.q_dive/Conv.ConversTool.psf2Pa
     
     #roskam: equation 5.26
-    W_f=2*10.43*K_inl**1.42*(q_D/100)**0.283*(MTOMlbs/1000)**0.95*\
+    W_f=2*10.43*K_inl**1.42*(q_Dpsf/100)**0.283*(MTOMlbs/1000)**0.95*\
     (l_fuselage/h_fuselage)**0.71
     
     
@@ -44,7 +44,7 @@ def FuselageWeight(Aircraft):
 #    W_bulkheads=C_shell*d_fuselage**2*l_ref
 #    W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
 #    W_fus=W_shell+W_bulkheads+W_fl
-    return W_f*Conv.ConversTool.lbs2kg
-=======
+    return W_f*Conv.ConversTool.lbf2N
+
 
 
