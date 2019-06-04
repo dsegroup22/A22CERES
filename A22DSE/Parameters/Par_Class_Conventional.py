@@ -15,7 +15,7 @@ import copy
 import numpy as np
 #sys.path.append('../../')
 os.chdir(Path(__file__).parents[2])
-print(os.getcwd())
+#print(os.getcwd())
 from A22DSE.Models.Class_II_Weight.Class_II_LG import Class_II_Weight_LG
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import (WSandTW)
 from A22DSE.Models.Class_II_Weight.Class_II_Wing import Wing_Geo, Basic_Wing
@@ -29,15 +29,15 @@ from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWei
 
 from A22DSE.Models.Layout.Current.Sidearea import Area
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
-<<<<<<< HEAD
+
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
 
-=======
+
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft
->>>>>>> 1164ad689d6a58ef0785f5a44d15c1841d02b7c4
+
 #shortcut
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP

@@ -41,7 +41,7 @@ ISA_model = Atmos()
 
 Conv = Aircraft()
 
-<<<<<<< HEAD
+
 #Parameters not determined from functionss
 Conv.ParAnFP.A = 14.38
 Conv.ParAnFP.CD0 = 0.015
@@ -68,7 +68,7 @@ Conv.ParAnFP.Extrarange = 500*10**3 #[m]
 
 
 Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust, Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, \
-                    Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise  = WSandTW(False,Conv,ISA_model)
+                    Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise  = WSandTW(False,Conv,ISA_model)[:-1]
 
 
     
@@ -148,8 +148,6 @@ Conv.ParLayoutConfig.m_engine = 5000 # [kg] DUMMY VALUE
 Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
 
 
-=======
->>>>>>> 1164ad689d6a58ef0785f5a44d15c1841d02b7c4
 def ComputeCD0(Aircraft):
 #DETERMINE CD0, AND ITERATE FOR THE MTOW ETC.
     error = 1
