@@ -100,6 +100,7 @@ def GetFuselageLength(Aircraft, fineness_f, fineness_n,
     
     return np.array([L_n, L_c , L_t])
 
+
 def GetTotalFuselageLength(Aircraft, L_freq, SF0, dSF):
     '''
     INPUT: Aircraft object, req. fuselage length, initial size factor, step
@@ -117,6 +118,7 @@ def GetTotalFuselageLength(Aircraft, L_freq, SF0, dSF):
     fineness_f = Struct.fineness_c
     fineness_n = Struct.fineness_n
     fineness_t = Struct.fineness_t
+    
  
     #iterator
     dSFi = dSF
@@ -144,6 +146,8 @@ def GetTotalFuselageLength(Aircraft, L_freq, SF0, dSF):
         
 #    print (Q_fus, Q_r, L_fi)
     return L_fi, D_eq, dim_cabin, D_n
+
+
 
 def SurfaceFuselage(Aircraft, L_freq, SF0, dSF, ISA_model):
     '''

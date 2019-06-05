@@ -7,7 +7,9 @@ Created on Mon May 20 12:06:59 2019
 import numpy as np
 from math import *
 import sys
+from A22DSE.Models.Layout.Current.Area import FusAreas
 sys.path.append('../')
+
 
 #Determine CD0
 
@@ -87,8 +89,10 @@ def CD0(Aircraft):
     S = anfp.S
     C_fe = friction_coef(Aircraft)[0]
     S_wet = friction_coef(Aircraft)[1]
+    S_fus = FusAreas(Aircraft)[1]
     CD0_ac = C_fe * (S_wet/S)
     CD0_wing = C_fe *(S_wet_wing(Aircraft)/S)
-    return CD0_ac, CD0_wing
+    CD0_fus = C_fe *(S_fus/S)
+    return CD0_ac, CD0_wing, CD0_fus
     
     
