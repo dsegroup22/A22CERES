@@ -38,12 +38,16 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
 
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf
+from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
 
 #shortcuts
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
 struc= Conv.ParStruc
+
+ClassIAircraft()
+ClassI_AndAHalf()
+Conv.ParAnFP.CD0 = ComputeCD0(Conv)
 
 # =============================================================================
 
@@ -68,29 +72,13 @@ anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 
+print(struc.MTOW)
+struc.MTOW = ClassIIWeight_MTOW(Conv)
+print(struc.MTOW)
 # =============================================================================
 #                           CLASS II WEIGHTS STARTS HERE
 # =============================================================================
 
-def ClassIIWeightIteration():
-    
-    MTOW_old = struc.MTOW
-    struc.MTOW = ClassIIWeight_MTOW(Conv)
-    error = abs((MTOW_old-struc.MTOW)/MTOW_old)
-    
-# =============================================================================
-# # =============================================================================
-# #                          ITERATE HERE FOR NEW MTOW
-# # =============================================================================
-#     
-#     while(error>0.01):
-#          print(struc.MTOW)
-#          WingSurface_Thrust_FuelWeight(Conv)
-#          MTOW_old = struc.MTOW
-#          struc.MTOW = ClassIIWeight_MTOW(Conv)
-#          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
-#     return struc.MTOW
-# =============================================================================
 
  
 #preliminairy positions for tricycle landing gear (nose and main)

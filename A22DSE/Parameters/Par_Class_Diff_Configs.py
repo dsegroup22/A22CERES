@@ -42,112 +42,6 @@ ISA_model = Atmos()
 Conv = Aircraft()
 
 
-#Parameters not determined from functionss
-Conv.ParAnFP.A = 14.38
-Conv.ParAnFP.CD0 = 0.015
-Conv.ParAnFP.e = 0.85
-Conv.ParAnFP.M_cruise = 0.7
-Conv.ParAnFP.Mdd = 0.7
-Conv.ParAnFP.T_to = 200000
-#Parameters useful to class II estimation
-Conv.ParAnFP.n_engines = 2      #Number of wing mounted engines
-Conv.ParAnFP.wm_un = 0          #Undercarriage in the wing on (1) or off (0)
-#Conv.ParAnFP.CD0 = 0.008
-Conv.ParAnFP.We = 2484           #[kg] weight per engine
-
-
-#parameters from functions
-
-##ANFP parameters
-Conv.ParAnFP.s_cruise = CruiseRange(Conv)
-Conv.ParAnFP.t_cruise = CruiseTime(Conv, ISA_model)
-Conv.ParAnFP.V_cruise = Conv.ParAnFP.Get_V_cruise()
-Conv.ParPayload.disperRatePerTime = (Conv.ParPayload.m_payload
-/Conv.ParAnFP.t_cruise)
-Conv.ParAnFP.Extrarange = 500*10**3 #[m]
-
-
-Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust, Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, \
-                    Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise  = WSandTW(False,Conv,ISA_model)[:-1]
-
-
-    
-    
-#Geometry: Sweep 0.25, le, 0.50 in radians, Span in meters, taper ratio, root, tip , MAC in meters
-Conv.ParAnFP.Sweep_25, Conv.ParAnFP.Sweep_LE, Conv.ParAnFP.Sweep_50, Conv.ParAnFP.b,Conv.ParAnFP.taper,\
-Conv.ParAnFP.c_r, Conv.ParAnFP.c_t, Conv.ParAnFP.MAC, Conv.ParAnFP.y_MAC = Wing_Geo(Conv)
-
-
-    
-#Airfoil parameters
-# =============================================================================
-# Conv.ParAnFP.cl_alpha = Airfoil(Conv)[0] #clalpha [/deg]
-# Conv.ParAnFP.cl_max = Airfoil(Conv)[1] #maximum lift coefficient of airfoil [-]
-# Conv.ParAnFP.tc = Airfoil(Conv)[2] #thickness to chord ratio [-]
-# Conv.ParAnFP.CD0_airfoil = Airfoil(Conv)[3] #zero-lift drag [-]
-# =============================================================================
-
-Conv.ParAnFP.cl_alpha,Conv.ParAnFP.cl_max,Conv.ParAnFP.tc,Conv.ParAnFP.Cd0, Conv.ParAnFP.cm_0 = Airfoil(Conv)
-#Conv.ParAnFP.cl_alpha = clalpha [/deg]
-#Conv.ParAnFP.cl_max = maximum lift coefficient of airfoil [-]
-#Conv.ParAnFP.tc  thickness to chord ratio [-]
-#Conv.ParAnFP.Cd0 zero-lift drag [-]
-
-Conv.ParAnFP.LD_airfoil = 90 #lift to drag ratio [-] at Cldes = 0.55 obtained from graph of Cl/Cd
-
-
-
-
-#PRELIMINAIRY ENGINE POSITION
-Conv.ParLayoutConfig.y_loc_eng = Conv.ParAnFP.b/8#b/3 #[m] DUMMY VALUE
-
-#PRELIMINAIRY FUSELAGE DESIGN
-Layout = Conv.ParLayoutConfig
-#Struct = Conv.ParStruc
-#Layout.l_fuselage = 24 #[m] length of fuselage
-Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = (
-        GetTotalFuselageLength(Conv, 24, 2, 0.01))
-Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
-Layout.l_fuselage = np.sum(Layout.l_fuselage)
-
-Layout.h_APU=0.2 #[m] dummy value
-
-Layout.h_fuselage = Layout.dim_cabin[0]
-Layout.w_fuselage = Layout.dim_cabin[1]
-
-
-
-#Wing lift curve (d_fuselage needed)
-Conv.ParAnFP.C_L_alpha_slow,Conv.ParAnFP.C_L_max_slow,\
-Conv.ParAnFP.alpha_stall_slow=C_L_CurveLowSpeed(Conv)[1:] #all in radians where applicable
-Conv.ParAnFP.C_L_alpha_cruise,Conv.ParAnFP.C_L_max_cruise,\
-Conv.ParAnFP.alpha_stall_cruise=C_L_CurveCruise(Conv)[1:] #all in radians where applicable
-
-#Horizontal, Vertical tail design
-
-Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
-Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
-Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
-Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
-Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
-Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ctail(Conv)
-
-
-
-
-#preliminairy positions for tricycle landing gear (nose and main)
-Conv.ParLayoutConfig.x_cg= PrelimCG_ranges(Conv) 
-Conv.ParLayoutConfig.lg_l_main,Conv.ParLayoutConfig.lg_l_nose,\
-Conv.ParLayoutConfig.lg_y_main, Conv.ParLayoutConfig.lg_x_main,\
-Conv.ParLayoutConfig.lg_x_nose_min_F_n, Conv.ParLayoutConfig.lg_x_nose_max_F_n,\
-Conv.ParLayoutConfig.lg_x_nose,Conv.ParLayoutConfig.lg_y_nose,\
-Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
-
-
-Conv.ParLayoutConfig.m_engine = 5000 # [kg] DUMMY VALUE
-Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
-
-
 def ComputeCD0(Aircraft):
 #DETERMINE CD0, AND ITERATE FOR THE MTOW ETC.
     error = 1
@@ -230,7 +124,11 @@ def ClassI_AndAHalf():
     #Layout.l_fuselage = 24 #[m] length of fuselage
     Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = (
             GetTotalFuselageLength(Conv, 24, 2, 0.01))
+    
+    Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
     Layout.l_fuselage = np.sum(Layout.l_fuselage)
+    
+    Layout.h_APU=0.2 #[m] dummy value
     
     Layout.h_fuselage = Layout.dim_cabin[0]
     Layout.w_fuselage = Layout.dim_cabin[1]

@@ -110,6 +110,7 @@ class ParPayloadLst(object):
         self.d_tank = 1.5 #[m]                                                                          payload tank diameter                       by POPS
         self.t_tank = 0.003 #[m]                                                                          payload tank thickness                      by POPS
         self.dispersionrate = 8e-3 #[kg/m]
+        self.x_payload = 15. #DUMMY VALUE  [m] x position cg of payload system (tank + burner)
         
         
         self.TotalPayloadYear1 = 0.1e9 #kg
