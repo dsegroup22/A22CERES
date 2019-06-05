@@ -29,7 +29,7 @@ W_num = 10000
 W_denum = 0.76
 sweep = np.deg2rad(5)
 
-def GetMTOW(MTOWi, CL_eqi, Awi):
+def GetMTOW(CL_eqi, MTOWi, Awi):
 
     q_des = FunctionsPlanform.DynamicPressEq(Conv, ISA_model)
     Fprop = FunctionsPlanform.ComputeFprop(Conv, ISA_model, MTOWi)
@@ -45,13 +45,13 @@ def GetMTOW(MTOWi, CL_eqi, Awi):
     return y
 
 Z = np.ones([np.size(Aw), np.size(CL_eq)])
-for i, CL_eqi in enumerate(CL_eq):
+for i, MTOWi in enumerate(MTOW):
     for j, Awi in enumerate(Aw):
 #        print (CL_eqi)
         
-       Z[i,j] = fsolve(GetMTOW, np.average(MTOW), args=(CL_eqi, Awi))
+       Z[i,j] = fsolve(GetMTOW, .75, args=(MTOWi, Awi))
 
-X,Y = np.meshgrid(CL_eq,Aw)
+X,Y = np.meshgrid(MTOW,Aw)
 
 
 # =============================================================================
@@ -63,7 +63,7 @@ for i, MTOWi in enumerate(MTOW):
     for j, Awi in enumerate(Aw):
         CL.append(float(FunctionsPlanform.GetOptCLCurve(Conv, ISA_model, MTOWi,
                                                   sweep, Awi)))
-    
+
 # =============================================================================
 #                        Constraint II: Optimum Aw
 # =============================================================================
@@ -71,7 +71,6 @@ for i, MTOWi in enumerate(MTOW):
 # =============================================================================
 #                    Constraint C1: Take-off Length <NOT DONE>
 # =============================================================================
-
 
 
 # =============================================================================
@@ -86,8 +85,8 @@ for i, MTOWi in enumerate(MTOW):
         
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.scatter(X, Y, Z)
+ax.scatter(X, Z, Y)
 
 fig, ax = plt.subplots()
-CS = ax.contour(X, Y, Z)
+CS = ax.contour(X, Z, Y)
 ax.clabel(CS, inline=1, fontsize=10)
