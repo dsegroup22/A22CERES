@@ -150,7 +150,7 @@ def ClassI_AndAHalf():
     
     Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
     Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
-    Layout.c_rht,Layout.c_tht,Layout.bh,\
+    Layout.c_rht,Layout.c_thto,Layout.bh,\
     Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
     Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
     Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
