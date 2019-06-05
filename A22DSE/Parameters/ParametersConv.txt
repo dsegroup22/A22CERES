@@ -233,6 +233,7 @@ ParAnFP
  'x_engine': 0.25
  'b_fueltank': 52.065564958857024
  'TotalSidearea': 87.55303718309986
+ 'S_wet_fuselage': 151.4820316582692
  'xcg_fuselagegroup': 18.79970179771993}
 
 
