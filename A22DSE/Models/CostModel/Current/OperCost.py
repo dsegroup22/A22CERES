@@ -28,9 +28,12 @@ def Coper(Aircraft,doc):
     FlightOp=Aircraft.ParAnFP
     
     Rbl=FlightOp.blockdist*Convers.km2nm
+#    print (Rbl)
     tflt=FlightOp.flighttime
     tbl=tgm+tflt
+#    print (tbl)
     Vbl=Rbl/tbl
+#    print (Vbl)
     years=FlightOp.operatingyears
     acpy=par.acmanuy
     ac=0
