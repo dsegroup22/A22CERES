@@ -87,6 +87,7 @@ class CLMAX (object):
     
     
     def GetkLs(self):
+        
         kLs = 1 + (0.0042*self.AR - 0.068)*(1+2.3*self.CLa)*self.Omega\
         /self.Clmax
         return kLs        
@@ -96,7 +97,8 @@ class CLMAX (object):
         return kLlam
     
     def GetkLOmega(self):
-        if self.Omega ==0:
+        if self.Omega ==0: #since if Omega is zero, there would be a divide
+            # by zero error
             return 0
         else: 
             kLOmega = (1-self.CL_Clmax/self.CL_Clmax_noOm)/(self.CLa\
