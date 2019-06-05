@@ -37,6 +37,7 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
+from A22DSE.Models.AnFP.Current.TailSizing.horizontaltail import convtail
 
 #shortcuts
 Layout = Conv.ParLayoutConfig
@@ -83,6 +84,9 @@ Conv.ParPayload.xcg_totalpayload_empty=(Payload.xcg_tank*Payload.m_tank+Payload.
 
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
+
+#tail sizing
+anfp.Cr_h, anfp.Ct_h, anfp.b_h, anfp.sweepLE_h, anfp.sweep25_h, anfp.sweep_50h, anfp.tr_h, anfp.A_h, anfp.W_h, anfp.S_h = convtail(Conv)
 
 
 # =============================================================================
