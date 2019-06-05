@@ -29,6 +29,8 @@ from A22DSE.Models.AnFP.Current.Class_II.WingDesign.C_L_curve import\
  (C_L_CurveCruise,C_L_CurveLowSpeed)
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
+from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled\
+ import WingSurface_Thrust_FuelWeight
 #from A22DSE.Models.CostModel.Current.TotalS import SummaryCost
 # =============================================================================
 #                               ISA MODEL
@@ -50,9 +52,13 @@ def ComputeCD0(Aircraft):
         AnFP = Aircraft.ParAnFP
         
         AnFP.CD0 = CD0(Aircraft)[0]
-        Aircraft.ParStruc.MTOW, Aircraft.ParStruc.FW, AnFP.S, AnFP.Thrust,\
-        AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal,Conv.ParAnFP.TWactcruise\
-        = WSandTW(False,Aircraft,ISA_model)
+# =============================================================================
+#         Aircraft.ParStruc.MTOW, Aircraft.ParStruc.FW, AnFP.S, AnFP.Thrust,\
+#         AnFP.TtoW,AnFP.WS,AnFP.dfinal,AnFP.tfinal,Conv.ParAnFP.TWactcruise\
+#         = WSandTW(False,Aircraft,ISA_model)
+# =============================================================================
+        
+        WingSurface_Thrust_FuelWeight(Conv)
     
         
         AnFP.Sweep_25, AnFP.Sweep_LE, AnFP.Sweep_50, \
@@ -164,7 +170,6 @@ def ClassI_AndAHalf():
     Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
     
     
-    Conv.ParLayoutConfig.m_engine = 5000 # [kg] DUMMY VALUE
     Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
     
     

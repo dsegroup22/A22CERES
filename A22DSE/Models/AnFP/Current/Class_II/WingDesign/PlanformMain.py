@@ -29,7 +29,7 @@ W_num = 10000
 W_denum = 0.76
 sweep = np.deg2rad(5)
 
-def GetMTOW(CL_eqi, MTOWi, Awi ):
+def GetMTOW(MTOWi, CL_eqi, Awi):
 
     q_des = FunctionsPlanform.DynamicPressEq(Conv, ISA_model)
     Fprop = FunctionsPlanform.ComputeFprop(Conv, ISA_model, MTOWi)
@@ -45,19 +45,49 @@ def GetMTOW(CL_eqi, MTOWi, Awi ):
     return y
 
 Z = np.ones([np.size(Aw), np.size(CL_eq)])
-for i, MTOWi in enumerate(MTOW):
+for i, CL_eqi in enumerate(CL_eq):
     for j, Awi in enumerate(Aw):
 #        print (CL_eqi)
         
-       Z[i,j] = fsolve(GetMTOW, .75, args=(MTOWi, Awi))
+       Z[i,j] = fsolve(GetMTOW, np.average(MTOW), args=(CL_eqi, Awi))
 
-X,Y = np.meshgrid(MTOW,Aw)
+X,Y = np.meshgrid(CL_eq,Aw)
 
-#fig = plt.figure()
-#ax = fig.add_subplot(111, projection='3d')
-#ax.scatter(X, Y, Z)
-#
-#fig, ax = plt.subplots()
-#CS = ax.contour(X, Y, Z)
-#ax.clabel(CS, inline=1, fontsize=10)
+
+# =============================================================================
+#                          Constraint I: Optimum CL
+# =============================================================================
+CL = []
+
+for i, MTOWi in enumerate(MTOW):
+    for j, Awi in enumerate(Aw):
+        CL.append(float(FunctionsPlanform.GetOptCLCurve(Conv, ISA_model, MTOWi,
+                                                  sweep, Awi)))
     
+# =============================================================================
+#                        Constraint II: Optimum Aw
+# =============================================================================
+
+# =============================================================================
+#                    Constraint C1: Take-off Length <NOT DONE>
+# =============================================================================
+
+
+
+# =============================================================================
+#                     Constraint C2: Wing & Tail Fraction
+# =============================================================================
+        
+# =============================================================================
+#                                   PLOT
+# =============================================================================
+        
+
+        
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(X, Y, Z)
+
+fig, ax = plt.subplots()
+CS = ax.contour(X, Y, Z)
+ax.clabel(CS, inline=1, fontsize=10)
