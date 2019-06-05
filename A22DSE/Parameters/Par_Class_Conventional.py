@@ -90,6 +90,8 @@ anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 Layout.Cr_h, Layout.Ct_h, Layout.b_h, Layout.sweepLEht, Layout.sweep25ht, Layout.sweep50ht, Layout.trht, Layout.Aht, Layout.Wht, Layout.Sht, Layout.xht = convtail(Conv,ISA_model)
 
 
+
+Layout.x_apex_wing=Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
 # =============================================================================
 #                           CLASS II WEIGHTS STARTS HERE
 # =============================================================================

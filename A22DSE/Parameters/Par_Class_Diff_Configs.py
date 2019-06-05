@@ -179,12 +179,12 @@ def ClassI_AndAHalf():
     
     #Horizontal, Vertical tail design
     
-    Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
-    Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
-    Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
-    Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
-    Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
-    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ttail(Conv)
+#    Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
+#    Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
+#    Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
+#    Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
+#    Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
+#    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ttail(Conv)
 
 
 
