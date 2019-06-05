@@ -87,7 +87,10 @@ anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 #tail sizing
 #root chord, tip chord, span, sweep LH (rad), sweep 25 (rad), sweep 50 (rad), taper ratio, aspect ratio, weight of h tail, surface area
-Layout.Cr_h, Layout.Ct_h, Layout.b_h, Layout.sweepLEht, Layout.sweep25ht, Layout.sweep50ht, Layout.trht, Layout.Aht, Layout.Wht, Layout.Sht, Layout.xht = convtail(Conv,ISA_model)
+Conv.ParLayoutConfig.Cr_h, Conv.ParLayoutConfig.Ct_h, Conv.ParLayoutConfig.b_h, \
+Conv.ParLayoutConfig.sweepLEht, Conv.ParLayoutConfig.sweep25ht, Conv.ParLayoutConfig.sweep50ht, \
+Conv.ParLayoutConfig.trht, Conv.ParLayoutConfig.Aht, Conv.ParLayoutConfig.Wht, Conv.ParLayoutConfig.Sht, \
+Conv.ParLayoutConfig.xht = convtail(Conv,ISA_model)
 
 
 # =============================================================================
