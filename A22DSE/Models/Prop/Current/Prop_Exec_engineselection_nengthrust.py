@@ -38,11 +38,11 @@ def Highbypass(Aircraft, Fsl, ISA_model):
     return F
 
 def EngineChoice(Aircraft,ISA_model,afterburner):
-    T = Aircraft.ParAnFP.TWactcruise*Aircraft.ParStruc.MTOW
+    T = Aircraft.ParAnFP.TWactcruise*Aircraft.ParStruc.MTOW*9.80665 #[N]
     if afterburner == False:
         #F118
         Fsl1 = 75700
-        F1 = Lowbypass(Aircraft, Fsl1, ISA_model)
+        F1 = Lowbypassafter(Aircraft, Fsl1, ISA_model)
         neng1 = np.ceil(T/F1)
         #AE3007H
         Fsl2 = 36880
@@ -52,13 +52,13 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
             Aircraft.ParProp.Engine_name = 'AE3007H'
             Aircraft.ParStruc.N_engines = neng2
             Aircraft.ParProp.Engine_weight = 745.7 #[kg]
-            Aircraft.ParProp.Engine_SFC = 17.703406*10e-06 #[kg/Ns]
+            Aircraft.ParAnFP.SFC = 17.703406*10e-06 #[kg/Ns]
             Aircraft.ParProp.Engine_cost = 3.76
         else:
             Aircraft.ParProp.Engine_name = 'F118-GE-101'
             Aircraft.ParStruc.N_engines = neng1
             Aircraft.ParProp.Engine_weight = 1429 #[kg]
-            Aircraft.ParProp.Engine_SFC = 18.63814634*10e-06 #[kg/Ns]
+            Aircraft.ParAnFP.SFC = 18.63814634*10e-06 #[kg/Ns]
             Aircraft.ParProp.Engine_cost = 999999999999
     elif afterburner == True:
         #EJ200
@@ -77,19 +77,19 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
             Aircraft.ParProp.Engine_name = 'EJ200'
             Aircraft.ParStruc.N_engines = neng2
             Aircraft.ParProp.Engine_weight = 1000 #[kg]
-            Aircraft.ParProp.Engine_SFC = 49.00*10e-06 #[kg/Ns]
+            Aircraft.ParAnFP.SFC = 49.00*10e-06 #[kg/Ns]
             Aircraft.ParProp.Engine_cost = 3.76
         elif neng2 < neng1 and neng2 < neng3:
             Aircraft.ParProp.Engine_name = 'F110-GE-100'
             Aircraft.ParStruc.N_engines = neng1
             Aircraft.ParProp.Engine_weight = 1800 #[kg]
-            Aircraft.ParProp.Engine_SFC = 55.82946266*10e-06 #[kg/Ns]
+            Aircraft.ParAnFP.SFC = 55.82946266*10e-06 #[kg/Ns]
             Aircraft.ParProp.Engine_cost = 999999999999
         else:
             Aircraft.ParProp.Engine_name = 'F100-PW-200'
             Aircraft.ParStruc.N_engines = neng3
             Aircraft.ParProp.Engine_weight = 1467 #[kg]
-            Aircraft.ParProp.Engine_SFC = 70.8136259*10e-06 #[kg/Ns]
+            Aircraft.ParAnFP.SFC = 70.8136259*10e-06 #[kg/Ns]
             Aircraft.ParProp.Engine_cost = 999999999999            
         
     #else:

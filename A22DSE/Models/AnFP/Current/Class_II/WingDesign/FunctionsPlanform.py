@@ -342,7 +342,7 @@ def ComputeCurveII(Aircraft, ISA_model, C_l, MTOWi):
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
     theta1=ComputeTheta1(Aircraft, ISA_model)
     eCurl = np.average([0.9,0.95])
-    CII=C_l**0.6*(2/3*Fprop/theta1/eCurl)**0.4
+    CII=C_l**0.6*(2/3*Fprop/theta1/eCurl/np.pi)**0.4
     
     return CII
 
@@ -481,14 +481,3 @@ def ComputeCurveC2(Aircraft, ISA_model,C_l):
              q*CDS) + WresfMTOW* MTOWi
     
     return Wfmax
-
-#MTOWi=Conv.ParStruc.MTOW
-#Sweepi=np.deg2rad(5)
-#y1=np.linspace(4,12,20)
-#x1=GetOptCLCurve(Conv, ISA_model, MTOWi, Sweepi, y1)
-#
-x2=np.linspace(0.3,1,3,20)
-y2= ComputeCurveII(Conv, ISA_model, x2)
-
-import matplotlib.pyplot as plt
-plt.plot(x2,y2)

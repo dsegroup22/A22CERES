@@ -103,6 +103,7 @@ Conv.ParLayoutConfig.b_v, Conv.ParLayoutConfig.Wvt=vtail(Conv)
 
 
 
+SensTestAc = copy.deepcopy(Conv)
 
 # =============================================================================
 #                           CLASS II WEIGHTS STARTS HERE
@@ -111,6 +112,7 @@ Conv.ParLayoutConfig.b_v, Conv.ParLayoutConfig.Wvt=vtail(Conv)
 
 struc.MTOW = ClassIIWeightIteration(Conv)
 #WingWeightPlotter(Conv)
+
 
 
 
