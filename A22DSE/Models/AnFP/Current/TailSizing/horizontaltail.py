@@ -162,7 +162,7 @@ def convtail(Aircraft,ISA):
     #finish once we have all parameters
     
 #    return (l_arm_opt,Sh,CL,CLh,mh,CL_to)
-    return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh)
+    return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
 #def rudder(Aircraft):
     
     
