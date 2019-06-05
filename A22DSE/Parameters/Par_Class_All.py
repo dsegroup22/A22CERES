@@ -93,7 +93,7 @@ class ParStrucLst(object):
             self.tail_angle = 15*np.pi/180 #DUMMY VALUE #[rad] angle of empannage wrt ground
             
             #ratios
-            self.OEWratio = 0.6      #[-]
+            self.OEWratio = 0.6     #[-]
             self.wfratioclimb = 0.96
             self.fineness_c = 8
             self.fineness_n = 1.25
@@ -107,9 +107,9 @@ class ParPayloadLst(object):
         self.m_payload = 13600. #[kg]                                                                  payload mass per flight                     by POPS           
         self.rho_payload = 1121 #[kg/m^3]                                                              density of payload                           by POPS
         self.rho_alu = 2700 #[kg/m^3]                                                                  density of aluminium                        by POPS
-        self.d_tank = 1.5 #[m]                                                                          payload tank diameter                       by POPS
         self.t_tank = 0.003 #[m]                                                                          payload tank thickness                      by POPS
         self.dispersionrate = 8e-3 #[kg/m]
+        self.x_payload = 15. #DUMMY VALUE  [m] x position cg of payload system (tank + burner)
         
         
         self.TotalPayloadYear1 = 0.1e9 #kg

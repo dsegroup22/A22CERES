@@ -36,6 +36,6 @@ def GetTotalFuselageLength(Aircraft, fineness_f, fineness_n,
     
     return L_req, D_eq, dim_cabin
 
-
+a = GetTotalFuselageLength(Conv, 8, 2, 2, 24, 1, 0.1)
 
     
