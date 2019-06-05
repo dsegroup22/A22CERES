@@ -14,47 +14,47 @@ everywhere), compute for a range of AOA the CL distribution, check if they
 are within a margin prior specified. Here the VLM used will be XFLR5 and data 
 from NASA SC(2)-0712
 """
-import os
-from pathlib import Path
-#import copy
-os.chdir(Path(__file__).parents[6])
-from A22DSE.Parameters.Par_Class_Conventional import Conv
-import matplotlib.pyplot as plt
-import numpy as np
+#import os
+#from pathlib import Path
+##import copy
+#os.chdir(Path(__file__).parents[6])
+#from A22DSE.Parameters.Par_Class_Conventional import Conv
+#import matplotlib.pyplot as plt
+#import numpy as np
 
 
 #print(os.getcwd())
 
-def GetRe(rho, V, L, Visc):
-    Re = rho*V*L/Visc
-    return Re
-
-rho = [1.225, Conv.ParAnFP.rho_cruise]
-V = [84,109,206]
-L = [Conv.ParAnFP.c_t,Conv.ParAnFP.c_r]
-Visc = [1.802*10**-5 , 10**-5]
-R = 287
-T = [15+273.15, 216.650]
-gamma = 1.4
-
-Re = []
-M = []
-for i in range(len(rho)):
-    for Vi in V:
-        for Li in L:
-            Re.append(GetRe(rho[i], Vi, Li, Visc[i]))
-            M.append(Vi/(R*T[i]*gamma)**0.5)
-plot = False
-            
-if plot:
-    plt.figure(1)
-    plt.scatter(np.arange(len(Re)),Re)
-    plt.grid()
-    plt.figure(2)
-    plt.scatter(np.arange(len(M)),M)
-    plt.grid()
-    plt.show()
-    print(min(Re),max(Re))
+#def GetRe(rho, V, L, Visc):
+#    Re = rho*V*L/Visc
+#    return Re
+#
+#rho = [1.225, Conv.ParAnFP.rho_cruise]
+#V = [84,109,206]
+#L = [Conv.ParAnFP.c_t,Conv.ParAnFP.c_r]
+#Visc = [1.802*10**-5 , 10**-5]
+#R = 287
+#T = [15+273.15, 216.650]
+#gamma = 1.4
+#
+#Re = []
+#M = []
+#for i in range(len(rho)):
+#    for Vi in V:
+#        for Li in L:
+#            Re.append(GetRe(rho[i], Vi, Li, Visc[i]))
+#            M.append(Vi/(R*T[i]*gamma)**0.5)
+#plot = False
+#            
+#if plot:
+#    plt.figure(1)
+#    plt.scatter(np.arange(len(Re)),Re)
+#    plt.grid()
+#    plt.figure(2)
+#    plt.scatter(np.arange(len(M)),M)
+#    plt.grid()
+#    plt.show()
+#    print(min(Re),max(Re))
     
     
 """Philips Alley Method"""

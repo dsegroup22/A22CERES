@@ -75,13 +75,13 @@ def DOCflt(Aircraft, Cman):
     tflt=FlightOp.flighttime
     tbl=tgm+tflt
     Vbl=Rbl/tbl
-    print (tbl)
+    #print (tbl)
     AH=tbl*250      #Could multiply by 2
     Wfused=Struct.FW/Convers.lbs2kg
-    print (Wfused)
-    print (Rbl)
-    print (par.Cfuel/par.CEF8919)
-    print (par.FD)
+    #print (Wfused)
+    #print (Rbl)
+    #print (par.Cfuel/par.CEF8919)
+    #print (par.FD)
     
     #Crew costs
     Cpilot=(1+0.26)/Vbl*par.spil/AH+10/Vbl
@@ -92,7 +92,7 @@ def DOCflt(Aircraft, Cman):
     Cpol=Wfused/Rbl*(par.Cfuel/par.CEF8919)/par.FD+0.7*Ne*tbl/Rbl*par.Coil
     #Use eq below if above doenst work
 #    Cpol=1.05*Wfused/Rbl*par.Cfuel/par.FD
-    print (Cpol)
+    #print (Cpol)
     
     #Insurance costs
     ManPerACCost  = Cman/Aircraft.ParCostLst.Nprogram/par.CEF8919

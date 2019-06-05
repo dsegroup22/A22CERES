@@ -67,6 +67,7 @@ ParAnFP
  'C_L_alpha_cruise': 7.043357869132447
  'C_L_max_cruise': 1.071126
  'alpha_stall_cruise': 0.1084428125277904
+ 'CLMAX': 1.0975477947640544
  'rho_cruise': 0.08803770260303152
  'q_dive': 3680.0988336962423
  'Rangeclimbcruise': 2722824.371479148
