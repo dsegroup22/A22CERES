@@ -69,7 +69,7 @@ def oecg(Aircraft):
     Wwing = Aircraft.ParStruc.Wing_weight #[kg] !!!!!!!!!!!!!Appended!!!!!!!!!
     y_mac = Aircraft.ParAnFP.b/2*(Aircraft.ParAnFP.c_r+2*Aircraft.ParAnFP.c_t)/3/(Aircraft.ParAnFP.c_r+Aircraft.ParAnFP.c_t)
     xengine = (Aircraft.ParAnFP.b*7/40-y_mac)*tan(Aircraft.ParAnFP.Sweep_LE) #MAC ref
-    nengine = 2 #number of engine
+    nengine = Aircraft.ParStruc.N_engines #number of engine
     Wengine = Aircraft.ParAnFP.We*nengine #[kg]
     Wwg = Wwing+Wengine
     xwg = (xwing*Wwing+xengine*Wengine)/Wwg
@@ -100,7 +100,7 @@ def oecg(Aircraft):
 #    Wwg = 5000. #[N]
     xlemac = xfg-xoe+Wfg/Wwg*(xwg-xoe) #first estimation of the wing position in aircraft ref
     
-    return(xlemac,Wfg,xfg)
+    return(xlemac,Wfg,Wwg,xfg)
 #    print(xlemac)
 #    
 #    xlemac = np.arange(0,100,5)
