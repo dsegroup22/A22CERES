@@ -86,6 +86,7 @@ anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 #tail sizing
+#root chord, tip chord, span, sweep LH (rad), sweep 25 (rad), sweep 50 (rad), taper ratio, aspect ratio, weight of h tail, surface area
 anfp.Cr_h, anfp.Ct_h, anfp.b_h, anfp.sweepLE_h, anfp.sweep25_h, anfp.sweep_50h, anfp.tr_h, anfp.A_h, anfp.W_h, anfp.S_h = convtail(Conv,ISA_model)
 
 
