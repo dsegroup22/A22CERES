@@ -81,18 +81,24 @@ ParAnFP
  'm_payload': 13600.0
  'rho_payload': 1121
  'rho_alu': 2700
- 'd_tank': 1.5
  't_tank': 0.003
  'dispersionrate': 0.008
  'x_payload': 15.0
  'TotalPayloadYear1': 100000000.0
  'OperationalDays': 250
  'turnaroundtime': 3600
- 'A_inlet': 0.6360911103338089
- 'm_burner': 409.1935981382335
  'V_tank': 12.132024977698483
- 'm_tank': 281.13691488884524
- 'l_tank': 7.365321759697974}
+ 'd_tank': 2.1351963312637645
+ 'A_inlet': 0.6360911103338089
+ 'd_inlet': 0.8999424180087874
+ 'm_burner': 409.1935981382335
+ 'l_burner': 2.897343458508663
+ 'm_tank': 222.7657073716239
+ 'l_tank': 4.099922336215979
+ 'xcg_tank': 18.768203061713717
+ 'xcg_burner': 22.266835959076037
+ 'x_burner_end': 23.71550768833037
+ 'xcg_totalpayload_empty': 21.033567573881896}
 
 
  ParCntrl
@@ -185,7 +191,7 @@ ParAnFP
  2.82459925])
  'd_engine': 1.6
  'd_nacelle_engine': 1.92
- 'x_lemac': 18.899285764983414
+ 'x_lemac': 18.83733079894486
  'y_cg': array([0.
  0.])
  'z_cg': array([3.44267516
@@ -227,7 +233,7 @@ ParAnFP
  'x_engine': 0.25
  'b_fueltank': 52.065564958857024
  'TotalSidearea': 87.55303718309986
- 'xcg_fuselagegroup': 18.861656763758486}
+ 'xcg_fuselagegroup': 18.79970179771993}
 
 
  ConversTool

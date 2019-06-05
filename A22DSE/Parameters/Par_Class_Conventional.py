@@ -62,11 +62,25 @@ Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
 
 Layout.TotalSidearea=Area(Conv)
 
-Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
-Conv.ParPayload.m_burner=BurnerMass(Conv)
 Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
+Conv.ParPayload.d_tank=Layout.d_fuselage
+Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
+Conv.ParPayload.d_inlet=np.sqrt(4*Conv.ParPayload.A_inlet/np.pi)
+Conv.ParPayload.m_burner=BurnerMass(Conv)
+Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259 # scale length based on mass compared to original PT6A-68Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259*(0.48/Conv.ParPayload.d_inlet)**2 # scale length based on mass compared to original PT6A-68
+
+Payload=Conv.ParPayload
+
 Conv.ParPayload.m_tank=PayloadtankMass(Conv)
 Conv.ParPayload.l_tank=PayloadtankLength(Conv)
+#Conv.ParPayload.xcg_burner=0.85*Layout.l_fuselage # burner @ 85 % of fuselage
+#Conv.ParPayload.xcg_tank=Conv.ParPayload.xcg_burner-(Conv.ParPayload.l_tank+Conv.ParPayload.l_burner)/2 # most aft poossible position: place tank directly ahead of the payload
+Conv.ParPayload.xcg_tank=Layout.l_nose+Layout.l_cabin-(Conv.ParPayload.l_tank-Conv.ParPayload.d_tank)/2 # most aft possible position: cylindrical tank section ennds at end of cylindrical cabin section
+Conv.ParPayload.xcg_burner=Conv.ParPayload.xcg_tank+(Conv.ParPayload.l_tank+Conv.ParPayload.l_burner)/2 # placed directly aft of the tank
+Conv.ParPayload.x_burner_end=Conv.ParPayload.xcg_burner+Conv.ParPayload.l_burner/2 # check that the burner does not extend further than the fuselage
+Conv.ParPayload.xcg_totalpayload_empty=(Payload.xcg_tank*Payload.m_tank+Payload.xcg_burner*Payload.m_burner)\
+/(Payload.m_tank+Payload.m_burner)
+
 
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
