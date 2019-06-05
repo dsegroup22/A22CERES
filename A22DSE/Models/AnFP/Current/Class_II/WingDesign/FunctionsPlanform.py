@@ -308,4 +308,16 @@ def ComputeCDpS(Aircraft):
     C_f=friction_coef(Aircraft)[0]
     
     return 0.7*S_wet*C_f
+
+def ComputeCurveII(Aircraft, ISA_model, C_l):
+    MTOW=Aircraft.ParStruc.MTOW
+    Fprop=ComputeFprop(Aircraft, ISA_model, MTOW)
+    theta1=ComputeTheta1(Aircraft, ISA_model)
+    eCurl = np.average([0.9,0.95])
+    CII=C_l**0.6*(2/3*Fprop/theta1/eCurl)**0.4
+    
+    return CII
+
+C_l=np.linspace(0.3,1.3,20)
+y=ComputeCurveII(Conv, ISA_model, C_l)
         
