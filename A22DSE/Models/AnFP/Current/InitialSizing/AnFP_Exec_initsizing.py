@@ -519,9 +519,7 @@ def WSandTW(Plots, Aircraft, ISA_model):
         plt.show()
         
         
-    return (MTOW, wfratio*MTOW, MTOW/(wsmin/9.80665), TW*MTOW*9.80665, TW, wsmin, dfinal, tfinal, TWactcruise)
-
-
+    return (MTOW, MTOW*wfratio, MTOW/(wsmin/9.80665), TW*MTOW*9.80665, TW, wsmin, dfinal, tfinal, TWactcruise)
 
 ##OEWratio = 1/2.47 #Ratio of OEW to MTOW from Statistical data of stratospheric aircraft
 ##wfratioclimb = 0.8
