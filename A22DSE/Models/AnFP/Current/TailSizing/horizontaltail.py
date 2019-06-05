@@ -110,6 +110,7 @@ def convtail(Aircraft,ISA):
     kh = 1.1
     
     sweep_h50 = atan(tan(sweep_h)-(4/AR_h)*(0.5-0)*((1-tr_h)/(1+tr_h)))
+    sweep_h25 =  atan(tan(sweep_h)-(4/AR_h)*(0.25-0)*((1-tr_h)/(1+tr_h)))
     
     mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
     
@@ -161,7 +162,7 @@ def convtail(Aircraft,ISA):
     #finish once we have all parameters
     
 #    return (l_arm_opt,Sh,CL,CLh,mh,CL_to)
-    return (ch_root, ch_tip,bh,sweep_h,tr_h,AR_h,mh,Sh)
+    return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh)
 #def rudder(Aircraft):
     
     
