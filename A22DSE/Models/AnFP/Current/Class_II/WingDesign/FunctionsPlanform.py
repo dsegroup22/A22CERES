@@ -9,6 +9,8 @@ import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[6])
 from A22DSE.Models.AnFP.Current.InitialSizing import AnFP_Exec_CD0
+
+
 # =============================================================================
 # UNFINISHED WORK
 # =============================================================================
@@ -165,7 +167,11 @@ def ComputeTheta3(Aircraft, ISA_model):
     return 0.0013*(1+rh)*mu_cp*n_ult*np.sqrt(MZFW/q_eq)/bref
 
 def CDpCurlFunc(Aircraft, ISA_model, Sweepi):
-    
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''    
     def SkinFrict(Mcruise, Re):
         Cfi = 0.455/(np.power(np.log10(Re),2.58))
         beta = np.sqrt(1-Mcruise)
@@ -211,7 +217,11 @@ def CDpCurlFunc(Aircraft, ISA_model, Sweepi):
 
 def ComputeFprop(Aircraft, ISA_model, MTOWi):
     from scipy.optimize import fsolve
-    
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''    
     def ComputeDragNacelle(Cdi, D):
         return (0.5*ISA_model.ISAFunc([h_cruise])[2]*
                 AnFP.V_cruise**2*np.pi*D**2/4*Cdi)
@@ -264,6 +274,11 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     return Fprop
 
 def ComputeAw(Aircraft, ISA_model, MTOWi, Sweepi):
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''
     Fprop = ComputeFprop(Aircraft, ISA_model, MTOWi)
     CDpCurl = CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     theta2 = ComputeTheta2(Aircraft, ISA_model)
@@ -272,7 +287,11 @@ def ComputeAw(Aircraft, ISA_model, MTOWi, Sweepi):
     return np.power((CDpCurl*Fprop+theta2)/theta3, 2/3)/np.power(CL_eq, 1/3)
 
 def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
-    
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''    
     #prerequisites:
     sweep = np.deg2rad(5)
     Fprop = ComputeFprop(Aircraft, ISA_model, MTOWi)
@@ -304,13 +323,19 @@ def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
 #    return
     
 def ComputeCDpS(Aircraft):
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''
     S_wet=friction_coef(Aircraft)[1]
     C_f=friction_coef(Aircraft)[0]
     
     return 0.7*S_wet*C_f
 
+
 def ComputeCurveII(Aircraft, ISA_model, C_l):
-    MTOW=Aircraft.ParStruc.MTOW
+    MTOW=500000
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOW)
     theta1=ComputeTheta1(Aircraft, ISA_model)
     eCurl = np.average([0.9,0.95])
@@ -318,6 +343,39 @@ def ComputeCurveII(Aircraft, ISA_model, C_l):
     
     return CII
 
-C_l=np.linspace(0.3,1.3,20)
-y=ComputeCurveII(Conv, ISA_model, C_l)
+
         
+def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi, theta1, theta2):
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''
+    
+    return None
+
+def ComputeCurveC2(Aircraft, ISA_model,C_l):
+    CDpCurl = CDpCurlFunc(Aircraft, ISA_model, 5/180*np.pi)
+    print (CDpCurl)
+    theta_1 = ComputeTheta1(Aircraft, ISA_model)
+    print (theta_1)
+    theta_2 = ComputeTheta2(Aircraft, ISA_model)
+    print (theta_2)
+    eCurl = np.average([0.9,0.95])
+    print (eCurl)
+    from scipy.optimize import fsolve
+    def  f(A_w):
+        f=(1.5*CDpCurl*np.pi*eCurl*A_w)**0.5*(1-theta_2/(theta_1*(A_w**1.5)*C_l**0.5))**(-0.5) - C_l
+        return f
+    C2=fsolve(f,6)
+    return C2
+
+
+
+C_l=np.linspace(0.3,1.3,20)
+y1=ComputeCurveII(Conv, ISA_model, C_l)
+y2=ComputeCurveC2(Conv, ISA_model, C_l)
+
+plt.plot(C_l,y1)
+plt.plot(C_l,y2)
+plt.show()
