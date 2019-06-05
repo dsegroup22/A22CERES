@@ -96,7 +96,7 @@ ParAnFP
  'xcg_tank': 18.768203061713717
  'xcg_burner': 22.266835959076037
  'x_burner_end': 23.71550768833037
- 'xcg_totalpayload_empty': 21.033567573881896}
+ 'xcg_totalpayload_empty': 4195.329805581915}
 
 
  ParCntrl
