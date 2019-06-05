@@ -165,7 +165,11 @@ def ComputeTheta3(Aircraft, ISA_model):
     return 0.0013*(1+rh)*mu_cp*n_ult*np.sqrt(MZFW/q_eq)/bref
 
 def CDpCurlFunc(Aircraft, ISA_model, Sweepi):
-    
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''    
     def SkinFrict(Mcruise, Re):
         Cfi = 0.455/(np.power(np.log10(Re),2.58))
         beta = np.sqrt(1-Mcruise)
@@ -211,7 +215,11 @@ def CDpCurlFunc(Aircraft, ISA_model, Sweepi):
 
 def ComputeFprop(Aircraft, ISA_model, MTOWi):
     from scipy.optimize import fsolve
-    
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''    
     def ComputeDragNacelle(Cdi, D):
         return (0.5*ISA_model.ISAFunc([h_cruise])[2]*
                 AnFP.V_cruise**2*np.pi*D**2/4*Cdi)
@@ -264,6 +272,11 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     return Fprop
 
 def ComputeAw(Aircraft, ISA_model, MTOWi, Sweepi):
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''
     Fprop = ComputeFprop(Aircraft, ISA_model, MTOWi)
     CDpCurl = CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     theta2 = ComputeTheta2(Aircraft, ISA_model)
@@ -272,7 +285,11 @@ def ComputeAw(Aircraft, ISA_model, MTOWi, Sweepi):
     return np.power((CDpCurl*Fprop+theta2)/theta3, 2/3)/np.power(CL_eq, 1/3)
 
 def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
-    
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''    
     #prerequisites:
     sweep = np.deg2rad(5)
     Fprop = ComputeFprop(Aircraft, ISA_model, MTOWi)
@@ -304,6 +321,11 @@ def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
 #    return
     
 def ComputeCDpS(Aircraft):
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''
     S_wet_wing=S_wet_wing(Aircraft)
     S_wet_fuselage=S_wet_fuselage(Aircraft)
     S_wet_tail=S_wet_tail(Aircraft)
@@ -312,4 +334,14 @@ def ComputeCDpS(Aircraft):
     C_f=
     
     return 0.7*(S_wet_wing+S_wet_fuselage+S_wet_tail+S_wet_engine+S_wet)*C_f
-        
+
+def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi, theta1, theta2):
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''
+    
+
+
+return None     
