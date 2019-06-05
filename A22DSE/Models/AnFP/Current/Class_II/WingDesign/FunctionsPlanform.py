@@ -337,9 +337,9 @@ def ComputeCDpS(Aircraft):
     
     return 0.7*S_wet*C_f
 
-def ComputeCurveII(Aircraft, ISA_model, C_l):
-    MTOW=500000
-    Fprop=ComputeFprop(Aircraft, ISA_model, MTOW)
+def ComputeCurveII(Aircraft, ISA_model, C_l, MTOWi):
+#    MTOW=500000
+    Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
     theta1=ComputeTheta1(Aircraft, ISA_model)
     eCurl = np.average([0.9,0.95])
     CII=C_l**0.6*(2/3*Fprop/theta1/eCurl)**0.4
@@ -390,23 +390,64 @@ def GetTankVolume(Aircraft, ISA_model, Awi):
     return 0.90*mu_tank*tc*Sw**1.5*Awi**(-.5)
     
 def GetWfCurve(Aircraft, ISA_model, Awi, MTOWi, CLi, Sweepi):
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''
 
-    return None
+    ##TODO: Change WfuMTOW = Aircraft.ParStruc.wfratio    
+    ## ASSUMPTION: Rm = Rcruise
+    ##             CDS = LD
+    
+    #Abbreviations
+    ConversTool = Aircraft.ConversTool
+    AnFP = Aircraft.ParAnFP
+    ISAFunc = ISA_model.ISAFunc
+    
+    ##Constants
+    WresfMTOW = 0.045
+#    WfuMTOW   = 0.20
+    Hg      = 4350*1000.                    # for conv. gas turbine engine fuel    
+    theta = 0.7519                          # rel. density   
+    C_T = 0.56*ConversTool.lbs2kg/ConversTool.lbf2N
+    h_cruise = AnFP.h_cruise
+    eCurl    = np.average([0.90, 0.95])
+    #prerequisites
+    Rm      = Aircraft.ParAnFP.s_cruise ##maximum range
+#    CDpCurl = CDpCurlFunc(Aircraft, ISA_model, Sweepi)
+    q = ISAFunc([h_cruise])[-1]*0.5*AnFP.V_cruise**2
+    a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
+    Mcruise = AnFP.V_cruise/a
+    eta_0 = 0.0287*Mcruise/(C_T/np.sqrt(theta))    
+    CDp    = ComputeCDpS(Aircraft)/AnFP_Exec_CD0.friction_coef(Aircraft)[1]
+    
+    #Determine CDS
+    CD = 1/Aircraft.ParAnFP.LD*CLi
+    CDS = CD*AnFP_Exec_CD0.friction_coef(Aircraft)[1]
+    
+    Wfmax  = Rm/(eta_0*Hg)*(CDp/CLi+CLi/(np.pi*Awi*eCurl)*MTOWi + \
+             q*CDS) + WresfMTOW* MTOWi
+    
+    return Wfmax
 
 def ComputeCurveC2(Aircraft, ISA_model,C_l):
-    CDpCurl = CDpCurlFunc(Aircraft, ISA_model, 5/180*np.pi)
-    print (CDpCurl)
+    CDpCurl = CDpCurlFunc(Aircraft, ISA_model, np.deg2rad(5))
+#    print (CDpCurl)
     theta_1 = ComputeTheta1(Aircraft, ISA_model)
     print (theta_1)
     theta_2 = ComputeTheta2(Aircraft, ISA_model)
     print (theta_2)
     eCurl = np.average([0.9,0.95])
-    print (eCurl)
+#    print (eCurl)
     from scipy.optimize import fsolve
     def  f(A_w):
-        f=(1.5*CDpCurl*np.pi*eCurl*A_w)**0.5*(1-theta_2/(theta_1*(A_w**1.5)*C_l**0.5))**(-0.5) - C_l
+        b = (1-theta_2 /(theta_1*(A_w**1.5)*C_l**0.5))**(-0.5)
+        print (A_w, b, theta_2 /(theta_1*(A_w**1.5)*C_l**0.5) )
+        f = Cl - (1.5*CDpCurl*np.pi*eCurl*A_w)**0.5*(1-theta_2 /\
+          (theta_1*(A_w**1.5)*C_l**0.5))**(-0.5)
         return f
-    C2=fsolve(f,6)
+    C2=fsolve(f,15)
     return C2
 
 
@@ -441,3 +482,13 @@ def ComputeCurveC2(Aircraft, ISA_model,C_l):
     
     return Wfmax
 
+#MTOWi=Conv.ParStruc.MTOW
+#Sweepi=np.deg2rad(5)
+#y1=np.linspace(4,12,20)
+#x1=GetOptCLCurve(Conv, ISA_model, MTOWi, Sweepi, y1)
+#
+x2=np.linspace(0.3,1,3,20)
+y2= ComputeCurveII(Conv, ISA_model, x2)
+
+import matplotlib.pyplot as plt
+plt.plot(x2,y2)

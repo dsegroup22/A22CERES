@@ -21,15 +21,16 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 # =============================================================================
 #
 # =============================================================================
-CL_eq = np.linspace(0.5, 1.5, 25)
-MTOW = np.linspace(200000, 1500000, 25)
-Aw = np.linspace(4, 15, 25)
+
+CL_eq = np.linspace(0.3, 1.5, 25)
+MTOW = np.linspace(500000, 2000000, 25)
+Aw = np.linspace(3, 15, 25)
 #Sweep = np.deg2rad(np.linspace(0, 5, 10))
 W_num = 10000
 W_denum = 0.76
 sweep = np.deg2rad(5)
 
-def GetMTOW(MTOWi, CL_eqi, Awi):
+def GetMTOW(CL_eqi, MTOWi, Awi):
 
     q_des = FunctionsPlanform.DynamicPressEq(Conv, ISA_model)
     Fprop = FunctionsPlanform.ComputeFprop(Conv, ISA_model, MTOWi)
@@ -45,34 +46,39 @@ def GetMTOW(MTOWi, CL_eqi, Awi):
     return y
 
 Z = np.ones([np.size(Aw), np.size(CL_eq)])
-for i, CL_eqi in enumerate(CL_eq):
+for i, MTOWi in enumerate(MTOW):
     for j, Awi in enumerate(Aw):
 #        print (CL_eqi)
         
-       Z[i,j] = fsolve(GetMTOW, np.average(MTOW), args=(CL_eqi, Awi))
+       Z[i,j] = fsolve(GetMTOW, .75, args=(MTOWi, Awi))
 
-X,Y = np.meshgrid(CL_eq,Aw)
+X,Y = np.meshgrid(MTOW,Aw)
 
 
 # =============================================================================
 #                          Constraint I: Optimum CL
 # =============================================================================
-CL = []
+CL_des = np.ones([np.size(Aw), np.size(CL_eq)])
 
 for i, MTOWi in enumerate(MTOW):
     for j, Awi in enumerate(Aw):
-        CL.append(float(FunctionsPlanform.GetOptCLCurve(Conv, ISA_model, MTOWi,
-                                                  sweep, Awi)))
-    
+        CL_des[i][j] =float(FunctionsPlanform.GetOptCLCurve(
+                Conv, ISA_model, MTOWi, sweep, Awi))
+
 # =============================================================================
 #                        Constraint II: Optimum Aw
 # =============================================================================
+Aw_des = np.ones([np.size(Aw), np.size(CL_eq)])
+
+for i, MTOWi in enumerate(MTOW):
+    for j, CL_eqi in enumerate(CL_eq):
+        Aw_des[i][j] = float(FunctionsPlanform.ComputeCurveII(Conv, 
+          ISA_model, CL_eqi, MTOWi))
+
 
 # =============================================================================
 #                    Constraint C1: Take-off Length <NOT DONE>
 # =============================================================================
-
-
 
 # =============================================================================
 #                     Constraint C2: Wing & Tail Fraction
@@ -81,13 +87,13 @@ for i, MTOWi in enumerate(MTOW):
 # =============================================================================
 #                                   PLOT
 # =============================================================================
-        
 
-        
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.scatter(X, Y, Z)
+#fig = plt.figure()
+#ax = fig.add_subplot(111, projection='3d')
+#ax.plot_surface(X, Z, Y)                         #MTOW, CL, Aw
+#ax.plot_surface(X,CL_des, Y)
+#ax.plot_surface(X, Z, Aw_des)
 
-fig, ax = plt.subplots()
-CS = ax.contour(X, Y, Z)
-ax.clabel(CS, inline=1, fontsize=10)
+#fig, ax = plt.subplots()
+#CS = ax.contour(X, Z, Y)
+#ax.clabel(CS, inline=1, fontsize=10)

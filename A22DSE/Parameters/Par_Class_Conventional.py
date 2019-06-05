@@ -37,6 +37,7 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
+from A22DSE.Models.AnFP.Current.TailSizing.horizontaltail import convtail
 
 #shortcuts
 Layout = Conv.ParLayoutConfig
@@ -50,13 +51,13 @@ Conv.ParAnFP.CD0 = ComputeCD0(Conv)
 # =============================================================================
 
 #engine position
-Conv.ParLayoutConfig.m_engine = Conv.ParAnFP.We*Conv.ParStruc.N_engines
+Conv.ParProp.Engine_weight_Total = Conv.ParProp.Engine_weight*Conv.ParStruc.N_engines
 Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
 Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 
 
 #fuel tank layout
-Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
+Conv.ParLayoutConfig.b_fueltank = 0.60 * Conv.ParAnFP.b #Estimated from figure from Torenbeek p337 
 
 Layout.TotalSidearea,Layout.S_wet_fuselage=FusAreas(Conv)
 
@@ -84,13 +85,17 @@ Conv.ParPayload.xcg_totalpayload_empty=(Payload.xcg_tank*Payload.m_tank+Payload.
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
+#tail sizing
+#root chord, tip chord, span, sweep LH (rad), sweep 25 (rad), sweep 50 (rad), taper ratio, aspect ratio, weight of h tail, surface area
+Layout.Cr_h, Layout.Ct_h, Layout.b_h, Layout.sweepLEht, Layout.sweep25ht, Layout.sweep50ht, Layout.trht, Layout.Aht, Layout.Wht, Layout.Sht, Layout.xht = convtail(Conv,ISA_model)
+
 
 # =============================================================================
 #                           CLASS II WEIGHTS STARTS HERE
 # =============================================================================
 
 
-#struc.MTOW = ClassIIWeightIteration(Conv)
+struc.MTOW = ClassIIWeightIteration(Conv)
 #WingWeightPlotter(Conv)
 
 
@@ -112,6 +117,8 @@ if os.path.isfile(file_path):
         print(vars(Conv.ParCostLst), file=f)
         print('\n\n ParStruc', file = f)
         print(vars(Conv.ParStruc), file=f)
+        print('\n\n ParProp', file = f)
+        print(vars(Conv.ParProp), file=f)
         print('\n\n ParClassII', file = f)
         print(vars(Conv.ParClassII_LG), file =f)
         print('\n\n ParLayoutConfig',file =f)
