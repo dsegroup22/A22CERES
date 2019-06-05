@@ -24,7 +24,7 @@ def Area(Aircraft):
     
     Svt=config.Svt
     
-    A_nose=np.pi*d_cockpit/4*l_nose
+    A_nose=np.pi*d_cockpit/4*l_nose #elliptical nose cone
     A_cabin=l_cabin*h_fuselage
     A_tail=(h_fuselage+h_APU)/2*l_tail
     
