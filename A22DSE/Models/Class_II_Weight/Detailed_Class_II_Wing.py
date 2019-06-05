@@ -6,11 +6,14 @@ Created on Mon Jun  3 09:30:41 2019
 """
 import numpy as np
 import scipy.integrate as integrate
-
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[3])
 
 from math import *
 
 #torenbeek method, exports in Newtons
+# Chapter 11 2013
 
 def SharedParams(Aircraft):
     anfp = Aircraft.ParAnFP
@@ -34,7 +37,7 @@ def R_wg(Aircraft):
     struc = Aircraft.ParStruc
 
     MTOM = struc.MTOW
-    M_w = 0.115 * struc.MTOW #Dummy change functions in diff_configs
+    M_w = struc.Mw_Mtow * struc.MTOW #Dummy change functions in diff_configs
     #y_wg
     #y_cp  
     return M_w/MTOM
@@ -50,9 +53,9 @@ def R_en(Aircraft):
     Sweep_25 =anfp.Sweep_25
 
 
-    x_eng = config.x_engine
+    x_eng = config.x_engine #[-] dimensionless
     x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
-    +0.02*np.sin(Sweep_25)
+    +0.02*np.sin(Sweep_25) #[-] dimensionless p330
     MTOM = struc.MTOW #kg
     M_eng = config.m_engine #kg
     
@@ -86,7 +89,7 @@ def W_nid(Aircraft):
     
     MTOW = struc.MTOW * g #in Newton
     Sweep_50 = anfp.Sweep_50
-    W_G = MTOW - (struc.FW*g) #Gross weight approx ZFW
+    W_G = MTOW - ((0.5*struc.FW+0.5*Aircraft.ParPayload.m_payload)*g) #Gross weight approx ZFW
     b = anfp.b
     taper = anfp.taper
     Sweep_25 = anfp.Sweep_25
