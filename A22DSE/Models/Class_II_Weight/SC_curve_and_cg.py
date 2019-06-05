@@ -100,7 +100,7 @@ def oecg(Aircraft):
 #    Wwg = 5000. #[N]
     xlemac = xfg-xoe+Wfg/Wwg*(xwg-xoe) #first estimation of the wing position in aircraft ref
     
-    return(xlemac,Wfg,xfg)
+    return(xlemac,Wfg,Wwg,xfg)
 #    print(xlemac)
 #    
 #    xlemac = np.arange(0,100,5)

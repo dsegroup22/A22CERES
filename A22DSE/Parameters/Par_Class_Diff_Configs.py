@@ -154,7 +154,9 @@ def ClassI_AndAHalf():
     
     
     #preliminairy positions for tricycle landing gear (nose and main)
-    Conv.ParLayoutConfig.x_cg= PrelimCG_ranges(Conv) 
+    Conv.ParLayoutConfig.x_cg= PrelimCG_ranges(Conv)
+    Conv.ParLayoutConfig.x_cg_wrt_MAC=(Conv.ParLayoutConfig.x_cg-Conv.ParLayoutConfig.x_lemac)\
+    /Conv.ParAnFP.MAC
     Conv.ParLayoutConfig.lg_l_main,Conv.ParLayoutConfig.lg_l_nose,\
     Conv.ParLayoutConfig.lg_y_main, Conv.ParLayoutConfig.lg_x_main,\
     Conv.ParLayoutConfig.lg_x_nose_min_F_n, Conv.ParLayoutConfig.lg_x_nose_max_F_n,\
