@@ -56,7 +56,7 @@ Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 
 
 #fuel tank layout
-Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
+Conv.ParLayoutConfig.b_fueltank = 0.60 * Conv.ParAnFP.b #Estimated from figure from Torenbeek p337 
 
 Layout.TotalSidearea=Area(Conv)
 

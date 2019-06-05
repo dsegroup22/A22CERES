@@ -99,6 +99,7 @@ class ParStrucLst(object):
             self.fineness_n = 1.25
             self.fineness_t = 2.
             self.Wf         = None
+            self.Mw_Mtow= 0.185
 class ParPayloadLst(object):
     
     def __init__(self):

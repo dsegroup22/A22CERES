@@ -18,7 +18,6 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAirc
 
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
-
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 
 Layout = Conv.ParLayoutConfig
@@ -26,17 +25,22 @@ anfp = Conv.ParAnFP
 struc= Conv.ParStruc
 
 def ClassIIWeight_MTOW(Conv):
+    #inputs: Conventional Aircraft
+    #get all weights from every file
+    #fuselage, lg and wing wheights needed for the oecg function
+    #from the oecg function, get fuselage group, and wing group weight
     
     #CLass II weights & positions
     Conv.ParStruc.LG_weight_tot,Conv.ParStruc.LG_weight_nose, \
     Conv.ParStruc.LG_weight_main  = Class_II_Weight_LG(Conv)
-    
     struc.Wing_weight=2*Total_Wing(Conv)/ISA_model.g0 # [kg] whole wing (2 sides)
     struc.Wf=FuselageWeight(Conv)[0]/ISA_model.g0 #[kg]
     
+    #get the wing group and fuselage group
     Layout.x_lemac, Conv.ParStruc.Weight_FusGroup,Conv.ParStruc.Weight_WingGroup,\
     Layout.xcg_fuselagegroup = oecg(Conv)
     
+    #calculate new OEW and new MTOW
     struc.OEW = struc.Weight_WingGroup + struc.Weight_FusGroup #[kg]
     MTOW = struc.OEW + struc.FW + Conv.ParPayload.m_payload
 
@@ -44,6 +48,7 @@ def ClassIIWeight_MTOW(Conv):
 
 
 def ClassIIWeightIteration(Conv):
+    
     
     MTOW_old = struc.MTOW
     struc.MTOW = ClassIIWeight_MTOW(Conv)
@@ -53,12 +58,14 @@ def ClassIIWeightIteration(Conv):
 #                          ITERATE HERE FOR NEW MTOW
 # =============================================================================
     itcount = 0
-    while(itcount<10):
+    while(itcount<20):
         
          Conv.ParAnFP.CD0 = ComputeCD0(Conv)
          Wfratio_flighttime_flightrange(Conv)
          WingSurface_Thrust_FuelWeight(Conv)
          ClassI_AndAHalf()
+         
+         struc.Mw_Mtow = struc.Wing_weight/struc.MTOW
          
          MTOW_old = struc.MTOW
          struc.MTOW = ClassIIWeight_MTOW(Conv)
@@ -75,6 +82,7 @@ def ClassIIWeightIteration(Conv):
          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
          if error<0.01:
              print('succeed')
+             print(itcount)
              return struc.MTOW
          itcount+=1
     return struc.MTOW
@@ -83,8 +91,11 @@ def ClassIIWeightIteration(Conv):
 
 
 
+
+
+
 def WingWeightPlotter(Conv):
-    b_lst = np.linspace(40.,50.,10)
+    b_lst = np.linspace(5.,50.,100)
     wingweightlst = []
     for i in b_lst:
         anfp.b = i
