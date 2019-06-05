@@ -43,7 +43,7 @@ def ClassIIWeight_MTOW(Conv):
     #calculate new OEW and new MTOW
     struc.OEW = struc.Weight_WingGroup + struc.Weight_FusGroup #[kg]
     MTOW = struc.OEW + struc.FW + Conv.ParPayload.m_payload
-
+    struc.OEWratio = struc.OEW/struc.MTOW
     return MTOW
 
 
@@ -58,7 +58,7 @@ def ClassIIWeightIteration(Conv):
 #                          ITERATE HERE FOR NEW MTOW
 # =============================================================================
     itcount = 0
-    while(itcount<20):
+    while(itcount<12):
         
          Conv.ParAnFP.CD0 = ComputeCD0(Conv)
          Wfratio_flighttime_flightrange(Conv)
@@ -72,19 +72,20 @@ def ClassIIWeightIteration(Conv):
 
 
          #print for checking stuff
+         
 # =============================================================================
-#          print(struc.MTOW)
-#          print(anfp.S)
-#          print(struc.Weight_WingGroup)
-#          print(struc.Weight_FusGroup)
+#          print(struc.Wf)
 #          print(struc.OEW/struc.MTOW)
 #          print('\n')
 # =============================================================================
-         
+
          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
          if error<0.01:
-             print(struc.MTOW)
-             print('dab')
+# =============================================================================
+#              print(struc.MTOW)
+# =============================================================================
+             #print('dab')
+             #print(itcount)
              return struc.MTOW
          itcount+=1
     return struc.MTOW

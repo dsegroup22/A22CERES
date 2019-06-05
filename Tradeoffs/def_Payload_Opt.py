@@ -5,24 +5,30 @@ import numpy as np
 from pathlib import Path
 os.chdir(Path(__file__).parents[1])
 
-from A22DSE.Parameters.Par_Class_Diff_Configs import SensTestAc, ISA_model
-from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import WSandTW
+from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
+from A22DSE.Parameters.Par_Class_Conventional import Conv
+#from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_initsizing import WSandTW
+from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled import Wfratio_flighttime_flightrange
 from A22DSE.Models.POPS.Current.cruisecalculations import CruiseRange, CruiseTime
-from A22DSE.Models.CostModel.Current.TotalCost import TotalC
+#from A22DSE.Models.CostModel.Current.TotalCost import TotalC
 from A22DSE.Models.CostModel.Current.OperCost import tground
+from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeightIteration
+
+struc= Conv.ParStruc
+
 def Payload_optimiser_wf(payload_lst):
         
     index_x = 0
     wf_lst = np.zeros(len(payload_lst))
     for payload in payload_lst:
         
-        SensTestAc.ParPayload.m_payload = payload
+        Conv.ParPayload.m_payload = payload
         
-        wf = WSandTW(False,SensTestAc, ISA_model)[1]
-
+        mtow = ClassIIWeightIteration(Conv)
+        
         #append values to the appropriate list
-        wf_lst[index_x] = wf
-        
+        wf_lst[index_x] = struc.FW
+        print(struc.MTOW)
         index_x +=1
     return wf_lst
 
@@ -31,40 +37,46 @@ def Payload_optimiser_fleety1(payload_lst):
     
      index_x = 0
      fleetsize_lst = np.zeros(len(payload_lst))
-     Copsy1_lst = np.zeros(len(payload_lst))
-     TotalPayloadYear1 = SensTestAc.ParPayload.TotalPayloadYear1
-     OperationalDays = SensTestAc.ParPayload.OperationalDays
-     turnaroundtime = SensTestAc.ParPayload.turnaroundtime   
+     flightsperyear_lst = np.zeros(len(payload_lst))
+     #Copsy1_lst = np.zeros(len(payload_lst))
+     TotalPayloadYear1 = Conv.ParPayload.TotalPayloadYear1
+     OperationalDays = Conv.ParPayload.OperationalDays
+     turnaroundtime = Conv.ParPayload.turnaroundtime   
      for payload in payload_lst:
-         SensTestAc.ParPayload.m_payload = payload
-         SensTestAc.ParAnFP.s_cruise = CruiseRange(SensTestAc)
-         tcruiseclimb = WSandTW(False,SensTestAc, ISA_model)[-1]
+         Conv.ParPayload.m_payload = payload
+         Conv.ParAnFP.s_cruise = CruiseRange(Conv)
+         tcruise = CruiseTime(Conv, ISA_model)
          
-         tcruise = CruiseTime(SensTestAc, ISA_model)
-         timeground = tground(SensTestAc)
+         Wfratio_flighttime_flightrange(Conv)
+         
+         tcruiseclimb = Conv.ParAnFP.Timeclimbcruise 
+         
+         
+         timeground = tground(Conv)
          
          time = 2*(tcruiseclimb-tcruise)+tcruise + turnaroundtime +timeground
-                 
          flightsperyear = OperationalDays*(24*3600/time)
          
          
          Fleet_size = np.ceil(TotalPayloadYear1/payload/flightsperyear)
          
          fleetsize_lst[index_x] = Fleet_size
-         
-         SensTestAc.ParCostLst.acmanuy = Fleet_size
-         
-         #check if number of aircraft is indeed the largest factor in operating costs
-         SensTestAc.ParStruc.MTOW = WSandTW(False,SensTestAc, ISA_model)[0]
-         Copsy1 = TotalC(SensTestAc, ISA_model)[1]
-         Copsy1_lst[index_x] = Copsy1
+         flightsperyear_lst[index_x] = flightsperyear
+# =============================================================================
+#          Conv.ParCostLst.acmanuy = Fleet_size
+#          
+#          #check if number of aircraft is indeed the largest factor in operating costs
+#          Conv.ParStruc.MTOW = WSandTW(False,Conv, ISA_model)[0]
+#          Copsy1 = TotalC(Conv, ISA_model)[1]
+#          Copsy1_lst[index_x] = Copsy1
+# =============================================================================
          index_x +=1
-     return fleetsize_lst, flightsperyear
+     return fleetsize_lst, flightsperyear_lst
 
     
 def Payload_optimiser_Both(X_steps):
     
-    payload_lst = np.linspace(5000.,20000.,X_steps)
+    payload_lst = np.linspace(5000.,11000.,X_steps)
     
     wf_lst = Payload_optimiser_wf(payload_lst)
     fleetsize_lst, flightsperyear = Payload_optimiser_fleety1(payload_lst)
@@ -74,9 +86,10 @@ def Payload_optimiser_Both(X_steps):
     f1 = abs(wf_tot_y1/(wf_tot_y1[-1]-wf_tot_y1[0]))
     f2 = abs(fleetsize_lst/(fleetsize_lst[-1]-fleetsize_lst[0]))  
     
-    #plt.plot(payload_lst,wf_tot_y1)
-    #plt.xlabel('Payload mass per ac [kg]')
-    #plt.ylabel('Total burned in year 1 [kg]')
+    #print(fleetsize_lst)
+    plt.scatter(payload_lst,wf_tot_y1)
+    plt.xlabel('Payload mass per ac [kg]')
+    plt.ylabel('Total burned in year 1 [kg]')
     return payload_lst, f1,f2
 
 def OptimiserPlotter(Which_one, X_steps, w1, w2):
