@@ -45,12 +45,13 @@ def Coper(Aircraft,doc):
     for i in range(years):
         ac+=acpy
         Cops=1.8*doc*Rblann*ac
+        Copsy1 = 1.8*doc*Rblann*acpy
         ctot+=Cops
 #        print ('The operational costs for year', i,'in billion USD equals:',\
 #               round(Cops*1e-9,2))
 #    print ('The total operating costs over 15 years in billion USD equals:',\
 #           round(ctot*1e-9,2))
-    return ctot, 1.75*Rblann*doc*1e-6
+    return ctot, 1.75*Rblann*doc*1e-6, Copsy1
     
 def DOC(docflt,docmaint,docdepr,doclnr,frt):
     #COSTS IS PER NM!!!!

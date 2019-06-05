@@ -35,7 +35,7 @@ def GetReactionProducts(AF, FuelMass):
     #Convert kerosene to molar mass
     molar_ker = FuelMass/MM_ker
     
-    if 0.95 < R < 1.05:
+    if 0.90 < R <= 1.00:
         
         #Mole per mole kerosene
         f_CO2 = 10
@@ -45,17 +45,17 @@ def GetReactionProducts(AF, FuelMass):
         
         #Convert to kg
         CO2 = f_CO2 * molar_ker * MM_CO2
-        H2O = f_H2O *  molar_ker * MM_H2
+        H2O = f_H2O *  molar_ker * MM_H2O
         N2  = f_N * molar_ker * MM_N2
-        CO  = None
-        H2  = None
-        O2  = None
+        CO  = 0
+        H2  = 0
+        O2  = 0
         
         ## convert in kg
         
-        return np.array([CO2, CO, H2O, H2, N2, O2])
+        return [CO2, CO, H2O, H2, N2, O2]
         
-    elif 0 < R < .95:
+    elif 0 < R <= .90:
         
         #Product Factors Constants       
         f_CO2 = 10
@@ -65,14 +65,14 @@ def GetReactionProducts(AF, FuelMass):
         
         #Convert to kg
         CO2 = f_CO2 * molar_ker * MM_CO2
-        H2O = f_H2O *  molar_ker * MM_H2
+        H2O = f_H2O *  molar_ker * MM_H2O
         N2  = f_N * molar_ker * MM_N2
-        CO  = None
-        H2  = None
+        CO  = 0
+        H2  = 0
         O2  = f_O * molar_ker * MM_O2
-        return np.array([CO2, CO, H2O, H2, N2, O2])
+        return [CO2, CO, H2O, H2, N2, O2]
     
-    elif R > 1.05:
+    elif R > 1.00:
         
         ## case when CO == 0
         
@@ -88,16 +88,16 @@ def GetReactionProducts(AF, FuelMass):
         CO2 = f_CO2 * molar_ker * MM_CO2
         H2O = f_O * molar_ker * MM_H2O
         N2  = f_N * molar_ker * MM_N2
-        CO  = None
+        CO  = 0
         H2  = f_H * molar_ker * MM_H2
-        O2  = None
+        O2  = 0
         
-        return np.array([CO2, CO, H2O, H2, N2, O2])
+        return [CO2, CO, H2O, H2, N2, O2]
     
     else:
         return ValueError("Negative Air-to-Fuel ratio!")
         
-    return None
+    return None #should not get here
     
 def GetEI():
     

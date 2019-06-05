@@ -39,7 +39,7 @@ def ctail(Aircraft):
     bv = sqrt(Sv*Av)
     crv = 2*Sv/bv/(1+trv)
     ctv = crv*trv
-    Lambda50v = (bv*tan(radians(Lambda25v))+0.25*ctv-0.25*crv)/b
+    Lambda50v = (bv*tan(radians(Lambda25v))+0.25*ctv-0.25*crv)/bv
     Wvt = Kv*(Sv*10.764)*(3.81*((Sv*10.764)**0.2*(Vd/0.5144)/1000/(cos(Lambda50v))**0.5)-0.287)*0.4536
     #print(Lambda50v,Wvt)
     return(Sh,xh,Ah,trh,Lambda25h,Wht,Sv,xv,Av,trv,Lambda25v,Wvt)
