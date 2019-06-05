@@ -101,7 +101,7 @@ def convtail(Aircraft,ISA):
     
     ch_root = 3/2*Vh*((1+tr_h)/(1+tr_h+tr_h**2))
     ch_tip = ch_root*tr_h
-    bh = Sh/Vh
+    bh = sqrt(AR_h*Sh) #Sh/Vh
     
     iw = 0 #wing incidence
     ht = l_arm_opt*tan(radians(12.5)-iw-radians(3)) #tail height from relative to the wing ac
