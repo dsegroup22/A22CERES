@@ -326,14 +326,10 @@ def ComputeCDpS(Aircraft):
     OUTPUT:
     DESCRIPTION:
     '''
-    S_wet_wing=S_wet_wing(Aircraft)
-    S_wet_fuselage=S_wet_fuselage(Aircraft)
-    S_wet_tail=S_wet_tail(Aircraft)
-    S_wet_engine=
-    S_wet=
-    C_f=
+    S_wet=friction_coef(Aircraft)[1]
+    C_f=friction_coef(Aircraft)[0]
     
-    return 0.7*(S_wet_wing+S_wet_fuselage+S_wet_tail+S_wet_engine+S_wet)*C_f
+    return 0.7*S_wet*C_f
 
 def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi, theta1, theta2):
     '''
@@ -344,4 +340,4 @@ def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi, theta1, theta2):
     
 
 
-return None     
+return None
