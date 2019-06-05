@@ -40,3 +40,23 @@ def ClassIIWeight_MTOW(Conv):
 
     return MTOW
 
+
+def ClassIIWeightIteration(Conv):
+    
+    MTOW_old = struc.MTOW
+    struc.MTOW = ClassIIWeight_MTOW(Conv)
+    error = abs((MTOW_old-struc.MTOW)/MTOW_old)
+    
+# =============================================================================
+# # =============================================================================
+# #                          ITERATE HERE FOR NEW MTOW
+# # =============================================================================
+#     
+#     while(error>0.01):
+#          print(struc.MTOW)
+#          WingSurface_Thrust_FuelWeight(Conv)
+#          MTOW_old = struc.MTOW
+#          struc.MTOW = ClassIIWeight_MTOW(Conv)
+#          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
+#     return struc.MTOW
+# =============================================================================

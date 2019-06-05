@@ -86,8 +86,10 @@ def oecg(Aircraft):
     Wnlg = Aircraft.ParStruc.LG_weight_nose  #[kg]
     xmlg = Aircraft.ParLayoutConfig.lg_x_main  #[m]
     Wmlg = Aircraft.ParStruc.LG_weight_main #[kg]
+    Wpl = Aircraft.ParPayload.m_tank + Aircraft.ParPayload.m_burner # [kg] payload tank + burner 
+    xpl = Aircraft.ParPayload.x_payload #DUMMY VALUE!
     Wfg = Wf+Wht+Wvt+Wnlg+Wmlg #[kg]
-    xfg = (xf*Wf+xht*Wht+xvt*Wvt+xnlg*Wnlg+xmlg*Wmlg)/Wfg  #[m]
+    xfg = (xf*Wf+xht*Wht+xvt*Wvt+xnlg*Wnlg+xmlg*Wmlg+Wpl*xpl)/Wfg  #[m]
     #print(Wfg,xfg)
 #    print(xnlg,Wnlg)
 #    xnlg = 5. #Aircraft ref
@@ -98,7 +100,7 @@ def oecg(Aircraft):
 #    Wwg = 5000. #[N]
     xlemac = xfg-xoe+Wfg/Wwg*(xwg-xoe) #first estimation of the wing position in aircraft ref
     
-    return(xlemac,Wfg,xfg)
+    return(xlemac,Wfg,Wwg,xfg)
 #    print(xlemac)
 #    
 #    xlemac = np.arange(0,100,5)
