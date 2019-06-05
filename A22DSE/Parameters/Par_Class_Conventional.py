@@ -22,7 +22,7 @@ os.chdir(Path(__file__).parents[2])
 from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,PositionsLG_Tri)
 from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
-BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
+BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled import WingSurface_Thrust_FuelWeight
 
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
@@ -37,11 +37,14 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
+from A22DSE.Models.SC.TailSizing.horizontaltail import convtail
+from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 
 #shortcuts
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
 struc= Conv.ParStruc
+sc = Conv.ParCntrl
 
 ClassIAircraft()
 ClassI_AndAHalf()
@@ -50,13 +53,13 @@ Conv.ParAnFP.CD0 = ComputeCD0(Conv)
 # =============================================================================
 
 #engine position
-Conv.ParLayoutConfig.m_engine = Conv.ParAnFP.We*Conv.ParStruc.N_engines
+Conv.ParProp.Engine_weight_Total = Conv.ParProp.Engine_weight*Conv.ParStruc.N_engines
 Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
 Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 
 
 #fuel tank layout
-Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
+Conv.ParLayoutConfig.b_fueltank = 0.60 * Conv.ParAnFP.b #Estimated from figure from Torenbeek p337 
 
 Layout.TotalSidearea,Layout.S_wet_fuselage=FusAreas(Conv)
 
@@ -72,26 +75,39 @@ Payload=Conv.ParPayload
 
 Conv.ParPayload.m_tank=PayloadtankMass(Conv)
 Conv.ParPayload.l_tank=PayloadtankLength(Conv)
-#Conv.ParPayload.xcg_burner=0.85*Layout.l_fuselage # burner @ 85 % of fuselage
-#Conv.ParPayload.xcg_tank=Conv.ParPayload.xcg_burner-(Conv.ParPayload.l_tank+Conv.ParPayload.l_burner)/2 # most aft poossible position: place tank directly ahead of the payload
-Conv.ParPayload.xcg_tank=Layout.l_nose+Layout.l_cabin-(Conv.ParPayload.l_tank-Conv.ParPayload.d_tank)/2 # most aft possible position: cylindrical tank section ennds at end of cylindrical cabin section
-Conv.ParPayload.xcg_burner=Conv.ParPayload.xcg_tank+(Conv.ParPayload.l_tank+Conv.ParPayload.l_burner)/2 # placed directly aft of the tank
-Conv.ParPayload.x_burner_end=Conv.ParPayload.xcg_burner+Conv.ParPayload.l_burner/2 # check that the burner does not extend further than the fuselage
-Conv.ParPayload.xcg_totalpayload_empty=(Payload.xcg_tank*Payload.m_tank+Payload.xcg_burner*Payload.m_burner)\
-/(Payload.m_tank+Payload.m_burner)
 
+
+Payload.xcg_tank,Payload.xcg_burner,Payload.x_burner_end,Payload.xcg_totalpayload_empty=Payloadcg(Conv)
 
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
+#tail sizing 
+#horizontal
+Conv.ParLayoutConfig.Cr_h, Conv.ParLayoutConfig.Ct_h, Conv.ParLayoutConfig.b_h, \
+Conv.ParLayoutConfig.sweepLEht, Conv.ParLayoutConfig.sweep25ht, Conv.ParLayoutConfig.sweep50ht, \
+Conv.ParLayoutConfig.trht, Conv.ParLayoutConfig.Aht, Conv.ParLayoutConfig.Wht, Conv.ParLayoutConfig.Sht, \
+Conv.ParLayoutConfig.xht = convtail(Conv,ISA_model)
+#vertical
+Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
+Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
+Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Sweep50vt,\
+Conv.ParLayoutConfig.cr_v, Conv.ParLayoutConfig.ct_v,\
+Conv.ParLayoutConfig.b_v, Conv.ParLayoutConfig.Wvt=vtail(Conv)
+
+
+
+
+SensTestAc = copy.deepcopy(Conv)
 
 # =============================================================================
 #                           CLASS II WEIGHTS STARTS HERE
 # =============================================================================
 
 
-#struc.MTOW = ClassIIWeightIteration(Conv)
+struc.MTOW = ClassIIWeightIteration(Conv)
 #WingWeightPlotter(Conv)
+
 
 
 
@@ -112,6 +128,8 @@ if os.path.isfile(file_path):
         print(vars(Conv.ParCostLst), file=f)
         print('\n\n ParStruc', file = f)
         print(vars(Conv.ParStruc), file=f)
+        print('\n\n ParProp', file = f)
+        print(vars(Conv.ParProp), file=f)
         print('\n\n ParClassII', file = f)
         print(vars(Conv.ParClassII_LG), file =f)
         print('\n\n ParLayoutConfig',file =f)

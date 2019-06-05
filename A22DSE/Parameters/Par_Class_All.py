@@ -99,12 +99,13 @@ class ParStrucLst(object):
             self.fineness_n = 1.25
             self.fineness_t = 2.
             self.Wf         = None
+            self.Mw_Mtow= 0.185
 class ParPayloadLst(object):
     
     def __init__(self):
         self.disperRatePerTime = None
         self.airtofuel = 6 #[-]                                                                        air to fuel ratio                           by POPS
-        self.m_payload = 13600. #[kg]                                                                  payload mass per flight                     by POPS           
+        self.m_payload = 8000. #[kg]                                                                  payload mass per flight                     by POPS           
         self.rho_payload = 1121 #[kg/m^3]                                                              density of payload                           by POPS
         self.rho_alu = 2700 #[kg/m^3]                                                                  density of aluminium                        by POPS
         self.t_tank = 0.003 #[m]                                                                          payload tank thickness                      by POPS
@@ -223,6 +224,11 @@ class ParLayoutConfig(object):
          self.z_cg= np.array([0.,0.]) #DUMMY VALUE #[m] z_cg range (most low & high) determined in gearlocation_quad
          self.y_nose=1.44 #DUMMY VALUE # [m] front landing gear y-position for quad LG configuration
          self.z_cg_over_h_fus=0.6   #DUMMY VALUE
+         
+class ParProp(object):
+    
+    def __init__(self):
+        self.Engine_weight = None
 
 class Aircraft(object):
             
@@ -235,6 +241,7 @@ class Aircraft(object):
         self.ParStruc = ParStrucLst()
         self.ParClassII_LG = ParClassII_LG()
         self.ParLayoutConfig = ParLayoutConfig()
+        self.ParProp = ParProp()
         self.ConversTool = ParConvLst()
         
         

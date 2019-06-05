@@ -31,6 +31,8 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled\
  import WingSurface_Thrust_FuelWeight
+from A22DSE.Models.AnFP.Current.Class_II.WingDesign.CLMaxPrediction \
+import CLMAX
 #from A22DSE.Models.CostModel.Current.TotalS import SummaryCost
 # =============================================================================
 #                               ISA MODEL
@@ -79,10 +81,9 @@ def ClassIAircraft():
     Conv.ParAnFP.Mdd = 0.7
     Conv.ParAnFP.T_to = 200000
     #Parameters useful to class II estimation
-    Conv.ParAnFP.n_engines = 2      #Number of wing mounted engines
     Conv.ParAnFP.wm_un = 0          #Undercarriage in the wing on (1) or off (0)
     #Conv.ParAnFP.CD0 = 0.008
-    Conv.ParAnFP.We = 2484           #[kg] weight per engine
+    Conv.ParProp.Engine_weight = 2484           #[kg] weight per engine
 
     
     
@@ -151,10 +152,13 @@ def ClassI_AndAHalf():
     
     Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
     Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
+    Layout.c_rht,Layout.c_thto,Layout.bh,\
     Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
     Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
     Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
+    Layout.c_rvt,Layout.c_tvt,Layout.bv,\
     Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ctail(Conv)
+
     
     
     
@@ -173,16 +177,16 @@ def ClassI_AndAHalf():
     Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
     
     
-
+    Conv.ParAnFP.CLMAX = CLMAX(Conv).GetCLMAX()
     
     #Horizontal, Vertical tail design
     
-    Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
-    Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
-    Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
-    Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
-    Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
-    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ttail(Conv)
+#    Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
+#    Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
+#    Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
+#    Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
+#    Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
+#    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ttail(Conv)
 
 
 

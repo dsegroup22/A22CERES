@@ -101,6 +101,26 @@ def PayloadtankMass(Aircraft):
     return (A_sphere+A_cyl)*t_tank*rho_tank #[kg]
 
 
+def Payloadcg(Aircraft):
+    Payload=Aircraft.ParPayload
+    Layout=Aircraft.ParLayoutConfig
+    l_nose=Layout.l_nose
+    l_cabin=Layout.l_cabin
+    l_tank=Payload.l_tank
+    d_tank=Payload.d_tank
+    l_burner=Payload.l_burner
+    m_tank=Payload.m_tank
+    m_burner=Payload.m_burner
+    
+    #xcg_burner=0.85*Layout.l_fuselage # burner @ 85 % of fuselage
+    #xcg_tank=xcg_burner-(l_tank+l_burner)/2 # most aft poossible position: place tank directly ahead of the payload
+
+    xcg_tank=l_nose+l_cabin-(l_tank-d_tank)/2 # most aft possible position: cylindrical tank section ennds at end of cylindrical cabin section
+    xcg_burner=xcg_tank+(l_tank+l_burner)/2 # placed directly aft of the tank
+    x_burner_end=xcg_burner+l_burner/2 # check that the burner does not extend further than the fuselage
+    xcg_totalpayload_empty=(xcg_tank*m_tank+xcg_burner*m_burner/(m_tank+m_burner))
+    
+    return(xcg_tank,xcg_burner,x_burner_end,xcg_totalpayload_empty)
 ##diameters=np.arange(1,2.5,0.01)
 ##weights=np.array([])
 ##

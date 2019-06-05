@@ -53,7 +53,7 @@ def S_wet_tail(Aircraft):
 
 def S_wet_engine(Aircraft):
     anfp = Aircraft.ParAnFP
-    N_eng = anfp.n_engines
+    N_eng = Aircraft.ParStruc.N_engines
     T_to = 139.4 #Check with Vomas
     S_ref = 25
     T_ref = 100

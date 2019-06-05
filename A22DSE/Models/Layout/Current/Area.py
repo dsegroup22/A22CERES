@@ -26,25 +26,25 @@ def FusAreas(Aircraft):
     
     Svt=config.Svt
     
-    Ss_nose=np.pi*d_cockpit/4*l_nose #elliptical nose cone
-    Ss_cabin=l_cabin*h_fuselage
-    Ss_tail=(h_fuselage+h_APU)/2*l_tail
+    Ss_nose=np.pi*d_cockpit/4*l_nose #(elliptical) spheriod prolate shape
+    Ss_cabin=l_cabin*h_fuselage # elliptical cylinder shape
+    Ss_tail=(h_fuselage+h_APU)/2*l_tail #cut off cone shape
     
     S_side=sum([Svt,Ss_nose,Ss_cabin,Ss_tail])
     
     e=np.sqrt(1-(d_cockpit/2/l_nose)**2)
 
-    Sw_nose=np.pi*(d_cockpit/2)**2*(1+l_nose/(d_cockpit/2*e)*np.arcsin(e))
+    Sw_nose=np.pi*(d_cockpit/2)**2*(1+l_nose/(d_cockpit/2*e)*np.arcsin(e)) #(elliptical) spheriod prolate shape
     
     h=((h_fuselage-w_fuselage)/(h_fuselage+w_fuselage))**2
-    Sw_cabin=np.pi*(h_fuselage+w_fuselage)/2*(1+3*h/(10+np.sqrt(4-3*h)))*l_cabin
+    Sw_cabin=np.pi*(h_fuselage+w_fuselage)/2*(1+3*h/(10+np.sqrt(4-3*h)))*l_cabin # elliptical cylinder shape
     
     
     l_fullcone=d_fuselage*l_tail/(d_fuselage-h_APU)
     l_imagcone=l_fullcone-l_tail
     Sw_fullcone=np.pi*d_fuselage/2*np.sqrt(l_fullcone**2-(d_fuselage/2)**2)
     Sw_imagcone=np.pi*h_APU/2*np.sqrt(l_imagcone**2-(h_APU/2)**2)
-    Sw_tail=Sw_fullcone-Sw_imagcone
+    Sw_tail=Sw_fullcone-Sw_imagcone #cut off cone shape
     
     S_wet=Sw_nose+Sw_cabin+Sw_tail
     #print (e,Sw_nose,Sw_cabin,Sw_tail)
