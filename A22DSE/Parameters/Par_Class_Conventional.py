@@ -16,7 +16,7 @@ import numpy as np
 #sys.path.append('../../')
 os.chdir(Path(__file__).parents[2])
 
-print(os.getcwd())
+#print(os.getcwd())
 
 
 from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,PositionsLG_Tri)
@@ -72,13 +72,12 @@ anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 
-print(struc.MTOW)
+#print(struc.MTOW)
 struc.MTOW = ClassIIWeight_MTOW(Conv)
-print(struc.MTOW)
+#print(struc.MTOW)
 # =============================================================================
 #                           CLASS II WEIGHTS STARTS HERE
 # =============================================================================
-
 
  
 #preliminairy positions for tricycle landing gear (nose and main)
