@@ -67,7 +67,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         neng1 = np.ceil(T/F1)
         #F110-GE-100
         Fsl2 = 124600
-        F2 = Highbypassafter(Aircraft, Fsl2, ISA_model)
+        F2 = Lowbypassafter(Aircraft, Fsl2, ISA_model)
         neng2 = np.ceil(T/F2)
         #F100-PW-220
         Fsl3 = 106000
