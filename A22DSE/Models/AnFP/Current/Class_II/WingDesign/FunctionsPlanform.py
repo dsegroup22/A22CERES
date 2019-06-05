@@ -9,6 +9,8 @@ import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[6])
 from A22DSE.Models.AnFP.Current.InitialSizing import AnFP_Exec_CD0
+
+
 # =============================================================================
 # UNFINISHED WORK
 # =============================================================================
@@ -335,6 +337,15 @@ def ComputeCDpS(Aircraft):
     
     return 0.7*S_wet*C_f
 
+def ComputeCurveII(Aircraft, ISA_model, C_l):
+    MTOW=500000
+    Fprop=ComputeFprop(Aircraft, ISA_model, MTOW)
+    theta1=ComputeTheta1(Aircraft, ISA_model)
+    eCurl = np.average([0.9,0.95])
+    CII=C_l**0.6*(2/3*Fprop/theta1/eCurl)**0.4
+    
+    return CII
+
 def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi):
     '''
     INPUT: 
@@ -379,16 +390,26 @@ def GetTankVolume(Aircraft, ISA_model, Awi):
     return 0.90*mu_tank*tc*Sw**1.5*Awi**(-.5)
     
 def GetWfCurve(Aircraft, ISA_model, Awi, MTOWi, CLi, Sweepi):
-    '''
-    INPUT: 
-    OUTPUT:
-    DESCRIPTION:
-    '''
 
-    ##TODO: Change WfuMTOW = Aircraft.ParStruc.wfratio    
-    ## ASSUMPTION: Rm = Rcruise
-    ##             CDS = LD
-    
+    return None
+
+def ComputeCurveC2(Aircraft, ISA_model,C_l):
+    CDpCurl = CDpCurlFunc(Aircraft, ISA_model, 5/180*np.pi)
+    print (CDpCurl)
+    theta_1 = ComputeTheta1(Aircraft, ISA_model)
+    print (theta_1)
+    theta_2 = ComputeTheta2(Aircraft, ISA_model)
+    print (theta_2)
+    eCurl = np.average([0.9,0.95])
+    print (eCurl)
+    from scipy.optimize import fsolve
+    def  f(A_w):
+        f=(1.5*CDpCurl*np.pi*eCurl*A_w)**0.5*(1-theta_2/(theta_1*(A_w**1.5)*C_l**0.5))**(-0.5) - C_l
+        return f
+    C2=fsolve(f,6)
+    return C2
+
+
     #Abbreviations
     ConversTool = Aircraft.ConversTool
     AnFP = Aircraft.ParAnFP
@@ -420,7 +441,3 @@ def GetWfCurve(Aircraft, ISA_model, Awi, MTOWi, CLi, Sweepi):
     
     return Wfmax
 
-
-
-    
-    
