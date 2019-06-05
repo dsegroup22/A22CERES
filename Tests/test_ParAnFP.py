@@ -36,7 +36,7 @@ def test_WingGeo():
     return
     
 def test_WSandTW():
-    out = WSandTW(False, Conv,ISA_model)
+    out = WSandTW(False, TestAC,ISA_model)
     assert (np.isclose(out[0],Conv.ParStruc.MTOW))
         
     

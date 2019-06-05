@@ -364,9 +364,11 @@ def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi):
     return CL_des
 
 def GetTankVolume(Aircraft, ISA_model, Awi):
-    
-
-    
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''
     #constants
     mu_tank = 0.55
     tc = Aircraft.ParAnFP.tc
@@ -377,6 +379,12 @@ def GetTankVolume(Aircraft, ISA_model, Awi):
     return 0.90*mu_tank*tc*Sw**1.5*Awi**(-.5)
     
 def GetWfCurve(Aircraft, ISA_model, Awi, MTOWi, CLi, Sweepi):
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''
+
     ##TODO: Change WfuMTOW = Aircraft.ParStruc.wfratio    
     ## ASSUMPTION: Rm = Rcruise
     ##             CDS = LD
