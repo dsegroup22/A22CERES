@@ -62,16 +62,15 @@ def scplot(Aircraft):
 
 #--------------cg-----------------------
 def oecg(Aircraft):
-    xoe = 0.25 #25% of the fuselage estimate for wing-mounted engine configuration, in the MAC ref 
+    xoe = 0.25 #25% MAC estimate for wing-mounted engine configuration, in the MAC ref 
     #wing group: wing + engine
     MAC = Aircraft.ParAnFP.MAC
     xwing = 0.25*MAC  #MAC ref
     Wwing = Aircraft.ParStruc.Wing_weight #[kg] !!!!!!!!!!!!!Appended!!!!!!!!!
     y_mac = Aircraft.ParAnFP.b/2*(Aircraft.ParAnFP.c_r+2*Aircraft.ParAnFP.c_t)/3/(Aircraft.ParAnFP.c_r+Aircraft.ParAnFP.c_t)
     xengine = (Aircraft.ParAnFP.b*7/40-y_mac)*tan(Aircraft.ParAnFP.Sweep_LE) #MAC ref
-    nengine = Aircraft.ParStruc.N_engines #number of engine
+    nengine = 2 #number of engine
     Wengine = Aircraft.ParAnFP.We*nengine #[kg]
-    
     Wwg = Wwing+Wengine
     xwg = (xwing*Wwing+xengine*Wengine)/Wwg
     #print(xengine)
@@ -101,7 +100,7 @@ def oecg(Aircraft):
 #    Wwg = 5000. #[N]
     xlemac = xfg-xoe+Wfg/Wwg*(xwg-xoe) #first estimation of the wing position in aircraft ref
     
-    return(xlemac,Wfg,Wwg,xfg)
+    return(xlemac,Wfg,xfg)
 #    print(xlemac)
 #    
 #    xlemac = np.arange(0,100,5)
