@@ -304,12 +304,8 @@ def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
 #    return
     
 def ComputeCDpS(Aircraft):
-    S_wet_wing=S_wet_wing(Aircraft)
-    S_wet_fuselage=S_wet_fuselage(Aircraft)
-    S_wet_tail=S_wet_tail(Aircraft)
-    S_wet_engine=
-    S_wet=
-    C_f=
+    S_wet=friction_coef(Aircraft)[1]
+    C_f=friction_coef(Aircraft)[0]
     
-    return 0.7*(S_wet_wing+S_wet_fuselage+S_wet_tail+S_wet_engine+S_wet)*C_f
+    return 0.7*S_wet*C_f
         
