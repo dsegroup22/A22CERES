@@ -68,7 +68,7 @@ class CLMAX (object):
         self.Omega = 0        
         self.kLam1 = 0.25
         self.kLam2 = 0.6
-        self.Clmax = 1.7
+        self.Clmax = Aircraft.ParAnFP.cl_max
         self.CL_Clmax = self.CL_cl*self.Clmax
         self.CL_Clmax_noOm = self.CL_Clmax
         self.kLs = CLMAX.GetkLs(self)
