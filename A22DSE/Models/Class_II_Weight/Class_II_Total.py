@@ -53,7 +53,7 @@ def ClassIIWeightIteration(Conv):
     MTOW_old = struc.MTOW
     struc.MTOW = ClassIIWeight_MTOW(Conv)
     error = abs((MTOW_old-struc.MTOW)/MTOW_old)
-    print(struc.MTOW)
+    #print(struc.MTOW)
 # =============================================================================
 #                          ITERATE HERE FOR NEW MTOW
 # =============================================================================
@@ -72,17 +72,18 @@ def ClassIIWeightIteration(Conv):
 
 
          #print for checking stuff
-         print(struc.MTOW)
-         print(anfp.S)
-         print(struc.Weight_WingGroup)
-         print(struc.Weight_FusGroup)
-         print(struc.OEW/struc.MTOW)
-         print('\n')
+# =============================================================================
+#          print(struc.MTOW)
+#          print(anfp.S)
+#          print(struc.Weight_WingGroup)
+#          print(struc.Weight_FusGroup)
+#          print(struc.OEW/struc.MTOW)
+#          print('\n')
+# =============================================================================
          
          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
          if error<0.01:
-             print('succeed')
-             print(itcount)
+             #print('dab')
              return struc.MTOW
          itcount+=1
     return struc.MTOW

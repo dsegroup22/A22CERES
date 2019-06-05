@@ -47,7 +47,7 @@ def R_en(Aircraft):
     anfp = Aircraft.ParAnFP
     struc = Aircraft.ParStruc
     config = Aircraft.ParLayoutConfig
-    
+    prop = Aircraft.ParProp
     taper = anfp.taper
     n_ult = 2.5
     Sweep_25 =anfp.Sweep_25
@@ -57,7 +57,7 @@ def R_en(Aircraft):
     x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
     +0.02*np.sin(Sweep_25) #[-] dimensionless p330
     MTOM = struc.MTOW #kg
-    M_eng = config.m_engine #kg
+    M_eng =  prop.Engine_weight #kg
     
     return 3 * (x_eng**2 / x_cp) * (M_eng / MTOM)
 
@@ -97,7 +97,7 @@ def W_nid(Aircraft):
     n_ult = 2.5
     x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
     +0.02*np.sin(Sweep_25)
-    n_eng = anfp.n_engines
+    n_eng = struc.N_engines
     b_st=b/np.cos(Sweep_50)
     stress_av = SharedParams(Aircraft)[8]
 

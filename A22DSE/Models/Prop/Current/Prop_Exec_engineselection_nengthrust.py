@@ -49,17 +49,17 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         F2 = Highbypass(Aircraft, Fsl2, ISA_model)
         neng2 = np.ceil(T/F2)
         if neng1 > neng2:
-            Aircraft.ParProp.eng.name = 'AE3007H'
-            Aircraft.ParAnFP.n_engines = neng2
-            Aircraft.ParProp.eng.weight = 745.7 #[kg]
-            Aircraft.ParProp.eng.SFC = 17.703406*10e-06 #[kg/Ns]
-            Aircraft.ParProp.eng.cost = 3.76
+            Aircraft.ParProp.Engine_name = 'AE3007H'
+            Aircraft.ParStruc.N_engines = neng2
+            Aircraft.ParProp.Engine_weight = 745.7 #[kg]
+            Aircraft.ParProp.Engine_SFC = 17.703406*10e-06 #[kg/Ns]
+            Aircraft.ParProp.Engine_cost = 3.76
         else:
-            Aircraft.ParProp.eng.name = 'F118-GE-101'
-            Aircraft.ParAnFP.n_engines = neng1
-            Aircraft.ParProp.eng.weight = 1429 #[kg]
-            Aircraft.ParProp.eng.SFC = 18.63814634*10e-06 #[kg/Ns]
-            Aircraft.ParProp.eng.cost = 999999999999
+            Aircraft.ParProp.Engine_name = 'F118-GE-101'
+            Aircraft.ParStruc.N_engines = neng1
+            Aircraft.ParProp.Engine_weight = 1429 #[kg]
+            Aircraft.ParProp.Engine_SFC = 18.63814634*10e-06 #[kg/Ns]
+            Aircraft.ParProp.Engine_cost = 999999999999
     elif afterburner == True:
         #EJ200
         Fsl1 = 90000
@@ -74,23 +74,23 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         F3 = Lowbypassafter(Aircraft, Fsl3, ISA_model)
         neng3 = np.ceil(T/F3)
         if neng1 < neng2 and neng1 < neng3:
-            Aircraft.ParProp.eng.name = 'EJ200'
-            Aircraft.ParAnFP.n_engines = neng2
-            Aircraft.ParProp.eng.weight = 1000 #[kg]
-            Aircraft.ParProp.eng.SFC = 49.00*10e-06 #[kg/Ns]
-            Aircraft.ParProp.eng.cost = 3.76
+            Aircraft.ParProp.Engine_name = 'EJ200'
+            Aircraft.ParStruc.N_engines = neng2
+            Aircraft.ParProp.Engine_weight = 1000 #[kg]
+            Aircraft.ParProp.Engine_SFC = 49.00*10e-06 #[kg/Ns]
+            Aircraft.ParProp.Engine_cost = 3.76
         elif neng2 < neng1 and neng2 < neng3:
-            Aircraft.ParProp.eng.name = 'F110-GE-100'
-            Aircraft.ParAnFP.n_engines = neng1
-            Aircraft.ParProp.eng.weight = 1800 #[kg]
-            Aircraft.ParProp.eng.SFC = 55.82946266*10e-06 #[kg/Ns]
-            Aircraft.ParProp.eng.cost = 999999999999
+            Aircraft.ParProp.Engine_name = 'F110-GE-100'
+            Aircraft.ParStruc.N_engines = neng1
+            Aircraft.ParProp.Engine_weight = 1800 #[kg]
+            Aircraft.ParProp.Engine_SFC = 55.82946266*10e-06 #[kg/Ns]
+            Aircraft.ParProp.Engine_cost = 999999999999
         else:
-            Aircraft.ParProp.eng.name = 'F100-PW-200'
-            Aircraft.ParAnFP.n_engines = neng3
-            Aircraft.ParProp.eng.weight = 1467 #[kg]
-            Aircraft.ParProp.eng.SFC = 70.8136259*10e-06 #[kg/Ns]
-            Aircraft.ParProp.eng.cost = 999999999999            
+            Aircraft.ParProp.Engine_name = 'F100-PW-200'
+            Aircraft.ParStruc.N_engines = neng3
+            Aircraft.ParProp.Engine_weight = 1467 #[kg]
+            Aircraft.ParProp.Engine_SFC = 70.8136259*10e-06 #[kg/Ns]
+            Aircraft.ParProp.Engine_cost = 999999999999            
         
     else:
         print('Specify whether you want afterburners or not in EngineChoice def')

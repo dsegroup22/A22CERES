@@ -51,7 +51,7 @@ Conv.ParAnFP.CD0 = ComputeCD0(Conv)
 # =============================================================================
 
 #engine position
-Conv.ParLayoutConfig.m_engine = Conv.ParAnFP.We*Conv.ParStruc.N_engines
+Conv.ParProp.Engine_weight_Total = Conv.ParProp.Engine_weight*Conv.ParStruc.N_engines
 Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
 Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 
@@ -94,7 +94,7 @@ anfp.Cr_h, anfp.Ct_h, anfp.b_h, anfp.sweepLE_h, anfp.sweep25_h, anfp.sweep_50h, 
 # =============================================================================
 
 
-#struc.MTOW = ClassIIWeightIteration(Conv)
+struc.MTOW = ClassIIWeightIteration(Conv)
 #WingWeightPlotter(Conv)
 
 

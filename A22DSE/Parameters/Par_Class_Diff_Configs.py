@@ -81,7 +81,7 @@ def ClassIAircraft():
     #Parameters useful to class II estimation
     Conv.ParAnFP.wm_un = 0          #Undercarriage in the wing on (1) or off (0)
     #Conv.ParAnFP.CD0 = 0.008
-    Conv.ParAnFP.We = 2484           #[kg] weight per engine
+    Conv.ParProp.Engine_weight = 2484           #[kg] weight per engine
 
     
     
