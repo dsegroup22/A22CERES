@@ -117,6 +117,8 @@ if os.path.isfile(file_path):
         print(vars(Conv.ParCostLst), file=f)
         print('\n\n ParStruc', file = f)
         print(vars(Conv.ParStruc), file=f)
+        print('\n\n ParProp', file = f)
+        print(vars(Conv.ParProp), file=f)
         print('\n\n ParClassII', file = f)
         print(vars(Conv.ParClassII_LG), file =f)
         print('\n\n ParLayoutConfig',file =f)

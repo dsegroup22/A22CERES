@@ -1,8 +1,8 @@
-import numpy as np
-import sys
-sys.path.append('../../../../')
 
-import A22DSE.Parameters.Par_Class_Diff_Configs as Conv
+
+import numpy as np
+
+
 
 def Lowbypassafter(Aircraft, Fsl, ISA_model):
     Tamb, Pamb = ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])[0:2]
@@ -92,7 +92,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
             Aircraft.ParProp.Engine_SFC = 70.8136259*10e-06 #[kg/Ns]
             Aircraft.ParProp.Engine_cost = 999999999999            
         
-    else:
-        print('Specify whether you want afterburners or not in EngineChoice def')
-    return 
+    #else:
+        #print('Specify whether you want afterburners or not in EngineChoice def')
+    #return 
 

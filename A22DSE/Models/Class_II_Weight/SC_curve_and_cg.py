@@ -70,7 +70,8 @@ def oecg(Aircraft):
     y_mac = Aircraft.ParAnFP.b/2*(Aircraft.ParAnFP.c_r+2*Aircraft.ParAnFP.c_t)/3/(Aircraft.ParAnFP.c_r+Aircraft.ParAnFP.c_t)
     xengine = (Aircraft.ParAnFP.b*7/40-y_mac)*tan(Aircraft.ParAnFP.Sweep_LE) #MAC ref
     nengine = Aircraft.ParStruc.N_engines #number of engine
-    Wengine = Aircraft.ParProp.Engine_weight*nengine #[kg]
+    Aircraft.ParProp.Engine_weight_Total = Aircraft.ParProp.Engine_weight*nengine #[kg]
+    Wengine =  Aircraft.ParProp.Engine_weight_Total
     Wwg = Wwing+Wengine
     xwg = (xwing*Wwing+xengine*Wengine)/Wwg
     #print(xengine)

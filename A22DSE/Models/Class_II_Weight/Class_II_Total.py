@@ -15,7 +15,7 @@ from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled\
  import WingSurface_Thrust_FuelWeight, Wfratio_flighttime_flightrange
 from A22DSE.Models.Class_II_Weight.Class_II_LG import Class_II_Weight_LG
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
-
+from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
@@ -64,7 +64,7 @@ def ClassIIWeightIteration(Conv):
          Wfratio_flighttime_flightrange(Conv)
          WingSurface_Thrust_FuelWeight(Conv)
          ClassI_AndAHalf()
-         
+         EngineChoice(Conv,ISA_model,False)
          struc.Mw_Mtow = struc.Wing_weight/struc.MTOW
          
          MTOW_old = struc.MTOW
@@ -83,7 +83,8 @@ def ClassIIWeightIteration(Conv):
          
          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
          if error<0.01:
-             #print('dab')
+             print(struc.MTOW)
+             print('dab')
              return struc.MTOW
          itcount+=1
     return struc.MTOW
