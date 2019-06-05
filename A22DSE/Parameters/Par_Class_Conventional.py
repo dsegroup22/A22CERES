@@ -27,14 +27,12 @@ from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled impor
 
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
-from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW
+from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW,ClassIIWeightIteration, WingWeightPlotter
 
 from A22DSE.Models.Layout.Current.Area import FusAreas
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model
-
 
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
@@ -52,7 +50,7 @@ Conv.ParAnFP.CD0 = ComputeCD0(Conv)
 # =============================================================================
 
 #engine position
-Conv.ParLayoutConfig.m_engine = 5000 # [kg] DUMMY VALUE
+Conv.ParLayoutConfig.m_engine = Conv.ParAnFP.We*Conv.ParStruc.N_engines
 Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
 Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 
@@ -87,21 +85,13 @@ anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 
-#print(struc.MTOW)
-struc.MTOW = ClassIIWeight_MTOW(Conv)
-#print(struc.MTOW)
 # =============================================================================
 #                           CLASS II WEIGHTS STARTS HERE
 # =============================================================================
 
- 
-#preliminairy positions for tricycle landing gear (nose and main)
-Conv.ParLayoutConfig.lg_l_main,Conv.ParLayoutConfig.lg_l_nose,\
-Conv.ParLayoutConfig.lg_y_main, Conv.ParLayoutConfig.lg_x_main,\
-Conv.ParLayoutConfig.lg_x_nose_min_F_n, Conv.ParLayoutConfig.lg_x_nose_max_F_n,\
-Conv.ParLayoutConfig.lg_x_nose,Conv.ParLayoutConfig.lg_y_nose,\
-Conv.ParLayoutConfig.z_cg = PositionsLG_Tri(Conv)
 
+#struc.MTOW = ClassIIWeightIteration(Conv)
+#WingWeightPlotter(Conv)
 
 
 
