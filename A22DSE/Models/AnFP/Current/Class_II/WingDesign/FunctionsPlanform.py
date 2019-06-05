@@ -337,9 +337,9 @@ def ComputeCDpS(Aircraft):
     
     return 0.7*S_wet*C_f
 
-def ComputeCurveII(Aircraft, ISA_model, C_l):
-    MTOW=500000
-    Fprop=ComputeFprop(Aircraft, ISA_model, MTOW)
+def ComputeCurveII(Aircraft, ISA_model, C_l, MTOWi):
+#    MTOW=500000
+    Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
     theta1=ComputeTheta1(Aircraft, ISA_model)
     eCurl = np.average([0.9,0.95])
     CII=C_l**0.6*(2/3*Fprop/theta1/eCurl)**0.4
