@@ -86,7 +86,7 @@ anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 #tail sizing
-anfp.Cr_h, anfp.Ct_h, anfp.b_h, anfp.sweepLE_h, anfp.sweep25_h, anfp.sweep_50h, anfp.tr_h, anfp.A_h, anfp.W_h, anfp.S_h = convtail(Conv)
+anfp.Cr_h, anfp.Ct_h, anfp.b_h, anfp.sweepLE_h, anfp.sweep25_h, anfp.sweep_50h, anfp.tr_h, anfp.A_h, anfp.W_h, anfp.S_h = convtail(Conv,ISA_model)
 
 
 # =============================================================================
