@@ -53,6 +53,20 @@ for i, MTOWi in enumerate(MTOW):
 
 X,Y = np.meshgrid(MTOW,Aw)
 
+
+# =============================================================================
+#                          Constraint I: Optimum CL
+# =============================================================================
+CL = []
+
+for i, MTOWi in enumerate(MTOW):
+    for j, Awi in enumerate(Aw):
+        CL.append(float(FunctionsPlanform.GetOptCLCurve(Conv, ISA_model, MTOWi,
+                                                  sweep, Awi)))
+    
+
+
+
 #fig = plt.figure()
 #ax = fig.add_subplot(111, projection='3d')
 #ax.scatter(X, Y, Z)
@@ -60,4 +74,3 @@ X,Y = np.meshgrid(MTOW,Aw)
 #fig, ax = plt.subplots()
 #CS = ax.contour(X, Y, Z)
 #ax.clabel(CS, inline=1, fontsize=10)
-    
