@@ -29,7 +29,7 @@ from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
 from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW,ClassIIWeightIteration, WingWeightPlotter
 
-from A22DSE.Models.Layout.Current.Sidearea import Area
+from A22DSE.Models.Layout.Current.Area import FusAreas
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
@@ -37,6 +37,7 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
+from A22DSE.Models.AnFP.Current.TailSizing.horizontaltail import convtail
 
 #shortcuts
 Layout = Conv.ParLayoutConfig
@@ -58,7 +59,8 @@ Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 #fuel tank layout
 Conv.ParLayoutConfig.b_fueltank = 0.60 * Conv.ParAnFP.b #Estimated from figure from Torenbeek p337 
 
-Layout.TotalSidearea=Area(Conv)
+Layout.TotalSidearea,Layout.S_wet_fuselage=FusAreas(Conv)
+
 
 Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
 Conv.ParPayload.d_tank=Layout.d_fuselage
@@ -82,6 +84,9 @@ Conv.ParPayload.xcg_totalpayload_empty=(Payload.xcg_tank*Payload.m_tank+Payload.
 
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
+
+#tail sizing
+anfp.Cr_h, anfp.Ct_h, anfp.b_h, anfp.sweepLE_h, anfp.sweep25_h, anfp.sweep_50h, anfp.tr_h, anfp.A_h, anfp.W_h, anfp.S_h = convtail(Conv)
 
 
 # =============================================================================

@@ -31,9 +31,9 @@ for i in range(1,int(len(data)/2-1)):
     
 for i in range(1,int(len(data)/2)):
     for j in range(len(data[i])):
-#        print(data[i][j])
+#        print(data[is][j])
         f.write(str(data[i+int(len(data)/2)][j])+"  ")
     f.write("\n")
-f.write("1.000000 -0.017700")
+f.write(str(data[0][0])+" "+str(data[0][1]))
 f.close()
 dummy = input('Press Enter')

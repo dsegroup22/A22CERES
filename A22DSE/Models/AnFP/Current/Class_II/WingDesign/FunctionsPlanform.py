@@ -9,10 +9,13 @@ import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[6])
 from A22DSE.Models.AnFP.Current.InitialSizing import AnFP_Exec_CD0
+
+
 # =============================================================================
 # UNFINISHED WORK
 # =============================================================================
 import numpy as np
+from scipy.optimize import fsolve
     
 #def OptimalARWing(CL, Fprop, phi_3):
 #    ''' INPUT: Eq. lift-coefficient [-], Propulsion weight penalty, phi_3,
@@ -238,20 +241,22 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     h_cruise = Aircraft.ParAnFP.h_cruise
     ConversTool = Aircraft.ConversTool
     lbf2N       = 4.44822
+    WfuMTOW = 0.20
     C_T = 0.56*ConversTool.lbs2kg/lbf2N
     Rmis  = Aircraft.ParAnFP.s_cruise       # mission range
     Rlost = False                           # range lost dependent on CdM
                                             # zero below Mcrit
     Hg = 4350*1000.                         # for conv. gas turbine engine fuel
-    q0 = ISA_model.rho0*0.5*AnFP.V_cruise**2
     theta = 0.7519                          # rel. density
+    
+    
+
+    q0 = ISA_model.rho0*0.5*AnFP.V_cruise**2
     a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
     Mcruise = AnFP.V_cruise/a
-    fuelused = 10000.
     Cdi = 0.04                                      #Cranfield report
     #TODO: Add engine diameter in class structure
     Diameter = 1.61                     #[m]
-    WfuMTOW = fuelused/MTOWi
     mu_T = 0.26
     T = 113120.                                     #values for IAE V2531
     T_TO = 139360.                                  #values for IAE V2531
@@ -263,6 +268,7 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     eta_0bar = eta_0*(1-Dnac/T)
     Req = (Rmis+Rlost)*(1-0.5*WfuMTOW)
     tau_bar = ComputeTaubar()
+    
     # compute delta
     deltaMD = MTOWi/(q0*Cldes*AnFP.S)*ISA_model.g0
     delta = fsolve(deltaTrans, 0.9)
@@ -326,18 +332,112 @@ def ComputeCDpS(Aircraft):
     OUTPUT:
     DESCRIPTION:
     '''
-    S_wet=friction_coef(Aircraft)[1]
-    C_f=friction_coef(Aircraft)[0]
+    S_wet=AnFP_Exec_CD0.friction_coef(Aircraft)[1]
+    C_f=AnFP_Exec_CD0.friction_coef(Aircraft)[0]
     
     return 0.7*S_wet*C_f
 
-def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi, theta1, theta2):
+def ComputeCurveII(Aircraft, ISA_model, C_l):
+    MTOW=500000
+    Fprop=ComputeFprop(Aircraft, ISA_model, MTOW)
+    theta1=ComputeTheta1(Aircraft, ISA_model)
+    eCurl = np.average([0.9,0.95])
+    CII=C_l**0.6*(2/3*Fprop/theta1/eCurl)**0.4
+    
+    return CII
+
+def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi):
     '''
     INPUT: 
     OUTPUT:
     DESCRIPTION:
     '''
     
+    #constants
+    eCurl = np.average([0.9,0.95])
+    
+    #prerequisites
+    CDpCurl = CDpCurlFunc(Aircraft, ISA_model, Sweepi)
+    Theta1  = ComputeTheta1(Aircraft, ISA_model)
+    Theta2  = ComputeTheta2(Aircraft, ISA_model)
+    Fprop   = ComputeFprop(Aircraft, ISA_model, MTOWi)
+    
+    def TransCL(CL):
+        
+        y = CL - np.sqrt(CDpCurl * np.pi * Awi * eCurl) * \
+        (1 + (0.5 * Theta1 * Awi * np.sqrt(Awi * CL) + Theta2)/(CDpCurl*Fprop)\
+         )**(0.5)
+        
+        return y
+    
+    CL_des = fsolve(TransCL, 0.50)
+    
+    return CL_des
+
+def GetTankVolume(Aircraft, ISA_model, Awi):
+    '''
+    INPUT: 
+    OUTPUT:
+    DESCRIPTION:
+    '''
+    #constants
+    mu_tank = 0.55
+    tc = Aircraft.ParAnFP.tc
+    Sw = Aircraft.ParAnFP.S
+
+    
+    
+    return 0.90*mu_tank*tc*Sw**1.5*Awi**(-.5)
+    
+def GetWfCurve(Aircraft, ISA_model, Awi, MTOWi, CLi, Sweepi):
+
+    return None
+
+def ComputeCurveC2(Aircraft, ISA_model,C_l):
+    CDpCurl = CDpCurlFunc(Aircraft, ISA_model, 5/180*np.pi)
+    print (CDpCurl)
+    theta_1 = ComputeTheta1(Aircraft, ISA_model)
+    print (theta_1)
+    theta_2 = ComputeTheta2(Aircraft, ISA_model)
+    print (theta_2)
+    eCurl = np.average([0.9,0.95])
+    print (eCurl)
+    from scipy.optimize import fsolve
+    def  f(A_w):
+        f=(1.5*CDpCurl*np.pi*eCurl*A_w)**0.5*(1-theta_2/(theta_1*(A_w**1.5)*C_l**0.5))**(-0.5) - C_l
+        return f
+    C2=fsolve(f,6)
+    return C2
 
 
-return None
+    #Abbreviations
+    ConversTool = Aircraft.ConversTool
+    AnFP = Aircraft.ParAnFP
+    ISAFunc = ISA_model.ISAFunc
+    
+    ##Constants
+    WresfMTOW = 0.045
+#    WfuMTOW   = 0.20
+    Hg      = 4350*1000.                    # for conv. gas turbine engine fuel    
+    theta = 0.7519                          # rel. density   
+    C_T = 0.56*ConversTool.lbs2kg/ConversTool.lbf2N
+    h_cruise = AnFP.h_cruise
+    eCurl    = np.average([0.90, 0.95])
+    #prerequisites
+    Rm      = Aircraft.ParAnFP.s_cruise ##maximum range
+#    CDpCurl = CDpCurlFunc(Aircraft, ISA_model, Sweepi)
+    q = ISAFunc([h_cruise])[-1]*0.5*AnFP.V_cruise**2
+    a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
+    Mcruise = AnFP.V_cruise/a
+    eta_0 = 0.0287*Mcruise/(C_T/np.sqrt(theta))    
+    CDp    = ComputeCDpS(Aircraft)/AnFP_Exec_CD0.friction_coef(Aircraft)[1]
+    
+    #Determine CDS
+    CD = 1/Aircraft.ParAnFP.LD*CLi
+    CDS = CD*AnFP_Exec_CD0.friction_coef(Aircraft)[1]
+    
+    Wfmax  = Rm/(eta_0*Hg)*(CDp/CLi+CLi/(np.pi*Awi*eCurl)*MTOWi + \
+             q*CDS) + WresfMTOW* MTOWi
+    
+    return Wfmax
+
