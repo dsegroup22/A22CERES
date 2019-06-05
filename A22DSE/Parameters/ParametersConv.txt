@@ -67,6 +67,7 @@ ParAnFP
  'C_L_alpha_cruise': 7.043357869132447
  'C_L_max_cruise': 1.071126
  'alpha_stall_cruise': 0.1084428125277904
+ 'CLMAX': 1.0975477947640544
  'rho_cruise': 0.08803770260303152
  'q_dive': 3680.0988336962423
  'Rangeclimbcruise': 2722824.371479148
@@ -96,7 +97,7 @@ ParAnFP
  'xcg_tank': 18.768203061713717
  'xcg_burner': 22.266835959076037
  'x_burner_end': 23.71550768833037
- 'xcg_totalpayload_empty': 21.033567573881896}
+ 'xcg_totalpayload_empty': 4195.329805581915}
 
 
  ParCntrl
