@@ -29,7 +29,7 @@ from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
 from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW,ClassIIWeightIteration, WingWeightPlotter
 
-from A22DSE.Models.Layout.Current.Sidearea import Area
+from A22DSE.Models.Layout.Current.Area import FusAreas
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
@@ -58,7 +58,8 @@ Conv.ParLayoutConfig.x_engine = 0.25 #[-] dimensionless x/mac DUMMY
 #fuel tank layout
 Conv.ParLayoutConfig.b_fueltank = 0.80 * Conv.ParAnFP.b #DUMMY value
 
-Layout.TotalSidearea=Area(Conv)
+Layout.TotalSidearea,Layout.S_wet_fuselage=FusAreas(Conv)
+
 
 Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
 Conv.ParPayload.d_tank=Layout.d_fuselage
