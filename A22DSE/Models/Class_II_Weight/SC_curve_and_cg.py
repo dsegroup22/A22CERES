@@ -108,7 +108,9 @@ def oecg(Aircraft):
 #    xoeit = (xfg+Wwg/Wfg*xwg-xlemac)/(1+Wwg/Wfg)
 #    print(xoeit)
 
-
+def xoe(Aircraft):
+    x_oe = 0.25
+    return(x_oe)
 
 
 
