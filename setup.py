@@ -78,7 +78,7 @@ Intended Audience :: Science/Research
 fullversion = write_version_py(version, is_released)
 
 data_files = [('', [
-        'README.rst',
+        'README.md',
         ])]
 
 s = setup(
@@ -88,7 +88,7 @@ s = setup(
     license = "3-Clause BSD",
     packages=find_packages(),
     data_files=data_files,
-    long_description=read('README.rst'),
+    long_description=read('README.md'),
     classifiers=[_f for _f in CLASSIFIERS.split('\n') if _f],
     install_requires=install_requires,
     include_package_data=True,

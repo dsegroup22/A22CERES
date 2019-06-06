@@ -1,8 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-#import AnFP_def_Atmosphere_T_p_rho as atmosphere
 import sys
 sys.path.append('../../../../../')
+import A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_flightprofile as fp
+#import AnFP_def_Atmosphere_T_p_rho as atmosphere
+
 #from All_dic_Parameters import Parameters as par
 #from A22DSE.Parameters.Par_Class_All import Aircraft
 #from A22DSE.Parameters.Par_Class_Atmos import Atmos
@@ -251,49 +253,51 @@ def TWCruise(ws,Aircraft, ISA_model):
 
     return TW, v
 
-def Rangecorrect(ws0, Aircraft, ISA_model):
-    anfp = Aircraft.ParAnFP
-    struc = Aircraft.ParStruc
-    wfratioclimb = struc.wfratioclimb
-    CD0 = anfp.CD0
-    A = anfp.A
-    e = anfp.e
-    Range = anfp.s_cruise
-    SFC = anfp.SFC
-    Mdd = anfp.Mdd
-    hcruise = anfp.h_cruise
-    #INPUT: Initial wing loading, climb fuel fraction, CD0, A, e, Range, Specific Fuel Consumption
-    #Mach divergence and altitude
-    #OUTPUT: Fuel ratio relative to MTOW
-    dw = 0.0001
-    w = 1
-    #Correct ws at cruise due to fuel burnt during takeoff taxi and climb
-    ws = ws0*(0.99*0.99*0.995*wfratioclimb)
-    rtotal = 0
-    atmos = ISA_model.ISAFunc([hcruise])
-    #Start loop that calculates range per weight burned.
-    while rtotal < Range:
-        #Calculate CL and v for Mdd
-        v = Mdd*np.sqrt(1.4*287.05*atmos[0])
-        CLtest = 2*ws/(atmos[2]*(v**2))
-        #If CLtest is larger than the optimum CL for range then
-        if CLtest > (CD0*np.pi*A*e/3):
-            CL = CLtest
-            v = v
-            
-        else:
-            CL = (CD0*np.pi*A*e/3)
-            v = np.sqrt(2*ws/(CL*atmos[2]))
-        #Calculate lift to drag for discritisation
-        LD = CL/(CD0+CL**2/(np.pi*A*e))
-        #Breguet delta range increase due to delta weight decrease
-        dr = v/SFC*LD/(w-dw/2)*dw
-        rtotal += dr
-        w -= dw
-        ws = ws0*(w-dw/2)*(0.99*0.99*0.995*wfratioclimb)
-    wfratiocruise = 1/w
-    wfratio = 1-(0.99*0.99*0.995*wfratioclimb/wfratiocruise*0.99*0.992)
-    return wfratio
+# =============================================================================
+# def Rangecorrect(ws0, Aircraft, ISA_model):
+#     anfp = Aircraft.ParAnFP
+#     struc = Aircraft.ParStruc
+#     wfratioclimb = struc.wfratioclimb
+#     CD0 = anfp.CD0
+#     A = anfp.A
+#     e = anfp.e
+#     Range = anfp.s_cruise
+#     SFC = anfp.SFC
+#     Mdd = anfp.Mdd
+#     hcruise = anfp.h_cruise
+#     #INPUT: Initial wing loading, climb fuel fraction, CD0, A, e, Range, Specific Fuel Consumption
+#     #Mach divergence and altitude
+#     #OUTPUT: Fuel ratio relative to MTOW
+#     dw = 0.001
+#     w = 1
+#     #Correct ws at cruise due to fuel burnt during takeoff taxi and climb
+#     ws = ws0*(0.99*0.99*0.995*wfratioclimb)
+#     rtotal = 0
+#     atmos = ISA_model.ISAFunc([hcruise])
+#     #Start loop that calculates range per weight burned.
+#     while rtotal < Range:
+#         #Calculate CL and v for Mdd
+#         v = Mdd*np.sqrt(1.4*287.05*atmos[0])
+#         CLtest = 2*ws/(atmos[2]*(v**2))
+#         #If CLtest is larger than the optimum CL for range then
+#         if CLtest > (CD0*np.pi*A*e/3):
+#             CL = CLtest
+#             v = v
+#             
+#         else:
+#             CL = (CD0*np.pi*A*e/3)
+#             v = np.sqrt(2*ws/(CL*atmos[2]))
+#         #Calculate lift to drag for discritisation
+#         LD = CL/(CD0+CL**2/(np.pi*A*e))
+#         #Breguet delta range increase due to delta weight decrease
+#         dr = v/SFC/LD*dw
+#         rtotal += dr
+#         #print(v,LD,rtotal,w)
+#         w -= dw
+#     wfratiocruise = 1/w
+#     wfratio = 1-(0.99*0.99*0.995*wfratioclimb/wfratiocruise*0.99*0.992)
+#     return wfratio
+# =============================================================================
     
     
     
@@ -458,51 +462,66 @@ def WSandTW(Plots, Aircraft, ISA_model):
     wsfinal = 7000  
     ws = np.linspace(wsinit,wsfinal,1000) #Wing Loading 
 
-    
-    TWtakeoff = TWTakeoff(ws,Aircraft)               #Calculation of TW limits for takeoff
-    TWcruise = TWCruise(ws,Aircraft, ISA_model)[0]           #Calculation of TW for cruise at optimum CL for range.
-    WSlanding = WSLanding(Aircraft)                                 #Wing loading for landing
-    vdd,wsdd = WScruise(Aircraft, ISA_model)                       #Velocity drag divergence and max wing loading for speed stability.
-    vdd2,wsdd2 = WScruise2(Aircraft, ISA_model)                   #Velocity drag divergence and max wing loading for optimum range cruise speed
-    TWclimb = TWClimb(Aircraft)                       #Worst case TW required for climb gradients
-    TWceiling = TWCeilingClimb(ws, Aircraft, ISA_model)             #Worst case TW for ceiling climb
-    TWcruisemax = TWCruisemax(ws,Aircraft, ISA_model)              #Max cruise speed thrust requirement
-    wscruisestall = WSCruisestall(Aircraft, ISA_model)
-    
-    wsmin =  min(wsdd,min(WSlanding),wscruisestall)                             #Obtain leftmost wing loading line.
-    v = TWCruise(wsmin,Aircraft, ISA_model)[1]               #Calculate cruise velocity and Fuel Weight ratio relative to MTOW
-    wfratio = Rangecorrect(wsmin,Aircraft, ISA_model) #Calculate range with 0.72 mach constraint if needed
-    payratio = 1-wfratio-struc.OEWratio                                               #Calculation of the payload ratio relative to MTOW
-    MTOW = payl.m_sulphur/payratio                                                     #Estimate for MTOW
-    
-    index = np.where(ws == ws.flat[np.abs(ws - wsmin).argmin()])
-    TW = float(max(TWtakeoff[index],TWceiling[index],TWclimb,TWcruisemax[index])) #Choose max TW values
-    
+    error = 1
+    while error > 10**-3:
+        TWtakeoff = TWTakeoff(ws,Aircraft)               #Calculation of TW limits for takeoff
+        TWcruise = TWCruise(ws,Aircraft, ISA_model)[0]           #Calculation of TW for cruise at optimum CL for range.
+        WSlanding = WSLanding(Aircraft)                                 #Wing loading for landing
+        vdd,wsdd = WScruise(Aircraft, ISA_model)                       #Velocity drag divergence and max wing loading for speed stability.
+        vdd2,wsdd2 = WScruise2(Aircraft, ISA_model)                   #Velocity drag divergence and max wing loading for optimum range cruise speed
+        TWclimb = TWClimb(Aircraft)                       #Worst case TW required for climb gradients
+        TWceiling = TWCeilingClimb(ws, Aircraft, ISA_model)             #Worst case TW for ceiling climb
+        TWcruisemax = TWCruisemax(ws,Aircraft, ISA_model)              #Max cruise speed thrust requirement
+        wscruisestall = WSCruisestall(Aircraft, ISA_model)
+        
+        Aircraft.ParAnFP.WS =  min(wsdd,min(WSlanding),wscruisestall)
+        wsmin = min(wsdd,min(WSlanding),wscruisestall)#Obtain leftmost wing loading line.
+        v = TWCruise(wsmin,Aircraft, ISA_model)[1]               #Calculate cruise velocity and Fuel Weight ratio relative to MTOW
+                                                  #Estimate for MTOW
+        
+        index = np.where(ws == ws.flat[np.abs(ws - wsmin).argmin()])
+        TW = float(max(TWtakeoff[index],TWceiling[index],TWclimb,TWcruisemax[index])) #Choose max TW values
 
+        atmos = ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])
+        TWactcruise = float(max(TWcruisemax[index],TWceiling[index]))*atmos[2]/1.225
+
+        
+        Aircraft.ParAnFP.TtoW = TW
+        oldwfratioclimb = Aircraft.ParStruc.wfratioclimb
+        Aircraft.ParStruc.wfratioclimb, wfcruise, dfinal, tfinal = fp.FuelFractions(Aircraft,ISA_model)
+        error = abs((Aircraft.ParStruc.wfratioclimb)-oldwfratioclimb)
+        
+
+        #wfratio = Rangecorrect(wsmin,Aircraft, ISA_model) #Calculate range with 0.72 mach constraint if needed
+        wfratio = 1-wfcruise
+        payratio = 1-wfratio-struc.OEWratio                                               #Calculation of the payload ratio relative to MTOW
+        MTOW = payl.m_payload/payratio
+        MTOW = 1.1*MTOW #safety factor
 #MTOW,TW,payratio, wfratio, wsmin, WSlanding, TWtakeoff, wsdd, wsdd2, TWclimb, TWceiling, TWcruise, TWcruisemax, wf = WSandTW()
 
     #print('\n MTOW: ', MTOW,'kg', '\n', 'Wing Surface Area: ', MTOW/(wsmin/9.80665),'m^2', '\n', 'Thrust: ', TW*MTOW*9.80665 ,'N', '\n','Payload fraction: ', payratio,'\n','Fuel fraction: ', wfratio,'\n','Wing Loading: ', wsmin, 'N/m^2', '\n','T/W: ', TW )
     if Plots == True:
         
-        plt.plot([WSlanding,WSlanding],[0,2]) #Plot wing loading line for landing
-        plt.plot(ws,TWtakeoff, label='Takeoff T/W') #Plot TW for takeoff
-        plt.plot([0,wsdd2],[max(TWcruise),max(TWcruise)], label='Cruise T/W') #Plot TW for cruise
-        plt.plot([wsdd,wsdd],[0,2],'r--',label='W/S Speed Stability') #Plot wing loading for speed stability at cruise altitude
-        plt.plot([wsdd2,wsdd2],[0,2],'g--',label='W/S Cruise Speed') #Plot wing loading for cruise speed at cruise altitude.
-        plt.plot([wscruisestall,wscruisestall],[0,2],'y--',label='W/S Cruise Stall') #Plot wing loading for stall at cruise altitude and Mmo.
-        plt.plot([wsinit,wsfinal],[TWclimb,TWclimb], label='T/W Climb') #Plot TW for worst case climb gradient.
-        plt.plot(ws,TWceiling, label='T/W Ceiling Climb') #Plot TW for ceiling climb
-        plt.plot(ws,TWcruisemax)
-        plt.plot([wsmin,wsmin*(0.99*0.99*0.995*struc.wfratioclimb),(1-wfratio)*wsmin],[TW,TW/(0.99*0.99*0.995*struc.wfratioclimb),TW/(1-wfratio)], label='Cruise W/S & T/W Change')
+#        plt.plot([WSlanding,WSlanding],[0,2], label = "T/W Landing") #Plot wing loading line for landing
+#        plt.plot(ws,TWtakeoff, label='Takeoff T/W', color = "darkorange") #Plot TW for takeoff
+#        plt.plot([0,wsdd2],[max(TWcruise),max(TWcruise)], label='Cruise T/W', color = "darkgreen") #Plot TW for cruise
+#        plt.plot([wsdd,wsdd],[0,2],'r--',label='W/S Speed Stability', color = "red") #Plot wing loading for speed stability at cruise altitude
+#        plt.plot([wsdd2,wsdd2],[0,2],'g--',label='W/S Cruise Speed', color = "darkgreen") #Plot wing loading for cruise speed at cruise altitude.
+#        plt.plot([wscruisestall,wscruisestall],[0,2],'y--',label='W/S Cruise Stall') #Plot wing loading for stall at cruise altitude and Mmo.
+#        plt.plot([wsinit,wsfinal],[TWclimb,TWclimb], label='T/W Climb', color = "firebrick") #Plot TW for worst case climb gradient.
+#        plt.plot(ws,TWceiling, label = 'T/W Ceiling Climb', color = "mediumpurple") #Plot TW for ceiling climb
+#        plt.plot(ws,TWcruisemax, label = 'T/W Maximum Operating Mach', color = "blue")
+#        plt.plot([wsmin,wsmin*(0.99*0.99*0.995*struc.wfratioclimb),(1-wfratio)*wsmin],[TW,TW/(0.99*0.99*0.995*struc.wfratioclimb),TW/(1-wfratio)], label='Cruise W/S & T/W Change')
         
-        plt.axis((0,8000,0,1))
-        plt.xlabel('W/S [N/m^2]')
+        plt.axis((0,4000,0,1))
+        plt.xlabel('W/S [N/m²]')
         plt.ylabel('T/W')
         plt.legend()
         
         plt.show()
         
-    return (MTOW, wfratio*MTOW, MTOW/(wsmin/9.80665), TW*MTOW, TW)
+        
+    return (MTOW, MTOW*wfratio, MTOW/(wsmin/9.80665), TW*MTOW*9.80665, TW, wsmin, dfinal, tfinal, TWactcruise)
 
 ##OEWratio = 1/2.47 #Ratio of OEW to MTOW from Statistical data of stratospheric aircraft
 ##wfratioclimb = 0.8
