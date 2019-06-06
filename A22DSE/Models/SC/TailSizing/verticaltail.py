@@ -32,7 +32,7 @@ def vtail(Aircraft):
 #    Lv = 0.5*rho*Vmc**2*Sv*CLv
 #    oeidif =Lv*lvi-0.5*Aircraft.ParAnFP.T_to*Aircraft.ParLayoutConfig.y_engine#Aircraft.ParLayoutConfig.y_loc_eng
     Svi = 0.5*Aircraft.ParAnFP.T_to*Aircraft.ParLayoutConfig.y_engine/(lvi*0.5*rho*Vmc**2*CLv)
-
+    
 
 
     VL = 40  #landing speed !!!!!!!!!
