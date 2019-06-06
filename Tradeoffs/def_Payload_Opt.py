@@ -96,11 +96,11 @@ def Payload_optimiser_Both(X_steps):
     
     f1 = abs(wf_tot_y1/(wf_tot_y1[-1]-wf_tot_y1[0]))
     f2 = abs(fleetsize_lst/(fleetsize_lst[-1]-fleetsize_lst[0]))  
-    plot = True
+    plot = False
     if plot:
-        plt.plot(payload_lst,wf_tot_y1,'-ob',markersize=4)
+        plt.step(payload_lst,fleetsize_lst)#,'-ob',markersize=4)
         plt.xlabel('Payload mass per ac [kg]')
-        plt.ylabel('Total burned in year 1 [kg]')
+        plt.ylabel('Fleet size in year 1')
     return payload_lst, f1,f2
 
 def OptimiserPlotter(Which_one, X_steps, w1, w2):

@@ -8,6 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def loadingdiag(Aircraft):
+    """DESCRIPTION: loading diagram based on SAED lecture
+    """
     MAC = Aircraft.ParAnFP.MAC
     
     y_mac = Aircraft.ParAnFP.y_MAC

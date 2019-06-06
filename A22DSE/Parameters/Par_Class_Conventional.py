@@ -36,9 +36,9 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
-from A22DSE.Models.SC.TailSizing.horizontaltail import convtail
+from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
-
+#from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
 #shortcuts
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
@@ -87,7 +87,7 @@ anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 Conv.ParLayoutConfig.Cr_h, Conv.ParLayoutConfig.Ct_h, Conv.ParLayoutConfig.b_h, \
 Conv.ParLayoutConfig.sweepLEht, Conv.ParLayoutConfig.sweep25ht, Conv.ParLayoutConfig.sweep50ht, \
 Conv.ParLayoutConfig.trht, Conv.ParLayoutConfig.Aht, Conv.ParLayoutConfig.Wht, Conv.ParLayoutConfig.Sht, \
-Conv.ParLayoutConfig.xht = convtail(Conv,ISA_model)
+Conv.ParLayoutConfig.xht = htail(Conv,ISA_model)
 #vertical
 Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
 Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
@@ -127,6 +127,20 @@ struc.MTOW = ClassIIWeightIteration(Conv)
 #==============================================================================
 
 Conv.ParLayoutConfig.x_oe = xoe(Conv)
+
+
+
+# =============================================================================
+#                            Flight Envelope
+#==============================================================================
+#Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
+
+
+
+
+
+
+
 
 
 
