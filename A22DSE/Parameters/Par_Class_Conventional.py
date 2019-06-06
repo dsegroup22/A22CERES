@@ -76,10 +76,8 @@ anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 #tail sizing 
 #horizontal
-Conv.ParLayoutConfig.Cr_h, Conv.ParLayoutConfig.Ct_h, Conv.ParLayoutConfig.b_h, \
-Conv.ParLayoutConfig.sweepLEht, Conv.ParLayoutConfig.sweep25ht, Conv.ParLayoutConfig.sweep50ht, \
-Conv.ParLayoutConfig.trht, Conv.ParLayoutConfig.Aht, Conv.ParLayoutConfig.Wht, Conv.ParLayoutConfig.Sht, \
-Conv.ParLayoutConfig.xht = htail(Conv,ISA_model)
+#function gives Surface, weight, Aspect ratio, optimal arm etc
+htail(Conv,ISA_model)
 #vertical
 Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
 Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
