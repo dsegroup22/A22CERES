@@ -85,7 +85,7 @@ anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 #tail sizing 
 #horizontal
-Conv.ParLayoutConfig.Cr_h, Conv.ParLayoutConfig.Ct_h, Conv.ParLayoutConfig.b_h, \
+Conv.ParLayoutConfig.c_rht, Conv.ParLayoutConfig.c_tht, Conv.ParLayoutConfig.bh, \
 Conv.ParLayoutConfig.sweepLEht, Conv.ParLayoutConfig.sweep25ht, Conv.ParLayoutConfig.sweep50ht, \
 Conv.ParLayoutConfig.trht, Conv.ParLayoutConfig.Aht, Conv.ParLayoutConfig.Wht, Conv.ParLayoutConfig.Sht, \
 Conv.ParLayoutConfig.xht = htail(Conv,ISA_model)
@@ -93,8 +93,8 @@ Conv.ParLayoutConfig.xht = htail(Conv,ISA_model)
 Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
 Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
 Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Sweep50vt,\
-Conv.ParLayoutConfig.cr_v, Conv.ParLayoutConfig.ct_v,\
-Conv.ParLayoutConfig.b_v, Conv.ParLayoutConfig.Wvt=vtail(Conv)
+Conv.ParLayoutConfig.c_rvt, Conv.ParLayoutConfig.c_tvt,\
+Conv.ParLayoutConfig.bv, Conv.ParLayoutConfig.Wvt=vtail(Conv)
 
 #fuselage sizing
 Layout = Conv.ParLayoutConfig
