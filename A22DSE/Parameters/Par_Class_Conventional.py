@@ -18,18 +18,13 @@ os.chdir(Path(__file__).parents[2])
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg
 
-
 from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeightIteration
 from A22DSE.Models.Layout.Current.Area import FusAreas
 
-from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg,xoe
-
-from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
-        GetTotalFuselageLength, SurfaceFuselage, Fuselage)
-
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import xoe
-from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
-        GetTotalFuselageLength)
+
+from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (Fuselage)
+
 
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
 from A22DSE.Models.SC.TailSizing.horizontaltail import htail
