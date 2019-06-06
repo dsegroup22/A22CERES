@@ -130,7 +130,7 @@ def ClassI_AndAHalf():
     #Struct = Conv.ParStruc
     #Layout.l_fuselage = 24 #[m] length of fuselage
     Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = (
-            GetTotalFuselageLength(Conv, 40, 2, 0.01))
+            GetTotalFuselageLength(Conv, max(Conv.ParLayoutConfig.xvt, Conv.ParLayoutConfig.xht), 2, 0.01))
     
     Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
     Layout.l_fuselage = np.sum(Layout.l_fuselage)
