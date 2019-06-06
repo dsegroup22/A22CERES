@@ -51,6 +51,7 @@ Conv.ParAnFP.CD0 = ComputeCD0(Conv)
 
 # =============================================================================
 
+
 #engine position
 Conv.ParProp.Engine_weight_Total = Conv.ParProp.Engine_weight*Conv.ParStruc.N_engines
 Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
@@ -114,7 +115,10 @@ Layout.w_fuselage = Layout.dim_cabin[1]
 Layout.x_apex_wing=Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
 
 SensTestAc = copy.deepcopy(Conv)
-
+# =============================================================================
+#                            Flight Envelope
+#==============================================================================
+Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
 # =============================================================================
 #                           CLASS II WEIGHTS STARTS HERE
 # =============================================================================
@@ -130,10 +134,7 @@ Conv.ParLayoutConfig.x_oe = xoe(Conv)
 
 
 
-# =============================================================================
-#                            Flight Envelope
-#==============================================================================
-Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
+
 
 
 
