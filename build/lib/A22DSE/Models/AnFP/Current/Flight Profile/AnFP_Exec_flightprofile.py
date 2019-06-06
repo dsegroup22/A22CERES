@@ -347,8 +347,8 @@ print(wf)
 ##        time.append(t)
 ##print ('end of loop 4')
 ###
-###payload_in = par.get('m_sulphur') #[kg]
-###payload = par.get('m_sulphur') #[kg]
+###payload_in = par.get('m_payload') #[kg]
+###payload = par.get('m_payload') #[kg]
 ###dispersalrate = par.get('dispersionrate_pertime') #[kg/s]
 ###timeinject = payload / dispersalrate
 ###mf_cr = 1 #specific fuel consumption at cruise

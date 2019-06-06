@@ -29,7 +29,7 @@ from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWei
 from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW,ClassIIWeightIteration, WingWeightPlotter
 
 from A22DSE.Models.Layout.Current.Area import FusAreas
-from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
+from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg,xoe
 
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
 
@@ -103,10 +103,14 @@ SensTestAc = copy.deepcopy(Conv)
 #                           CLASS II WEIGHTS STARTS HERE
 # =============================================================================
 
-
 struc.MTOW = ClassIIWeightIteration(Conv)
 #WingWeightPlotter(Conv)
 
+# =============================================================================
+#                            Weight and Balance
+#==============================================================================
+
+Conv.ParLayoutConfig.x_oe = xoe(Conv)
 
 
 
