@@ -4,20 +4,14 @@ Created on Wed May  8 10:57:33 2019
 
 @author: rickv
 """
-import sys
-#sys.path.append('../../../../')
-
-#from A22DSE.Parameters.Par_Class_All import ParPayloadLst
-#from A22DSE.Parameters.Par_Class_Conv1 import conv
-
 
 def CruiseRange(Aircraft):
     payl = Aircraft.ParPayload
-    m_sulphur = payl.m_sulphur
+    m_payload = payl.m_payload
     dispersionrate = payl.dispersionrate
     #function that calculates the cruise range
         
-    return m_sulphur/dispersionrate #cruise range [m]
+    return m_payload/dispersionrate #cruise range [m]
 
 def CruiseTime(Aircraft, ISA_model):
     import numpy as np

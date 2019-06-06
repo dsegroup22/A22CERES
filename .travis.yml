@@ -7,10 +7,12 @@ install:
 - pip install matplotlib
 - pip install scipy
 - pip install python-coveralls
-script:
- - coverage run -m pytest
+- python setup.py install
 
-after_success: 
+script:
+ - coverage run -m pytest 
+ 
+after_success:
  - coveralls
 
 notifications:
