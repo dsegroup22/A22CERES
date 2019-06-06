@@ -16,10 +16,10 @@ from A22DSE.Parameters.Par_Class_Atmos import Atmos
 
 ISA_model = Atmos()
 
-def WingSurface_Thrust_FuelWeight(Conv):
-    struc= Conv.ParStruc
-    Layout = Conv.ParLayoutConfig
-    anfp = Conv.ParAnFP
+def WingSurface_Thrust_FuelWeight(Aircraft):
+    struc= Aircraft.ParStruc
+    Layout = Aircraft.ParLayoutConfig
+    anfp = Aircraft.ParAnFP
     
     #calculate Surface based on current mtow etc.
     MTOW = struc.MTOW
@@ -27,8 +27,8 @@ def WingSurface_Thrust_FuelWeight(Conv):
     anfp.Thrust = MTOW*anfp.TtoW*9.80665
     struc.FW = MTOW*struc.wfratio
     
-def Wfratio_flighttime_flightrange(Conv):
+def Wfratio_flighttime_flightrange(Aircraft):
 
-     Conv.ParStruc.wfratioclimb, wfcruise, Conv.ParAnFP.Rangeclimbcruise,\
-     Conv.ParAnFP.Timeclimbcruise = FuelFractions(Conv,ISA_model)
-     Conv.ParStruc.wfratio = 1-wfcruise
+     Aircraft.ParStruc.wfratioclimb, wfcruise, Aircraft.ParAnFP.Rangeclimbcruise,\
+     Aircraft.ParAnFP.Timeclimbcruise = FuelFractions(Aircraft,ISA_model)
+     Aircraft.ParStruc.wfratio = 1-wfcruise

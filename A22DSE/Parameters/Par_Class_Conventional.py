@@ -95,7 +95,7 @@ Conv.ParLayoutConfig.cr_v, Conv.ParLayoutConfig.ct_v,\
 Conv.ParLayoutConfig.b_v, Conv.ParLayoutConfig.Wvt=vtail(Conv)
 
 
-
+Layout.x_apex_wing=Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
 
 SensTestAc = copy.deepcopy(Conv)
 

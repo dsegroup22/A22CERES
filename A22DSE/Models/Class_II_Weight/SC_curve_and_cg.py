@@ -88,7 +88,7 @@ def oecg(Aircraft):
     xmlg = Aircraft.ParLayoutConfig.lg_x_main  #[m]
     Wmlg = Aircraft.ParStruc.LG_weight_main #[kg]
     Wpl = Aircraft.ParPayload.m_tank + Aircraft.ParPayload.m_burner # [kg] payload tank + burner 
-    xpl = Aircraft.ParPayload.x_payload #DUMMY VALUE!
+    xpl = Aircraft.ParPayload.xcg_totalpayload_empty #DUMMY VALUE!
     Wfg = Wf+Wht+Wvt+Wnlg+Wmlg #[kg]
     xfg = (xf*Wf+xht*Wht+xvt*Wvt+xnlg*Wnlg+xmlg*Wmlg+Wpl*xpl)/Wfg  #[m]
     #print(Wfg,xfg)
