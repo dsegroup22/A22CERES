@@ -29,7 +29,7 @@ from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWei
 from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW,ClassIIWeightIteration, WingWeightPlotter
 
 from A22DSE.Models.Layout.Current.Area import FusAreas
-from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
+from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg,xoe
 
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
 
@@ -64,11 +64,11 @@ Layout.TotalSidearea,Layout.S_wet_fuselage=FusAreas(Conv)
 
 
 Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
-Conv.ParPayload.d_tank=Layout.d_fuselage
+Conv.ParPayload.d_tank=0.5*Layout.d_fuselage
 Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
 Conv.ParPayload.d_inlet=np.sqrt(4*Conv.ParPayload.A_inlet/np.pi)
 Conv.ParPayload.m_burner=BurnerMass(Conv)
-Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259 # scale length based on mass compared to original PT6A-68Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259*(0.48/Conv.ParPayload.d_inlet)**2 # scale length based on mass compared to original PT6A-68
+Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259. # scale length based on mass compared to original PT6A-68Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259*(0.48/Conv.ParPayload.d_inlet)**2 # scale length based on mass compared to original PT6A-68
 
 Payload=Conv.ParPayload
 
@@ -76,7 +76,8 @@ Conv.ParPayload.m_tank=PayloadtankMass(Conv)
 Conv.ParPayload.l_tank=PayloadtankLength(Conv)
 
 
-Payload.xcg_tank,Payload.xcg_burner,Payload.x_burner_end,Payload.xcg_totalpayload_empty=Payloadcg(Conv)
+Payload.xcg_tank,Payload.xcg_burner,Payload.x_burner_end,\
+Payload.xcg_totalpayload_empty=Payloadcg(Conv)
 
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
@@ -94,8 +95,23 @@ Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Sweep50vt,\
 Conv.ParLayoutConfig.cr_v, Conv.ParLayoutConfig.ct_v,\
 Conv.ParLayoutConfig.b_v, Conv.ParLayoutConfig.Wvt=vtail(Conv)
 
+#fuselage sizing
+Layout = Conv.ParLayoutConfig
+#Struct = Conv.ParStruc
+#Layout.l_fuselage = 24 #[m] length of fuselage
+Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = (
+        GetTotalFuselageLength(Conv, max(Conv.ParLayoutConfig.xvt, Conv.ParLayoutConfig.xht), 2, 0.01))
+    
+Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
+Layout.l_fuselage = np.sum(Layout.l_fuselage)
+    
+Layout.h_APU=0.2 #[m] dummy value
+    
+Layout.h_fuselage = Layout.dim_cabin[0]
+Layout.w_fuselage = Layout.dim_cabin[1]
 
 
+Layout.x_apex_wing=Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
 
 SensTestAc = copy.deepcopy(Conv)
 
@@ -103,10 +119,14 @@ SensTestAc = copy.deepcopy(Conv)
 #                           CLASS II WEIGHTS STARTS HERE
 # =============================================================================
 
-
 struc.MTOW = ClassIIWeightIteration(Conv)
 #WingWeightPlotter(Conv)
 
+# =============================================================================
+#                            Weight and Balance
+#==============================================================================
+
+Conv.ParLayoutConfig.x_oe = xoe(Conv)
 
 
 

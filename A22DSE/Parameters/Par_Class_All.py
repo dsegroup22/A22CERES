@@ -105,12 +105,11 @@ class ParPayloadLst(object):
     def __init__(self):
         self.disperRatePerTime = None
         self.airtofuel = 6 #[-]                                                                        air to fuel ratio                           by POPS
-        self.m_payload = 8000. #[kg]                                                                  payload mass per flight                     by POPS           
+        self.m_payload = 10000. #[kg]                                                                  payload mass per flight                     by POPS           
         self.rho_payload = 1121 #[kg/m^3]                                                              density of payload                           by POPS
         self.rho_alu = 2700 #[kg/m^3]                                                                  density of aluminium                        by POPS
         self.t_tank = 0.003 #[m]                                                                          payload tank thickness                      by POPS
         self.dispersionrate = 8e-3 #[kg/m]
-        self.x_payload = 15. #DUMMY VALUE  [m] x position cg of payload system (tank + burner)
         
         
         self.TotalPayloadYear1 = 0.1e9 #kg
@@ -222,7 +221,7 @@ class ParLayoutConfig(object):
          self.x_lemac = 14 #DUMMY VALUE #[m] xlocation of LEMAC, from nose
          self.y_cg= np.array([0.,0.]) #DUMMY VALUE #[m] y_cg range (most forward & aft) 
          self.z_cg= np.array([0.,0.]) #DUMMY VALUE #[m] z_cg range (most low & high) determined in gearlocation_quad
-         self.y_nose=1.44 #DUMMY VALUE # [m] front landing gear y-position for quad LG configuration
+         self.y_nose=0 # [m] front landing gear y-position for quad LG configuration
          self.z_cg_over_h_fus=0.6   #DUMMY VALUE
          
 class ParProp(object):
