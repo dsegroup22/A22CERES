@@ -31,10 +31,8 @@ from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW,Clas
 from A22DSE.Models.Layout.Current.Area import FusAreas
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg,xoe
 
-from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
-
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
-        GetTotalFuselageLength, SurfaceFuselage)
+        GetTotalFuselageLength, SurfaceFuselage, Fuselage)
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
 from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
@@ -100,8 +98,7 @@ Conv.ParLayoutConfig.b_v, Conv.ParLayoutConfig.Wvt=vtail(Conv)
 Layout = Conv.ParLayoutConfig
 #Struct = Conv.ParStruc
 #Layout.l_fuselage = 24 #[m] length of fuselage
-Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = (
-        GetTotalFuselageLength(Conv, max(Conv.ParLayoutConfig.xvt, Conv.ParLayoutConfig.xht), 2, 0.01))
+Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = Fuselage(Conv)
 
 Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
 Layout.l_fuselage = np.sum(Layout.l_fuselage)
