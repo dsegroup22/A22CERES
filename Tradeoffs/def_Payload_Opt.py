@@ -88,7 +88,7 @@ def Payload_optimiser_Both(X_steps):
 #            f1 and f2 are normalised functions of fuel weight and fleet size
 #            respectively.
     
-    payload_lst = np.linspace(5000.,11000.,X_steps)
+    payload_lst = np.linspace(5000.,10500.,X_steps)
     wf_lst = Payload_optimiser_wf(payload_lst)
     fleetsize_lst, flightsperyear = Payload_optimiser_fleety1(payload_lst)
     
