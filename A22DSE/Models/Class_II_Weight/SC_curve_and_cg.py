@@ -29,13 +29,12 @@ def scplot(Aircraft):
     Ah = Aircraft.ParLayoutConfig.Aht       #2
     Lambdah = Aircraft.ParLayoutConfig.sweepLEht
     betah = sqrt(1-Mh**2)
-    CLalphah = 2*pi*Ah/(2.+ sqrt(4.+(Ah*betah/etha)**2*(1.+(tan(radians(Lambdah))/betah)**2))) #/rad
-    print(CLalphah)   #0.3
+    CLalphah = 2*pi*Ah/(2.+ sqrt(4.+(Ah*betah/etha)**2*(1.+(tan(radians(Lambdah))/betah)**2))) #/rad  #0.3
     Sh = Aircraft.ParLayoutConfig.Sht #10
     MAC = Aircraft.ParAnFP.MAC
-    lh = ParLayoutConfig.xht #15.  #negative for canard
-    xac = 0.25*MAC #30.
-    deda = 0.006 # 0.1 (0.006 from horizontaltail calculation)
+    lh = Aircraft.ParLayoutConfig.xht #15.  #negative for canard
+    xac = 0.25*MAC+Aircraft.ParLayoutConfig.x_lemac #30.
+    deda =  0.1 #(0.006 from horizontaltail calculation)
     VhV = 1. #1 for T tail and canard
     CLAh = 1.2
     CLh = -0.8
@@ -45,7 +44,7 @@ def scplot(Aircraft):
     
     
     #---------stability curve--------------
-    xcg = (np.arange(0.,100.,1.)-Aircraft.ParLayoutConfig.x_lemac)/MAC
+    xcg = np.arange(0.,100.,1.)
     ShSs = 1/(CLalphah/CLalphaAh*(1-deda)*lh/MAC*VhV**2)*(xcg-xac+margin)
     
     
@@ -54,10 +53,12 @@ def scplot(Aircraft):
     
     
     #------------plot--------------------
-    plt.plot(xcg,ShSc,"r-",xcg,ShSs,"g--")
-    plt.ylim(0,1)
-    plt.xlim(0,50)
-    plt.show()
+#    plt.plot(xcg,ShSc,"r-",xcg,ShSs,"g--")
+#    #plt.ylim(0,1)
+#    #plt.xlim(0,50)
+#    plt.show()
+    
+    return xac, MAC
 
 
 #--------------cg-----------------------
