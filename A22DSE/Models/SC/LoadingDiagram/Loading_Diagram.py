@@ -62,10 +62,10 @@ def loadingdiag(Aircraft):
 #    plt.plot((cg_range-x_lemac)/MAC,wrange)
 #    plt.plot(cg_range,wrange)
 #    plt.show()
-##        
+#        
     
     
-    return  fuel_mass
+    #return  fuel_mass
         
         
         
