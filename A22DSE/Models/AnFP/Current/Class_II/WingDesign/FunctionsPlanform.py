@@ -108,14 +108,17 @@ def ComputeTheta1(Aircraft, ISA_model):
     '''
     #CONSTANTS
         ##TODO: Get actual fuel mass from NOUT and RICK
-    Mfuel = 10000
-    MZFW  = Aircraft.ParStruc.MTOW - Mfuel
+        #TODO: Change taper and MZFW, Mfuel
+    WfuMTOW = 0.20
+    Mfuel = WfuMTOW*60e3
+    MZFW  =60e3 - Mfuel
     rh = 0.10                               # ratio Wing weight / wing horiz.
     q_des = DynamicPressEq(Aircraft, ISA_model)
     bref = 100 #m
     nult = 2.5
     tc   = Aircraft.ParAnFP.tc
-    taper = Aircraft.ParAnFP.taper
+#    taper = Aircraft.ParAnFP.taper
+    taper = 1.
     nep  = 0.36 * (1 + taper)**0.5
     sweep = np.deg2rad(5)
     
@@ -276,6 +279,7 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     Fprop = Req/(eta_0bar*Hg) + mu_T/(tau_bar*delta)
 #    print (Req/(eta_0bar*Hg), mu_T/(tau_bar*delta))
     return Fprop
+#    return 3
 
 def ComputeAw(Aircraft, ISA_model, MTOWi, Sweepi):
     '''
@@ -303,6 +307,7 @@ def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
     e       = Aircraft.ParAnFP.e
     
     FWP1 = Theta1*Awi*np.sqrt(Awi/CL)
+    print(Awi, CL)
     FWP2 = Theta2/CL
     FWP3 = Fprop * (CDpcurl / CL + CL / (np.pi*Awi*e))
     
@@ -342,7 +347,7 @@ def ComputeCurveII(Aircraft, ISA_model, C_l, MTOWi):
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
     theta1=ComputeTheta1(Aircraft, ISA_model)
     eCurl = np.average([0.9,0.95])
-    CII=C_l**0.6*(2/3*Fprop/theta1/eCurl)**0.4
+    CII=C_l**0.6*(2/3*Fprop/theta1/eCurl/np.pi)**0.4
     
     return CII
 
@@ -435,16 +440,16 @@ def ComputeCurveC2(Aircraft, ISA_model,C_l):
     CDpCurl = CDpCurlFunc(Aircraft, ISA_model, np.deg2rad(5))
 #    print (CDpCurl)
     theta_1 = ComputeTheta1(Aircraft, ISA_model)
-    print (theta_1)
+#    print (theta_1)
     theta_2 = ComputeTheta2(Aircraft, ISA_model)
-    print (theta_2)
+#    print (theta_2)
     eCurl = np.average([0.9,0.95])
 #    print (eCurl)
     from scipy.optimize import fsolve
     def  f(A_w):
         b = (1-theta_2 /(theta_1*(A_w**1.5)*C_l**0.5))**(-0.5)
         print (A_w, b, theta_2 /(theta_1*(A_w**1.5)*C_l**0.5) )
-        f = Cl - (1.5*CDpCurl*np.pi*eCurl*A_w)**0.5*(1-theta_2 /\
+        f = C_l - (1.5*CDpCurl*np.pi*eCurl*A_w)**0.5*(1-theta_2 /\
           (theta_1*(A_w**1.5)*C_l**0.5))**(-0.5)
         return f
     C2=fsolve(f,15)
@@ -481,14 +486,3 @@ def ComputeCurveC2(Aircraft, ISA_model,C_l):
              q*CDS) + WresfMTOW* MTOWi
     
     return Wfmax
-
-#MTOWi=Conv.ParStruc.MTOW
-#Sweepi=np.deg2rad(5)
-#y1=np.linspace(4,12,20)
-#x1=GetOptCLCurve(Conv, ISA_model, MTOWi, Sweepi, y1)
-#
-x2=np.linspace(0.3,1,3,20)
-y2= ComputeCurveII(Conv, ISA_model, x2)
-
-import matplotlib.pyplot as plt
-plt.plot(x2,y2)

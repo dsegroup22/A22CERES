@@ -5,7 +5,7 @@ Created on Tue Jun  4 10:15:25 2019
 @author: tomhu
 """
 
-"""CRITICAL SECTION METHOD"""
+"""CRITICAL SECTION METHOD (not implemented yet)"""
 """
 INPUTS: Re, Mach, span
 OUTPUTS: CLMAX, AOA@CLMAX
@@ -14,50 +14,61 @@ everywhere), compute for a range of AOA the CL distribution, check if they
 are within a margin prior specified. Here the VLM used will be XFLR5 and data 
 from NASA SC(2)-0712
 """
-import os
-from pathlib import Path
-#import copy
-os.chdir(Path(__file__).parents[6])
-from A22DSE.Parameters.Par_Class_Conventional import Conv
-import matplotlib.pyplot as plt
-import numpy as np
+"""Code used to determine range of Reynolds and M"""
+#import os
+#from pathlib import Path
+##import copy
+#os.chdir(Path(__file__).parents[6])
+#from A22DSE.Parameters.Par_Class_Conventional import Conv
+#import matplotlib.pyplot as plt
+#import numpy as np
 
 
 #print(os.getcwd())
 
-def GetRe(rho, V, L, Visc):
-    Re = rho*V*L/Visc
-    return Re
-
-rho = [1.225, Conv.ParAnFP.rho_cruise]
-V = [84,109,206]
-L = [Conv.ParAnFP.c_t,Conv.ParAnFP.c_r]
-Visc = [1.802*10**-5 , 10**-5]
-R = 287
-T = [15+273.15, 216.650]
-gamma = 1.4
-
-Re = []
-M = []
-for i in range(len(rho)):
-    for Vi in V:
-        for Li in L:
-            Re.append(GetRe(rho[i], Vi, Li, Visc[i]))
-            M.append(Vi/(R*T[i]*gamma)**0.5)
-plot = False
-            
-if plot:
-    plt.figure(1)
-    plt.scatter(np.arange(len(Re)),Re)
-    plt.grid()
-    plt.figure(2)
-    plt.scatter(np.arange(len(M)),M)
-    plt.grid()
-    plt.show()
-    print(min(Re),max(Re))
+#def GetRe(rho, V, L, Visc):
+#    Re = rho*V*L/Visc
+#    return Re
+#
+#rho = [1.225, Conv.ParAnFP.rho_cruise]
+#V = [84,109,206]
+#L = [Conv.ParAnFP.c_t,Conv.ParAnFP.c_r]
+#Visc = [1.802*10**-5 , 10**-5]
+#R = 287
+#T = [15+273.15, 216.650]
+#gamma = 1.4
+#
+#Re = []
+#M = []
+#for i in range(len(rho)):
+#    for Vi in V:
+#        for Li in L:
+#            Re.append(GetRe(rho[i], Vi, Li, Visc[i]))
+#            M.append(Vi/(R*T[i]*gamma)**0.5)
+#plot = False
+#            
+#if plot:
+#    plt.figure(1)
+#    plt.scatter(np.arange(len(Re)),Re)
+#    plt.grid()
+#    plt.figure(2)
+#    plt.scatter(np.arange(len(M)),M)
+#    plt.grid()
+#    plt.show()
+#    print(min(Re),max(Re))
     
     
-"""Philips Alley Method"""
+"""Philips Alley Method (DOI: 10.2514/1.25640)"""
+"""
+INPUT: CL_cl (determined using XFLR5), sweep at the 0.25c, AR,
+ CLalfa of aircraft(determinedwith DATCOM, will be done with XFLR5),
+ Omega (twist = 0 for now), kLam1 and 2 are determined
+(DOI: 10.2514/1.25640) fig9 and 10, Clmax,  CL_Clmax_noOm_noSweep 
+(XFLR5 computing CL at alfa clmax no sweep no twist), CL_Clmax_noOm (same)
+OUTPUT: CLMAX
+Description: Method from Philips and Alley, suspiciously accurate to CFD
+simulations. The functions to determine coefficients are from the same paper.
+"""
 
 class CLMAX (object):
     def __init__(self, Aircraft):
@@ -69,25 +80,23 @@ class CLMAX (object):
         self.kLam1 = 0.25
         self.kLam2 = 0.6
         self.Clmax = Aircraft.ParAnFP.cl_max
-        self.CL_Clmax = self.CL_cl*self.Clmax
-        self.CL_Clmax_noOm = self.CL_Clmax
+        self.CL_Clmax_noOm_noSweep = 0.69
+        self.CL_Clmax_noOm = self.CL_Clmax_noOm_noSweep*0.9
         self.kLs = CLMAX.GetkLs(self)
         self.kLlam = CLMAX.GetkLlam(self)
         self.kLOmega = CLMAX.GetkLOmega(self)
         
         
-    def GetCLMAX(self):
-        
-        if self.Omega == 0:
-            CLMAXi = self.CL_cl * self.kLs*self.kLlam*(self.Clmax)
+    def GetCLMAX(self):        
+        if self.Omega == 0: #due to divide by zero error
+            CLMAXi = self.CL_Clmax_noOm_noSweep * self.kLs*self.kLlam*(self.Clmax)
         else:
-            CLMAXi = self.CL_cl * self.kLs*self.kLlam\
+            CLMAXi = self.CL_Clmax_noOm_noSweep * self.kLs*self.kLlam\
             *(self.clmax-self.kLOmega*self.CLa * self.Omega)
         return CLMAXi  
     
     
-    def GetkLs(self):
-        
+    def GetkLs(self):        
         kLs = 1 + (0.0042*self.AR - 0.068)*(1+2.3*self.CLa)*self.Omega\
         /self.Clmax
         return kLs        

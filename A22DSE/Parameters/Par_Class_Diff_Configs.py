@@ -31,6 +31,8 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled\
  import WingSurface_Thrust_FuelWeight
+from A22DSE.Models.AnFP.Current.Class_II.WingDesign.CLMaxPrediction \
+import CLMAX
 #from A22DSE.Models.CostModel.Current.TotalS import SummaryCost
 # =============================================================================
 #                               ISA MODEL
@@ -128,7 +130,7 @@ def ClassI_AndAHalf():
     #Struct = Conv.ParStruc
     #Layout.l_fuselage = 24 #[m] length of fuselage
     Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = (
-            GetTotalFuselageLength(Conv, 24, 2, 0.01))
+            GetTotalFuselageLength(Conv, 40, 2, 0.01))
     
     Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
     Layout.l_fuselage = np.sum(Layout.l_fuselage)
@@ -157,7 +159,7 @@ def ClassI_AndAHalf():
     Layout.c_rvt,Layout.c_tvt,Layout.bv,\
     Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ctail(Conv)
 
-    
+  
     
     
     
@@ -175,7 +177,7 @@ def ClassI_AndAHalf():
     Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
     
     
-
+    Conv.ParAnFP.CLMAX = CLMAX(Conv).GetCLMAX()
     
     #Horizontal, Vertical tail design
     

@@ -9,6 +9,7 @@ from math import *
 import sys
 sys.path.append('../')
 
+
 #Determine CD0
 
 def S_wet_wing(Aircraft):
@@ -90,5 +91,4 @@ def CD0(Aircraft):
     CD0_ac = C_fe * (S_wet/S)
     CD0_wing = C_fe *(S_wet_wing(Aircraft)/S)
     return CD0_ac, CD0_wing
-    
     
