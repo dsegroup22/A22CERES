@@ -10,50 +10,59 @@ import sys
 sys.path.append('../../../../../')
 from math import sqrt, atan, tan, pi, cos, radians
 
-def htail(Aircraft):
-    AnFP = Aircraft.ParAnFP
-#    taper_main = AnFP.taper
-    MAC = AnFP.MAC
-    sweep_main = AnFP.Sweep_LE
-    AR_main = AnFP.A
-    b_main = AnFP.b
-    Sw = AnFP.S
-    
-    #initial sizing
-    h_tail = Aircraft.ParLayoutConfig
-    h_S1 = h_tail.Sht
-    h_A = h_tail.Aht
-    h_taper = h_tail.trht
-    h_sweep25 = h_tail.Sweep25ht*pi/180
-    h_hta = h_tail.xht #tail arm
-    
-    V_cruise = AnFP.V_cruise
-    Vd = 1.4*V_cruise
-    kh = 1.1
-    h_sweep50 = atan(tan(h_sweep25)-(4/h_A)*(0.5-0.25)*((1-h_taper)/(1+h_taper)))
-    
-    Vh = 1.0 #based on military transport
-    h_S = Vh*Sw*MAC/h_hta
-    
-    mh = kh*h_S*(62*(h_S**0.2*Vd)/(1000*sqrt(cos(h_sweep50)))-2.5)
-    
-    #using the scissor plot can find the Sh required
-    
-#    ShS = 0.3
-#    Sh = 0.3*Sw #new horizotal tail surface area
-#    tail_diff = (Sh - h_S)/h_S
+#def htail(Aircraft):
+#    AnFP = Aircraft.ParAnFP
+##    taper_main = AnFP.taper
+#    MAC = AnFP.MAC
+#    sweep_main = AnFP.Sweep_LE
+#    AR_main = AnFP.A
+#    b_main = AnFP.b
+#    Sw = AnFP.S
 #    
-#    if tail_diff > 0.1:
-#        h_S = Sh
-#        mh = kh*h_S*(62*(h_S**0.2*Vd)/(1000*sqrt(cos(h_sweep50)))-2.5)
-#        
-#    if tail_diff < 0.03:
-#        h_S = Sh
-    
-     
-    return (h_S, h_hta)
+#    #initial sizing
+#    h_tail = Aircraft.ParLayoutConfig
+#    h_S1 = h_tail.Sht
+#    h_A = h_tail.Aht
+#    h_taper = h_tail.trht
+#    h_sweep25 = h_tail.Sweep25ht*pi/180
+#    h_hta = h_tail.xht #tail arm
+#    
+#    V_cruise = AnFP.V_cruise
+#    Vd = 1.4*V_cruise
+#    kh = 1.1
+#    h_sweep50 = atan(tan(h_sweep25)-(4/h_A)*(0.5-0.25)*((1-h_taper)/(1+h_taper)))
+#    
+#    Vh = 1.0 #based on military transport
+#    h_S = Vh*Sw*MAC/h_hta
+#    
+#    mh = kh*h_S*(62*(h_S**0.2*Vd)/(1000*sqrt(cos(h_sweep50)))-2.5)
+#    
+#    #using the scissor plot can find the Sh required
+#    
+##    ShS = 0.3
+##    Sh = 0.3*Sw #new horizotal tail surface area
+##    tail_diff = (Sh - h_S)/h_S
+##    
+##    if tail_diff > 0.1:
+##        h_S = Sh
+##        mh = kh*h_S*(62*(h_S**0.2*Vd)/(1000*sqrt(cos(h_sweep50)))-2.5)
+##        
+##    if tail_diff < 0.03:
+##        h_S = Sh
+#    
+#     
+#    return (h_S, h_hta)
 
 def convtail(Aircraft,ISA):
+    """ DESCRIPTION: calculates the tail parameters using Aircraft Design 
+    System Engineering Approach by Mohammad H. Sadraey in chapters for the 
+    horizontal tail sizing. 
+    INPUT: The wing parameters - taper, sweep, aspect ratio etc. 
+           V_cruise, M_cruise and h_cruise
+           Fusalage diameter
+    OUTPUT: ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,
+            l_arm_opt"""
+    
     Vh = 1 #based on military transport
     AnFP = Aircraft.ParAnFP
     taper_main = AnFP.taper
@@ -117,12 +126,13 @@ def convtail(Aircraft,ISA):
     beta = sqrt(1-M_cruise**2)
     
     CLalpha_w = 0.14 #from graphs in midterm  (per deg)  
+    deda = (2*CLalpha_w)/(pi*AR_main)
     downwash_0 = ((2*0.5)/(pi*AR_main))*(180/pi) #0.5 from CL_0 from midterm graph
     alpha_w = np.arange(-2, 5, 0.5)
-    downwash = downwash_0 + CLalpha_w*alpha_w
+    downwash = downwash_0 + deda*alpha_w
     
-#    plt.plot(downwash,alpha_w)
-#    plt.show()
+    plt.plot(downwash,alpha_w)
+    plt.show()
     
     mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
     
