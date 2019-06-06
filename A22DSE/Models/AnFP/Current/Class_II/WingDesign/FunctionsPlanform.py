@@ -115,10 +115,8 @@ def ComputeTheta1(Aircraft, ISA_model):
     rh = 0.10                               # ratio Wing weight / wing horiz.
     q_des = DynamicPressEq(Aircraft, ISA_model)
     bref = 100 #m
-    nult = 2.5
     tc   = Aircraft.ParAnFP.tc
-#    taper = Aircraft.ParAnFP.taper
-    taper = 1.
+    taper = Aircraft.ParAnFP.taper
     nep  = 0.36 * (1 + taper)**0.5
     sweep = np.deg2rad(5)
     
@@ -510,3 +508,8 @@ def ComputeCl(Aircraft,ISA_model):
     Cl=(CdpCurl+Theta2/Fprop)**(5/7)*(1.5*np.pi*eCurl)**(3/7)*\
     (Fprop/Theta1)**(2/7)
     return Cl
+
+
+def GetTransOptAw(Aircraft, ISA_model, CL_eq, MTOWi):
+    
+    return None
