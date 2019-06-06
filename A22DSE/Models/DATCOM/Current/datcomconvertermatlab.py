@@ -8,7 +8,7 @@ Created on Thu Jun  6 09:38:38 2019
 import numpy as np
 import os
 from pathlib import Path
-os.chdir(Path(__file__).parents[3])
+os.chdir(Path(__file__).parents[4])
 from A22DSE.Parameters.Par_Class_Conventional import Conv
 
 anfp=Conv.ParAnFP
