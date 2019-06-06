@@ -13,11 +13,11 @@ def FuselageWeight(Aircraft):
     struc = Aircraft.ParStruc
     config = Aircraft.ParLayoutConfig
     
-    h_fuselage=config.h_fuselage
-    w_fuselage=config.w_fuselage
+    h_fuselage=config.h_fuselage    #[m]
+    w_fuselage=config.w_fuselage    #[m]
 
-    l_fuselage=config.l_fuselage
-    K_inl=1.25
+    l_fuselage=config.l_fuselage    #[m]
+    K_inl=1.25                      #roskam page 77 part V
     MTOMlbs = struc.MTOW/Aircraft.ConversTool.lbs2kg
     q_Dpsf = anfp.q_dive/Aircraft.ConversTool.psf2Pa
     
@@ -37,14 +37,15 @@ def FuselageWeight(Aircraft):
     n_ult=2.5
     d_fuselage=np.average([h_fuselage,w_fuselage])    
     
-    C_shell=60 #[N/m^3]
-    Omega_fl=160 #[N/m^2]
+    C_shell=60          #[N/m^3]
+    Omega_fl=160        #[N/m^2]
     
     W_shell=C_shell*d_fuselage**2*l_fuselage
     W_bulkheads=C_shell*d_fuselage**2*l_ref
+    
     W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
     W_f_tor=W_shell+W_bulkheads+W_fl
-    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N,W_f_tor
+    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N,W_f_tor #[N]
 
 
 
