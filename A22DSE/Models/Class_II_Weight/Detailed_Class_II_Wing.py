@@ -51,7 +51,7 @@ def R_en(Aircraft):
     config = Aircraft.ParLayoutConfig
     prop = Aircraft.ParProp
     taper = anfp.taper                  #[-]
-    n_ult = 2.5                         #[-]
+    n_ult = anfp.n_ult                         #[-]
     Sweep_25 =anfp.Sweep_25             #[rad]
 
 
@@ -97,7 +97,7 @@ def W_nid(Aircraft):
     taper = anfp.taper                  #[-]
     Sweep_25 = anfp.Sweep_25            #[rad]
     
-    n_ult = 2.5                         #[-]
+    n_ult = anfp.n_ult                         #[-]
     x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
     +0.02*np.sin(Sweep_25)              #[-] = eta_cp
     n_eng = struc.N_engines             
@@ -169,7 +169,7 @@ def WingWeight(Aircraft):
     t_ref=1                     #[m] p351
     k_rib=0.5*10**-3            #[-] p351
     rho=1600                    #kg/m^3 Mid-Term
-    n_ult=2.5                   #[-]
+    n_ult=anfp.n_ult                  #[-]
     g=9.80665                   #m/s^2
 
     b,Sweep_EA,S,sigma_t,sigma_c,w_ic,b_st,R_ic,sigma_r=SharedParams(Aircraft)
