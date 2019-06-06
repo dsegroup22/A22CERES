@@ -221,7 +221,7 @@ class ParLayoutConfig(object):
          self.x_lemac = 14 #DUMMY VALUE #[m] xlocation of LEMAC, from nose
          self.y_cg= np.array([0.,0.]) #DUMMY VALUE #[m] y_cg range (most forward & aft) 
          self.z_cg= np.array([0.,0.]) #DUMMY VALUE #[m] z_cg range (most low & high) determined in gearlocation_quad
-         self.y_nose=1.44 #DUMMY VALUE # [m] front landing gear y-position for quad LG configuration
+         self.y_nose=0 # [m] front landing gear y-position for quad LG configuration
          self.z_cg_over_h_fus=0.6   #DUMMY VALUE
          
 class ParProp(object):
