@@ -22,6 +22,9 @@ from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,Posit
 from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg
+from A22DSE.Models.POPS.Current.payloadcalculationsellipticfus import PayloadtankLengthEllipse,\
+PayloadtankMassEllipse,PayloadcgEllipse
+
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled import WingSurface_Thrust_FuelWeight
 
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
