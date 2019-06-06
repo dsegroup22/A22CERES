@@ -24,8 +24,6 @@ from A22DSE.Models.Layout.Current.Area import FusAreas
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import xoe
 
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (Fuselage)
-
-
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
 from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
@@ -35,6 +33,7 @@ Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
 struc= Conv.ParStruc
 sc = Conv.ParCntrl
+Payload=Conv.ParPayload
 
 ClassIAircraft()
 ClassI_AndAHalf()
@@ -64,7 +63,7 @@ Conv.ParPayload.d_inlet=np.sqrt(4*Conv.ParPayload.A_inlet/np.pi)
 Conv.ParPayload.m_burner=BurnerMass(Conv)
 Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259. # scale length based on mass compared to original PT6A-68Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259*(0.48/Conv.ParPayload.d_inlet)**2 # scale length based on mass compared to original PT6A-68
 
-Payload=Conv.ParPayload
+
 
 Conv.ParPayload.m_tank=PayloadtankMass(Conv)
 Conv.ParPayload.l_tank=PayloadtankLength(Conv)
