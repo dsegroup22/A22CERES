@@ -15,10 +15,10 @@ def scplot(Aircraft):
     etha = 0.95
     M = anfp.M_cruise
     A = anfp.A   #8.
-    Lambda = 20.   #!!!!!!!!!!!!!
+    Lambda = Aircraft.ParAnFP.Sweep_LE   #!!!!!!!!!!!!!
     beta = sqrt(1-M**2)
     CLalphaw = 2*pi*A/(2.+ sqrt(4.+(A*beta/etha)**2*(1.+(tan(radians(Lambda))/beta)**2))) #/rad
-    bf = 1. #[m] wing span inside the fuselage
+    bf = Aircraft.ParLayoutConfig.w_fuselage #[m] wing span inside the fuselage
     b = anfp.b #[m] total wing span
     Snet = 42 #[m^2] S less the projection of the central wing part inside the fuselage
     S = anfp.S 
@@ -27,15 +27,15 @@ def scplot(Aircraft):
     
     Mh = anfp.M_cruise
     Ah = Aircraft.ParLayoutConfig.Aht       #2
-    Lambdah = 0
+    Lambdah = Aircraft.ParLayoutConfig.sweepLEht
     betah = sqrt(1-Mh**2)
     CLalphah = 2*pi*Ah/(2.+ sqrt(4.+(Ah*betah/etha)**2*(1.+(tan(radians(Lambdah))/betah)**2))) #/rad
     print(CLalphah)   #0.3
-    Sh = 10.
-    MAC = 1.5
-    lh = 15.  #negative for canard
-    xac = 30.
-    deda = 0.1
+    Sh = Aircraft.ParLayoutConfig.Sht #10
+    MAC = Aircraft.ParAnFP.MAC
+    lh = ParLayoutConfig.xht #15.  #negative for canard
+    xac = 0.25*MAC #30.
+    deda = 0.006 # 0.1 (0.006 from horizontaltail calculation)
     VhV = 1. #1 for T tail and canard
     CLAh = 1.2
     CLh = -0.8
@@ -45,7 +45,7 @@ def scplot(Aircraft):
     
     
     #---------stability curve--------------
-    xcg = np.arange(0.,100.,1.)
+    xcg = (np.arange(0.,100.,1.)-Aircraft.ParLayoutConfig.x_lemac)/MAC
     ShSs = 1/(CLalphah/CLalphaAh*(1-deda)*lh/MAC*VhV**2)*(xcg-xac+margin)
     
     

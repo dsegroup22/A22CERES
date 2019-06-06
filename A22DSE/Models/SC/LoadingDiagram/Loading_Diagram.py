@@ -31,10 +31,10 @@ def loadingdiag(Aircraft):
     bottom = oew #kg append real value
     payload_mlist = np.ones(payload_mass)
     
-    cg_in = 20
+    cg_in = x_lemac + 0.24*MAC
     
-    cg_payload = [cg_in]
-    wpayload = [oew]
+    cg_range = [cg_in]
+    wrange = [oew]
     
     #xf must be changed to the loading of the sulphur
     #loading for payload
@@ -42,19 +42,30 @@ def loadingdiag(Aircraft):
         cg = ((top + xf*payload_mlist[i]))/(bottom + payload_mlist[i])
         top = (top + xf*payload_mlist[i])
         bottom = bottom + payload_mlist[i]
-        cg_payload.append(cg)
-        wpayload.append(bottom)
+        cg_range.append(cg)
+        wrange.append(bottom)
  
     #loading for fuel
 #    for i in range(fuel_mass):
     
+    xfuel = xcg_wing
+    fuel_mlist = np.ones(int(fuel_mass))
     
-#    plt.plot(cg_payload,wpayload)
+    for i in range(int(fuel_mass)):
+        cg = ((top + xfuel*fuel_mlist[i]))/(bottom + fuel_mlist[i])
+        top = (top + xfuel*fuel_mlist[i])
+        bottom = bottom + fuel_mlist[i]
+        cg_range.append(cg)
+        wrange.append(bottom)
+        
+    
+#    plt.plot((cg_range-x_lemac)/MAC,wrange)
+#    plt.plot(cg_range,wrange)
 #    plt.show()
 ##        
     
     
-    return wpayload[0], wpayload[1], wpayload[1000]
+    return  fuel_mass
         
         
         

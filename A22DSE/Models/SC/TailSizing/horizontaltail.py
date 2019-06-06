@@ -117,9 +117,10 @@ def convtail(Aircraft,ISA):
     beta = sqrt(1-M_cruise**2)
     
     CLalpha_w = 0.14 #from graphs in midterm  (per deg)  
+    deda = (2*CLalpha_w)/(pi*AR_main)
     downwash_0 = ((2*0.5)/(pi*AR_main))*(180/pi) #0.5 from CL_0 from midterm graph
     alpha_w = np.arange(-2, 5, 0.5)
-    downwash = downwash_0 + CLalpha_w*alpha_w
+    downwash = downwash_0 + deda*alpha_w
     
 #    plt.plot(downwash,alpha_w)
 #    plt.show()
