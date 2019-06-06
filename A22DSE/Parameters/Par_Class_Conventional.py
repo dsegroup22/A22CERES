@@ -64,7 +64,7 @@ Layout.TotalSidearea,Layout.S_wet_fuselage=FusAreas(Conv)
 
 
 Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
-Conv.ParPayload.d_tank=Layout.d_fuselage
+Conv.ParPayload.d_tank=0.5*Layout.d_fuselage
 Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
 Conv.ParPayload.d_inlet=np.sqrt(4*Conv.ParPayload.A_inlet/np.pi)
 Conv.ParPayload.m_burner=BurnerMass(Conv)
