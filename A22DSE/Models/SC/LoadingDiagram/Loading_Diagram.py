@@ -9,11 +9,10 @@ import matplotlib.pyplot as plt
 
 def loadingdiag(Aircraft):
     """DESCRIPTION: loading diagram based on SAED lecture
+       INPUT: OEW, x_lemac, 
     """
     MAC = Aircraft.ParAnFP.MAC
-    
-    y_mac = Aircraft.ParAnFP.y_MAC
-    
+      
     l_fuselage = Aircraft.ParLayoutConfig.l_fuselage
     xf = 0.42 * l_fuselage
     #xpayload = np.array([0.8,0.7,0.6,0.5,0.4,0.3,0.2]*l_fuselage)
@@ -41,8 +40,8 @@ def loadingdiag(Aircraft):
     #xf must be changed to the loading of the sulphur
     #loading for payload
     for i in range(payload_mass):
-        cg = ((top + xf*payload_mlist[i]))/(bottom + payload_mlist[i])
-        top = (top + xf*payload_mlist[i])
+        cg = ((top + xcg_totalpayload_empty*payload_mlist[i]))/(bottom + payload_mlist[i])
+        top = (top + xcg_totalpayload_empty*payload_mlist[i])
         bottom = bottom + payload_mlist[i]
         cg_range.append(cg)
         wrange.append(bottom)
@@ -50,7 +49,7 @@ def loadingdiag(Aircraft):
     #loading for fuel
 #    for i in range(fuel_mass):
     
-    xfuel = xcg_wing
+    xfuel = xcg_w_global
     fuel_mlist = np.ones(int(fuel_mass))
     
     for i in range(int(fuel_mass)):
@@ -64,22 +63,11 @@ def loadingdiag(Aircraft):
 #    plt.plot((cg_range-x_lemac)/MAC,wrange)
 #    plt.plot(cg_range,wrange)
 #    plt.show()
-#        
+        
     
+       
     
-    #return  fuel_mass
-        
-        
-        
-        
-#    
-#f = 50
-#
-#payload = np.arange(50)
-#
-##for i in range(f):
-# #   print payload[i]
-    
+
     
     
     
