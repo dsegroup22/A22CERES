@@ -95,6 +95,21 @@ Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Sweep50vt,\
 Conv.ParLayoutConfig.cr_v, Conv.ParLayoutConfig.ct_v,\
 Conv.ParLayoutConfig.b_v, Conv.ParLayoutConfig.Wvt=vtail(Conv)
 
+#fuselage sizing
+Layout = Conv.ParLayoutConfig
+#Struct = Conv.ParStruc
+#Layout.l_fuselage = 24 #[m] length of fuselage
+Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = (
+        GetTotalFuselageLength(Conv, max(Conv.ParLayoutConfig.xvt, Conv.ParLayoutConfig.xht), 2, 0.01))
+    
+Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
+Layout.l_fuselage = np.sum(Layout.l_fuselage)
+    
+Layout.h_APU=0.2 #[m] dummy value
+    
+Layout.h_fuselage = Layout.dim_cabin[0]
+Layout.w_fuselage = Layout.dim_cabin[1]
+
 
 Layout.x_apex_wing=Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
 
