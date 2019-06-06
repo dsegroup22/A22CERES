@@ -253,49 +253,51 @@ def TWCruise(ws,Aircraft, ISA_model):
 
     return TW, v
 
-def Rangecorrect(ws0, Aircraft, ISA_model):
-    anfp = Aircraft.ParAnFP
-    struc = Aircraft.ParStruc
-    wfratioclimb = struc.wfratioclimb
-    CD0 = anfp.CD0
-    A = anfp.A
-    e = anfp.e
-    Range = anfp.s_cruise
-    SFC = anfp.SFC
-    Mdd = anfp.Mdd
-    hcruise = anfp.h_cruise
-    #INPUT: Initial wing loading, climb fuel fraction, CD0, A, e, Range, Specific Fuel Consumption
-    #Mach divergence and altitude
-    #OUTPUT: Fuel ratio relative to MTOW
-    dw = 0.001
-    w = 1
-    #Correct ws at cruise due to fuel burnt during takeoff taxi and climb
-    ws = ws0*(0.99*0.99*0.995*wfratioclimb)
-    rtotal = 0
-    atmos = ISA_model.ISAFunc([hcruise])
-    #Start loop that calculates range per weight burned.
-    while rtotal < Range:
-        #Calculate CL and v for Mdd
-        v = Mdd*np.sqrt(1.4*287.05*atmos[0])
-        CLtest = 2*ws/(atmos[2]*(v**2))
-        #If CLtest is larger than the optimum CL for range then
-        if CLtest > (CD0*np.pi*A*e/3):
-            CL = CLtest
-            v = v
-            
-        else:
-            CL = (CD0*np.pi*A*e/3)
-            v = np.sqrt(2*ws/(CL*atmos[2]))
-        #Calculate lift to drag for discritisation
-        LD = CL/(CD0+CL**2/(np.pi*A*e))
-        #Breguet delta range increase due to delta weight decrease
-        dr = v/SFC/LD*dw
-        rtotal += dr
-        #print(v,LD,rtotal,w)
-        w -= dw
-    wfratiocruise = 1/w
-    wfratio = 1-(0.99*0.99*0.995*wfratioclimb/wfratiocruise*0.99*0.992)
-    return wfratio
+# =============================================================================
+# def Rangecorrect(ws0, Aircraft, ISA_model):
+#     anfp = Aircraft.ParAnFP
+#     struc = Aircraft.ParStruc
+#     wfratioclimb = struc.wfratioclimb
+#     CD0 = anfp.CD0
+#     A = anfp.A
+#     e = anfp.e
+#     Range = anfp.s_cruise
+#     SFC = anfp.SFC
+#     Mdd = anfp.Mdd
+#     hcruise = anfp.h_cruise
+#     #INPUT: Initial wing loading, climb fuel fraction, CD0, A, e, Range, Specific Fuel Consumption
+#     #Mach divergence and altitude
+#     #OUTPUT: Fuel ratio relative to MTOW
+#     dw = 0.001
+#     w = 1
+#     #Correct ws at cruise due to fuel burnt during takeoff taxi and climb
+#     ws = ws0*(0.99*0.99*0.995*wfratioclimb)
+#     rtotal = 0
+#     atmos = ISA_model.ISAFunc([hcruise])
+#     #Start loop that calculates range per weight burned.
+#     while rtotal < Range:
+#         #Calculate CL and v for Mdd
+#         v = Mdd*np.sqrt(1.4*287.05*atmos[0])
+#         CLtest = 2*ws/(atmos[2]*(v**2))
+#         #If CLtest is larger than the optimum CL for range then
+#         if CLtest > (CD0*np.pi*A*e/3):
+#             CL = CLtest
+#             v = v
+#             
+#         else:
+#             CL = (CD0*np.pi*A*e/3)
+#             v = np.sqrt(2*ws/(CL*atmos[2]))
+#         #Calculate lift to drag for discritisation
+#         LD = CL/(CD0+CL**2/(np.pi*A*e))
+#         #Breguet delta range increase due to delta weight decrease
+#         dr = v/SFC/LD*dw
+#         rtotal += dr
+#         #print(v,LD,rtotal,w)
+#         w -= dw
+#     wfratiocruise = 1/w
+#     wfratio = 1-(0.99*0.99*0.995*wfratioclimb/wfratiocruise*0.99*0.992)
+#     return wfratio
+# =============================================================================
     
     
     
