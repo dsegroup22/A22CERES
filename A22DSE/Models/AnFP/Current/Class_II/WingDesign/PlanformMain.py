@@ -23,7 +23,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 # =============================================================================
 #
 # =============================================================================
-MTOW_I = 62e3
+MTOW_I = Aircraft.ParStruc.MTOW
 step = 20
 CL_eq = np.linspace(0.2, 3., step)
 MTOW = np.linspace(30000*9.81, 150000*9.81, step)
@@ -103,16 +103,16 @@ sweep = np.deg2rad(5)
 #CS = ax.contour(X1, CL_des, Y)
 #CT = ax.contour(X2, Z, Aw_des)
 #ax.clabel(CT, inline=1, fontsize=10)
-
-CL_des = []
-for i, Awi in enumerate(Aw):
-    CL_des.append(float(FunctionsPlanform.GetOptCLCurve(Conv, ISA_model, 
-                                                  MTOW_I, sweep, Awi)))
-    
-Aw_des = []
-for i, CL_eqi in enumerate(CL_eq):
-    Aw_des.append(float(FunctionsPlanform.ComputeCurveII(Conv, 
-                ISA_model, CL_eqi, MTOW_I)))
+#
+#CL_des = []
+#for i, Awi in enumerate(Aw):
+#    CL_des.append(float(FunctionsPlanform.GetOptCLCurve(Conv, ISA_model, 
+#                                                  MTOW_I, sweep, Awi)))
+#    
+#Aw_des = []
+#for i, CL_eqi in enumerate(CL_eq):
+#    Aw_des.append(float(FunctionsPlanform.ComputeCurveII(Conv, 
+#                ISA_model, CL_eqi, MTOW_I)))
 #plt.figure(1)
 #plt.plot(CL_des, list(Aw))
 #plt.plot(list(CL_eq), Aw_des)
