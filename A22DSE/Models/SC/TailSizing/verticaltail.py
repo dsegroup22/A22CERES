@@ -7,8 +7,8 @@ Created on Mon Jun  3 19:07:45 2019
 from math import pi,radians,sqrt,tan,atan,degrees,cos
 def vtail(Aircraft):
     lvi = Aircraft.ParLayoutConfig.xvt
-    Sv = Aircraft.ParLayoutConfig.Svt-25
-    Avi = Aircraft.ParLayoutConfig.Avt+0.3
+    Sv = Aircraft.ParLayoutConfig.Svt
+    Avi = Aircraft.ParLayoutConfig.Avt
     trvi = Aircraft.ParLayoutConfig.trvt
     swquart = Aircraft.ParLayoutConfig.Sweep25vt
     M = Aircraft.ParAnFP.M_cruise
@@ -29,9 +29,12 @@ def vtail(Aircraft):
     CLv = CLv0 + CLvbeta*beta+CLvdeltar*deltar 
     rho = 1.225  #takeoff air density
     Vmc = 45   #1.13*vstall!!!!!!
-    Lv = 0.5*rho*Vmc**2*Sv*CLv
-    oeidif =Lv*lvi-100000*5.5#Aircraft.ParLayoutConfig.y_loc_eng
-    
+#    Lv = 0.5*rho*Vmc**2*Sv*CLv
+#    oeidif =Lv*lvi-0.5*Aircraft.ParAnFP.T_to*Aircraft.ParLayoutConfig.y_engine#Aircraft.ParLayoutConfig.y_loc_eng
+    Svi = 0.5*Aircraft.ParAnFP.T_to*Aircraft.ParLayoutConfig.y_engine/(lvi*0.5*rho*Vmc**2*CLv)
+
+
+
     VL = 40  #landing speed !!!!!!!!!
     Vw = 12.861   #CS25 Mximum crosswind velocity (90degree)
     betaw = atan(Vw/VL)
@@ -49,7 +52,7 @@ def vtail(Aircraft):
     Vd = 1.4*Vc   #dive speed
     Kv = 1
     Wvt = Kv*(Sv*10.764)*(3.81*((Sv*10.764)**0.2*(Vd/0.5144)/1000/(cos(swhalf))**0.5)-0.287)*0.4536
-    
-    return(Sv,lvi,Avi,trvi,swquart,degrees(swhalf),crv,ctv,bv,Wvt)
+#    print(oeidif)
+    return(Svi,lvi,Avi,trvi,swquart,degrees(swhalf),crv,ctv,bv,Wvt)
     
     
