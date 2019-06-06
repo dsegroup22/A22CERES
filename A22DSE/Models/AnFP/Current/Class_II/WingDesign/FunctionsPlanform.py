@@ -493,7 +493,7 @@ def ComputeAw(Aircraft,ISA_model):
     MTOWi=60e3*9.81
     CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
-    Theta1=ComputeTheta2(Aircraft, ISA_model)
+    Theta1=ComputeTheta1(Aircraft, ISA_model)
     Theta2=ComputeTheta2(Aircraft, ISA_model)
     eCurl = np.average([0.9,0.95])
     Aw=(CdpCurl+Theta2/Fprop)**(3/7)*(1.5*np.pi*eCurl)**(-1/7)*(Fprop/Theta1)**(4/7)
@@ -505,7 +505,7 @@ def ComputeCl(Aircraft,ISA_model):
     MTOWi=60e3*9.81
     CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
-    Theta1=ComputeTheta2(Aircraft, ISA_model)
+    Theta1=ComputeTheta1(Aircraft, ISA_model)
     Theta2=ComputeTheta2(Aircraft, ISA_model)
     eCurl = np.average([0.9,0.95])
     Cl=(CdpCurl+Theta2/Fprop)**(5/7)*(1.5*np.pi*eCurl)**(3/7)*(Fprop/Theta1)**(2/7)
