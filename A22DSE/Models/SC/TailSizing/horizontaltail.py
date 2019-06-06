@@ -64,6 +64,7 @@ def convtail(Aircraft,ISA):
     Sw = AnFP.S
     V_cruise = AnFP.V_cruise
     h_cruise = np.array([20000]) #m 
+    M_cruise = 0.6 #AnFP.M_cruise
 
     lay = Aircraft.ParLayoutConfig
     Df = lay.d_fuselage #using diameter of cabin
@@ -112,6 +113,18 @@ def convtail(Aircraft,ISA):
     sweep_h50 = atan(tan(sweep_h)-(4/AR_h)*(0.5-0)*((1-tr_h)/(1+tr_h)))
     sweep_h25 =  atan(tan(sweep_h)-(4/AR_h)*(0.25-0)*((1-tr_h)/(1+tr_h)))
     
+    #-----incidence 
+    beta = sqrt(1-M_cruise**2)
+    
+    CLalpha_w = 0.14 #from graphs in midterm  (per deg)  
+    deda = (2*CLalpha_w)/(pi*AR_main)
+    downwash_0 = ((2*0.5)/(pi*AR_main))*(180/pi) #0.5 from CL_0 from midterm graph
+    alpha_w = np.arange(-2, 5, 0.5)
+    downwash = downwash_0 + deda*alpha_w
+    
+#    plt.plot(downwash,alpha_w)
+#    plt.show()
+    
     mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
     
     #using scissor plot and update values of Sh
@@ -141,7 +154,7 @@ def convtail(Aircraft,ISA):
     a = (T-Dto-mu*(MTOW*ISA.g0-(Lwf+0.5*ISA.rho0*Vr**2*CLh*Sh)))/MTOW
     
     betah = sqrt(1-AnFP.M_cruise**2)
-    CLalphah = 2*pi*AR_h/(2.+ sqrt(4.+(AR_h*betah/etha)**2*(1.+((tan(radians(AnFP.Sweep_50)))**2/betah**2)))) #/rad
+    CLalphah = 2*pi*AR_h/(2.+ sqrt(4.+(AR_h*betah/etha)**2*(1.+((tan(AnFP.Sweep_50))**2/betah**2)))) #/rad
 
     Cm_deltae = - CLalphah*etha*Vh*bebh*tau_e #rate of change of aircraft pitching moment coefficient wrt elevator deflection
     CL_deltae = CLalphah*etha*(Sh/Sw)*bebh*tau_e #rate of change of aircraft lift coefficient wrt to elevator deflection
@@ -164,6 +177,3 @@ def convtail(Aircraft,ISA):
 #    return (l_arm_opt,Sh,CL,CLh,mh,CL_to)
     return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
 #def rudder(Aircraft):
-    
-    
-    
