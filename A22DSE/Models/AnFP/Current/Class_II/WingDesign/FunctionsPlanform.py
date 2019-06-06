@@ -205,7 +205,8 @@ def CDpCurlFunc(Aircraft, ISA_model, Sweepi):
     AnFP = Aircraft.ParAnFP
     ISAFunc = ISA_model.ISAFunc
     h_cruise = Aircraft.ParAnFP.h_cruise
-    Re = ComputeRe()/2.4
+    Re = ComputeRe()
+#    print(Re)
     
     #COMPUTE Mach number
     a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
@@ -261,8 +262,8 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     #TODO: Add engine diameter in class structure
     Diameter = 1.61                     #[m]
     mu_T = 0.26
-    T = 113120.                                     #values for IAE V2531
-    T_TO = 139360.                                  #values for IAE V2531
+    T = 73800.*6                                     #values for IAE V2531
+#    T_TO = 139360.                                  #values for IAE V2531
     Cldes = 0.56                                    #airfoil
 
     #compute mu_0
@@ -486,3 +487,26 @@ def ComputeCurveC2(Aircraft, ISA_model,C_l):
              q*CDS) + WresfMTOW* MTOWi
     
     return Wfmax
+
+def ComputeAw(Aircraft,ISA_model):
+    Sweepi=np.deg2rad(5)
+    MTOWi=60e3*9.81
+    CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
+    Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
+    Theta1=ComputeTheta2(Aircraft, ISA_model)
+    Theta2=ComputeTheta2(Aircraft, ISA_model)
+    eCurl = np.average([0.9,0.95])
+    Aw=(CdpCurl+Theta2/Fprop)**(3/7)*(1.5*np.pi*eCurl)**(-1/7)*(Fprop/Theta1)**(4/7)
+    return Aw
+
+
+def ComputeCl(Aircraft,ISA_model):
+    Sweepi=np.deg2rad(5)
+    MTOWi=60e3*9.81
+    CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
+    Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
+    Theta1=ComputeTheta2(Aircraft, ISA_model)
+    Theta2=ComputeTheta2(Aircraft, ISA_model)
+    eCurl = np.average([0.9,0.95])
+    Cl=(CdpCurl+Theta2/Fprop)**(5/7)*(1.5*np.pi*eCurl)**(3/7)*(Fprop/Theta1)**(2/7)
+    return Cl

@@ -10,7 +10,9 @@ install:
 - python setup.py install
 
 script:
- - coverage run --source A22CERES -m pytest ./Tests 
+ - coverage run --source A22DSE -m pytest 
+ 
+after_success:
  - coveralls
 
 notifications:

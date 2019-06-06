@@ -118,7 +118,7 @@ def Payloadcg(Aircraft):
     xcg_tank=l_nose+l_cabin-(l_tank-d_tank)/2 # most aft possible position: cylindrical tank section ennds at end of cylindrical cabin section
     xcg_burner=xcg_tank+(l_tank+l_burner)/2 # placed directly aft of the tank
     x_burner_end=xcg_burner+l_burner/2 # check that the burner does not extend further than the fuselage
-    xcg_totalpayload_empty=(xcg_tank*m_tank+xcg_burner*m_burner/(m_tank+m_burner))
+    xcg_totalpayload_empty=((xcg_tank*m_tank+xcg_burner*m_burner)/(m_tank+m_burner))
     
     return(xcg_tank,xcg_burner,x_burner_end,xcg_totalpayload_empty)
 ##diameters=np.arange(1,2.5,0.01)
