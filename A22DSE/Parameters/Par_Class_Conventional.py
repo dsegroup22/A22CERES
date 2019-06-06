@@ -26,7 +26,8 @@ from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled impor
 
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
-from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW,ClassIIWeightIteration, WingWeightPlotter
+from A22DSE.Models.Class_II_Weight.Class_II_Total import (ClassIIWeight_MTOW,
+                                ClassIIWeightIteration, WingWeightPlotter)
 
 from A22DSE.Models.Layout.Current.Area import FusAreas
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg,xoe
@@ -35,7 +36,8 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
 
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
+from A22DSE.Parameters.Par_Class_Diff_Configs import (Conv, ISA_model, 
+                        ClassIAircraft, ClassI_AndAHalf, ComputeCD0)
 from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope

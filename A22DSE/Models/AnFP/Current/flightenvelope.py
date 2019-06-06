@@ -18,7 +18,8 @@ def flightenvelope(Aircraft):
     Kg = 0.6#88*mug/(5.3+mug)
     #ngmax = 1+Kg*50*Vc*1.944*Aircraft.ParAnFP.C_L_alpha_cruise/(498*Aircraft.ParStruc.MTOW*2.205/(Aircraft.ParAnFP.S*10.764))
     ngmax = 1+0.5*rho*Vc*Kg*Aircraft.ParAnFP.C_L_alpha_slow*15/(Aircraft.ParStruc.MTOW/Aircraft.ParAnFP.S)
-    print(nmax,Vs,Vd)
+    
+    return(nmax,Vs,Vd)
     
     
     
