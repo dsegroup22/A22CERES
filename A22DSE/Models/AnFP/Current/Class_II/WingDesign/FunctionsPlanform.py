@@ -276,6 +276,7 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     Fprop = Req/(eta_0bar*Hg) + mu_T/(tau_bar*delta)
 #    print (Req/(eta_0bar*Hg), mu_T/(tau_bar*delta))
     return Fprop
+#    return 8.5
 
 def ComputeAw(Aircraft, ISA_model, MTOWi, Sweepi):
     '''
@@ -303,6 +304,7 @@ def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
     e       = Aircraft.ParAnFP.e
     
     FWP1 = Theta1*Awi*np.sqrt(Awi/CL)
+    print(Awi, CL)
     FWP2 = Theta2/CL
     FWP3 = Fprop * (CDpcurl / CL + CL / (np.pi*Awi*e))
     
