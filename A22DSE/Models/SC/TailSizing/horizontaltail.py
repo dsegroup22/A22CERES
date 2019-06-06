@@ -53,7 +53,7 @@ from math import sqrt, atan, tan, pi, cos, radians
 #     
 #    return (h_S, h_hta)
 
-def convtail(Aircraft,ISA):
+def htail(Aircraft,ISA):
     """ DESCRIPTION: calculates the tail parameters using Aircraft Design 
     System Engineering Approach by Mohammad H. Sadraey in chapters for the 
     horizontal tail sizing. 
@@ -131,9 +131,9 @@ def convtail(Aircraft,ISA):
     alpha_w = np.arange(-2, 5, 0.5)
     downwash = downwash_0 + deda*alpha_w
     
-    plt.plot(downwash,alpha_w)
-    plt.show()
-    
+#    plt.plot(downwash,alpha_w)
+#    plt.show()
+#    
     mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
     
     #using scissor plot and update values of Sh

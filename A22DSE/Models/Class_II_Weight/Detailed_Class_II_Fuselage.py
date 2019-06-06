@@ -34,7 +34,7 @@ def FuselageWeight(Aircraft):
     
 #    torenbeek method  (Chapter 8.3.3)  
     l_ref=1.5 #[m]
-    n_ult=2.5
+    n_ult=anfp.n_ult
     d_fuselage=np.average([h_fuselage,w_fuselage])    
     
     C_shell=60          #[N/m^3]
