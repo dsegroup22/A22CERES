@@ -7,6 +7,10 @@ Created on Wed May 29 15:34:25 2019
 
 import sys
 sys.path.append('..')
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[1])
+#sys.path.append('..')
 from A22DSE.Parameters.Par_Class_Conventional import Conv
 from A22DSE.Parameters.Par_Class_Diff_Configs import ComputeCD0, ISA_model
 #from A22DSE.Parameters.TestAC280519 import CreateTestAC

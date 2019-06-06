@@ -16,27 +16,29 @@ from math import *
 # Chapter 11 2013
 
 def SharedParams(Aircraft):
+    #Function created for overlapping parameters used in the different functions 
+    #below
     anfp = Aircraft.ParAnFP
-    b=anfp.b
-    Sweep_EA=anfp.Sweep_50
-    S=anfp.S
-    sigma_t=480*10**6/1.5 #[n/m^2]
+    b=anfp.b                        #[m]
+    Sweep_EA=anfp.Sweep_50          #[rad]
+    S=anfp.S                        #[m^2]
+    sigma_t=480*10**6/1.5           #[n/m^2]
     sigma_c=0.4*sigma_t  #[n/m^2] http://home.iitk.ac.in/~mohite/axial_compressive.pdf
 
     
-    w_ic=0.25 #[m]
-    b_st=b/np.cos(Sweep_EA)
+    w_ic=0.25                       #[m] manhole width
+    b_st=b/np.cos(Sweep_EA)         #[m]
 
-    R_ic = 1+2*w_ic*b_st/S
-    sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1
+    R_ic = 1+2*w_ic*b_st/S          #[-]
+    sigma_r=(0.5*(R_ic/sigma_t+1.25/sigma_c))**-1 #N/m2
     return b,Sweep_EA,S,sigma_t,sigma_c,w_ic,b_st,R_ic,sigma_r
 
 def R_wg(Aircraft):
-    #Determines wing relief factor due to structure, can be more precies by
+    #Determines wing relief factor due to structure, can be more precise by
     #using exact y locations of wing group and CoP
     struc = Aircraft.ParStruc
 
-    MTOM = struc.MTOW
+    MTOM = struc.MTOW               #[kg]
     M_w = struc.Mw_Mtow * struc.MTOW #Dummy change functions in diff_configs
     #y_wg
     #y_cp  
