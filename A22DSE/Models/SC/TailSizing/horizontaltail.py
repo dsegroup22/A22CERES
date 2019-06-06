@@ -54,15 +54,15 @@ from math import sqrt, atan, tan, pi, cos, radians
 #    return (h_S, h_hta)
 
 def convtail(Aircraft,ISA):
-    '''' DESCRIPTION: calculates the tail parameters using Aircraft Design 
+    """ DESCRIPTION: calculates the tail parameters using Aircraft Design 
     System Engineering Approach by Mohammad H. Sadraey in chapters for the 
     horizontal tail sizing. 
     INPUT: The wing parameters - taper, sweep, aspect ratio etc. 
            V_cruise, M_cruise and h_cruise
            Fusalage diameter
     OUTPUT: ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,
-            l_arm_opt
-    ''''
+            l_arm_opt"""
+    
     Vh = 1 #based on military transport
     AnFP = Aircraft.ParAnFP
     taper_main = AnFP.taper
