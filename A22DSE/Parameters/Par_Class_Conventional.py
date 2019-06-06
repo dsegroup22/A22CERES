@@ -18,7 +18,6 @@ os.chdir(Path(__file__).parents[2])
 
 #print(os.getcwd())
 
-
 from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,PositionsLG_Tri)
 from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
