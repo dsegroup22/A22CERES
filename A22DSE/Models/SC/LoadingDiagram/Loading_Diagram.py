@@ -8,6 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def loadingdiag(Aircraft):
+    """DESCRIPTION: loading diagram based on SAED lecture
+    """
     MAC = Aircraft.ParAnFP.MAC
     
     y_mac = Aircraft.ParAnFP.y_MAC
@@ -62,10 +64,10 @@ def loadingdiag(Aircraft):
 #    plt.plot((cg_range-x_lemac)/MAC,wrange)
 #    plt.plot(cg_range,wrange)
 #    plt.show()
-##        
+#        
     
     
-    return  fuel_mass
+    #return  fuel_mass
         
         
         

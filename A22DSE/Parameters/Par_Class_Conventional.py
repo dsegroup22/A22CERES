@@ -38,7 +38,7 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
 from A22DSE.Models.SC.TailSizing.horizontaltail import convtail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
-
+#from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
 #shortcuts
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
@@ -127,6 +127,20 @@ struc.MTOW = ClassIIWeightIteration(Conv)
 #==============================================================================
 
 Conv.ParLayoutConfig.x_oe = xoe(Conv)
+
+
+
+# =============================================================================
+#                            Flight Envelope
+#==============================================================================
+#Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
+
+
+
+
+
+
+
 
 
 
