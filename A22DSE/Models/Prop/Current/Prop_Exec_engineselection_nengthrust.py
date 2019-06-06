@@ -59,24 +59,27 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
               Engine('F100-PW-200 A/B',106000,1467,70.8136259*10e-06,6.36)]
     
     if afterburner == False:
-        neng = []
+        neng = np.array([])
         for i in engnonaft:
-            neng.append(np.ceil(T/Lowbypassafter(Aircraft, i.thrust, ISA_model))*i.weight)
-        engsel = engnonaft[np.concatenate(np.where(neng == min(neng)))[0]]
+            if i.name == 'AE3007H':
+                neng = np.append(neng,[np.ceil(T/Highbypass(Aircraft, i.thrust, ISA_model))*i.weight])
+            else:
+                neng = np.append(neng,[np.ceil(T/Lowbypassafter(Aircraft, i.thrust, ISA_model))*i.weight])
+        engsel = engnonaft[np.concatenate(np.where(neng == np.amin(neng)))[0]]
         
         Aircraft.ParProp.Engine_name = engsel.name
-        Aircraft.ParStruc.N_engines = min(neng)/engsel.weight
+        Aircraft.ParStruc.N_engines = np.amin(neng)/engsel.weight
         Aircraft.ParProp.Engine_weight = engsel.weight
         Aircraft.ParAnFP.SFC = engsel.SFC 
         Aircraft.ParProp.Engine_cost = engsel.cost
     elif afterburner == True:
-        neng = []
+        neng = np.array([])
         for i in engaft:
-            neng.append(np.ceil(T/Lowbypassafter(Aircraft, i.thrust, ISA_model))*i.weight)
-        engsel = engnonaft[np.concatenate(np.where(neng == min(neng)))[0]]
+            neng = np.append(neng,[np.ceil(T/Lowbypassafter(Aircraft, i.thrust, ISA_model))*i.weight])
+        engsel = engaft[np.concatenate(np.where(neng == np.amin(neng)))[0]]
         
         Aircraft.ParProp.Engine_name = engsel.name
-        Aircraft.ParStruc.N_engines = min(neng)/engsel.weight
+        Aircraft.ParStruc.N_engines = np.amin(neng)/engsel.weight
         Aircraft.ParProp.Engine_weight = engsel.weight
         Aircraft.ParAnFP.SFC = engsel.SFC 
         Aircraft.ParProp.Engine_cost = engsel.cost

@@ -109,9 +109,9 @@ def ComputeTheta1(Aircraft, ISA_model):
     #CONSTANTS
         ##TODO: Get actual fuel mass from NOUT and RICK
         #TODO: Change taper and MZFW, Mfuel
-    WfuMTOW = 0.20
-    Mfuel = WfuMTOW*60e3
-    MZFW  =60e3 - Mfuel
+    WfuMTOW = Aircraft.ParStruc.wfratioclimb
+    Mfuel = WfuMTOW*Aircraft.ParStruc.MTOW
+    MZFW  = Aircraft.ParStruc.MTOW - Mfuel
     rh = 0.10                               # ratio Wing weight / wing horiz.
     q_des = DynamicPressEq(Aircraft, ISA_model)
     bref = 100 #m
@@ -252,8 +252,6 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
                                             # zero below Mcrit
     Hg = 4350*1000.                         # for conv. gas turbine engine fuel
     theta = 0.7519                          # rel. density
-    
-    
 
     q0 = ISA_model.rho0*0.5*AnFP.V_cruise**2
     a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
@@ -490,7 +488,7 @@ def ComputeCurveC2(Aircraft, ISA_model,C_l):
 
 def ComputeAw(Aircraft,ISA_model):
     Sweepi=np.deg2rad(5)
-    MTOWi=60e3*9.81
+    MTOWi= Aircraft.ParStruc.MTOW*9.81
     CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
     Theta1=ComputeTheta1(Aircraft, ISA_model)
@@ -503,7 +501,7 @@ def ComputeAw(Aircraft,ISA_model):
 
 def ComputeCl(Aircraft,ISA_model):
     Sweepi=np.deg2rad(5)
-    MTOWi=60e3*9.81
+    MTOWi=Aircraft.ParStruc.MTOW*9.81
     CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
     Theta1=ComputeTheta1(Aircraft, ISA_model)
