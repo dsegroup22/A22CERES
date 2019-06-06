@@ -7,7 +7,6 @@ Created on Tue Jun  4 22:37:03 2019
 from math import sqrt
 def flightenvelope(Aircraft):
     rho = 0.089
-    CLmax = 1.5  #!!!!!!!!!!!!!!!!!!
     Vs = sqrt(Aircraft.ParStruc.MTOW/(0.5*rho*CLmax*Aircraft.ParAnFP.S))
     nmax = 2.1+24000/(Aircraft.ParStruc.MTOW*2.205+10000)
     nmin = -0.4*nmax
