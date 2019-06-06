@@ -17,7 +17,8 @@ os.chdir(Path(__file__).parents[2])
 
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg
-
+from A22DSE.Models.POPS.Current.payloadcalculationsellipticfus import PayloadtankLengthEllipse,\
+PayloadtankMassEllipse,PayloadcgEllipse
 from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeightIteration
 from A22DSE.Models.Layout.Current.Area import FusAreas
 
@@ -62,7 +63,6 @@ Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
 Conv.ParPayload.d_inlet=np.sqrt(4*Conv.ParPayload.A_inlet/np.pi)
 Conv.ParPayload.m_burner=BurnerMass(Conv)
 Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259. # scale length based on mass compared to original PT6A-68Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259*(0.48/Conv.ParPayload.d_inlet)**2 # scale length based on mass compared to original PT6A-68
-
 
 
 Conv.ParPayload.m_tank=PayloadtankMass(Conv)

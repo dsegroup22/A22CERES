@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def PayloadtankVolumeEllipse(Aircraft):
+def PayloadtankVolume(Aircraft):
     payl=Aircraft.ParPayload
     m_payload=payl.m_payload
     rho_payload=payl.rho_payload
@@ -20,7 +20,7 @@ def PayloadtankVolumeEllipse(Aircraft):
 
 def PayloadtankLengthEllipse(Aircraft):
     payl=Aircraft.ParPayload
-    Layout = Conv.ParLayoutConfig
+    Layout = Aircraft.ParLayoutConfig
     m_payload=payl.m_payload
     rho_payload=payl.rho_payload
     h_fuselage=Layout.h_fuselage
@@ -36,7 +36,7 @@ def PayloadtankLengthEllipse(Aircraft):
 
 def PayloadtankMassEllipse(Aircraft):
     payl=Aircraft.ParPayload
-    Layout = Conv.ParLayoutConfig
+    Layout = Aircraft.ParLayoutConfig
     m_payload=payl.m_payload
     rho_payload=payl.rho_payload
     t_tank=payl.t_tank
