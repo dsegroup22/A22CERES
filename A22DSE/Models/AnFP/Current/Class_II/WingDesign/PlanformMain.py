@@ -113,10 +113,10 @@ Aw_des = []
 for i, CL_eqi in enumerate(CL_eq):
     Aw_des.append(float(FunctionsPlanform.ComputeCurveII(Conv, 
                 ISA_model, CL_eqi, MTOW_I)))
-plt.figure(1)
-plt.plot(CL_des, list(Aw))
-plt.plot(list(CL_eq), Aw_des)
-
-plt.show()
+#plt.figure(1)
+#plt.plot(CL_des, list(Aw))
+#plt.plot(list(CL_eq), Aw_des)
+#plt.axvline(x = Conv.ParAnFP.C_L_max_cruise, ymin = 0, ymax = 18)
+#plt.show()
 
 

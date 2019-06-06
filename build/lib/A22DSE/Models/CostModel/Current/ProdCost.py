@@ -6,13 +6,15 @@ Created on Thu May  9 08:55:35 2019
 """
 import numpy as np
 import sys
-sys.path.append('../')
-from All_dic_Parameters import Parameters as par
-from RoskamFuncList import Wampr, MHRManProg, MHRToolProg, MHRmanr, cmat
-from RoskamFuncList import MHRtoolr, eas
+sys.path.append('../../../../')
+#from All_dic_Parameters import Parameters as par
+from A22DSE.Models.CostModel.Current.RoskamFuncList import (
+        Wampr, MHRManProg, MHRToolProg, MHRmanr, cmat,MHRtoolr, eas)
 
-def CapcMFunc(MTOW, Vmax, Nprogram, CostEngine, 
-         N_Engine, N_m):
+#def CapcMFunc(MTOW, Vmax, Nprogram, CostEngine, 
+#         N_Engine, N_m):
+def CapcMFunc(Aircraft, ISA_model, CostEngine):
+
     #INPUT: TO-weight [kg], Vcruise [m/s]; #a/c produced in total; Engine cost
     #       Engine per a/c; #a/c produced to production standard
     #OUTPUT: Returns the total aircraft production cost
@@ -25,42 +27,49 @@ def CapcMFunc(MTOW, Vmax, Nprogram, CostEngine,
     # !!! NOTE: Engine and avionics are already adjusted to 2019 USD
     # !!! N_m: airplanes built to produciotn standard
     
-
-    Nrdte = par.get('Nrdte')                # Number of test ac, is between 2-8
-    Fdiff = par.get('Fdiff')                # Difficulty level of design 1 to 2
-    rmr = par.get('rmr')                    #
-    Fmat = par.get('Fmat')                  #Correction factor type of material
-    Rtr = par.get('rtr')                    # Tooling labor rate in $/manhr
-    Nrr = par.get('Nrr')                    # RDTE production rate
-    Nrm = par.get('Nrm')                    # Airplane manu. rate to prod. std
+    par = Aircraft.ParCostLst
+    MTOW = Aircraft.ParStruc.MTOW
+    ConversTool = Aircraft.ConversTool
+    Struct = Aircraft.ParStruc
+    
+    Nrdte = par.Nrdte                # Number of test ac, is between 2-8
+    Fdiff = par.Fdiff                # Difficulty level of design 1 to 2
+    rmr = par.rmr                    #
+    Fmat = par.Fmat                  #Correction factor type of material
+    Rtr = par.rtr                    # Tooling labor rate in $/manhr
+    Nrr = par.Nrr                    # RDTE production rate
+    Nprogram = par.Nprogram          # Total amount of aircraft produced during
+                                     # program
+    N_Engine = Struct.N_engines
+    N_m = Nprogram
+    Nrm = par.Nrm                    # Airplane manu. rate to prod. std
     Rtm = Rtr                               # Tooling labor rate for manufact.
-    kg2lbs = 1/par.get('lbs2kg')
-    ms2kts = 1/par.get('kts2ms')
-    CEFLabor = par.get('CEF8919')                  # Cost expansion factor
-    CEFTools = par.get('CEF7019')
+    kg2lbs = 1/ConversTool.lbs2kg
+    CEFLabor = par.CEF8919                  # Cost expansion factor
+    CEFTools = par.CEF7019
     MTOW = kg2lbs * MTOW
     
     # change to EAS and kts
-    Vmax = Vmax * np.sqrt(par.get('rho_cruise')/par.get('rho_SL'))*ms2kts
+    Vmax = eas(Aircraft, ISA_model)
     
 #    # convert engine cost (2019) to year 1989 USD
 #    CostEngine = CostEngine / CEFTools
     
     def CmanMFunc():
-        CMHRManProg = MHRManProg(MTOW, Vmax, Nprogram)*rmr # rmm == rmr
-        CMHRManr = MHRmanr(MTOW, Vmax, Nrdte, Fdiff)*rmr
+        CMHRManProg = MHRManProg(MTOW, Vmax, Nprogram, Fdiff)*rmr # rmm == rmr
+        CMHRManr = MHRmanr(MTOW,Vmax,Nrdte,Fdiff)*rmr
         return np.sum([CMHRManProg, CMHRManr])*CEFLabor
     
 
     def CmatMFunc():
         Cmatprogr = 37.632*Fmat*np.power(Wampr(MTOW), 0.689)*\
         np.power(Vmax, 0.624)*np.power(Nprogram, 0.792)
-        Cmatr = cmat(MTOW, Vmax, Nrdte, Fmat)
+        Cmatr = cmat(MTOW,Vmax,Nrdte,Fmat, CEFTools)
         return (Cmatprogr - Cmatr)*CEFTools
  
     def CtoolM():
-        CMHRtoolr = MHRtoolr(MTOW, Vmax, Nrdte, Nrr, Fdiff)
-        CMHRToolProg = MHRToolProg(MTOW, Wampr, Vmax, Nprogram, Nrm)
+        CMHRtoolr = MHRtoolr(MTOW,Vmax,Nrdte,Nrr,Fdiff)
+        CMHRToolProg = MHRToolProg(MTOW, Wampr, Vmax, Nprogram, Nrm, Fdiff)
         
         return (CMHRtoolr*Rtm + CMHRToolProg*Rtr)*CEFLabor
     
@@ -84,21 +93,30 @@ def CapcMFunc(MTOW, Vmax, Nprogram, CostEngine,
     return np.sum(C_Avionics+SumCost_excl_av)
 
 
-def CaedMFunc(MTOW, Vmax, Nprogram):
-    #INPUT
-    #OUPUT
-    #DESCRIPTION
+def CaedMFunc(Aircraft, ISA_model):
+    #INPUT: Aircraft Object, ISA properties calculator
+    #OUPUT: Cost of airframe and engineering design adjusted for inflation
+    #DESCRIPTION: 1 of the 4 parts that consists of the total acq. & man. costs
+    #            AED costs are adjusted for inflation: 1989 - 2019. See Roskam.
+
+    par = Aircraft.ParCostLst
+    MTOW = Aircraft.ParStruc.MTOW
+    ConversTool = Aircraft.ConversTool
+#    Struct = Aircraft.ParStruc
     
-    Nrdte = par.get('Nrdte')                # Number of test ac, is between 2-8
-    Fdiff = par.get('Fdiff')                # Difficulty level of design 1 to 2
-    rer = par.get('rer')                      # Engineering manhour rate
+    Nrdte = par.Nrdte                # Number of test ac, is between 2-8
+    Fdiff = par.Fdiff                # Difficulty level of design 1 to 2
+    rer = par.rer                      # Engineering manhour rate
+    Nprogram = par.Nprogram          # Total amount of aircraft produced during
     rem = rer                               # Engineering manhour rate
-    Fcad = par.get('Fcad')                    # CAD model factor
-    kg2lbs = 1/par.get('lbs2kg')
-    CEFLabor = par.get('CEF8919')                  # Cost expansion factor
+    Fcad = par.Fcad                    # CAD model factor
+    kg2lbs = 1/ConversTool.lbs2kg
+    CEFLabor = par.CEF8919                  # Cost expansion factor
     MTOW = kg2lbs * MTOW
     
-    Vmax = eas(Vmax)
+    # change to EAS and kts
+    Vmax = eas(Aircraft, ISA_model)
+    
     def MHRaedProg():
         return 0.0396*Wampr(MTOW)**0.791*Vmax**1.526*Nprogram**0.183*Fdiff*Fcad
     
@@ -111,43 +129,53 @@ def CaedMFunc(MTOW, Vmax, Nprogram):
     return np.sum([CMHRaedr, CMHRaedProg])*CEFLabor
 
 
-def CftoMFunc(N_m):
-    #INPUT
-    #OUPUT
-    #DESCRIPTION    
+def CftoMFunc(Aircraft):
+    #INPUT: Aircraft object
+    #OUPUT: returns the flight test operation costs
+    #DESCRIPTION: Returns the flight test operation costs according to Roskam.
+    #               However, the cost are hard-coded to 0 since the design is
+    #               still in CLass I phase and can be neglected.
     
     
-    tpft = par.get('tpft')
-    Fftoh = par.get('Fftoh')
+    par = Aircraft.ParCostLst  
+    tpft = par.tpft
+    Fftoh = par.Fftoh
+    N_m = par.Nprogram
+    
     COpspH = None
     
     if COpspH == None:
         return 0
     return N_m*(COpspH)*tpft*Fftoh
 
-def CfinMFunc(CaedM, CapcM, CftoM):
-    #INPUT
-    #OUPUT
-    #DESCRIPTION    
+def CfinMFunc(Aircraft, CaedM, CapcM, CftoM):
+    #INPUT: Aircraft and the 3 out 4 parts of the total acq. & man. cost
+    #OUPUT: Returns the cost to finance the Acq. and Man. Cost.
+    #DESCRIPTION: Financing cost is a fixed percentage of the AED, APC, and FTO
+    #            cost, see Roskam.
     
-    
-    FfinM = par.get('FfinM')
-    return np.sum([CaedM,CapcM, CftoM])/(1-FfinM)
+    par = Aircraft.ParCostLst
+    FfinM = par.FfinM
+    return np.sum([CaedM,CapcM, CftoM])*(FfinM)
 
 def CproMFunc(TotalManCost):
-    #INPUT
-    #OUPUT
-    #DESCRIPTION
+    #INPUT: Total manufacturing cost, i.e. AED, APC, FTO, FIN
+    #OUPUT: Returns the cost of profit
+    #DESCRIPTION: Manufacturers of the aircraft also want a percentage of the
+    #               profit. Therefore, this desired profit is seen as cost.
     
     PercProfit = 0.10
     return TotalManCost*PercProfit
 
-def CmanFunc(MTOW, Vmax, Nprogram, CostEngine, N_Engine, N_m):
+#def CmanFunc(MTOW, Vmax, Nprogram, CostEngine, N_Engine, N_m):
+def CmanFunc(Aircraft, ISA_model, CostEngine):
+    #INPUT: Aircraft object, ISA properties object, Cost of Engine
+    #OUPUT: Returns the total manufacturing cost
+    #DESCRIPTION: Calls the cost functions of APC, AED< FTO, FIN to output the 
+    #               total manufacturing cost
     
-    
-    
-    CapcM = CapcMFunc(MTOW, Vmax, Nprogram, CostEngine, N_Engine, N_m)
-    CaedM = CaedMFunc(MTOW, Vmax, Nprogram)
-    CftoM = CftoMFunc(N_m)
-    CfinM = CfinMFunc(CaedM, CapcM, CftoM)
-    return np.sum([CapcM, CaedM, CftoM, CfinM])/10**9
+    CapcM = CapcMFunc(Aircraft, ISA_model, CostEngine)
+    CaedM = CaedMFunc(Aircraft, ISA_model)
+    CftoM = CftoMFunc(Aircraft)
+    CfinM = CfinMFunc(Aircraft, CaedM, CapcM, CftoM)
+    return np.sum([CapcM, CaedM, CftoM, CfinM])
