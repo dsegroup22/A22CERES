@@ -53,10 +53,10 @@ def scplot(Aircraft):
     
     
     #------------plot--------------------
-    plt.plot(xcg-Aircraft.ParLayoutConfig.x_lemac,ShSc,"r-",xcg,ShSs,"g--")
-    plt.ylim(0,1)
-    #plt.xlim(0,50)
-    plt.show()
+#    plt.plot(xcg-Aircraft.ParLayoutConfig.x_lemac,ShSc,"r-",xcg,ShSs,"g--")
+#    plt.ylim(0,1)
+#    #plt.xlim(0,50)
+#    plt.show()
     
    # return xac, MAC
 
