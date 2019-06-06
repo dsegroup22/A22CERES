@@ -21,7 +21,7 @@ os.chdir(Path(__file__).parents[2])
 from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,PositionsLG_Tri)
 from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
-BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass
+BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled import WingSurface_Thrust_FuelWeight
 
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
@@ -74,14 +74,9 @@ Payload=Conv.ParPayload
 
 Conv.ParPayload.m_tank=PayloadtankMass(Conv)
 Conv.ParPayload.l_tank=PayloadtankLength(Conv)
-#Conv.ParPayload.xcg_burner=0.85*Layout.l_fuselage # burner @ 85 % of fuselage
-#Conv.ParPayload.xcg_tank=Conv.ParPayload.xcg_burner-(Conv.ParPayload.l_tank+Conv.ParPayload.l_burner)/2 # most aft poossible position: place tank directly ahead of the payload
-Conv.ParPayload.xcg_tank=Layout.l_nose+Layout.l_cabin-(Conv.ParPayload.l_tank-Conv.ParPayload.d_tank)/2 # most aft possible position: cylindrical tank section ennds at end of cylindrical cabin section
-Conv.ParPayload.xcg_burner=Conv.ParPayload.xcg_tank+(Conv.ParPayload.l_tank+Conv.ParPayload.l_burner)/2 # placed directly aft of the tank
-Conv.ParPayload.x_burner_end=Conv.ParPayload.xcg_burner+Conv.ParPayload.l_burner/2 # check that the burner does not extend further than the fuselage
-Conv.ParPayload.xcg_totalpayload_empty=(Payload.xcg_tank*Payload.m_tank+Payload.xcg_burner*Payload.m_burner)\
-/(Payload.m_tank+Payload.m_burner)
 
+
+Payload.xcg_tank,Payload.xcg_burner,Payload.x_burner_end,Payload.xcg_totalpayload_empty=Payloadcg(Conv)
 
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
