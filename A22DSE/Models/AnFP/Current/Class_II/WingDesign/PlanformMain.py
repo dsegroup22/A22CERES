@@ -25,11 +25,9 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 #step = 50
 #CL_eq = np.linspace(0.2, 1.5, step)
 #MTOW = np.linspace(30000*9.81, 150000*9.81, step)
-
 #Sweep = np.deg2rad(np.linspace(0, 5, 10))
 #W_num = 10000
 #W_denum = 0.76
-#sweep = np.deg2rad(25)
 #
 ##def GetMTOW(CL_eqi, MTOWi, Awi):
 ##
@@ -85,7 +83,6 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 ## =============================================================================
 ##                     Constraint C2: Wing & Tail Fraction
 ## =============================================================================
-
 
 # =============================================================================
 #            2D IMPLEMENTATION OF TORENBEEK CLASS II PLANFORM DESIGN
@@ -144,13 +141,3 @@ def GetARTransWing(Aircraft, ISAmodel, step, plot):
 #CS = ax.contour(X1, CL_des, Y)
 #CT = ax.contour(X2, Z, Aw_des)
 #ax.clabel(CT, inline=1, fontsize=10)
-#
-
-#plt.figure(1)
-#plt.plot(CL_des, list(Aw))
-#plt.plot(list(CL_eq), Aw_des)
-#plt.plot(list(CL_eq), AwTrans_des)
-#plt.axvline(x = Conv.ParAnFP.C_L_max_cruise, ymin = 0, ymax = 18)
-#plt.show()
-
-
