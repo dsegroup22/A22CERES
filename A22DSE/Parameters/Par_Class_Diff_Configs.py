@@ -33,6 +33,8 @@ from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled\
  import WingSurface_Thrust_FuelWeight
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign.CLMaxPrediction \
 import CLMAX
+from A22DSE.Models.AnFP.Current.InitialSizing.Sweep import wing_sweep
+
 #from A22DSE.Models.CostModel.Current.TotalS import SummaryCost
 # =============================================================================
 #                               ISA MODEL
@@ -84,12 +86,14 @@ def ClassIAircraft():
     Conv.ParAnFP.wm_un = 0          #Undercarriage in the wing on (1) or off (0)
     #Conv.ParAnFP.CD0 = 0.008
     Conv.ParProp.Engine_weight = 2484           #[kg] weight per engine
+    Conv.ParAnFP.tc = 0.12
 
     
     
     #parameters from functions
     
     ##ANFP parameters
+    Conv.ParAnFP.Sweep25 = np.rad2deg(wing_sweep(Conv))
     Conv.ParAnFP.s_cruise = CruiseRange(Conv)
     Conv.ParAnFP.t_cruise = CruiseTime(Conv, ISA_model)
     Conv.ParAnFP.V_cruise = Conv.ParAnFP.Get_V_cruise()
@@ -115,7 +119,7 @@ def ClassI_AndAHalf():
 
     Conv.ParAnFP.cl_alpha,Conv.ParAnFP.cl_max,Conv.ParAnFP.tc,Conv.ParAnFP.Cd0,\
     Conv.ParAnFP.cm_0 = Airfoil(Conv)
-
+    Conv.ParAnFP.Sweep25 = wing_sweep(Conv)
     
     Conv.ParAnFP.LD_airfoil = 90 #lift to drag ratio [-] at Cldes = 0.55 obtained from graph of Cl/Cd
     
@@ -157,7 +161,8 @@ def ClassI_AndAHalf():
     Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
     Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
     Layout.c_rvt,Layout.c_tvt,Layout.bv,\
-    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ctail(Conv)
+    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt,\
+    Conv.ParLayoutConfig.mac_h,Conv.ParLayoutConfig.mac_v= ctail(Conv)
 
   
     
