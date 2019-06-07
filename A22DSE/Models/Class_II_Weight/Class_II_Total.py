@@ -50,8 +50,7 @@ def ClassIIWeight_MTOW(Aircraft):
     #get the wing group and fuselage group
     Layout.x_lemac, Aircraft.ParStruc.Weight_FusGroup,Aircraft.ParStruc.Weight_WingGroup,\
     Layout.xcg_fuselagegroup = oecg(Aircraft)
-    Layout.x_lemacv=Conv.ParAnFP.MAC*Layout.x_oe+Layout.x_lemacw+Layout.xv-0.25*Layout.mac_v
-    Layout.x_lemach=Conv.ParAnFP.MAC*Layout.x_oe+Layout.x_lemacw+Layout.xh-0.25*Layout.mac_h
+
     #calculate new OEW and new MTOW
     struc.OEW = struc.Weight_WingGroup + struc.Weight_FusGroup #[kg]
     MTOW = struc.OEW + struc.FW + Aircraft.ParPayload.m_payload

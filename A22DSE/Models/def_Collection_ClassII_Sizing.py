@@ -88,6 +88,10 @@ def ClassIISizing(Conv):
     #vertical
     vtail(Conv)
     
+    #positions lemacs of tails
+    Layout.x_lemacv=Conv.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xvt-0.25*Layout.mac_v
+    Layout.x_lemach=Conv.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xht-0.25*Layout.mac_h
+    
     #fuselage sizing
 
     #Struct = Conv.ParStruc
@@ -101,7 +105,7 @@ def ClassIISizing(Conv):
     Layout.w_fuselage = Layout.dim_cabin[1]
     
     
-    Layout.x_apex_wing=Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
-    Layout.x_apex_ht=Layout.x_lemach-Layout.y_MACh*np.tan(Layout.sweepLEht)
-    Layout.x_apex_vt=Layout.x_lemacv-Layout.y_MACv*np.tan(Layout.sweepLEvt)
+    Layout.x_apex_wing = Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
+    Layout.x_apex_ht = Layout.x_lemach-Layout.y_MACh*np.tan(Layout.sweepLEht)
+    Layout.x_apex_vt = Layout.x_lemacv-Layout.y_MACv*np.tan(Layout.sweepLEvt)
 
