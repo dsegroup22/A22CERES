@@ -55,5 +55,5 @@ def flightenvelope(Aircraft):
 #    plt.plot(x_gl1,y_gl1)
 #    plt.plot(x_gl2,y_gl2)
 #    plt.show()
-#    print(np.size(xaxis),np.size(y_acu))
+
 
