@@ -41,11 +41,8 @@ ComputeCD0(Conv)
 
 #CLASS II
 ClassIISizing(Conv)
-print(Layout.l_freq,Layout.l_fuselage)
-print('hi' )
 ClassIIWeightIteration(Conv)
-print('hi')
-print(Layout.l_freq,Layout.l_fuselage)
+
 
 
 
