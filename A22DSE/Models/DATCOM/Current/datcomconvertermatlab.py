@@ -8,7 +8,7 @@ Created on Thu Jun  6 09:38:38 2019
 import numpy as np
 import os
 from pathlib import Path
-os.chdir(Path(__file__).parents[3])
+os.chdir(Path(__file__).parents[4])
 from A22DSE.Parameters.Par_Class_Conventional import Conv
 
 anfp=Conv.ParAnFP
@@ -104,52 +104,52 @@ for line in lines:
         line='SSPNE_WG='+str(SSPNE_WG)+';\n'
     if line[:7]=='SSPN_WG':
         line='SSPN_WG='+str(SSPN_WG)+';\n'
-    if line[:]=='CHRDR_WG':
+    if line[:8]=='CHRDR_WG':
         line='CHRDR_WG='+str(CHRDR_WG)+';\n'
-    if line[:]=='SAVSI_WG':
+    if line[:8]=='SAVSI_WG':
         line='SAVSI_WG='+str(SAVSI_WG)+';\n'
-    if line[:]=='CHSTAT_WG':
+    if line[:9]=='CHSTAT_WG':
         line='CHSTAT_WG='+str(CHSTAT_WG)+';\n'
-    if line[:]=='TWISTA_WG':
+    if line[:9]=='TWISTA_WG':
         line='TWISTA_WG='+str(TWISTA_WG)+';\n'
-    if line[:]=='DHDADI_WG':
+    if line[:9]=='DHDADI_WG':
         line='DHDADI_WG='+str(DHDADI_WG)+';\n'
-    if line[:]=='TC_WG':
+    if line[:5]=='TC_WG':
         line='TC_WG='+str(TC_WG)+';\n'
-    if line[:]=='CHRDTP_HT':
+    if line[:9]=='CHRDTP_HT':
         line='CHRDTP_HT='+str(CHRDTP_HT)+';\n'
-    if line[:]=='SSPNE_HT':
+    if line[:8]=='SSPNE_HT':
         line='SSPNE_HT='+str(SSPNE_HT)+';\n'
-    if line[:]=='SSPN_HT':
+    if line[:7]=='SSPN_HT':
         line='SSPN_HT='+str(SSPN_HT)+';\n'
-    if line[:]=='CHRDR_HT':
+    if line[:8]=='CHRDR_HT':
         line='CHRDR_HT='+str(CHRDR_HT)+';\n'
-    if line[:]=='SAVSI_HT':
+    if line[:8]=='SAVSI_HT':
         line='SAVSI_HT='+str(SAVSI_HT)+';\n'
-    if line[:]=='CHSTAT_HT':
+    if line[:9]=='CHSTAT_HT':
         line='CHSTAT_HT='+str(CHSTAT_HT)+';\n'
-    if line[:]=='TWISTA_HT':
+    if line[:9]=='TWISTA_HT':
         line='TWISTA_HT='+str(TWISTA_HT)+';\n'
-    if line[:]=='DHDADI_HT':
+    if line[:9]=='DHDADI_HT':
         line='DHDADI_HT='+str(DHDADI_HT)+';\n'
-    if line[:]=='CHRDTP_VT':
+    if line[:9]=='CHRDTP_VT':
         line='CHRDTP_VT='+str(CHRDTP_VT)+';\n'
-    if line[:]=='SSPNE_VT':
+    if line[:8]=='SSPNE_VT':
         line='SSPNE_VT='+str(SSPNE_VT)+';\n'
-    if line[:]=='SSPN_VT':
+    if line[:7]=='SSPN_VT':
         line='SSPN_VT='+str(SSPN_VT)+';\n'
-    if line[:]=='CHRDR_VT':
+    if line[:8]=='CHRDR_VT':
         line='CHRDR_VT='+str(CHRDR_VT)+';\n'
-    if line[:]=='SAVSI_VT':
+    if line[:8]=='SAVSI_VT':
         line='SAVSI_VT='+str(SAVSI_VT)+';\n'
-    if line[:]=='SAVSI_VT':
-        line='SAVSI_VT='+str(SAVSI_VT)+';\n'
+    if line[:9]=='CHSTAT_VT':
+        line='CHSTAT_VT='+str(CHSTAT_VT)+';\n'
 
        
 file.close()
 
 
-file=open('A22DSE\DATCOM\Current\PlotDatcom3d_CERESorig.m','w')
+file=open('A22DSE\DATCOM\Current\PlotDatcom3d_CERES.m','w')
 for line in lines:
     file.write(line)
 file.close()

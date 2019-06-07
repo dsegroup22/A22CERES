@@ -98,7 +98,7 @@ def ComputeCL_eq(ISA_model, MTOWi, Aircraft):
     
 #    print(CL_hat)
     return CL_hat
-def ComputeTheta1(Aircraft, ISA_model):
+def ComputeTheta1(Aircraft, ISA_model, Sweepi):
     '''
     INPUT: returns dimless. quasi-analytical parameter for transonic planform
     sizing
@@ -109,21 +109,19 @@ def ComputeTheta1(Aircraft, ISA_model):
     #CONSTANTS
         ##TODO: Get actual fuel mass from NOUT and RICK
         #TODO: Change taper and MZFW, Mfuel
-    WfuMTOW = 0.20
-    Mfuel = WfuMTOW*60e3
-    MZFW  =60e3 - Mfuel
+    WfuMTOW = Aircraft.ParStruc.wfratioclimb
+    Mfuel = WfuMTOW*Aircraft.ParStruc.MTOW
+    MZFW  = Aircraft.ParStruc.MTOW - Mfuel
     rh = 0.10                               # ratio Wing weight / wing horiz.
     q_des = DynamicPressEq(Aircraft, ISA_model)
     bref = 100 #m
-    nult = 2.5
     tc   = Aircraft.ParAnFP.tc
-#    taper = Aircraft.ParAnFP.taper
-    taper = 1.
+    taper = Aircraft.ParAnFP.taper
     nep  = 0.36 * (1 + taper)**0.5
-    sweep = np.deg2rad(5)
+    n_ult = Aircraft.ParAnFP.n_ult
     
-    theta1 = 0.0013*(1+rh)*np.sqrt(MZFW*ISA_model.g0/q_des)/bref *nult*nep /\
-    (tc*np.cos(sweep)**2)
+    theta1 = 0.0013*(1+rh)*np.sqrt(MZFW*ISA_model.g0/q_des)/bref *n_ult*nep /\
+    (tc*np.cos(Sweepi)**2)
     
     return theta1
 def ComputeTheta2(Aircraft, ISA_model):
@@ -160,11 +158,12 @@ def ComputeTheta3(Aircraft, ISA_model):
     
     # CONSTANTS AND VARIABLES
     rh = 0.10               # typical value
-    fuelused = 10000         #kg
+    WfuMTOW = Aircraft.ParStruc.wfratio
+    fuelused = WfuMTOW*Aircraft.ParStruc.MTOW
     MZFW = (Aircraft.ParStruc.MTOW - fuelused)*ISA_model.g0  #MZFW = MTOW-Mfuel
     bref = 100           
     mu_cp = 0.36*np.power((1+Aircraft.ParAnFP.taper), 0.5)
-    n_ult = 2.5
+    n_ult = Aircraft.ParAnFP.n_ult
     q_eq = DynamicPressEq(Aircraft, ISA_model)
     
     
@@ -252,8 +251,6 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
                                             # zero below Mcrit
     Hg = 4350*1000.                         # for conv. gas turbine engine fuel
     theta = 0.7519                          # rel. density
-    
-    
 
     q0 = ISA_model.rho0*0.5*AnFP.V_cruise**2
     a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
@@ -343,10 +340,10 @@ def ComputeCDpS(Aircraft):
     
     return 0.7*S_wet*C_f
 
-def ComputeCurveII(Aircraft, ISA_model, C_l, MTOWi):
+def ComputeCurveII(Aircraft, ISA_model, C_l, MTOWi, Sweepi):
 #    MTOW=500000
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
-    theta1=ComputeTheta1(Aircraft, ISA_model)
+    theta1=ComputeTheta1(Aircraft, ISA_model, Sweepi)
     eCurl = np.average([0.9,0.95])
     CII=C_l**0.6*(2/3*Fprop/theta1/eCurl/np.pi)**0.4
     
@@ -364,7 +361,7 @@ def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi):
     
     #prerequisites
     CDpCurl = CDpCurlFunc(Aircraft, ISA_model, Sweepi)
-    Theta1  = ComputeTheta1(Aircraft, ISA_model)
+    Theta1  = ComputeTheta1(Aircraft, ISA_model, Sweepi)
     Theta2  = ComputeTheta2(Aircraft, ISA_model)
     Fprop   = ComputeFprop(Aircraft, ISA_model, MTOWi)
     
@@ -440,7 +437,7 @@ def GetWfCurve(Aircraft, ISA_model, Awi, MTOWi, CLi, Sweepi):
 def ComputeCurveC2(Aircraft, ISA_model,C_l):
     CDpCurl = CDpCurlFunc(Aircraft, ISA_model, np.deg2rad(5))
 #    print (CDpCurl)
-    theta_1 = ComputeTheta1(Aircraft, ISA_model)
+    theta_1 = ComputeTheta1(Aircraft, ISA_model, Sweepi)
 #    print (theta_1)
     theta_2 = ComputeTheta2(Aircraft, ISA_model)
 #    print (theta_2)
@@ -488,12 +485,11 @@ def ComputeCurveC2(Aircraft, ISA_model,C_l):
     
     return Wfmax
 
-def ComputeAw(Aircraft,ISA_model):
-    Sweepi=np.deg2rad(5)
-    MTOWi=60e3*9.81
+def ComputeAw(Aircraft,ISA_model, Sweepi):
+    MTOWi= Aircraft.ParStruc.MTOW*9.81
     CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
-    Theta1=ComputeTheta1(Aircraft, ISA_model)
+    Theta1=ComputeTheta1(Aircraft, ISA_model, Sweepi)
     Theta2=ComputeTheta2(Aircraft, ISA_model)
     eCurl = np.average([0.9,0.95])
     Aw=(CdpCurl+Theta2/Fprop)**(3/7)*(1.5*np.pi*eCurl)**(-1/7)*\
@@ -501,14 +497,28 @@ def ComputeAw(Aircraft,ISA_model):
     return Aw
 
 
-def ComputeCl(Aircraft,ISA_model):
-    Sweepi=np.deg2rad(5)
-    MTOWi=60e3*9.81
+def ComputeCl(Aircraft,ISA_model, Sweepi):
+    MTOWi=Aircraft.ParStruc.MTOW*9.81
     CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
-    Theta1=ComputeTheta1(Aircraft, ISA_model)
+    Theta1=ComputeTheta1(Aircraft, ISA_model, Sweepi)
     Theta2=ComputeTheta2(Aircraft, ISA_model)
     eCurl = np.average([0.9,0.95])
     Cl=(CdpCurl+Theta2/Fprop)**(5/7)*(1.5*np.pi*eCurl)**(3/7)*\
     (Fprop/Theta1)**(2/7)
     return Cl
+
+
+def GetTransOptAw(Aircraft, ISA_model, CL_eq, MTOWi, sweep):
+    
+    Mcrit = 0.935
+    Mdd = Aircraft.ParAnFP.Mdd
+    Fprop = ComputeFprop(Aircraft, ISA_model, MTOWi)
+    theta3 = ComputeTheta3(Aircraft, ISA_model)
+    eCurl = np.average([0.9, 0.95])
+    
+#    print((2*Fprop/(3*np.pi*theta3), np.cos(sweep)**3*(Mcrit-Mdd*np.cos(sweep)), 
+#           (np.cos(sweep)**3*(Mcrit-Mdd*np.cos(sweep))-0.11*CL_eq**1.5)))
+
+    return (CL_eq**0.6*(2*Fprop/(3*np.pi*theta3*eCurl)*(np.cos(sweep)**3*(
+            Mcrit-Mdd*np.cos(sweep))-0.11*CL_eq**1.5))**0.4)
