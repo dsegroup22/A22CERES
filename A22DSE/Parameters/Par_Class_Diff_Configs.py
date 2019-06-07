@@ -93,7 +93,7 @@ def ClassIAircraft():
     #parameters from functions
     
     ##ANFP parameters
-    Conv.ParAnFP.Sweep25 = wing_sweep(Conv)
+    Conv.ParAnFP.Sweep25 = np.rad2deg(wing_sweep(Conv))
     Conv.ParAnFP.s_cruise = CruiseRange(Conv)
     Conv.ParAnFP.t_cruise = CruiseTime(Conv, ISA_model)
     Conv.ParAnFP.V_cruise = Conv.ParAnFP.Get_V_cruise()
