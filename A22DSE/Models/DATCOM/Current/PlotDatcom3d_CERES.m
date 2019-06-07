@@ -49,51 +49,51 @@ SPANFI_E=0;SPANFO_E=0;CHRDFI_E=0;CHRDFO_E=0;DELTA_E=0;                %%
 %%% INPUT PARAMETERS BELOW %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % SYNTHS parameters
-XW =    28.9;
-ZW =    2.0;
-ALIW =  0.0;
-XH =    85.0;
-ZH =    31.5;
-ALIH =  0.0;
-XV =    60.0;
-ZV =    0.0;
+XW=44.6;
+ZW=2.0;
+ALIW=0.0;
+XH=85.0;
+ZH=31.5;
+ALIH=0.0;
+XV=60.0;
+ZV=0.0;
 
 % BODY parameters
-NX = 5;
-X = [0.0,4.0,8.7,64.5,78.7];
-ZU = [0.0,1.3,2.6,2.6,2.6];
-ZL = [0.0,-1.3,-2.6,-2.6,-0.66];
-R = [0.0,2.3,4.6,4.6,0.33];
-S = [0.0,27.2,38.4,38.4,0.34];
+NX=4.0;
+X=[0.,14.6,107.9,131.3];
+ZU=[0.,4.4,4.4,4.4];
+ZL=[0.,-4.4,-4.4,4.1];
+R=[0.,7.7,7.7,0.3];
+S=[0.,106.9,106.9,0.3];
 
 % WING parameters
-CHRDTP_WG = 9.5;
-SSPNE_WG = 106.8;
-SSPN_WG = 111.4;
-CHRDR_WG = 21.3;
-SAVSI_WG = 18.0;
-CHSTAT_WG = .25;
-TWISTA_WG = -3.0;
-DHDADI_WG = -2.0;
-TC_WG = .12;
+CHRDTP_WG=7.7;
+SSPNE_WG=79.83;
+SSPN_WG=88.7;
+CHRDR_WG=17.0;
+SAVSI_WG=1.9;
+CHSTAT_WG=0.0;
+TWISTA_WG=-3.0;
+DHDADI_WG=-2.0;
+TC_WG=0.12;
 
 % HORIZONTAL TAIL parameters
-CHRDTP_HT = 10.2;
-SSPNE_HT = 30.0;
-SSPN_HT = 32.2;
-CHRDR_HT = 22.96;
-SAVSI_HT = 28.2;
-CHSTAT_HT = 0.25;
-TWISTA_HT = 0.0;
-DHDADI_HT = 0.0;
+CHRDTP_HT=6.3;
+SSPNE_HT=45.9;
+SSPN_HT=51.0;
+CHRDR_HT=18.2;
+SAVSI_HT=33.3;
+CHSTAT_HT=0.25;
+TWISTA_HT=0.0;
+DHDADI_HT=0.0;
 
 % VERTICAL TAIL parameters
-CHRDTP_VT = 8.4;
-SSPNE_VT = 28.0;
-SSPN_VT = 31.5;
-CHRDR_VT = 26.9;
-SAVSI_VT = 40.2;
-CHSTAT_VT = .25;
+CHRDTP_VT=6.9;
+SSPNE_VT=23.220000000000002;
+SSPN_VT=25.8;
+CHRDR_VT=22.0;
+SAVSI_VT=39.0;
+CHSTAT_VT=0.25;
 
 % WING FLAP
 % $SYMFLP FTYPE=1.0,NDELTA=4.0,
