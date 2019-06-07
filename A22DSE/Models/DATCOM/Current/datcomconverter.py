@@ -14,6 +14,21 @@ from datcomconvertermatlab import *
 file=open('A22DSE\Models\DATCOM\Current\CERESorig.dat','r')
 
 lines=file.readlines()
+def printer(a):
+    return print(lines[a]), print(len(lines[a]))
+
+printer(4)
+a=lines[4].split(',')[0]+','
+b=lines[4].split(',')[1]+','
+c=lines[4].split(',')[2]+','
+d=lines[4].split(',')[3]+','
+e=lines[4].split(',')[4]+','
+f=lines[4].split(',')[5]+','
+g=lines[4].split(',')[6].split('=')[0]+'='+str(round(float(Struc.MTOW/Conversion.lbs2kg),1))+','
+h=lines[4].split(',')[7]
+lines[4]=a+b+c+d+e+f+g+h
+printer(4)
+
 
 printer(5)
 a=lines[5].split(',')[0].split('=')[0]+'='+str(round(float(anfp.S/Conversion.ft2m**2),1))+','
@@ -91,7 +106,37 @@ printer(23)
 
 file.close()
 
+file=open('A22DSE\Models\DATCOM\Current\Airfoiltools.txt','r')
+
+alines=file.readlines()
+
+file.close()
+
+import numpy as np
+
+Xcs=np.array([0])
+for i in range(25):
+    Xcs=np.append(Xcs,Xcs[-1]+0.04)
+upper=alines[3:104:4]
+lower=alines[105::4]
+
+alines[180].split(' ')[2]
+alines[180].split(' ')[3].replace('\n','')
+uppers=np.array([])
+for line in upper:
+    uppers=np.append(uppers,float(line.split(' ')[-1].replace('\n','')))
+
+
+lowers=np.array([])
+for line in lower:
+    lowers=np.append(lowers,float(line.split(' ')[-1].replace('\n','')))
+a=' $WGSCHR TYPEIN=1.0, NPTS=26.0,\n'
+b=' XCORD= 0.0, '+np.array2string(Xcs[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+',\n'
+c=' YUPPER= 0.0, '+np.array2string(uppers[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+',\n'
+d=' YLOWER= 0.0, '+np.array2string(lowers[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+'$\n'
+liness=[a,b,c,d]
+linesss=lines[:15]+liness+lines[16:]
 file=open('A22DSE\Models\DATCOM\Current\CERES.dat','w')
-for line in lines:
+for line in linesss:
     file.write(line)
 file.close()

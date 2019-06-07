@@ -50,7 +50,7 @@ def ClassIIWeight_MTOW(Aircraft):
     #get the wing group and fuselage group
     Layout.x_lemac, Aircraft.ParStruc.Weight_FusGroup,Aircraft.ParStruc.Weight_WingGroup,\
     Layout.xcg_fuselagegroup = oecg(Aircraft)
-    
+
     #calculate new OEW and new MTOW
     struc.OEW = struc.Weight_WingGroup + struc.Weight_FusGroup #[kg]
     MTOW = struc.OEW + struc.FW + Aircraft.ParPayload.m_payload
@@ -102,8 +102,11 @@ def ClassIIWeightIteration(Aircraft):
          itcount+=1    
          
     #if after 20 iterations, still not converged, error occurs
+
     if error>0.01:
-        raise ValueError('The MTOW does not converge') 
+        print('MTOW did not converge')
+        #raise ValueError('The MTOW does not converge') 
+
 
 
 

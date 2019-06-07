@@ -21,8 +21,7 @@ file=open('A22DSE\Models\DATCOM\Current\PlotDatcom3d_CERESorig.m','r')
 
 lines=file.readlines()
 
-def printer(a):
-    return print(lines[a]), print(len(lines[a]))
+
 XW=round(float(Layout.x_apex_wing/Conversion.ft2m),1)
 ZW=round(float(2),1)
 ALIW=round(float(0),1)
@@ -186,7 +185,7 @@ for line in lines[50:96]:
     if line[:9]=='CHSTAT_VT':
         j= lines.index(line)
         lines[j]='CHSTAT_VT='+str(CHSTAT_VT)+';\n'
-
+print ('aaaaaaaaaaa')
        
 file.close()
 
