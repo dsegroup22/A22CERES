@@ -196,4 +196,4 @@ def htail(Aircraft,ISA):
     Aircraft.ParLayoutConfig.mac_h = mac_h
     #return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
 #def rudder(Aircraft):
-    print(l_arm_opt)
+#    print(l_arm_opt)
