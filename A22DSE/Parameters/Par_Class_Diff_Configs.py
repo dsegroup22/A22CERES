@@ -129,7 +129,9 @@ def PrelimTail():
     Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
     Layout.c_rvt,Layout.c_tvt,Layout.bv,\
     Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt,\
-    Conv.ParLayoutConfig.mac_h,Conv.ParLayoutConfig.mac_v = ctail(Conv)
+    Conv.ParLayoutConfig.mac_h,Conv.ParLayoutConfig.mac_v,Layout.y_MACh,Layout.y_MACv = ctail(Conv)
+
+    
     
 def ClassI_AndAHalf():
 
