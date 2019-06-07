@@ -6,7 +6,7 @@ Created on Mon Jun  3 19:07:45 2019
 """
 from math import pi,radians,sqrt,tan,atan,degrees,cos
 def vtail(Aircraft):
-    lvi = Aircraft.ParLayoutConfig.xvt+4
+    lvi = Aircraft.ParLayoutConfig.xht
     Sv = Aircraft.ParLayoutConfig.Svt
     Avi = Aircraft.ParLayoutConfig.Avt
     trvi = Aircraft.ParLayoutConfig.trvt

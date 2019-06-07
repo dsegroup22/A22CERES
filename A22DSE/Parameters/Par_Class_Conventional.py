@@ -38,6 +38,7 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAirc
 from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
+from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 #shortcuts
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
@@ -99,7 +100,7 @@ Conv.ParLayoutConfig.b_v, Conv.ParLayoutConfig.Wvt=vtail(Conv)
 Layout = Conv.ParLayoutConfig
 #Struct = Conv.ParStruc
 #Layout.l_fuselage = 24 #[m] length of fuselage
-
+Layout.l_freq = fuselagereq(Conv)
 Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = Fuselage(Conv)
 Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
 Layout.l_fuselage = np.sum(Layout.l_fuselage)   
@@ -117,10 +118,12 @@ Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(C
 # =============================================================================
 #                           CLASS II WEIGHTS STARTS HERE
 # =============================================================================
-
+print(Conv.ParLayoutConfig.x_lemac+Conv.ParLayoutConfig.x_oe*Conv.ParAnFP.MAC++max(Conv.ParLayoutConfig.xvt, Conv.ParLayoutConfig.xht))
+print(Layout.l_fuselage)
 struc.MTOW = ClassIIWeightIteration(Conv)
 #WingWeightPlotter(Conv)
-
+print(Conv.ParLayoutConfig.x_lemac+Conv.ParLayoutConfig.x_oe*Conv.ParAnFP.MAC++max(Conv.ParLayoutConfig.xvt, Conv.ParLayoutConfig.xht))
+print(Layout.l_fuselage)
 # =============================================================================
 #                            Weight and Balance
 #==============================================================================
