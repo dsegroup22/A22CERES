@@ -44,7 +44,7 @@ ISA_model = Atmos()
 # =============================================================================
 
 Conv = Aircraft()
-
+Layout = Conv.ParLayoutConfig
 
 def ComputeCD0(Aircraft):
 #DETERMINE CD0, AND ITERATE FOR THE MTOW ETC.
@@ -103,6 +103,29 @@ def ClassIAircraft():
     
     Conv.ParStruc.wfratio = Conv.ParStruc.FW/Conv.ParStruc.MTOW
     
+    
+    Conv.ParAnFP.cl_alpha,Conv.ParAnFP.cl_max,Conv.ParAnFP.tc,Conv.ParAnFP.Cd0,\
+    Conv.ParAnFP.cm_0 = Airfoil(Conv)
+
+    
+    Conv.ParAnFP.LD_airfoil = 90 #lift to drag ratio [-] at Cldes = 0.55 obtained from graph of Cl/Cd
+    
+    
+    
+
+
+def PrelimTail():    
+    #Horizontal, Vertical tail design
+    
+    Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
+    Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
+    Layout.c_rht,Layout.c_tht,Layout.bh,\
+    Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
+    Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
+    Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
+    Layout.c_rvt,Layout.c_tvt,Layout.bv,\
+    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ctail(Conv)
+    
 def ClassI_AndAHalf():
 
     #Geometry: Sweep 0.25, le, 0.50 in radians, Span in meters, taper ratio, root, tip , MAC in meters
@@ -113,20 +136,12 @@ def ClassI_AndAHalf():
 
     
 
-    Conv.ParAnFP.cl_alpha,Conv.ParAnFP.cl_max,Conv.ParAnFP.tc,Conv.ParAnFP.Cd0,\
-    Conv.ParAnFP.cm_0 = Airfoil(Conv)
-
-    
-    Conv.ParAnFP.LD_airfoil = 90 #lift to drag ratio [-] at Cldes = 0.55 obtained from graph of Cl/Cd
-    
-    
-    
     
     #PRELIMINAIRY ENGINE POSITION
     Conv.ParLayoutConfig.y_loc_eng = Conv.ParAnFP.b/8#b/3 #[m] DUMMY VALUE
     
     #PRELIMINAIRY FUSELAGE DESIGN
-    Layout = Conv.ParLayoutConfig
+
     #Struct = Conv.ParStruc
     #Layout.l_fuselage = 24 #[m] length of fuselage
     Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = (
@@ -148,16 +163,7 @@ def ClassI_AndAHalf():
     Conv.ParAnFP.C_L_alpha_cruise,Conv.ParAnFP.C_L_max_cruise,\
     Conv.ParAnFP.alpha_stall_cruise=C_L_CurveCruise(Conv)[1:] #all in radians where applicable
     
-    #Horizontal, Vertical tail design
-    
-    Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
-    Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
-    Layout.c_rht,Layout.c_tht,Layout.bh,\
-    Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
-    Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
-    Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
-    Layout.c_rvt,Layout.c_tvt,Layout.bv,\
-    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ctail(Conv)
+
 
   
     
@@ -178,25 +184,3 @@ def ClassI_AndAHalf():
     
     
     Conv.ParAnFP.CLMAX = CLMAX(Conv).GetCLMAX()
-    
-    #Horizontal, Vertical tail design
-    
-#    Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
-#    Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
-#    Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
-#    Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
-#    Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
-#    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ttail(Conv)
-
-
-
-ClassIAircraft()
-ClassI_AndAHalf()
-Conv.ParAnFP.CD0 = ComputeCD0(Conv)
-# 
-# =============================================================================
-
-# =============================TEST AC FOR SENSITIVITY=========================
-SensTestAc = copy.deepcopy(Conv)
-# =============================================================================
-
