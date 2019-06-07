@@ -41,7 +41,7 @@ S = '[0.0,38.4,38.4,0.34]'
 X=np.round(np.array([0.0,Layout.l_nose,Layout.l_nose+Layout.l_cabin,Layout.l_fuselage])/Conversion.ft2m,1)
 ZU=np.round(np.array([0.0,Layout.h_fuselage/2,Layout.h_fuselage/2,Layout.h_fuselage/2])/Conversion.ft2m,1)
 ZL=np.round(np.array([0.0,-Layout.h_fuselage/2,-Layout.h_fuselage/2,Layout.h_fuselage/2-Layout.h_APU/2,])/Conversion.ft2m,1)
-R=np.round(np.array([0.0,Layout.w_fuselage/2,Layout.w_fuselage/2,Layout.h_APU/2,])/Conversion.ft2m,1)
+R=np.round(np.array([0.0,Layout.w_fuselage/2,Layout.w_fuselage/2,Layout.h_APU/2])/Conversion.ft2m,1)
 S=np.round(np.array([0.0,Layout.w_fuselage*Layout.h_fuselage*np.pi/4,Layout.w_fuselage*Layout.h_fuselage*np.pi/4,Layout.h_APU**2*np.pi/4,])/Conversion.ft2m**2,1)
 
 CHRDTP_WG=round(float(anfp.c_t/Conversion.ft2m),1)

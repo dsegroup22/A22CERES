@@ -47,8 +47,11 @@ def FusAreas(Aircraft):
     Sw_tail=Sw_fullcone-Sw_imagcone #cut off cone shape
     
     S_wet=Sw_nose+Sw_cabin+Sw_tail
+    
+    
+    S_front=w_fuselage*h_fuselage*np.pi/4
     #print (e,Sw_nose,Sw_cabin,Sw_tail)
-    return S_side,S_wet
+    return S_side,S_wet,S_front
 
     
     
