@@ -70,7 +70,7 @@ def vtail(Aircraft):
     Wvt = Kv*(Sv*10.764)*(3.81*((Sv*10.764)**0.2*(Vd/0.5144)/1000/(cos(swhalf))**0.5)-0.287)*0.4536
     mac_v = ((2./3.) * crv * (1. + ctv + ctv**2.)/(1. + ctv))
 
-    print(Sv,Svi,lvi)
+#    print(Sv,Svi,lvi)
     
     Aircraft.ParLayoutConfig.Svt = Svi
     Aircraft.ParLayoutConfig.xvt = lvi
