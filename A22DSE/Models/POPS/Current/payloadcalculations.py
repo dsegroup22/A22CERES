@@ -6,8 +6,6 @@ This is a temporary script file.
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 def InletArea(Aircraft,ISA_model):
     payl=Aircraft.ParPayload
@@ -23,12 +21,11 @@ def InletArea(Aircraft,ISA_model):
     #function that calculates the required inlet area of the burner, using the altitude, payload mass, cruise mach number
     #and air to fuel ratio as an input
     
-    #v=a_cruise*M #cruise speed   
-#    m_dotS=m_payload/t_cruise #mass flow of Payload [kg/s]
-#    m_dotair=(airtofuel)*m_dotS #required air mass flow [kg/s]
-#    m_dottotal=m_dotS+m_dotair
-    return  a_cruise
- #m_dottotal/v/rho #required inlet area [m2]
+    v=a_cruise*M #cruise speed   
+    m_dotS=m_payload/t_cruise #mass flow of Payload [kg/s]
+    m_dotair=(airtofuel)*m_dotS #required air mass flow [kg/s]
+    m_dottotal=m_dotS+m_dotair
+    return m_dottotal/v/rho #required inlet area [m2]
 
 
 def PayloadsMassdisprate(Aircraft,ISA_model):
