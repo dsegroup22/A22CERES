@@ -7,12 +7,12 @@ Created on Mon Jun  3 10:18:58 2019
 import sys
 sys.path.append('../../../../')
 import numpy as np
-#from A22CERES.A22DSE.Models.EI.FuelBurn import GetEngineProp
-
+from A22CERES.A22DSE.Models.EI.FuelBurn import GetEngineProp, GetFuelBurn
+from A22CERES.A22DSE.Models.EI.classEILst import pollutantLst
 
 def GetReactionProducts(AF, FuelMass):
     '''
-    INPUT: air-to-fuel ratio, FuelMass
+    INPUT: air-to-fuel ratio, FuelMass at time step
     OUTPUT: reaction products decomposition: [CO2, CO, H2O, H2, N2, O2]
     DESCRIPTION: programmes the method shown in this Algerian paper: "Evolution
     de la composition des gaz brules Lors de la combustion du kerosene"
@@ -99,7 +99,7 @@ def GetReactionProducts(AF, FuelMass):
         
     return None #should not get here
     
-def GetEI():
+def GetEI(AltitudeProfile, MachProfile, resolution):
     
     '''
     INPUT: Masses of the polluting reaction products
@@ -107,7 +107,29 @@ def GetEI():
     the radiative forcing of the fuel burn [W/m2]
     DESCRIPTION:
     '''
+    EngineProp=[]
+    if len(AltitudeProfile)==len(MachProfile):
+        for i in range(len(AltitudeProfile)):            
+            EngineProp.append(GetEngineProp(AltitudeProfile[i],\
+                                            MachProfile[i])[0,4])
+    else:
+        raise "Error: length of Altitude Profile list and Mach Profile list\
+        different"
+        
+    Fuel = GetFuelBurn(EngineProp, resolution)
+    AF = "get inlet area rho*V**L"/np.array(EngineProp)
     
+    Products = []
+    Impact=[]
+    for i in range(len(AF)):
+        Producti = GetReactionProducts(AF, EngineProp)
+        Products.append(Producti)
+        GWPi = Producti[0] * pollutantLst().CO2.GWP #make sum of all Producti and corresponding GWP
+        RFi = 0#Compute normalised proportions of Producti and make proportion*RF
+        Impact.append([GWPi, RFi])
+    EIGWP = resolution * sum(Impact[:,0])
+    EIRF = sum(Impact[:,1])/len(Impact[:,1])
+    return [Fuel, EIGWP, EIRF]
     
 
 #
