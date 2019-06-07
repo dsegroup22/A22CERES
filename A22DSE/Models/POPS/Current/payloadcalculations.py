@@ -6,8 +6,6 @@ This is a temporary script file.
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 def InletArea(Aircraft,ISA_model):
     payl=Aircraft.ParPayload
