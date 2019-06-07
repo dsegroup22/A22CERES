@@ -120,10 +120,16 @@ def GetEI(AltitudeProfile, MachProfile, resolution):
     AF = "get inlet area rho*V**L"/np.array(EngineProp)
     
     Products = []
+    Impact=[]
     for i in range(len(AF)):
-        Products.append(GetReactionProducts(AF, EngineProp))
-    
-    return Fuel, EIGWP, EIRF
+        Producti = GetReactionProducts(AF, EngineProp)
+        Products.append(Producti)
+        GWPi = Producti[0] * pollutantLst().CO2.GWP #make sum of all Producti and corresponding GWP
+        RFi = 0#Compute normalised proportions of Producti and make proportion*RF
+        Impact.append([GWPi, RFi])
+    EIGWP = resolution * sum(Impact[:,0])
+    EIRF = sum(Impact[:,1])/len(Impact[:,1])
+    return [Fuel, EIGWP, EIRF]
     
 
 #
