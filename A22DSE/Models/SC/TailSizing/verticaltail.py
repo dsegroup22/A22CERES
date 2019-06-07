@@ -6,6 +6,10 @@ Created on Mon Jun  3 19:07:45 2019
 """
 from math import pi,radians,sqrt,tan,atan,degrees,cos
 def vtail(Aircraft):
+    '''
+    INPUT: horizontal tail arm, cruise Mach number, preliminary aspect ratio, preliminary taper ratio
+           
+    '''
     lvi = Aircraft.ParLayoutConfig.xht
     Sv = Aircraft.ParLayoutConfig.Svt
     Avi = Aircraft.ParLayoutConfig.Avt
