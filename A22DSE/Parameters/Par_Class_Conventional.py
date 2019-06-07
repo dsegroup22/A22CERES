@@ -61,33 +61,34 @@ ClassIIWeightIteration(Conv)
 # #saving object as txt file
 # =============================================================================
 
-file_path = 'A22DSE\Parameters\ParametersConv.txt'
-if os.path.isfile(file_path):
-    with open('A22DSE\Parameters\ParametersConv.txt', 'w+') as f:
-        print('ParAnFP', file = f)
-        print(vars(Conv.ParAnFP), file=f)
-        print('\n\n ParPayload', file = f)
-        print(vars(Conv.ParPayload), file=f)
-        print('\n\n ParCntrl', file = f)
-        print(vars(Conv.ParCntrl), file=f)
-        print('\n\n ParCostLst', file = f)
-        print(vars(Conv.ParCostLst), file=f)
-        print('\n\n ParStruc', file = f)
-        print(vars(Conv.ParStruc), file=f)
-        print('\n\n ParProp', file = f)
-        print(vars(Conv.ParProp), file=f)
-        print('\n\n ParClassII', file = f)
-        print(vars(Conv.ParClassII_LG), file =f)
-        print('\n\n ParLayoutConfig',file =f)
-        print(vars(Conv.ParLayoutConfig), file =f)
-        print('\n\n ConversTool', file = f)
-        print(vars(Conv.ConversTool), file=f)
-    
-    
-    s = open("A22DSE\Parameters\ParametersConv.txt").read()
-    s = s.replace(',', '\n')
-    f = open("A22DSE\Parameters\ParametersConv.txt", 'w')
-    f.write(s)
-    f.close()
-        
+#file_path = 'A22DSE\Parameters\ParametersConv.txt'
+#if os.path.isfile(file_path):
+with open('A22DSE\Parameters\ParametersConv.txt', 'w+') as f:
+    print('ParAnFP', file = f)
+    print(vars(Conv.ParAnFP), file=f)
+    print('\n\n ParPayload', file = f)
+    print(vars(Conv.ParPayload), file=f)
+    print('\n\n ParCntrl', file = f)
+    print(vars(Conv.ParCntrl), file=f)
+    print('\n\n ParCostLst', file = f)
+    print(vars(Conv.ParCostLst), file=f)
+    print('\n\n ParStruc', file = f)
+    print(vars(Conv.ParStruc), file=f)
+    print('\n\n ParProp', file = f)
+    print(vars(Conv.ParProp), file=f)
+    print('\n\n ParClassII', file = f)
+    print(vars(Conv.ParClassII_LG), file =f)
+    print('\n\n ParLayoutConfig',file =f)
+    print(vars(Conv.ParLayoutConfig), file =f)
+    print('\n\n ConversTool', file = f)
+    print(vars(Conv.ConversTool), file=f)
+
+
+s = open("A22DSE\Parameters\ParametersConv.txt").read()
+s = s.replace(',', '\n')
+f = open("A22DSE\Parameters\ParametersConv.txt", 'w')
+f.write(s)
+f.close()
+
+     
 
