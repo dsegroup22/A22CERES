@@ -161,7 +161,8 @@ def ClassI_AndAHalf():
     Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
     Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
     Layout.c_rvt,Layout.c_tvt,Layout.bv,\
-    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ctail(Conv)
+    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt,\
+    Conv.ParLayoutConfig.mac_h,Conv.ParLayoutConfig.mac_v= ctail(Conv)
 
   
     
