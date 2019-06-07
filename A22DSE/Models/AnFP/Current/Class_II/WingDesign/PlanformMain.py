@@ -23,15 +23,15 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 # =============================================================================
 #
 # =============================================================================
-#MTOW_I = Conv.ParStruc.MTOW
-#step = 50
-#CL_eq = np.linspace(0.2, 1.5, step)
-#MTOW = np.linspace(30000*9.81, 150000*9.81, step)
-#Aw = np.linspace(1, 18, step)
+MTOW_I = Conv.ParStruc.MTOW
+step = 20
+CL_eq = np.linspace(0.2, 1.5, step)
+MTOW = np.linspace(30000*9.81, 150000*9.81, step)
+Aw = np.linspace(1, 18, step)
 #Sweep = np.deg2rad(np.linspace(0, 5, 10))
 #W_num = 10000
 #W_denum = 0.76
-#sweep = np.deg2rad(25)
+sweep = np.deg2rad(25)
 #
 ##def GetMTOW(CL_eqi, MTOWi, Awi):
 ##
@@ -87,38 +87,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 ## =============================================================================
 ##                     Constraint C2: Wing & Tail Fraction
 ## =============================================================================
-
-
-# =============================================================================
-#            2D IMPLEMENTATION OF TORENBEEK CLASS II PLANFORM DESIGN
-# =============================================================================
-
-def GetARWing(Aircraft, ISA_model, step):
-    CL_eq = np.linspace(0.2, 1.5, step)
-    MTOW  = Aircraft.ParStruc.MTOW
-    sweep = Aircraft.ParAnFP.
-    CL_des = []
-    for i, Awi in enumerate(Aw):
-        CL_des.append(float(
-                FunctionsPlanform.GetOptCLCurve(Aircraft, ISA_model, 
-                MTOW, sweep, Awi)))
-        
-    Aw_des = []
-    AwTrans_des = []
-    for i, CL_eqi in enumerate(CL_eq):
-        Aw_des.append(float(FunctionsPlanform.ComputeCurveII(Conv, 
-                    ISA_model, CL_eqi, MTOW, sweep)))
-        AwTrans_des.append(float(FunctionsPlanform.GetTransOptAw(Conv,
-        ISA_model, CL_eqi, MTOW, sweep)))
-    
-    
-    def Intersect(y,z):
-        return (np.argwhere(np.diff(np.sign(np.array(y) 
-                - np.array(z)))).flatten())
-
-    return None
-
- 
+#        
 ## =============================================================================
 ##                                   PLOT
 ## =============================================================================
@@ -135,12 +104,25 @@ def GetARWing(Aircraft, ISA_model, step):
 #CT = ax.contour(X2, Z, Aw_des)
 #ax.clabel(CT, inline=1, fontsize=10)
 #
+CL_des = []
 
-#plt.figure(1)
-#plt.plot(CL_des, list(Aw))
-#plt.plot(list(CL_eq), Aw_des)
-#plt.plot(list(CL_eq), AwTrans_des)
-#plt.axvline(x = Conv.ParAnFP.C_L_max_cruise, ymin = 0, ymax = 18)
-#plt.show()
+for i, Awi in enumerate(Aw):
+    CL_des.append(float(FunctionsPlanform.GetOptCLCurve(Conv, ISA_model, 
+                                                  MTOW_I, sweep, Awi)))
+    
+Aw_des = []
+AwTrans_des = []
+for i, CL_eqi in enumerate(CL_eq):
+    Aw_des.append(float(FunctionsPlanform.ComputeCurveII(Conv, 
+                ISA_model, CL_eqi, MTOW_I, sweep)))
+    AwTrans_des.append(float(FunctionsPlanform.GetTransOptAw(Conv,
+    ISA_model, CL_eqi, MTOW_I, sweep)))
+    
+plt.figure(1)
+plt.plot(CL_des, list(Aw))
+plt.plot(list(CL_eq), Aw_des)
+plt.plot(list(CL_eq), AwTrans_des)
+plt.axvline(x = Conv.ParAnFP.C_L_max_cruise, ymin = 0, ymax = 18)
+plt.show()
 
 
