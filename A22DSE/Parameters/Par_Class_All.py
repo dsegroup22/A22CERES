@@ -56,7 +56,7 @@ class ParAnFPLst(object):
         
         #mAIN WING parameters
 #        self.TRw = 1                 # wing taper ratio DUMMY ->>> Conv.ParAnFP.taper = correct value
-        self.Sweep25 = 18              # sweep in degrees DUMMY ->>>> Conv.ParAnFP.Sweep_25 = correct value
+#        self.Sweep25 = 18              # sweep in degrees DUMMY ->>>> Conv.ParAnFP.Sweep_25 = correct value
 #        self.AR = 9                  # Aspect ratio of main wing DUMMY ->>> Conv.ParAnFP.A = correct value
         
         #Main wing airfoil parameters
