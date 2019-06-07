@@ -56,7 +56,7 @@ class ParAnFPLst(object):
         
         #mAIN WING parameters
 #        self.TRw = 1                 # wing taper ratio DUMMY ->>> Conv.ParAnFP.taper = correct value
-        self.Sweep25 = 18              # sweep in degrees DUMMY ->>>> Conv.ParAnFP.Sweep_25 = correct value
+#        self.Sweep25 = 18              # sweep in degrees DUMMY ->>>> Conv.ParAnFP.Sweep_25 = correct value
 #        self.AR = 9                  # Aspect ratio of main wing DUMMY ->>> Conv.ParAnFP.A = correct value
         
         #Main wing airfoil parameters
@@ -105,7 +105,7 @@ class ParPayloadLst(object):
     def __init__(self):
         self.disperRatePerTime = None
         self.airtofuel = 6 #[-]                                                                        air to fuel ratio                           by POPS
-        self.m_payload = 10000. #[kg]                                                                  payload mass per flight                     by POPS           
+        self.m_payload = 9000. #[kg]                                                                  payload mass per flight                     by POPS           
         self.rho_payload = 1121 #[kg/m^3]                                                              density of payload                           by POPS
         self.rho_alu = 2700 #[kg/m^3]                                                                  density of aluminium                        by POPS
         self.t_tank = 0.003 #[m]                                                                          payload tank thickness                      by POPS
