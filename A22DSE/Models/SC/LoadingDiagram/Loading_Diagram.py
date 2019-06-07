@@ -32,7 +32,7 @@ def loadingdiag(Aircraft):
     bottom = oew #kg append real value
     payload_mlist = np.ones(payload_mass)
     
-    cg_in = x_lemac + 0.24*MAC
+    cg_in = x_lemac + 0.25*MAC
     
     cg_range = [cg_in]
     wrange = [oew]
@@ -63,6 +63,7 @@ def loadingdiag(Aircraft):
 #    plt.plot((cg_range-x_lemac)/MAC,wrange)
 #    plt.plot(cg_range,wrange)
 #    plt.show()
+#        
         
     
        

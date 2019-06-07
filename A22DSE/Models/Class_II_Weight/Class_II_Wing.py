@@ -36,16 +36,17 @@ def Wing_Geo(Aircraft):
     #OUTPUT: geometry of the wing: sweep at different places in radians,
     #span, taper ratio, root chord, tip chord, MAC
     anfp = Aircraft.ParAnFP
-    Sweep_25 = anfp.Sweep25
+    Sweep_50 = anfp.Sweep50
     AR = anfp.A
     S = anfp.S
     
-    Sweep_25_rad = Sweep_25 * pi / 180.
-    Taper = 0.45 * exp( -0.0375 * Sweep_25_rad) 
+    Sweep_50_rad = Sweep_50 * pi / 180.
+    Taper = 0.45 * exp( -0.0375 * Sweep_50_rad) 
+    Sweep_25_rad = atan( tan(Sweep_50_rad) + (4 / AR) * 0.25 \
+                    * (1 - Taper) / (1 + Taper))
     Sweep_LE = atan( tan(Sweep_25_rad) - (4 / AR) * -0.25 \
                     * (1 - Taper) / ( 1 + Taper))
-    Sweep_50 = atan( tan(Sweep_25_rad) - (4 / AR) * 0.25 \
-                    * (1 - Taper) / (1 + Taper))
+
     b = sqrt(AR * S)
     c_r = (2 * S ) / (b * (1 + Taper) )
     c_t = Taper * c_r
