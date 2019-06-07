@@ -19,7 +19,7 @@ from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 # =============================================================================
-#
+# 
 # =============================================================================
 #MTOW_I = Conv.ParStruc.MTOW
 #step = 50
@@ -89,7 +89,26 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 # =============================================================================
 
 def GetARTransWing(Aircraft, ISAmodel, step, plot):
+    ''' 
+    INPUT: 
+    Aircraft, ISA calculator model, step size, and BOOLEAN for plotting
+    OUTPUT: 
+    Multi-valued output; [0]: design C_L, [1]: optimal wing aspect
+    ratio
+    DESCRIPTION: 
+    Find the design lift coefficient and optimal aspect ratio of the wing
+    Return Lift coefficient and optimal
     
+    This method uses the planform design of transonic and subsonic wings
+    explained by Torenbeek in Advanced Aircraft Design chapter 10.
+    
+    Torenbeek makes use of wing penalty function (WPF) and the propulsion
+    weight penalty function (Fprop). Where WPF = f() and Fprop = f(Req,H/g, 
+    mu_T, delta), where:
+    Req := eq. range derived from lost range and required mission range
+    mu_T:= power plant weight over the Take-off thrust
+    
+    '''
     CL_eq = np.linspace(0.2, 1.5, step)
     Aw = np.linspace(4, 18, step)
     MTOW  = Aircraft.ParStruc.MTOW

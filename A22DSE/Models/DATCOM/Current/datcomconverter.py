@@ -18,7 +18,7 @@ lines=file.readlines()
 printer(5)
 a=lines[5].split(',')[0].split('=')[0]+'='+str(round(float(anfp.S/Conversion.ft2m**2),1))+','
 b=lines[5].split(',')[1].split('=')[0]+'='+str(round(float(anfp.MAC/Conversion.ft2m),1))+','
-c=lines[5].split(',')[2].split('=')[0]+'='+str(round(float(anfp.b/Conversion.ft2m),1))+'$ \n'
+c=lines[5].split(',')[2].split('=')[0]+'='+str(2*SSPN_WG)+'$ \n'
 lines[5]=a+b+c
 printer(5)
 

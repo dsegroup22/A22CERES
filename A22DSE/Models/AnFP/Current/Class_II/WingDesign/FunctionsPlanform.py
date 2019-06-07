@@ -53,7 +53,11 @@ def friction_coef(Aircraft):
     return C_fe, S_wet
 
 def DynamicPressEq(Aircraft, ISA_model):
-    
+    ''' 
+    INPUT:
+    OUTPUT:
+    DESCRIPTION:
+    '''    
     # CONSTANTS AND VARIABLES
     AnFP = Aircraft.ParAnFP
     ISAFunc = ISA_model.ISAFunc
@@ -341,7 +345,13 @@ def ComputeCDpS(Aircraft):
     return 0.7*S_wet*C_f
 
 def ComputeCurveII(Aircraft, ISA_model, C_l, MTOWi, Sweepi):
-#    MTOW=500000
+    ''' 
+    INPUT:
+    OUTPUT:
+    DESCRIPTION:
+    '''
+    
+    #    MTOW=500000
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
     theta1=ComputeTheta1(Aircraft, ISA_model, Sweepi)
     eCurl = np.average([0.9,0.95])
@@ -435,6 +445,12 @@ def GetWfCurve(Aircraft, ISA_model, Awi, MTOWi, CLi, Sweepi):
     return Wfmax
 
 def ComputeCurveC2(Aircraft, ISA_model,C_l):
+    ''' 
+    INPUT:
+    OUTPUT:
+    DESCRIPTION:
+    '''
+    
     CDpCurl = CDpCurlFunc(Aircraft, ISA_model, np.deg2rad(5))
 #    print (CDpCurl)
     theta_1 = ComputeTheta1(Aircraft, ISA_model, Sweepi)
@@ -446,7 +462,7 @@ def ComputeCurveC2(Aircraft, ISA_model,C_l):
     from scipy.optimize import fsolve
     def  f(A_w):
         b = (1-theta_2 /(theta_1*(A_w**1.5)*C_l**0.5))**(-0.5)
-        print (A_w, b, theta_2 /(theta_1*(A_w**1.5)*C_l**0.5) )
+#        print (A_w, b, theta_2 /(theta_1*(A_w**1.5)*C_l**0.5) )
         f = C_l - (1.5*CDpCurl*np.pi*eCurl*A_w)**0.5*(1-theta_2 /\
           (theta_1*(A_w**1.5)*C_l**0.5))**(-0.5)
         return f
@@ -486,6 +502,11 @@ def ComputeCurveC2(Aircraft, ISA_model,C_l):
     return Wfmax
 
 def ComputeAw(Aircraft,ISA_model, Sweepi):
+    ''' 
+    INPUT:
+    OUTPUT:
+    DESCRIPTION:
+    '''
     MTOWi= Aircraft.ParStruc.MTOW*9.81
     CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
@@ -498,6 +519,11 @@ def ComputeAw(Aircraft,ISA_model, Sweepi):
 
 
 def ComputeCl(Aircraft,ISA_model, Sweepi):
+    ''' 
+    INPUT:
+    OUTPUT:
+    DESCRIPTION:
+    '''
     MTOWi=Aircraft.ParStruc.MTOW*9.81
     CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
@@ -510,7 +536,11 @@ def ComputeCl(Aircraft,ISA_model, Sweepi):
 
 
 def GetTransOptAw(Aircraft, ISA_model, CL_eq, MTOWi, sweep):
-    
+    ''' 
+    INPUT:
+    OUTPUT:
+    DESCRIPTION:
+    '''    
     Mcrit = 0.935
     Mdd = Aircraft.ParAnFP.Mdd
     Fprop = ComputeFprop(Aircraft, ISA_model, MTOWi)
