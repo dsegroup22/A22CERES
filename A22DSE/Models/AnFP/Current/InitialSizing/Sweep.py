@@ -17,9 +17,7 @@ def wing_sweep(Aircraft):
     Mach number and thickness ratio.
     
     This method uses the planform design of transonic and subsonic wings
-    explained by Torenbeek in Advanced Aircraft Design chapter 10.
-
-    
+    explained by Torenbeek in Advanced Aircraft Design chapter 10.    
     '''
     
     M_crit=0.935
