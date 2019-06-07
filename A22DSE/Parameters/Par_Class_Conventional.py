@@ -8,33 +8,32 @@ Created on Mon May 27 10:55:52 2019
 #                            IMPORT NECESSARY MODULES
 # =============================================================================
 
-import sys
 import os
 from pathlib import Path
 import copy
 import numpy as np
-#sys.path.append('../../')
 os.chdir(Path(__file__).parents[2])
 
-#print(os.getcwd())
 
-from A22DSE.Models.Layout.Current.gearlocation_tri import (PrelimCG_ranges,PositionsLG_Tri)
-from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled import WingSurface_Thrust_FuelWeight
 
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
-from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeight_MTOW,ClassIIWeightIteration, WingWeightPlotter
-
+from A22DSE.Models.Class_II_Weight.Class_II_Total import (ClassIIWeight_MTOW,
+                                ClassIIWeightIteration, WingWeightPlotter)
+from A22DSE.Models.POPS.Current.payloadcalculationsellipticfus import PayloadtankLengthEllipse,\
+PayloadtankMassEllipse,PayloadcgEllipse
+from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeightIteration
 from A22DSE.Models.Layout.Current.Area import FusAreas
-from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg,xoe
 
-from A22DSE.Models.STRUC.current.Class_II.FuselageLength import SurfaceFuselage
-
+from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import xoe
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
         GetTotalFuselageLength, SurfaceFuselage)
+from A22DSE.Parameters.Par_Class_Diff_Configs import (Conv, ISA_model, 
+                        ClassIAircraft, ClassI_AndAHalf, ComputeCD0)
+from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (Fuselage)
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassIAircraft, ClassI_AndAHalf, ComputeCD0
 from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
@@ -44,6 +43,7 @@ Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
 struc= Conv.ParStruc
 sc = Conv.ParCntrl
+Payload=Conv.ParPayload
 
 ClassIAircraft()
 ClassI_AndAHalf()
@@ -51,6 +51,8 @@ Conv.ParAnFP.CD0 = ComputeCD0(Conv)
 
 # =============================================================================
 
+#OEW position wrt mac
+Conv.ParLayoutConfig.x_oe = xoe(Conv)
 
 #engine position
 Conv.ParProp.Engine_weight_Total = Conv.ParProp.Engine_weight*Conv.ParStruc.N_engines
@@ -71,7 +73,6 @@ Conv.ParPayload.d_inlet=np.sqrt(4*Conv.ParPayload.A_inlet/np.pi)
 Conv.ParPayload.m_burner=BurnerMass(Conv)
 Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259. # scale length based on mass compared to original PT6A-68Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259*(0.48/Conv.ParPayload.d_inlet)**2 # scale length based on mass compared to original PT6A-68
 
-Payload=Conv.ParPayload
 
 Conv.ParPayload.m_tank=PayloadtankMass(Conv)
 Conv.ParPayload.l_tank=PayloadtankLength(Conv)
@@ -85,36 +86,30 @@ anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
 
 #tail sizing 
 #horizontal
-Conv.ParLayoutConfig.c_rht, Conv.ParLayoutConfig.c_tht, Conv.ParLayoutConfig.bh, \
-Conv.ParLayoutConfig.sweepLEht, Conv.ParLayoutConfig.sweep25ht, Conv.ParLayoutConfig.sweep50ht, \
-Conv.ParLayoutConfig.trht, Conv.ParLayoutConfig.Aht, Conv.ParLayoutConfig.Wht, Conv.ParLayoutConfig.Sht, \
-Conv.ParLayoutConfig.xht = htail(Conv,ISA_model)
+#function gives Surface, weight, Aspect ratio, optimal arm etc
+htail(Conv,ISA_model)
 #vertical
 Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
 Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
 Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Sweep50vt,\
-Conv.ParLayoutConfig.c_rvt, Conv.ParLayoutConfig.c_tvt,\
-Conv.ParLayoutConfig.bv, Conv.ParLayoutConfig.Wvt=vtail(Conv)
+Conv.ParLayoutConfig.cr_v, Conv.ParLayoutConfig.ct_v,\
+Conv.ParLayoutConfig.b_v, Conv.ParLayoutConfig.Wvt=vtail(Conv)
 
 #fuselage sizing
 Layout = Conv.ParLayoutConfig
 #Struct = Conv.ParStruc
 #Layout.l_fuselage = 24 #[m] length of fuselage
-Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = (
-        GetTotalFuselageLength(Conv, max(Conv.ParLayoutConfig.xvt, Conv.ParLayoutConfig.xht), 2, 0.01))
 
+Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = Fuselage(Conv)
 Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
-Layout.l_fuselage = np.sum(Layout.l_fuselage)
-    
-Layout.h_APU=0.2 #[m] dummy value
-    
+Layout.l_fuselage = np.sum(Layout.l_fuselage)   
+Layout.h_APU=0.2 #[m] dummy value  
 Layout.h_fuselage = Layout.dim_cabin[0]
 Layout.w_fuselage = Layout.dim_cabin[1]
 
 
 Layout.x_apex_wing=Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
 
-SensTestAc = copy.deepcopy(Conv)
 # =============================================================================
 #                            Flight Envelope
 #==============================================================================
@@ -130,7 +125,7 @@ struc.MTOW = ClassIIWeightIteration(Conv)
 #                            Weight and Balance
 #==============================================================================
 
-Conv.ParLayoutConfig.x_oe = xoe(Conv)
+
 
 
 
