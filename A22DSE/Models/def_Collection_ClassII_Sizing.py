@@ -25,6 +25,7 @@ from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign import PlanformMain 
+from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 
 
 
@@ -89,7 +90,7 @@ def ClassIISizing(Conv):
 
     #Struct = Conv.ParStruc
     #Layout.l_fuselage = 24 #[m] length of fuselage
-    
+    Layout.l_freq = fuselagereq(Conv)
     Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = Fuselage(Conv)
     Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
     Layout.l_fuselage = np.sum(Layout.l_fuselage)   
