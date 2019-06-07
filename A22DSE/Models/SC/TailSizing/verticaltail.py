@@ -6,7 +6,7 @@ Created on Mon Jun  3 19:07:45 2019
 """
 from math import pi,radians,sqrt,tan,atan,degrees,cos
 def vtail(Aircraft):
-    lvi = Aircraft.ParLayoutConfig.xvt+4
+    lvi = Aircraft.ParLayoutConfig.xht
     Sv = Aircraft.ParLayoutConfig.Svt
     Avi = Aircraft.ParLayoutConfig.Avt
     trvi = Aircraft.ParLayoutConfig.trvt
@@ -52,7 +52,20 @@ def vtail(Aircraft):
     Vd = 1.4*Vc   #dive speed
     Kv = 1
     Wvt = Kv*(Sv*10.764)*(3.81*((Sv*10.764)**0.2*(Vd/0.5144)/1000/(cos(swhalf))**0.5)-0.287)*0.4536
+    mac_v = ((2./3.) * crv * (1. + ctv + ctv**2.)/(1. + ctv))
 #    print(oeidif)
-    return(Svi,lvi,Avi,trvi,swquart,degrees(swhalf),crv,ctv,bv,Wvt)
+    
+    Aircraft.ParLayoutConfig.Svt = Svi
+    Aircraft.ParLayoutConfig.xvt = lvi
+    Aircraft.ParLayoutConfig.Avt = Avi
+    Aircraft.ParLayoutConfig.trvt = trvi
+    Aircraft.ParLayoutConfig.Sweep25vt = swquart
+    Aircraft.ParLayoutConfig.Sweep50vt = degrees(swhalf)
+    Aircraft.ParLayoutConfig.cr_v = crv
+    Aircraft.ParLayoutConfig.ct_v = ctv
+    Aircraft.ParLayoutConfig.b_v = bv
+    Aircraft.ParLayoutConfig.Wvt = Wvt
+    Aircraft.ParLayoutConfig.mac_v = mac_v
+   
     
     

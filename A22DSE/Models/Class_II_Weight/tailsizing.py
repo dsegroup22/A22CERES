@@ -28,6 +28,7 @@ def ctail(Aircraft):
     cth = crh*trh
     Lambda50h = (0.5*bh*tan(radians(Lambda25h))+0.25*cth-0.25*crh)/(0.5*b)
     Wht = Kh*(Sh*10.764)*(3.81*((Sh*10.764)**0.2*(Vd/0.5144)/1000/(cos(Lambda50h))**0.5)-0.287)*0.4536
+    mac_h = (2./3.) * crh * (1. + trh + trh**2.)/(1. + trh)
     #print(Lambda50h,Wht)
     #--------------vertical tail-------------
     Sv = 0.1446*Sw+5.2406  #statistics linear relationship 0.1446*Sw+5.2406
@@ -41,8 +42,9 @@ def ctail(Aircraft):
     ctv = crv*trv
     Lambda50v = (bv*tan(radians(Lambda25v))+0.25*ctv-0.25*crv)/bv
     Wvt = Kv*(Sv*10.764)*(3.81*((Sv*10.764)**0.2*(Vd/0.5144)/1000/(cos(Lambda50v))**0.5)-0.287)*0.4536
+    mac_v= (2./3.) * crv * (1. + trv + trv**2.)/(1. + trv)
     #print(Lambda50v,Wvt)
-    return(Sh,xh,Ah,trh,crh,cth,bh,Lambda25h,Wht,Sv,xv,Av,trv,crv,ctv,bv,Lambda25v,Wvt)
+    return(Sh,xh,Ah,trh,crh,cth,bh,Lambda25h,Wht,Sv,xv,Av,trv,crv,ctv,bv,Lambda25v,Wvt,mac_h,mac_v)
     
     
     
