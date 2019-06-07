@@ -181,3 +181,7 @@ def ClassI_AndAHalf():
     
     
     Conv.ParAnFP.CLMAX = CLMAX(Conv).GetCLMAX()
+ClassIAircraft()
+ClassI_AndAHalf()
+PrelimTail()
+ComputeCD0(Conv)

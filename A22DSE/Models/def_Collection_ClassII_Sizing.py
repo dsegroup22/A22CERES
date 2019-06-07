@@ -25,7 +25,7 @@ from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign import PlanformMain 
-
+from A22DSE.Models.AnFP.Current.Class_II.WingDesign.def_OswaldEfficiency import OswaldEfficiency
 
 
 def ClassIISizing(Conv):
@@ -46,8 +46,9 @@ def ClassIISizing(Conv):
     step = 50
     Conv.ParAnFP.C_L_design, Conv.ParAnFP.A = PlanformMain.GetARTransWing(
     Conv, ISA_model, step, False)
-
     
+    #Oswald Efficiency
+    anfp.e = OswaldEfficiency(Conv)
     #engine position
     Conv.ParProp.Engine_weight_Total = Conv.ParProp.Engine_weight*Conv.ParStruc.N_engines
     Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%

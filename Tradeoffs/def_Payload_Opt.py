@@ -26,7 +26,7 @@ def Payload_optimiser_wf(payload_lst):
     for payload in payload_lst:
         
         Conv.ParPayload.m_payload = payload #[kg]        
-        mtow = ClassIIWeightIteration(Conv) #generate appropriate fuel weight for each 
+        ClassIIWeightIteration(Conv) #generate appropriate fuel weight for each 
         
         #append values to the appropriate list
         wf_lst[index_x] = struc.FW #[kg]

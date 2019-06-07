@@ -103,7 +103,8 @@ def ClassIIWeightIteration(Aircraft):
          
     #if after 20 iterations, still not converged, error occurs
     if error>0.01:
-        raise ValueError('The MTOW does not converge') 
+        print('fuck')
+        #raise ValueError('The MTOW does not converge') 
 
 
 
