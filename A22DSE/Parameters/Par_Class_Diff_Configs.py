@@ -70,8 +70,6 @@ def ComputeCD0(Aircraft):
         AnFP.MAC,AnFP.y_MAC = Wing_Geo(Aircraft)
         
         error = abs((AnFP.S-Sold)/Sold)
-    CD0_opt = AnFP.CD0
-    return CD0_opt
     
 
 def ClassIAircraft():
@@ -130,7 +128,8 @@ def PrelimTail():
     Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
     Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
     Layout.c_rvt,Layout.c_tvt,Layout.bv,\
-    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt = ctail(Conv)
+    Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt,\
+    Conv.ParLayoutConfig.mac_h,Conv.ParLayoutConfig.mac_v = ctail(Conv)
     
 def ClassI_AndAHalf():
 

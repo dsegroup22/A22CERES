@@ -40,9 +40,9 @@ def Wing_Geo(Aircraft):
     AR = anfp.A
     S = anfp.S
     
-    Sweep_50_rad = Sweep_50 * pi / 180.
-    Taper = 0.45 * exp( -0.0375 * Sweep_50_rad) 
-    Sweep_25_rad = atan( tan(Sweep_50_rad) + (4 / AR) * 0.25 \
+    Sweep_50 = Sweep_50 * pi / 180.
+    Taper = 0.45 * exp( -0.0375 * Sweep_50) 
+    Sweep_25_rad = atan( tan(Sweep_50) + (4 / AR) * 0.25 \
                     * (1 - Taper) / (1 + Taper))
     Sweep_LE = atan( tan(Sweep_25_rad) - (4 / AR) * -0.25 \
                     * (1 - Taper) / ( 1 + Taper))

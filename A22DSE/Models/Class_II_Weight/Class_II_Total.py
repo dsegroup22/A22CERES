@@ -79,11 +79,11 @@ def ClassIIWeightIteration(Aircraft):
     itcount = 0
     while(itcount<8):
          #update values for CD0, wfratio, S, Thrust, tail size, etc.
-         Aircraft.ParAnFP.CD0 = ComputeCD0(Aircraft)
+         ComputeCD0(Aircraft)
          Wfratio_flighttime_flightrange(Aircraft)
          WingSurface_Thrust_FuelWeight(Aircraft)
          ClassI_AndAHalf()
-         ClassIISizing()
+         ClassIISizing(Conv)
          
         
          #chose correct engines
@@ -95,11 +95,10 @@ def ClassIIWeightIteration(Aircraft):
          #calculate old and new masses
          MTOW_old = struc.MTOW
          struc.MTOW = ClassIIWeight_MTOW(Aircraft)
-         print(struc.MTOW)
          #check if error is small enough, if it is, return MTOW
          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
          if error<0.01:
-             return struc.MTOW
+             break
          itcount+=1    
          
     #if after 20 iterations, still not converged, error occurs
