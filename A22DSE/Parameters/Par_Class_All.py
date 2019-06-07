@@ -20,7 +20,7 @@ class ParAnFPLst(object):
         self.e = None  #[-]                        DUMMY VALUE
         self.CD0 = None #[-]                       DUMMY VALUE
         self.S = None #[m_squared]               DUMMY VALUE
-        
+        self.dihedral = 0. #[rad]
         #cruise parameters
         self.TtoW = None #[-]                                                                        air to fuel ratio                           by POPS
         self.Mdd = None #[-]
