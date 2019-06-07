@@ -16,9 +16,9 @@ os.chdir(Path(__file__).parents[2])
 
 
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
-BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg
-from A22DSE.Models.POPS.Current.payloadcalculationsellipticfus import PayloadtankLengthEllipse,\
+BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg,PayloadtankLengthEllipse,\
 PayloadtankMassEllipse,PayloadcgEllipse
+
 from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeightIteration
 from A22DSE.Models.Layout.Current.Area import FusAreas
 
@@ -58,19 +58,19 @@ Layout.TotalSidearea,Layout.S_wet_fuselage=FusAreas(Conv)
 
 
 Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
-Conv.ParPayload.d_tank=0.5*Layout.d_fuselage
+Conv.ParPayload.d_tank=0.8*Layout.h_fuselage #reserve 20% of fuselage space on the bottom for plumbing and pumps
 Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
 Conv.ParPayload.d_inlet=np.sqrt(4*Conv.ParPayload.A_inlet/np.pi)
 Conv.ParPayload.m_burner=BurnerMass(Conv)
 Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259. # scale length based on mass compared to original PT6A-68Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259*(0.48/Conv.ParPayload.d_inlet)**2 # scale length based on mass compared to original PT6A-68
 
 
-Conv.ParPayload.m_tank=PayloadtankMass(Conv)
-Conv.ParPayload.l_tank=PayloadtankLength(Conv)
+Conv.ParPayload.m_tank=PayloadtankMassEllipse(Conv)
+Conv.ParPayload.l_tank=PayloadtankLengthEllipse(Conv)
 
 
 Payload.xcg_tank,Payload.xcg_burner,Payload.x_burner_end,\
-Payload.xcg_totalpayload_empty=Payloadcg(Conv)
+Payload.xcg_totalpayload_empty=PayloadcgEllipse(Conv)
 
 anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
 anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
