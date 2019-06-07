@@ -23,12 +23,12 @@ lines=file.readlines()
 
 
 XW=round(float(Layout.x_apex_wing/Conversion.ft2m),1)
-ZW=round(float(2),1)
+ZW=round(float(Layout.h_fuselage/2/Conversion.ft2m),1)
 ALIW=round(float(0),1)
-XH=round(float(85),1)
-ZH=round(float(31.5),1)
+XH=round(float(Layout.x_apex_ht/Conversion.ft2m),1)
+
 ALIH=round(float(0),1)
-XV=round(float(60),1)
+XV=round(float(Layout.x_apex_vt/Conversion.ft2m),1)
 ZV=round(float(0),1)
 
 NX=round(float(4),1)
@@ -68,6 +68,8 @@ SSPNE_VT=0.9*SSPN_VT
 CHRDR_VT = round(float(Layout.c_rvt/Conversion.ft2m),1)
 SAVSI_VT = round(float(Layout.Sweep25vt),1)
 CHSTAT_VT = 0.25
+
+ZH=round(float(ZV+SSPN_VT),1)
 
 for line in lines[50:96]:
     if line[:2]=='XW':
@@ -185,7 +187,7 @@ for line in lines[50:96]:
     if line[:9]=='CHSTAT_VT':
         j= lines.index(line)
         lines[j]='CHSTAT_VT='+str(CHSTAT_VT)+';\n'
-print ('aaaaaaaaaaa')
+
        
 file.close()
 
