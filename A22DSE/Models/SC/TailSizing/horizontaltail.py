@@ -182,7 +182,16 @@ def htail(Aircraft,ISA):
     #de_max_up = (CLh/CLalphah - alpha_h) /tau_e
     
     #finish once we have all parameters
-    
-#    return (l_arm_opt,Sh,CL,CLh,mh,CL_to)
-    return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
+    Aircraft.ParLayoutConfig.Cr_h =ch_root
+    Aircraft.ParLayoutConfig.Ct_h = ch_tip
+    Aircraft.ParLayoutConfig.b_h = bh
+    Aircraft.ParLayoutConfig.sweepLEht = sweep_h
+    Aircraft.ParLayoutConfig.sweep25ht = sweep_h25
+    Aircraft.ParLayoutConfig.sweep50ht = sweep_h50
+    Aircraft.ParLayoutConfig.trht = tr_h
+    Aircraft.ParLayoutConfig.Aht = AR_h
+    Aircraft.ParLayoutConfig.Wht = mh
+    Aircraft.ParLayoutConfig.Sht = Sh
+    Aircraft.ParLayoutConfig.xht = l_arm_opt
+    #return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
 #def rudder(Aircraft):

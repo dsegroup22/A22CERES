@@ -17,7 +17,7 @@ def FuselageWeight(Aircraft):
     w_fuselage=config.w_fuselage    #[m]
 
     l_fuselage=config.l_fuselage    #[m]
-    K_inl=1.25                      #roskam page 77 part V
+    K_inl=1.                      #roskam page 77 part V
     MTOMlbs = struc.MTOW/Aircraft.ConversTool.lbs2kg
     q_Dpsf = anfp.q_dive/Aircraft.ConversTool.psf2Pa
     
