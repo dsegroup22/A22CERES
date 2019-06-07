@@ -58,7 +58,7 @@ def ClassIISizing(Conv):
     #fuel tank layout
     Conv.ParLayoutConfig.b_fueltank = 0.60 * Conv.ParAnFP.b #Estimated from figure from Torenbeek p337 
     
-    Layout.TotalSidearea,Layout.S_wet_fuselage=FusAreas(Conv)
+    Layout.TotalSidearea,Layout.S_wet_fuselage,Layout.S_front=FusAreas(Conv)
     
     
     Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
