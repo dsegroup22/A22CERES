@@ -137,7 +137,7 @@ def ComputeTheta2(Aircraft, ISA_model):
     
     rh = 0.10                                   # typical value REF Torenbeek
     q_des = DynamicPressEq(Aircraft, ISA_model)
-    omegaS = 155  # N/m² for ALUMINIUM WING
+    omegaS = 210  # N/m² for ALUMINIUM WING
     
     return (1+rh)*omegaS/q_des/10
 
