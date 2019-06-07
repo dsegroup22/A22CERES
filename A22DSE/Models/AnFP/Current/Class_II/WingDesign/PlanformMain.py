@@ -13,8 +13,6 @@ os.chdir(Path(__file__).parents[6])
 #print (os.getcwd())
 import numpy as np
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign import FunctionsPlanform
-from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
-from A22DSE.Parameters.Par_Class_Conventional import Conv
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -27,7 +25,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 #step = 50
 #CL_eq = np.linspace(0.2, 1.5, step)
 #MTOW = np.linspace(30000*9.81, 150000*9.81, step)
-#Aw = np.linspace(1, 18, step)
+
 #Sweep = np.deg2rad(np.linspace(0, 5, 10))
 #W_num = 10000
 #W_denum = 0.76
@@ -93,32 +91,44 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 #            2D IMPLEMENTATION OF TORENBEEK CLASS II PLANFORM DESIGN
 # =============================================================================
 
-def GetARWing(Aircraft, ISA_model, step):
+def GetARTransWing(Aircraft, ISAmodel, step, plot):
+    
     CL_eq = np.linspace(0.2, 1.5, step)
+    Aw = np.linspace(4, 18, step)
     MTOW  = Aircraft.ParStruc.MTOW
-    sweep = Aircraft.ParAnFP.
+    sweep = Aircraft.ParAnFP.Sweep_50
+    
     CL_des = []
     for i, Awi in enumerate(Aw):
         CL_des.append(float(
-                FunctionsPlanform.GetOptCLCurve(Aircraft, ISA_model, 
+                FunctionsPlanform.GetOptCLCurve(Aircraft, ISAmodel, 
                 MTOW, sweep, Awi)))
         
     Aw_des = []
     AwTrans_des = []
     for i, CL_eqi in enumerate(CL_eq):
-        Aw_des.append(float(FunctionsPlanform.ComputeCurveII(Conv, 
-                    ISA_model, CL_eqi, MTOW, sweep)))
-        AwTrans_des.append(float(FunctionsPlanform.GetTransOptAw(Conv,
-        ISA_model, CL_eqi, MTOW, sweep)))
+        Aw_des.append(float(FunctionsPlanform.ComputeCurveII(Aircraft, 
+                    ISAmodel, CL_eqi, MTOW, sweep)))
+        AwTrans_des.append(float(FunctionsPlanform.GetTransOptAw(Aircraft,
+        ISAmodel, CL_eqi, MTOW, sweep)))
     
     
     def Intersect(y,z):
-        return (np.argwhere(np.diff(np.sign(np.array(y) 
-                - np.array(z)))).flatten())
+        return int((np.argwhere(np.diff(np.sign(np.array(y) 
+                - np.array(z)))).flatten()))
+    
+    idx = Intersect(Aw, AwTrans_des)
+    
+    if plot:
+        plt.figure()
+        plt.plot(CL_des, list(Aw))
+        plt.plot(list(CL_eq), Aw_des)
+        plt.plot(list(CL_eq), AwTrans_des)
+        plt.axvline(x = Aircraft.ParAnFP.C_L_max_cruise, ymin = 0, ymax = 18)
+        plt.show()
 
-    return None
+    return CL_des[idx], AwTrans_des[idx]
 
- 
 ## =============================================================================
 ##                                   PLOT
 ## =============================================================================
