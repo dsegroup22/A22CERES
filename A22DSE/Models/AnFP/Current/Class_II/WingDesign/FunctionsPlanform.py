@@ -53,11 +53,12 @@ def friction_coef(Aircraft):
     return C_fe, S_wet
 
 def DynamicPressEq(Aircraft, ISA_model):
-    ''' 
-    INPUT:
-    OUTPUT:
-    DESCRIPTION:
-    '''    
+    '''
+    INPUT: Aircraft and ISA model
+    OUTPUT: equivalent dynamic pressure coeff.
+    DESCRIPTION: Computes the dynamic pressure coeff and corrects it for the
+    fuel lost during climb and take-off by decreasing the MTOW by 2.5%
+    '''
     # CONSTANTS AND VARIABLES
     AnFP = Aircraft.ParAnFP
     ISAFunc = ISA_model.ISAFunc
@@ -141,7 +142,7 @@ def ComputeTheta2(Aircraft, ISA_model):
     
     rh = 0.10                                   # typical value REF Torenbeek
     q_des = DynamicPressEq(Aircraft, ISA_model)
-    omegaS = 210  # N/m² for ALUMINIUM WING
+    omegaS = 250  # N/m² for ALUMINIUM WING
     
     return (1+rh)*omegaS/q_des/10
 
@@ -154,11 +155,7 @@ def ComputeTheta3(Aircraft, ISA_model):
        variables can be used. Namely, (t/c) and the sweep angle of the wing.
     '''
     
-    
-    #TODO: Taper ratio wing inside Aircraft object or individual constant?
-    #TODO: Find proper bref value
     #TODO: rh is approx. 0.10; CHANGE when Class II weights are set up.
-    #TODO: fuelused is gone, set to 5000 kg
     
     # CONSTANTS AND VARIABLES
     rh = 0.10               # typical value
@@ -166,7 +163,7 @@ def ComputeTheta3(Aircraft, ISA_model):
     fuelused = WfuMTOW*Aircraft.ParStruc.MTOW
     MZFW = (Aircraft.ParStruc.MTOW - fuelused)*ISA_model.g0  #MZFW = MTOW-Mfuel
     bref = 100           
-    mu_cp = 0.36*np.power((1+Aircraft.ParAnFP.taper), 0.5)
+    mu_cp = 0.36*np.power((1+Aircraft.ParAnFP.taper), 0.5)   # pg.236 Torenbeek
     n_ult = Aircraft.ParAnFP.n_ult
     q_eq = DynamicPressEq(Aircraft, ISA_model)
     
@@ -175,10 +172,13 @@ def ComputeTheta3(Aircraft, ISA_model):
 
 def CDpCurlFunc(Aircraft, ISA_model, Sweepi):
     '''
-    INPUT: 
-    OUTPUT:
-    DESCRIPTION:
-    '''    
+    INPUT: Aircraft, ISA calculator, sweep of the wing (single-valued)
+    OUTPUT: corrected profile drag for the wing and horizontal tail
+    DESCRIPTION: Area variation and Reynold's number affect the profile drag,
+    therefore the drag area is proportional to the wing surface area and is
+    proportional to Sw**.92.
+    '''
+    
     def SkinFrict(Mcruise, Re):
         Cfi = 0.455/(np.power(np.log10(Re),2.58))
         beta = np.sqrt(1-Mcruise)
@@ -191,8 +191,9 @@ def CDpCurlFunc(Aircraft, ISA_model, Sweepi):
     
     def Dw_and_h():
     # TODO: Find out how to find CDp_h
-        return (1.2+1.3)/2
     
+        return (1.2+1.3)/2
+
     def ComputeRe():
 
         if np.abs((h_cruise-20000)/20000) <= 0.05:
@@ -226,16 +227,25 @@ def CDpCurlFunc(Aircraft, ISA_model, Sweepi):
 def ComputeFprop(Aircraft, ISA_model, MTOWi):
     from scipy.optimize import fsolve
     '''
-    INPUT: 
-    OUTPUT:
+    INPUT : Aircraft, ISA calculator, MTOW (single-valued)
+    OUTPUT: Propulsion Penalty Function, Fprop
     DESCRIPTION:
+    The propulsion function is a function of altitude and wing loading. The
+    equation assume
+    - tau_bar is 0.55 as mentioned by Torenbeek as a "typical
+    value". 
+    - A/C uses typical jet fuel
+    - flies at h = 20km for rel. density
+    - mu_T is assumed as a "typical value"
+    - Induced drag coeff. of the engine nacelle is acquired from Cranfield
+        for typical transonic-operating engines
     '''    
     def ComputeDragNacelle(Cdi, D):
         return (0.5*ISA_model.ISAFunc([h_cruise])[2]*
                 AnFP.V_cruise**2*np.pi*D**2/4*Cdi)
     
     def ComputeTaubar():
-        AtmosDelta =  0.0540
+#        AtmosDelta =  0.0540
 #        return (T-Dnac)/(AtmosDelta*T_TO)
         return 0.55
     def deltaTrans(delta):
@@ -263,8 +273,10 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     #TODO: Add engine diameter in class structure
     Diameter = 1.61                     #[m]
     mu_T = 0.26
-    T = 73800.                                     #values for IAE V2531
-#    T_TO = 139360.                                  #values for IAE V2531
+    
+    TcontTTO = 0.9
+    T = 60000.*TcontTTO                              #values for EJ200
+    T_TO = 60000.                                  #values for EJ200
     Cldes = 0.56                                    #airfoil
 
     #compute mu_0
@@ -273,7 +285,7 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     eta_0bar = eta_0*(1-Dnac/T)
     Req = (Rmis+Rlost)*(1-0.5*WfuMTOW)
     tau_bar = ComputeTaubar()
-    
+
     # compute delta
     deltaMD = MTOWi/(q0*Cldes*AnFP.S)*ISA_model.g0
     delta = fsolve(deltaTrans, 0.9)
@@ -298,9 +310,10 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
 
 def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
     '''
-    INPUT: 
-    OUTPUT:
-    DESCRIPTION:
+    INPUT: Theta1, Theta2, Aircraft, ISA calculator, single-valued AR,
+    single-valued MTOW, single-valued CL
+    OUTPUT: wing penalty function
+    DESCRIPTION: 
     '''    
     #prerequisites:
     sweep = np.deg2rad(5)
@@ -309,7 +322,6 @@ def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
     e       = Aircraft.ParAnFP.e
     
     FWP1 = Theta1*Awi*np.sqrt(Awi/CL)
-    print(Awi, CL)
     FWP2 = Theta2/CL
     FWP3 = Fprop * (CDpcurl / CL + CL / (np.pi*Awi*e))
     
@@ -335,9 +347,10 @@ def FWP_subsonic(Theta1, Theta2, Aircraft, ISA_model, Awi, MTOWi, CL):
     
 def ComputeCDpS(Aircraft):
     '''
-    INPUT: 
-    OUTPUT:
-    DESCRIPTION:
+    INPUT: Aircraft model
+    OUTPUT: Profile drag area CDpS [m²]
+    DESCRIPTION: Determines the profile drag area of the aircraft by computing
+    the wetted area and the friction coefficient.
     '''
     S_wet=AnFP_Exec_CD0.friction_coef(Aircraft)[1]
     C_f=AnFP_Exec_CD0.friction_coef(Aircraft)[0]
@@ -346,24 +359,36 @@ def ComputeCDpS(Aircraft):
 
 def ComputeCurveII(Aircraft, ISA_model, C_l, MTOWi, Sweepi):
     ''' 
-    INPUT:
-    OUTPUT:
-    DESCRIPTION:
+    INPUT: Aircraft Model, ISA model, single-valued lift coeff., MTOW, and
+    sweep
+    OUTPUT: optimum aspect ratio given the MTOW (which does not necessarily
+    mean optimum CL as well)
+    DESCRIPTION: Constraint II in the graph as shown by Torenbeek in fig. 10.6
+    The constraint is the partial deriv. of the FWP w.r.t. Aw, (aspect ratio
+    of the wing), where FWP = f(A, CL(, t/c, sweep)). The analytical
+    equation is shown in Equation (10.27).
     '''
-    
-    #    MTOW=500000
+
     Fprop=ComputeFprop(Aircraft, ISA_model, MTOWi)
     theta1=ComputeTheta1(Aircraft, ISA_model, Sweepi)
-    eCurl = np.average([0.9,0.95])
+    
+    #Oswald factor for plane wing, different than the Oswald factor for drag
+    #polar
+    eCurl = np.average([0.9,0.95])                  
     CII=C_l**0.6*(2/3*Fprop/theta1/eCurl/np.pi)**0.4
     
     return CII
 
 def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi):
     '''
-    INPUT: 
-    OUTPUT:
-    DESCRIPTION:
+    INPUT: Aircraft model, ISA model, single-valued MTOW, single-valued sweep,
+    single-valued A
+    OUTPUT: Optimum design lift design coeff for given MTOW.
+    DESCRIPTION: Implementation of Equation 10.17 as described in Torenbeek
+    Chapter 10, Advanced Aircraft Design. 
+    Constraint I in the graph as shown by Torenbeek in fig. 10.6
+    The constraint is the partial deriv. of the FWP w.r.t. Aw, (aspect ratio
+    of the wing), where FWP = f(A, CL(, t/c, sweep)).
     '''
     
     #constants
@@ -389,9 +414,11 @@ def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi):
 
 def GetTankVolume(Aircraft, ISA_model, Awi):
     '''
-    INPUT: 
-    OUTPUT:
-    DESCRIPTION:
+    INPUT: Aircraft model, ISA model, and single-valued aspect ratio
+    OUTPUT: Fuel tank volume in m³
+    DESCRIPTION: Estimation of the fuel tank volume in the wing assuming that
+    all the fuel is stored inside the wing. It is a function of the aspect
+    ratio and the equation is given by Equation (10.30).
     '''
     #constants
     mu_tank = 0.55
@@ -404,9 +431,10 @@ def GetTankVolume(Aircraft, ISA_model, Awi):
     
 def GetWfCurve(Aircraft, ISA_model, Awi, MTOWi, CLi, Sweepi):
     '''
-    INPUT: 
-    OUTPUT:
-    DESCRIPTION:
+    INPUT: Aircraft model, ISA model, single-valued: A, MTOW, CL, Sweep
+    OUTPUT: Maximum fuel weight [N]
+    DESCRIPTION: 
+    See Equation (10.31).
     '''
 
     ##TODO: Change WfuMTOW = Aircraft.ParStruc.wfratio    
@@ -446,9 +474,10 @@ def GetWfCurve(Aircraft, ISA_model, Awi, MTOWi, CLi, Sweepi):
 
 def ComputeCurveC2(Aircraft, ISA_model,C_l):
     ''' 
-    INPUT:
-    OUTPUT:
-    DESCRIPTION:
+    INPUT: Aircraft model, ISA model, and single-valued lift coefficient
+    OUTPUT: Aspect ratio given wing and tail weight fraction
+    DESCRIPTION: Optimum AR given a upper limit by the wing and tail weight
+    for minimum MTOW and fuel weight.
     '''
     
     CDpCurl = CDpCurlFunc(Aircraft, ISA_model, np.deg2rad(5))
@@ -466,46 +495,18 @@ def ComputeCurveC2(Aircraft, ISA_model,C_l):
         f = C_l - (1.5*CDpCurl*np.pi*eCurl*A_w)**0.5*(1-theta_2 /\
           (theta_1*(A_w**1.5)*C_l**0.5))**(-0.5)
         return f
-    C2=fsolve(f,15)
+    C2= fsolve(f,15)
     return C2
 
-
-    #Abbreviations
-    ConversTool = Aircraft.ConversTool
-    AnFP = Aircraft.ParAnFP
-    ISAFunc = ISA_model.ISAFunc
-    
-    ##Constants
-    WresfMTOW = 0.045
-#    WfuMTOW   = 0.20
-    Hg      = 4350*1000.                    # for conv. gas turbine engine fuel    
-    theta = 0.7519                          # rel. density   
-    C_T = 0.56*ConversTool.lbs2kg/ConversTool.lbf2N
-    h_cruise = AnFP.h_cruise
-    eCurl    = np.average([0.90, 0.95])
-    #prerequisites
-    Rm      = Aircraft.ParAnFP.s_cruise ##maximum range
-#    CDpCurl = CDpCurlFunc(Aircraft, ISA_model, Sweepi)
-    q = ISAFunc([h_cruise])[-1]*0.5*AnFP.V_cruise**2
-    a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
-    Mcruise = AnFP.V_cruise/a
-    eta_0 = 0.0287*Mcruise/(C_T/np.sqrt(theta))    
-    CDp    = ComputeCDpS(Aircraft)/AnFP_Exec_CD0.friction_coef(Aircraft)[1]
-    
-    #Determine CDS
-    CD = 1/Aircraft.ParAnFP.LD*CLi
-    CDS = CD*AnFP_Exec_CD0.friction_coef(Aircraft)[1]
-    
-    Wfmax  = Rm/(eta_0*Hg)*(CDp/CLi+CLi/(np.pi*Awi*eCurl)*MTOWi + \
-             q*CDS) + WresfMTOW* MTOWi
-    
-    return Wfmax
-
-def ComputeAw(Aircraft,ISA_model, Sweepi):
+def ComputeAw(Aircraft, ISA_model, Sweepi):
     ''' 
-    INPUT:
-    OUTPUT:
+    INPUT: Aircraft model, ISA model, single-valued sweep
+    OUTPUT: Optimum AR for optimum CL AND FWP
     DESCRIPTION:
+        Finds the intersection of the UNCONSTRAINED optima of the FWP function.
+        For given MTOW the function finds the associated optimal aspect ratio
+        for optimal lift coefficient.
+        
     '''
     MTOWi= Aircraft.ParStruc.MTOW*9.81
     CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
@@ -520,9 +521,12 @@ def ComputeAw(Aircraft,ISA_model, Sweepi):
 
 def ComputeCl(Aircraft,ISA_model, Sweepi):
     ''' 
-    INPUT:
-    OUTPUT:
+    INPUT: Aircraft model, ISA model, single-valued sweep
+    OUTPUT: Optimum CL for optimum AR AND FWP
     DESCRIPTION:
+        Finds the intersection of the UNCONSTRAINED optima of the FWP function.
+        For given MTOW the function finds the associated optimal CL
+        for optimal AR.
     '''
     MTOWi=Aircraft.ParStruc.MTOW*9.81
     CdpCurl=CDpCurlFunc(Aircraft, ISA_model, Sweepi)
@@ -537,15 +541,17 @@ def ComputeCl(Aircraft,ISA_model, Sweepi):
 
 def GetTransOptAw(Aircraft, ISA_model, CL_eq, MTOWi, sweep):
     ''' 
-    INPUT:
-    OUTPUT:
-    DESCRIPTION:
+    INPUT: Aircraft model, ISA model, single-valued: CL, MTOW and sweep
+    OUTPUT: the optimum Aw for given CL, sweep and MTOW
+    DESCRIPTION: Optimum transonic wing aspect ratio for given MTOW, similarly
+    to definition for curve II. The analytical equation is shown in Equation
+    (10.52).
     '''    
     Mcrit = 0.935
     Mdd = Aircraft.ParAnFP.Mdd
     Fprop = ComputeFprop(Aircraft, ISA_model, MTOWi)
     theta3 = ComputeTheta3(Aircraft, ISA_model)
-    eCurl = np.average([0.9, 0.95])
+    eCurl = np.average([0.9, 0.95]) 
     
 #    print((2*Fprop/(3*np.pi*theta3), np.cos(sweep)**3*(Mcrit-Mdd*np.cos(sweep)), 
 #           (np.cos(sweep)**3*(Mcrit-Mdd*np.cos(sweep))-0.11*CL_eq**1.5)))
