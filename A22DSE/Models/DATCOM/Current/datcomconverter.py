@@ -11,7 +11,7 @@ from datcomconvertermatlab import *
 
 
 
-file=open('A22DSE\DATCOM\Current\CERESorig.dat','r')
+file=open('A22DSE\Models\DATCOM\Current\CERESorig.dat','r')
 
 lines=file.readlines()
 
@@ -27,9 +27,9 @@ printer(6)
 a=lines[6].split(',')[0].split('=')[0]+'='+str(round(float(np.average(Layout.x_cg)/Conversion.ft2m),1))+','
 b=lines[6].split(',')[1].split('=')[0]+'='+str(round(float((Layout.z_cg_over_h_fus-0.5)*Layout.h_fuselage/Conversion.ft2m*2),1))+','
 c=lines[6].split(',')[2].split('=')[0]+'='+str(XW)+','
-d=lines[6].split(',')[3]+','
+d=lines[6].split(',')[3].split('=')[0]+'='+str(ZW)+','
 e=lines[6].split(',')[4]+','
-f=lines[6].split(',')[5]+','
+f=lines[6].split(',')[5].split('=')[0]+'='+str(XH)+','
 g=lines[6].split(',')[6]
 lines[6]=a+b+c+d+e+f+g
 printer(6)
@@ -45,8 +45,8 @@ printer(16)
 printer(17)
 a=lines[17].split(',')[0].split('=')[0]+'='+str(SAVSI_WG)+','
 b=lines[17].split(',')[1].split('=')[0]+'='+str(CHSTAT_WG)+','
-c=lines[17].split(',')[2]+','
-d=lines[17].split(',')[3]+','
+c=lines[17].split(',')[2].split('=')[0]+'='+str(TWISTA_WG)+','
+d=lines[17].split(',')[3].split('=')[0]+'='+str(DHDADI_WG)+','
 e=lines[17].split(',')[4]
 lines[17]=a+b+c+d+e
 printer(17)
@@ -64,8 +64,8 @@ printer(19)
 printer(20)
 a=lines[20].split(',')[0].split('=')[0]+'='+str(SAVSI_HT)+','
 b=lines[20].split(',')[1].split('=')[0]+'='+str(CHSTAT_HT)+','
-c=lines[20].split(',')[2]+','
-d=lines[20].split(',')[3]+','
+c=lines[20].split(',')[2].split('=')[0]+'='+str(TWISTA_HT)+','
+d=lines[20].split(',')[3].split('=')[0]+'='+str(DHDADI_HT)+','
 e=lines[20].split(',')[4]
 lines[20]=a+b+c+d+e
 printer(20)
@@ -91,7 +91,7 @@ printer(23)
 
 file.close()
 
-file=open('A22DSE\DATCOM\Current\CERES.dat','w')
+file=open('A22DSE\Models\DATCOM\Current\CERES.dat','w')
 for line in lines:
     file.write(line)
 file.close()

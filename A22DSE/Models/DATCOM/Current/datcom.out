@@ -17,12 +17,12 @@
 0******************************  INPUT DATA CARDS  ******************************
 
  CASEID CERES NASA TN D-5857                                                     
-  $FLTCON NMACH=2.0,MACH(1)=0.2,0.8$                                             
+  $FLTCON NMACH=2.0,MACH(1)=0.2,0.6$                                             
   $FLTCON NALT=2.0,ALT(1)=0.0,65617.0$                                           
   $FLTCON NALPHA=12.0,ALSCHD=-4.0,-2.0,0.0,2.0,4.0,6.0,8.0,                      
    10.0,12.0,14.0,16.0,18.0,GAMMA=0.0,WT=109334.0,LOOP=2.0$                      
-  $OPTINS SREF=3455.0,CBARR=16.3,BLREF=233.0$                                    
-  $SYNTHS XCG=49.0,ZCG=-0.47,XW=42.6,ZW=-2.12,ALIW=0.0,XH=70.5,                  
+  $OPTINS SREF=4131.1,CBARR=21.2,BLREF=204.4$                                    
+  $SYNTHS XCG=82.7,ZCG=3.0,XW=53.4,ZW=2.0,ALIW=0.0,XH=85.0,                      
    ZH=0.78,ALIH=0.0,XV=83.0,ZV=0.0,XVF=83.0,ZVF=1.25,VERTUP=.TRUE.$              
   $BODY NX=4.0,ITYPE=1.0,                                                        
    X=0.0,8.7,64.5,78.7,                                                          
@@ -32,25 +32,25 @@
    P=0.0,23.3,23.3,2.0,                                                          
    R=0.0,4.6,4.6,0.33$                                                           
  NACA-W-4-4415                                                                   
-  $WGPLNF CHRDR=21.3,CHRDTP=9.5,SSPN=111.4,SSPNE=106.8,                          
-   SAVSI=18.0,CHSTAT=0.25,TWISTA=-3.0,DHDADI=7.50,TYPE=1.0$                      
+  $WGPLNF CHRDR=28.0,CHRDTP=12.4,SSPN=102.2,SSPNE=91.98,                         
+   SAVSI=28.4,CHSTAT=0.0,TWISTA=-3.0,DHDADI=-2.0,TYPE=1.0$                       
  NACA-H-4-0012                                                                   
-  $HTPLNF CHRDR=22.96,CHRDTP=10.2,SSPN=32.2,SSPNE=30.0,                          
-   SAVSI=28.2,CHSTAT=0.25,TWISTA=0.0,DHDADI=0.00,TYPE=1.0$                       
+  $HTPLNF CHRDR=18.1,CHRDTP=6.3,SSPN=50.8,SSPNE=45.72,                           
+   SAVSI=33.3,CHSTAT=0.25,TWISTA=0.0,DHDADI=0.0,TYPE=1.0$                        
  NACA-V-4-0012                                                                   
-  $VTPLNF CHRDR=26.9,CHRDTP=17.4,SSPN=31.5,SSPNE=28.0,                           
-   SAVSI=40.2,CHSTAT=0.25,TYPE=1.0$                                              
+  $VTPLNF CHRDR=18.1,CHRDTP=6.3,SSPN=50.8,SSPNE=45.72,                           
+   SAVSI=39.0,CHSTAT=0.25,TYPE=1.0$                                              
  DAMP                                                                            
  NEXT CASE                                                                       
 1          THE FOLLOWING IS A LIST OF ALL INPUT CARDS FOR THIS CASE.
 0
  CASEID CERES NASA TN D-5857                                                     
-  $FLTCON NMACH=2.0,MACH(1)=0.2,0.8$                                             
+  $FLTCON NMACH=2.0,MACH(1)=0.2,0.6$                                             
   $FLTCON NALT=2.0,ALT(1)=0.0,65617.0$                                           
   $FLTCON NALPHA=12.0,ALSCHD=-4.0,-2.0,0.0,2.0,4.0,6.0,8.0,                      
    10.0,12.0,14.0,16.0,18.0,GAMMA=0.0,WT=109334.0,LOOP=2.0$                      
-  $OPTINS SREF=3455.0,CBARR=16.3,BLREF=233.0$                                    
-  $SYNTHS XCG=49.0,ZCG=-0.47,XW=42.6,ZW=-2.12,ALIW=0.0,XH=70.5,                  
+  $OPTINS SREF=4131.1,CBARR=21.2,BLREF=204.4$                                    
+  $SYNTHS XCG=82.7,ZCG=3.0,XW=53.4,ZW=2.0,ALIW=0.0,XH=85.0,                      
    ZH=0.78,ALIH=0.0,XV=83.0,ZV=0.0,XVF=83.0,ZVF=1.25,VERTUP=.TRUE.$              
   $BODY NX=4.0,ITYPE=1.0,                                                        
    X=0.0,8.7,64.5,78.7,                                                          
@@ -60,14 +60,14 @@
    P=0.0,23.3,23.3,2.0,                                                          
    R=0.0,4.6,4.6,0.33$                                                           
  NACA-W-4-4415                                                                   
-  $WGPLNF CHRDR=21.3,CHRDTP=9.5,SSPN=111.4,SSPNE=106.8,                          
-   SAVSI=18.0,CHSTAT=0.25,TWISTA=-3.0,DHDADI=7.50,TYPE=1.0$                      
+  $WGPLNF CHRDR=28.0,CHRDTP=12.4,SSPN=102.2,SSPNE=91.98,                         
+   SAVSI=28.4,CHSTAT=0.0,TWISTA=-3.0,DHDADI=-2.0,TYPE=1.0$                       
  NACA-H-4-0012                                                                   
-  $HTPLNF CHRDR=22.96,CHRDTP=10.2,SSPN=32.2,SSPNE=30.0,                          
-   SAVSI=28.2,CHSTAT=0.25,TWISTA=0.0,DHDADI=0.00,TYPE=1.0$                       
+  $HTPLNF CHRDR=18.1,CHRDTP=6.3,SSPN=50.8,SSPNE=45.72,                           
+   SAVSI=33.3,CHSTAT=0.25,TWISTA=0.0,DHDADI=0.0,TYPE=1.0$                        
  NACA-V-4-0012                                                                   
-  $VTPLNF CHRDR=26.9,CHRDTP=17.4,SSPN=31.5,SSPNE=28.0,                           
-   SAVSI=40.2,CHSTAT=0.25,TYPE=1.0$                                              
+  $VTPLNF CHRDR=18.1,CHRDTP=6.3,SSPN=50.8,SSPNE=45.72,                           
+   SAVSI=39.0,CHSTAT=0.25,TYPE=1.0$                                              
  DAMP                                                                            
  NEXT CASE                                                                       
 0 INPUT DIMENSIONS ARE IN FT, SCALE FACTOR IS 1.0000
@@ -92,13 +92,7 @@
 
 
 0                         MACH= 0.2000 LIFT-CURVE-SLOPE =   0.09559 /DEG.      XAC =   0.25951
-0                                    *** CREST CRITICAL MACH NUMBER EXCEEDED ***
-
-                                    CREST CRITICAL MACH =   0.68356
-
-                                               LOCATION =   0.40150 FRACTION CHORD
-
-                                       LIFT-CURVE-SLOPE =   0.09475 /DEG.
+0                         MACH= 0.6000 LIFT-CURVE-SLOPE =   0.10933 /DEG.      XAC =   0.27206
 1                             AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM   
                                                    HORIZONTAL TAIL SECTION DEFINITION
 0                                 IDEAL ANGLE OF ATTACK =   0.00000 DEG.
@@ -119,13 +113,7 @@
 
 
 0                         MACH= 0.2000 LIFT-CURVE-SLOPE =   0.09761 /DEG.      XAC =   0.25880
-0                                    *** CREST CRITICAL MACH NUMBER EXCEEDED ***
-
-                                    CREST CRITICAL MACH =   0.73019
-
-                                               LOCATION =   0.26314 FRACTION CHORD
-
-                                       LIFT-CURVE-SLOPE =   0.10870 /DEG.
+0                         MACH= 0.6000 LIFT-CURVE-SLOPE =   0.11639 /DEG.      XAC =   0.26187
 1                             AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM   
                                                     VERTICAL TAIL SECTION DEFINITION
 0                                 IDEAL ANGLE OF ATTACK =   0.00000 DEG.
@@ -146,13 +134,7 @@
 
 
 0                         MACH= 0.2000 LIFT-CURVE-SLOPE =   0.09761 /DEG.      XAC =   0.25880
-0                                    *** CREST CRITICAL MACH NUMBER EXCEEDED ***
-
-                                    CREST CRITICAL MACH =   0.73019
-
-                                               LOCATION =   0.26314 FRACTION CHORD
-
-                                       LIFT-CURVE-SLOPE =   0.10870 /DEG.
+0                         MACH= 0.6000 LIFT-CURVE-SLOPE =   0.11639 /DEG.      XAC =   0.26187
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                          CHARACTERISTICS AT ANGLE OF ATTACK AND IN SIDESLIP
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -162,36 +144,36 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.200       0.00     223.27   2.1162E+03     518.670     1.4136E+06          3455.000     16.300   233.000    49.000    -0.470
+0 0.200       0.00     223.27   2.1162E+03     518.670     1.4136E+06          4131.100     21.200   204.400    82.700     3.000
 0                                                               -------------------DERIVATIVE (PER DEGREE)-------------------
 0 ALPHA     CD       CL       CM       CN       CA       XCP        CLA          CMA          CYB          CNB          CLB
 0
-   -4.0    0.012   -0.196    0.2379  -0.197   -0.001   -1.209    9.584E-02   -1.044E-01   -1.285E-02    3.211E-03   -2.187E-03
-   -2.0    0.010   -0.005    0.0323  -0.006    0.010   -5.677    9.521E-02   -1.018E-01                             -2.397E-03
-    0.0    0.011    0.185   -0.1695   0.185    0.011   -0.919    9.454E-02   -1.003E-01                             -2.604E-03
-    2.0    0.014    0.373   -0.3690   0.373    0.001   -0.989    9.355E-02   -9.925E-02                             -2.808E-03
-    4.0    0.019    0.559   -0.5665   0.559   -0.020   -1.014    9.225E-02   -9.847E-02                             -3.009E-03
-    6.0    0.026    0.742   -0.7629   0.740   -0.052   -1.030    8.979E-02   -9.563E-02                             -3.206E-03
-    8.0    0.035    0.918   -0.9490   0.914   -0.093   -1.038    8.560E-02   -8.914E-02                             -3.396E-03
-   10.0    0.046    1.084   -1.1195   1.076   -0.143   -1.041    8.574E-02   -9.279E-02                             -3.579E-03
-   12.0    0.061    1.261   -1.3202   1.246   -0.203   -1.060    8.696E-02   -9.968E-02                             -3.753E-03
-   14.0    0.078    1.432   -1.5182   1.408   -0.270   -1.078    8.225E-02   -9.433E-02                             -3.916E-03
-   16.0    0.097    1.590   -1.6975   1.555   -0.345   -1.092    6.532E-02   -7.746E-02                             -4.064E-03
-   18.0    0.115    1.693   -1.8280   1.646   -0.414   -1.111    3.818E-02   -5.306E-02                             -4.113E-03
+   -4.0    0.011   -0.186    0.0491  -0.186   -0.002   -0.264    8.603E-02   -1.571E-02   -6.884E-03    1.329E-03    2.579E-04
+   -2.0    0.009   -0.015    0.0194  -0.015    0.008   -1.299    8.522E-02   -1.429E-02                             -1.433E-04
+    0.0    0.010    0.155   -0.0080   0.155    0.010   -0.052    8.559E-02   -1.480E-02                             -5.454E-04
+    2.0    0.012    0.328   -0.0398   0.328    0.001   -0.121    8.597E-02   -1.594E-02                             -9.436E-04
+    4.0    0.018    0.499   -0.0718   0.499   -0.017   -0.144    8.474E-02   -1.592E-02                             -1.335E-03
+    6.0    0.025    0.667   -0.1035   0.666   -0.045   -0.155    8.287E-02   -1.532E-02                             -1.715E-03
+    8.0    0.034    0.830   -0.1331   0.827   -0.081   -0.161    8.069E-02   -1.410E-02                             -2.084E-03
+   10.0    0.046    0.989   -0.1599   0.982   -0.126   -0.163    7.824E-02   -1.265E-02                             -2.440E-03
+   12.0    0.060    1.143   -0.1837   1.131   -0.179   -0.162    7.536E-02   -1.103E-02                             -2.781E-03
+   14.0    0.076    1.291   -0.2040   1.271   -0.239   -0.161    7.167E-02   -8.996E-03                             -3.107E-03
+   16.0    0.093    1.430   -0.2197   1.400   -0.305   -0.157    6.606E-02   -6.850E-03                             -3.415E-03
+   18.0    0.111    1.555   -0.2314   1.513   -0.375   -0.153    5.905E-02   -4.870E-03                             -3.690E-03
 0                                    ALPHA     Q/QINF    EPSLON  D(EPSLON)/D(ALPHA)
 0
-                                     -4.0      1.000     -0.613        0.394
-                                     -2.0      1.000      0.175        0.394
-                                      0.0      1.000      0.962        0.393
-                                      2.0      1.000      1.749        0.392
-                                      4.0      1.000      2.530        0.389
-                                      6.0      1.000      3.307        0.386
-                                      8.0      0.955      4.076        0.382
-                                     10.0      0.876      4.836        0.378
-                                     12.0      0.949      5.587        0.372
-                                     14.0      1.000      6.325        0.367
-                                     16.0      1.000      7.055        0.358
-                                     18.0      1.000      7.757        0.351
+                                     -4.0      0.886     -0.850        0.511
+                                     -2.0      0.890      0.173        0.511
+                                      0.0      0.983      1.193        0.509
+                                      2.0      1.000      2.210        0.506
+                                      4.0      1.000      3.218        0.502
+                                      6.0      1.000      4.218        0.497
+                                      8.0      1.000      5.206        0.491
+                                     10.0      1.000      6.181        0.483
+                                     12.0      1.000      7.139        0.488
+                                     14.0      1.000      8.133        0.514
+                                     16.0      1.000      9.197        0.544
+                                     18.0      1.000     10.307        0.555
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                                          DYNAMIC DERIVATIVES
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -201,79 +183,25 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.200       0.00     223.27   2.1162E+03     518.670     1.4136E+06          3455.000     16.300   233.000    49.000    -0.470
+0 0.200       0.00     223.27   2.1162E+03     518.670     1.4136E+06          4131.100     21.200   204.400    82.700     3.000
                                                     DYNAMIC DERIVATIVES (PER DEGREE)
 0           -------PITCHING-------    -----ACCELERATION------    --------------ROLLING--------------    --------YAWING--------
 0   ALPHA       CLQ          CMQ           CLAD         CMAD         CLP          CYP          CNP          CNR          CLR
 0
-    -4.00    2.925E-01   -3.622E-01     3.631E-02   -7.936E-02   -7.266E-03   -3.457E-03    2.901E-04   -1.177E-03   -3.194E-04
-    -2.00                               3.630E-02   -7.933E-02   -7.247E-03   -3.060E-03   -9.465E-05   -1.210E-03    4.794E-04
-     0.00                               3.626E-02   -7.925E-02   -7.210E-03   -2.658E-03   -4.897E-04   -1.219E-03    1.277E-03
-     2.00                               3.612E-02   -7.895E-02   -7.131E-03   -2.255E-03   -8.836E-04   -1.203E-03    2.066E-03
-     4.00                               3.590E-02   -7.846E-02   -7.016E-03   -1.854E-03   -1.275E-03   -1.165E-03    2.841E-03
-     6.00                               3.561E-02   -7.783E-02   -6.862E-03   -1.456E-03   -1.660E-03   -1.105E-03    3.596E-03
-     8.00                               3.364E-02   -7.353E-02   -6.672E-03   -1.063E-03   -2.039E-03   -1.025E-03    4.327E-03
-    10.00                               3.050E-02   -6.666E-02   -6.447E-03   -6.748E-04   -2.408E-03   -9.282E-04    5.029E-03
-    12.00                               3.257E-02   -7.119E-02   -6.188E-03   -2.944E-04   -2.766E-03   -8.170E-04    5.697E-03
-    14.00                               3.383E-02   -7.393E-02   -5.895E-03    7.726E-05   -3.111E-03   -6.946E-04    6.326E-03
-    16.00                               3.300E-02   -7.213E-02   -4.547E-03    4.463E-04   -3.467E-03   -5.641E-04    6.913E-03
-    18.00                               3.237E-02   -7.074E-02   -2.146E-03    7.398E-04   -3.706E-03   -4.840E-04    7.218E-03
+    -4.00    1.020E-01   -8.555E-02     2.103E-02   -2.281E-02   -7.851E-03    3.767E-04    1.808E-04   -1.684E-04   -7.797E-04
+    -2.00                               2.108E-02   -2.287E-02   -7.856E-03    8.239E-04   -7.634E-05   -1.742E-04   -1.928E-05
+     0.00                               2.323E-02   -2.520E-02   -7.829E-03    1.281E-03   -3.451E-04   -1.856E-04    7.410E-04
+     2.00                               2.349E-02   -2.548E-02   -7.745E-03    1.737E-03   -6.133E-04   -2.024E-04    1.494E-03
+     4.00                               2.329E-02   -2.526E-02   -7.620E-03    2.190E-03   -8.802E-04   -2.244E-04    2.236E-03
+     6.00                               2.305E-02   -2.500E-02   -7.458E-03    2.638E-03   -1.145E-03   -2.511E-04    2.963E-03
+     8.00                               2.276E-02   -2.469E-02   -7.260E-03    3.080E-03   -1.408E-03   -2.821E-04    3.670E-03
+    10.00                               2.242E-02   -2.432E-02   -7.028E-03    3.512E-03   -1.666E-03   -3.167E-04    4.353E-03
+    12.00                               2.264E-02   -2.456E-02   -6.764E-03    3.934E-03   -1.921E-03   -3.542E-04    5.009E-03
+    14.00                               2.387E-02   -2.589E-02   -6.470E-03    4.344E-03   -2.169E-03   -3.940E-04    5.635E-03
+    16.00                               2.521E-02   -2.735E-02   -5.997E-03    4.744E-03   -2.419E-03   -4.353E-04    6.227E-03
+    18.00                               2.575E-02   -2.793E-02   -5.356E-03    5.104E-03   -2.642E-03   -4.751E-04    6.752E-03
 0*** VEHICLE WEIGHT = 109334.00 LB.
-0*** LEVEL FLIGHT LIFT COEFFICIENT = 0.53405
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-
-
-
-
-
-
-
-        LATERAL STABILITY DERIVATIVES ARE DELETED BECAUSE ALL OR PART OF THE HORIZONTAL TAIL EXPOSED ROOT CHORD LIES OFF OF THE
-
-        FUSELAGE. FOR THIS CASE THE NAMELIST HTPLNF PARAMETERS SHB, SEXT, AND RLPH MUST BE INPUT BY THE USER.
-
-
-
-
-
-
-
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-
-
-
-
-
-
-
-        LATERAL STABILITY DERIVATIVES ARE DELETED BECAUSE ALL OR PART OF THE HORIZONTAL TAIL EXPOSED ROOT CHORD LIES OFF OF THE
-
-        FUSELAGE. FOR THIS CASE THE NAMELIST HTPLNF PARAMETERS SHB, SEXT, AND RLPH MUST BE INPUT BY THE USER.
-
-
-
-
-
-
-
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
-   ********************************************************************************************************************************
+0*** LEVEL FLIGHT LIFT COEFFICIENT = 0.44665
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                          CHARACTERISTICS AT ANGLE OF ATTACK AND IN SIDESLIP
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -283,37 +211,36 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.800       0.00     893.06   2.1162E+03     518.670     5.6546E+06          3455.000     16.300   233.000    49.000    -0.470
+0 0.600       0.00     669.80   2.1162E+03     518.670     4.2409E+06          4131.100     21.200   204.400    82.700     3.000
 0                                                               -------------------DERIVATIVE (PER DEGREE)-------------------
 0 ALPHA     CD       CL       CM       CN       CA       XCP        CLA          CMA          CYB          CNB          CLB
 0
-   -4.0   -NaN      NDM       NDM     NDM      NDM      0.170    6.965E-02    1.187E-02      NDM          NDM          NDM 
-   -2.0                                                                                                                NDM 
-    0.0                                                                                                                NDM 
-    2.0                                                                                                                NDM 
-    4.0                                                                                                                NDM 
-    6.0                                                                                                                NDM 
-    8.0                                                                                                                NDM 
-   10.0                                                                                                                NDM 
-   12.0                                                                                                                NDM 
-   14.0                                                                                                                NDM 
-   16.0                                                                                                                NDM 
-   18.0                                                                                                                NDM 
+   -4.0    0.011   -0.225    0.0503  -0.225   -0.005   -0.224    9.096E-02   -1.778E-02   -7.337E-03    1.454E-03    4.511E-04
+   -2.0    0.009   -0.044    0.0179  -0.045    0.007   -0.401    9.022E-02   -1.608E-02                             -4.788E-05
+    0.0    0.009    0.136   -0.0140   0.136    0.009   -0.103    8.978E-02   -1.684E-02                             -5.516E-04
+    2.0    0.012    0.315   -0.0494   0.315    0.001   -0.157    8.761E-02   -1.771E-02                             -1.036E-03
+    4.0    0.017    0.487   -0.0849   0.487   -0.017   -0.174    8.411E-02   -1.756E-02                             -1.496E-03
+    6.0    0.024    0.651   -0.1197   0.650   -0.044   -0.184    7.995E-02   -1.662E-02                             -1.929E-03
+    8.0    0.033    0.807   -0.1513   0.803   -0.080   -0.188    7.571E-02   -1.508E-02                             -2.335E-03
+   10.0    0.043    0.954   -0.1800   0.947   -0.123   -0.190    7.146E-02   -1.333E-02                             -2.713E-03
+   12.0    0.056    1.092   -0.2047   1.080   -0.173   -0.189    6.519E-02   -1.131E-02                             -3.065E-03
+   14.0    0.069    1.215   -0.2252   1.195   -0.227   -0.188    4.608E-02   -8.059E-03                             -3.368E-03
+   16.0    0.080    1.277   -0.2369   1.249   -0.275   -0.190    3.407E-02   -5.514E-03                             -3.499E-03
+   18.0    0.093    1.351   -0.2473   1.313   -0.329   -0.188    4.017E-02   -4.883E-03                             -3.662E-03
 0                                    ALPHA     Q/QINF    EPSLON  D(EPSLON)/D(ALPHA)
 0
-                                     -4.0      0.901      0.000        0.306
-                                     -2.0                                  
-                                      0.0                                  
-                                      2.0                                  
-                                      4.0                                  
-                                      6.0                                  
-                                      8.0                                  
-                                     10.0                                  
-                                     12.0                                  
-                                     14.0                                  
-                                     16.0                                  
-                                     18.0                                  
-0*** NDM PRINTED WHEN NO DATCOM METHODS EXIST
+                                     -4.0      0.890     -1.070        0.523
+                                     -2.0      0.904     -0.025        0.521
+                                      0.0      0.992      1.014        0.519
+                                      2.0      1.000      2.050        0.510
+                                      4.0      1.000      3.054        0.498
+                                      6.0      1.000      4.042        0.488
+                                      8.0      1.000      5.008        0.477
+                                     10.0      1.000      5.951        0.465
+                                     12.0      1.000      6.869        0.459
+                                     14.0      1.000      7.789        0.456
+                                     16.0      1.000      8.692        0.452
+                                     18.0      1.000      9.595        0.451
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                                          DYNAMIC DERIVATIVES
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -323,138 +250,25 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.800       0.00     893.06   2.1162E+03     518.670     5.6546E+06          3455.000     16.300   233.000    49.000    -0.470
+0 0.600       0.00     669.80   2.1162E+03     518.670     4.2409E+06          4131.100     21.200   204.400    82.700     3.000
                                                     DYNAMIC DERIVATIVES (PER DEGREE)
 0           -------PITCHING-------    -----ACCELERATION------    --------------ROLLING--------------    --------YAWING--------
 0   ALPHA       CLQ          CMQ           CLAD         CMAD         CLP          CYP          CNP          CNR          CLR
 0
-    -4.00    1.969E-01   -3.839E-01     2.409E-02   -4.620E-02      NDM          NDM          NDM          NDM          NDM 
-    -2.00                                                           NDM          NDM          NDM          NDM          NDM 
-     0.00                                                           NDM          NDM          NDM          NDM          NDM 
-     2.00                                                           NDM          NDM          NDM          NDM          NDM 
-     4.00                                                           NDM          NDM          NDM          NDM          NDM 
-     6.00                                                           NDM          NDM          NDM          NDM          NDM 
-     8.00                                                           NDM          NDM          NDM          NDM          NDM 
-    10.00                                                           NDM          NDM          NDM          NDM          NDM 
-    12.00                                                           NDM          NDM          NDM          NDM          NDM 
-    14.00                                                           NDM          NDM          NDM          NDM          NDM 
-    16.00                                                           NDM          NDM          NDM          NDM          NDM 
-    18.00                                                           NDM          NDM          NDM          NDM          NDM 
-0*** NDM PRINTED WHEN NO DATCOM METHODS EXIST
+    -4.00    1.128E-01   -9.512E-02     2.363E-02   -2.568E-02   -8.656E-03    3.652E-04    2.350E-04   -1.751E-04   -1.084E-03
+    -2.00                               2.394E-02   -2.601E-02   -8.700E-03    8.286E-04   -2.642E-05   -1.801E-04   -1.628E-04
+     0.00                               2.616E-02   -2.842E-02   -8.554E-03    1.302E-03   -2.983E-04   -1.911E-04    7.613E-04
+     2.00                               2.592E-02   -2.817E-02   -8.197E-03    1.761E-03   -5.636E-04   -2.077E-04    1.647E-03
+     4.00                               2.532E-02   -2.751E-02   -7.809E-03    2.207E-03   -8.224E-04   -2.291E-04    2.493E-03
+     6.00                               2.482E-02   -2.697E-02   -7.404E-03    2.637E-03   -1.074E-03   -2.544E-04    3.294E-03
+     8.00                               2.426E-02   -2.637E-02   -6.986E-03    3.050E-03   -1.317E-03   -2.827E-04    4.049E-03
+    10.00                               2.365E-02   -2.570E-02   -6.558E-03    3.446E-03   -1.551E-03   -3.133E-04    4.757E-03
+    12.00                               2.335E-02   -2.537E-02   -5.923E-03    3.827E-03   -1.783E-03   -3.454E-04    5.416E-03
+    14.00                               2.317E-02   -2.518E-02   -3.959E-03    4.198E-03   -2.038E-03   -3.761E-04    5.981E-03
+    16.00                               2.295E-02   -2.494E-02   -2.727E-03    4.401E-03   -2.164E-03   -3.931E-04    6.206E-03
+    18.00                               2.294E-02   -2.493E-02   -3.369E-03    4.598E-03   -2.255E-03   -4.134E-04    6.501E-03
 0*** VEHICLE WEIGHT = 109334.00 LB.
-0*** LEVEL FLIGHT LIFT COEFFICIENT = 0.03338
-1                             AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
-                                             CONFIGURATION AUXILIARY AND PARTIAL OUTPUT
-                                        WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
-                                                       CERES NASA TN D-5857
- -----------------------  FLIGHT CONDITIONS  ------------------------           --------------  REFERENCE DIMENSIONS  ------------
-  MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
- NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
-             FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.800       0.00     893.06   2.1162E+03     518.670     5.6546E+06          3455.000     16.300   233.000    49.000    -0.470
-
-
-                                                       BASIC BODY PROPERTIES
-
-            WETTED AREA      XCG     ZCG     BASE AREA     ZERO LIFT DRAG   BASE DRAG   FRICTION DRAG   PRESSURE DRAG
-             0.1576E+04    49.00   -0.47      11.5200        0.1005E-02    0.2036E-03    0.7489E-03      0.5259E-04
-
-
-                                         XCG RELATIVE TO THEORETICAL LEADING EDGE MAC= -10.67
-
-
-                                                       BASIC PLANFORM PROPERTIES
-
-                                    TAPER     ASPECT   QUARTER CHORD             QUARTER CHORD              ZERO LIFT    FRICTION
-                         AREA       RATIO      RATIO       SWEEP        MAC        X(MAC)       Y(MAC)        DRAG     COEFFICIENT
-0      WING
-   TOTAL THEORITICAL
-+                     0.3431E+04    0.446    0.1447E+02    18.000    0.162E+02    0.637E+02    0.486E+02                       
-       TOTAL EXPOSED
-+                     0.3237E+04    0.456    0.1409E+02    18.000    0.159E+02    0.646E+02    0.514E+02    0.222E-01    0.207E-02
-0  HORIZONTAL TAIL
-   TOTAL THEORITICAL
-+                     0.1068E+04    0.444    0.3884E+01    28.200    0.174E+02    0.838E+02    0.140E+02                       
-       TOTAL EXPOSED
-+                     0.9686E+03    0.462    0.3717E+01    28.200    0.169E+02    0.845E+02    0.154E+02    0.212E-02    0.205E-02
-0   VERTICAL TAIL
-   TOTAL THEORITICAL
-+                     0.6977E+03    0.647    0.1422E+01    40.200    0.225E+02    0.102E+03    0.146E+02                       
-       TOTAL EXPOSED
-+                     0.6054E+03    0.673    0.1295E+01    40.200    0.219E+02    0.104E+03    0.166E+02      NA           NA  
-0*** NA PRINTED WHEN METHOD NOT APPLICABLE
-1                             AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
-                                             CONFIGURATION AUXILIARY AND PARTIAL OUTPUT
-                                        WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
-                                                       CERES NASA TN D-5857
- -----------------------  FLIGHT CONDITIONS  ------------------------           --------------  REFERENCE DIMENSIONS  ------------
-  MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
- NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
-             FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.800       0.00     893.06   2.1162E+03     518.670     5.6546E+06          3455.000     16.300   233.000    49.000    -0.470
-0          CLA-B(W)= 3.783E-03     CLA-W(B)= 5.151E-02     K-B(W)= 7.586E-02     K-W(B)= 1.033E+00     XAC/C-B(W)= 6.105E-01
-0          CLA-B(H)= 1.646E-03     CLA-H(B)= 2.115E-02     K-B(H)= 8.209E-02     K-H(B)= 1.055E+00     XAC/C-B(H)= 6.166E-01
-1                             AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
-                                             CONFIGURATION AUXILIARY AND PARTIAL OUTPUT
-                                        WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
-                                                       CERES NASA TN D-5857
- -----------------------  FLIGHT CONDITIONS  ------------------------           --------------  REFERENCE DIMENSIONS  ------------
-  MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
- NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
-             FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.800       0.00     893.06   2.1162E+03     518.670     5.6546E+06          3455.000     16.300   233.000    49.000    -0.470
-
-
-                                                      *** WING DATA FAIRING ***
-                                       CDL/CL**2 =-0.1611E+00     CLB/CL = 0.1640E-02
-            FORCE BREAK MACH NUMBER (ZERO SWEEP) = 0.7816E+00     FORCE BREAK MACH NUMBER (WITH SWEEP) = 0.8001E+00
-                      MACH(A) = 0.870     CLA(A) =-0.8678E-02     MACH(B) = 0.940     CLA(B) = 0.4232E-01
-                                                (CLB/CL)M=0.6 = 0.7089E-02     (CLB/CL)M=1.4 = 0.1000E-29
-
-                                                  LIFT-CURVE-SLOPE INTERPOLATION TABLE
-                                                      MACH               CL-ALPHA
-                                                     0.700               0.9764E-01
-                                                     0.800               0.4979E-01
-                                                     0.870              -0.8678E-02
-                                                     0.940               0.4232E-01
-                                                     1.400               0.6014E-01
-
-
-                                                   *** WING-BODY DATA FAIRING ***
-            CLB/CL = 0.5692E-03     (CLB/CL)MFB = 0.4595E-03     (CLB/CL)M=1.4 = 0.1000E-29     (CNA)M=1.4 = 0.6451E-01
-
-
-
-
-                                                   *** HORIZONTAL TAIL DATA FAIRING ***
-                                       CDL/CL**2 = 0.2164E+00     CLB/CL =-0.8373E-03
-            FORCE BREAK MACH NUMBER (ZERO SWEEP) = 0.8305E+00     FORCE BREAK MACH NUMBER (WITH SWEEP) = 0.8540E+00
-                      MACH(A) = 0.924     CLA(A) = 0.8254E-02     MACH(B) = 0.994     CLA(B) = 0.1575E-01
-                                                (CLB/CL)M=0.6 =-0.8967E-03     (CLB/CL)M=1.4 = 0.1000E-29
-
-                                                  LIFT-CURVE-SLOPE INTERPOLATION TABLE
-                                                      MACH               CL-ALPHA
-                                                     0.750               0.1931E-01
-                                                     0.854               0.1853E-01
-                                                     0.924               0.8254E-02
-                                                     0.994               0.1575E-01
-                                                     1.400               0.1472E-01
-
-
-                                              *** HORIZONTAL TAIL-BODY DATA FAIRING ***
-            CLB/CL =-0.1413E-02     (CLB/CL)MFB =-0.8410E-03     (CLB/CL)M=1.4 = 0.1000E-29     (CNA)M=1.4 = 0.1566E-01
-
-
-
-
-                                           *** BODY-WING-HORIZONTAL TAIL DATA FAIRING ***
-                                                DRAG DIVERGENCE MACH NUMBER = 0.749
-                                                      MACH                 CDO
-                                                     0.600               0.8936E-02
-                                                     0.700               0.9249E-02
-                                                     1.100              -NaN       
-                                                     1.400              -NaN       
-1
+0*** LEVEL FLIGHT LIFT COEFFICIENT = 0.04963
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                          CHARACTERISTICS AT ANGLE OF ATTACK AND IN SIDESLIP
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -464,36 +278,36 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.200   65617.00     193.59   1.1548E+02     389.970     1.1197E+05          3455.000     16.300   233.000    49.000    -0.470
+0 0.200   65617.00     193.59   1.1548E+02     389.970     1.1197E+05          4131.100     21.200   204.400    82.700     3.000
 0                                                               -------------------DERIVATIVE (PER DEGREE)-------------------
 0 ALPHA     CD       CL       CM       CN       CA       XCP        CLA          CMA          CYB          CNB          CLB
 0
-   -4.0    0.020   -0.196    0.2378  -0.197    0.006   -1.206    9.583E-02   -1.045E-01   -1.285E-02    3.048E-03   -2.187E-03
-   -2.0    0.017   -0.005    0.0321  -0.006    0.017   -5.425    9.521E-02   -1.019E-01                             -2.397E-03
-    0.0    0.018    0.185   -0.1698   0.185    0.018   -0.920    9.453E-02   -1.004E-01                             -2.604E-03
-    2.0    0.021    0.373   -0.3694   0.373    0.008   -0.989    9.355E-02   -9.929E-02                             -2.808E-03
-    4.0    0.026    0.559   -0.5669   0.559   -0.013   -1.014    9.222E-02   -9.847E-02                             -3.009E-03
-    6.0    0.033    0.742   -0.7633   0.741   -0.045   -1.030    8.909E-02   -9.412E-02                             -3.205E-03
-    8.0    0.042    0.915   -0.9434   0.912   -0.086   -1.034    8.502E-02   -8.774E-02                             -3.396E-03
-   10.0    0.053    1.082   -1.1142   1.075   -0.136   -1.037    8.543E-02   -9.197E-02                             -3.580E-03
-   12.0    0.068    1.257   -1.3113   1.243   -0.195   -1.055    8.768E-02   -1.013E-01                             -3.754E-03
-   14.0    0.087    1.433   -1.5195   1.411   -0.263   -1.077    8.346E-02   -9.716E-02                             -3.917E-03
-   16.0    0.106    1.591   -1.6999   1.558   -0.336   -1.091    6.541E-02   -7.783E-02                             -4.065E-03
-   18.0    0.124    1.694   -1.8309   1.650   -0.406   -1.110    3.814E-02   -5.313E-02                             -4.114E-03
+   -4.0    0.017   -0.184    0.0465  -0.184    0.004   -0.252    8.568E-02   -1.534E-02   -6.884E-03    1.153E-03    2.578E-04
+   -2.0    0.015   -0.013    0.0175  -0.014    0.014   -1.289    8.487E-02   -1.393E-02                             -1.434E-04
+    0.0    0.016    0.156   -0.0092   0.156    0.016   -0.059    8.520E-02   -1.440E-02                             -5.454E-04
+    2.0    0.019    0.328   -0.0401   0.328    0.007   -0.122    8.575E-02   -1.573E-02                             -9.436E-04
+    4.0    0.024    0.499   -0.0721   0.499   -0.011   -0.144    8.473E-02   -1.595E-02                             -1.335E-03
+    6.0    0.032    0.667   -0.1038   0.666   -0.038   -0.156    8.286E-02   -1.535E-02                             -1.715E-03
+    8.0    0.042    0.830   -0.1335   0.828   -0.074   -0.161    8.069E-02   -1.414E-02                             -2.084E-03
+   10.0    0.054    0.989   -0.1604   0.984   -0.118   -0.163    7.823E-02   -1.270E-02                             -2.440E-03
+   12.0    0.069    1.143   -0.1843   1.133   -0.171   -0.163    7.535E-02   -1.109E-02                             -2.781E-03
+   14.0    0.085    1.291   -0.2048   1.273   -0.230   -0.161    7.166E-02   -9.075E-03                             -3.107E-03
+   16.0    0.103    1.430   -0.2206   1.403   -0.295   -0.157    6.605E-02   -6.941E-03                             -3.415E-03
+   18.0    0.122    1.555   -0.2325   1.517   -0.364   -0.153    5.905E-02   -4.968E-03                             -3.689E-03
 0                                    ALPHA     Q/QINF    EPSLON  D(EPSLON)/D(ALPHA)
 0
-                                     -4.0      1.000     -0.613        0.394
-                                     -2.0      1.000      0.175        0.394
-                                      0.0      1.000      0.962        0.393
-                                      2.0      1.000      1.749        0.392
-                                      4.0      1.000      2.530        0.389
-                                      6.0      0.998      3.307        0.386
-                                      8.0      0.918      4.076        0.382
-                                     10.0      0.847      4.836        0.378
-                                     12.0      0.912      5.587        0.372
-                                     14.0      0.998      6.325        0.367
-                                     16.0      1.000      7.055        0.358
-                                     18.0      1.000      7.757        0.351
+                                     -4.0      0.853     -0.850        0.511
+                                     -2.0      0.856      0.173        0.511
+                                      0.0      0.950      1.193        0.509
+                                      2.0      1.000      2.210        0.506
+                                      4.0      1.000      3.218        0.502
+                                      6.0      1.000      4.218        0.497
+                                      8.0      1.000      5.206        0.491
+                                     10.0      1.000      6.181        0.483
+                                     12.0      1.000      7.139        0.488
+                                     14.0      1.000      8.133        0.514
+                                     16.0      1.000      9.197        0.544
+                                     18.0      1.000     10.307        0.555
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                                          DYNAMIC DERIVATIVES
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -503,25 +317,25 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.200   65617.00     193.59   1.1548E+02     389.970     1.1197E+05          3455.000     16.300   233.000    49.000    -0.470
+0 0.200   65617.00     193.59   1.1548E+02     389.970     1.1197E+05          4131.100     21.200   204.400    82.700     3.000
                                                     DYNAMIC DERIVATIVES (PER DEGREE)
 0           -------PITCHING-------    -----ACCELERATION------    --------------ROLLING--------------    --------YAWING--------
 0   ALPHA       CLQ          CMQ           CLAD         CMAD         CLP          CYP          CNP          CNR          CLR
 0
-    -4.00    2.925E-01   -3.622E-01     3.631E-02   -7.936E-02   -7.273E-03   -3.456E-03    2.889E-04   -1.204E-03   -3.194E-04
-    -2.00                               3.630E-02   -7.933E-02   -7.254E-03   -3.060E-03   -9.433E-05   -1.237E-03    4.794E-04
-     0.00                               3.626E-02   -7.925E-02   -7.217E-03   -2.658E-03   -4.879E-04   -1.246E-03    1.277E-03
-     2.00                               3.612E-02   -7.895E-02   -7.138E-03   -2.256E-03   -8.804E-04   -1.230E-03    2.066E-03
-     4.00                               3.590E-02   -7.846E-02   -7.023E-03   -1.856E-03   -1.270E-03   -1.192E-03    2.841E-03
-     6.00                               3.556E-02   -7.771E-02   -6.869E-03   -1.458E-03   -1.655E-03   -1.133E-03    3.596E-03
-     8.00                               3.234E-02   -7.067E-02   -6.679E-03   -1.065E-03   -2.032E-03   -1.054E-03    4.327E-03
-    10.00                               2.949E-02   -6.446E-02   -6.454E-03   -6.776E-04   -2.401E-03   -9.583E-04    5.029E-03
-    12.00                               3.130E-02   -6.840E-02   -6.195E-03   -2.975E-04   -2.758E-03   -8.481E-04    5.697E-03
-    14.00                               3.375E-02   -7.377E-02   -5.902E-03    7.405E-05   -3.102E-03   -7.267E-04    6.326E-03
-    16.00                               3.300E-02   -7.213E-02   -4.554E-03    4.434E-04   -3.460E-03   -5.973E-04    6.913E-03
-    18.00                               3.237E-02   -7.074E-02   -2.152E-03    7.374E-04   -3.701E-03   -5.179E-04    7.218E-03
+    -4.00    1.004E-01   -8.387E-02     2.024E-02   -2.196E-02   -7.858E-03    3.807E-04    1.756E-04   -1.885E-04   -7.797E-04
+    -2.00                               2.028E-02   -2.200E-02   -7.862E-03    8.231E-04   -7.528E-05   -1.942E-04   -1.928E-05
+     0.00                               2.244E-02   -2.434E-02   -7.835E-03    1.276E-03   -3.379E-04   -2.060E-04    7.410E-04
+     2.00                               2.349E-02   -2.548E-02   -7.752E-03    1.727E-03   -6.001E-04   -2.237E-04    1.494E-03
+     4.00                               2.329E-02   -2.526E-02   -7.627E-03    2.176E-03   -8.614E-04   -2.472E-04    2.236E-03
+     6.00                               2.305E-02   -2.500E-02   -7.464E-03    2.620E-03   -1.121E-03   -2.759E-04    2.963E-03
+     8.00                               2.276E-02   -2.469E-02   -7.266E-03    3.057E-03   -1.379E-03   -3.094E-04    3.670E-03
+    10.00                               2.242E-02   -2.432E-02   -7.034E-03    3.487E-03   -1.635E-03   -3.468E-04    4.353E-03
+    12.00                               2.264E-02   -2.456E-02   -6.770E-03    3.907E-03   -1.886E-03   -3.876E-04    5.009E-03
+    14.00                               2.387E-02   -2.589E-02   -6.477E-03    4.315E-03   -2.133E-03   -4.309E-04    5.635E-03
+    16.00                               2.521E-02   -2.735E-02   -6.003E-03    4.714E-03   -2.382E-03   -4.758E-04    6.227E-03
+    18.00                               2.575E-02   -2.793E-02   -5.362E-03    5.073E-03   -2.606E-03   -5.192E-04    6.752E-03
 0*** VEHICLE WEIGHT = 109334.00 LB.
-0*** LEVEL FLIGHT LIFT COEFFICIENT = 9.78722
+0*** LEVEL FLIGHT LIFT COEFFICIENT = 8.18544
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                          CHARACTERISTICS AT ANGLE OF ATTACK AND IN SIDESLIP
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -531,37 +345,36 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.800   65617.00     774.37   1.1548E+02     389.970     4.4788E+05          3455.000     16.300   233.000    49.000    -0.470
+0 0.600   65617.00     580.78   1.1548E+02     389.970     3.3591E+05          4131.100     21.200   204.400    82.700     3.000
 0                                                               -------------------DERIVATIVE (PER DEGREE)-------------------
 0 ALPHA     CD       CL       CM       CN       CA       XCP        CLA          CMA          CYB          CNB          CLB
 0
-   -4.0   -NaN      NDM       NDM     NDM      NDM      0.179    6.997E-02    1.255E-02      NDM          NDM          NDM 
-   -2.0                                                                                                                NDM 
-    0.0                                                                                                                NDM 
-    2.0                                                                                                                NDM 
-    4.0                                                                                                                NDM 
-    6.0                                                                                                                NDM 
-    8.0                                                                                                                NDM 
-   10.0                                                                                                                NDM 
-   12.0                                                                                                                NDM 
-   14.0                                                                                                                NDM 
-   16.0                                                                                                                NDM 
-   18.0                                                                                                                NDM 
+   -4.0    0.015   -0.223    0.0481  -0.223   -0.001   -0.215    9.063E-02   -1.743E-02   -7.337E-03    1.278E-03    4.510E-04
+   -2.0    0.012   -0.043    0.0163  -0.043    0.011   -0.374    8.988E-02   -1.573E-02                             -4.790E-05
+    0.0    0.013    0.137   -0.0149   0.137    0.013   -0.109    8.943E-02   -1.647E-02                             -5.516E-04
+    2.0    0.016    0.315   -0.0496   0.315    0.005   -0.158    8.746E-02   -1.756E-02                             -1.036E-03
+    4.0    0.021    0.487   -0.0851   0.487   -0.013   -0.175    8.410E-02   -1.758E-02                             -1.496E-03
+    6.0    0.028    0.651   -0.1199   0.650   -0.040   -0.184    7.994E-02   -1.664E-02                             -1.929E-03
+    8.0    0.037    0.807   -0.1516   0.804   -0.076   -0.189    7.570E-02   -1.510E-02                             -2.335E-03
+   10.0    0.048    0.954   -0.1803   0.948   -0.119   -0.190    7.146E-02   -1.335E-02                             -2.713E-03
+   12.0    0.060    1.092   -0.2050   1.081   -0.168   -0.190    6.519E-02   -1.133E-02                             -3.065E-03
+   14.0    0.073    1.215   -0.2257   1.196   -0.223   -0.189    4.608E-02   -8.085E-03                             -3.368E-03
+   16.0    0.084    1.277   -0.2374   1.250   -0.271   -0.190    3.406E-02   -5.544E-03                             -3.499E-03
+   18.0    0.097    1.351   -0.2478   1.315   -0.325   -0.189    4.016E-02   -4.916E-03                             -3.662E-03
 0                                    ALPHA     Q/QINF    EPSLON  D(EPSLON)/D(ALPHA)
 0
-                                     -4.0      0.921      0.000        0.306
-                                     -2.0                                  
-                                      0.0                                  
-                                      2.0                                  
-                                      4.0                                  
-                                      6.0                                  
-                                      8.0                                  
-                                     10.0                                  
-                                     12.0                                  
-                                     14.0                                  
-                                     16.0                                  
-                                     18.0                                  
-0*** NDM PRINTED WHEN NO DATCOM METHODS EXIST
+                                     -4.0      0.861     -1.070        0.523
+                                     -2.0      0.873     -0.025        0.521
+                                      0.0      0.967      1.014        0.519
+                                      2.0      1.000      2.050        0.510
+                                      4.0      1.000      3.054        0.498
+                                      6.0      1.000      4.042        0.488
+                                      8.0      1.000      5.008        0.477
+                                     10.0      1.000      5.951        0.465
+                                     12.0      1.000      6.869        0.459
+                                     14.0      1.000      7.789        0.456
+                                     16.0      1.000      8.692        0.452
+                                     18.0      1.000      9.595        0.451
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                                          DYNAMIC DERIVATIVES
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -571,138 +384,25 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.800   65617.00     774.37   1.1548E+02     389.970     4.4788E+05          3455.000     16.300   233.000    49.000    -0.470
+0 0.600   65617.00     580.78   1.1548E+02     389.970     3.3591E+05          4131.100     21.200   204.400    82.700     3.000
                                                     DYNAMIC DERIVATIVES (PER DEGREE)
 0           -------PITCHING-------    -----ACCELERATION------    --------------ROLLING--------------    --------YAWING--------
 0   ALPHA       CLQ          CMQ           CLAD         CMAD         CLP          CYP          CNP          CNR          CLR
 0
-    -4.00    1.986E-01   -3.873E-01     2.463E-02   -4.723E-02      NDM          NDM          NDM          NDM          NDM 
-    -2.00                                                           NDM          NDM          NDM          NDM          NDM 
-     0.00                                                           NDM          NDM          NDM          NDM          NDM 
-     2.00                                                           NDM          NDM          NDM          NDM          NDM 
-     4.00                                                           NDM          NDM          NDM          NDM          NDM 
-     6.00                                                           NDM          NDM          NDM          NDM          NDM 
-     8.00                                                           NDM          NDM          NDM          NDM          NDM 
-    10.00                                                           NDM          NDM          NDM          NDM          NDM 
-    12.00                                                           NDM          NDM          NDM          NDM          NDM 
-    14.00                                                           NDM          NDM          NDM          NDM          NDM 
-    16.00                                                           NDM          NDM          NDM          NDM          NDM 
-    18.00                                                           NDM          NDM          NDM          NDM          NDM 
-0*** NDM PRINTED WHEN NO DATCOM METHODS EXIST
+    -4.00    1.113E-01   -9.352E-02     2.286E-02   -2.484E-02   -8.662E-03    3.652E-04    2.349E-04   -1.917E-04   -1.084E-03
+    -2.00                               2.311E-02   -2.512E-02   -8.706E-03    8.286E-04   -2.642E-05   -1.966E-04   -1.628E-04
+     0.00                               2.548E-02   -2.769E-02   -8.560E-03    1.302E-03   -2.983E-04   -2.077E-04    7.613E-04
+     2.00                               2.592E-02   -2.817E-02   -8.202E-03    1.761E-03   -5.636E-04   -2.243E-04    1.647E-03
+     4.00                               2.532E-02   -2.751E-02   -7.815E-03    2.207E-03   -8.224E-04   -2.457E-04    2.493E-03
+     6.00                               2.482E-02   -2.697E-02   -7.410E-03    2.637E-03   -1.074E-03   -2.710E-04    3.294E-03
+     8.00                               2.426E-02   -2.637E-02   -6.991E-03    3.050E-03   -1.317E-03   -2.993E-04    4.049E-03
+    10.00                               2.365E-02   -2.570E-02   -6.564E-03    3.446E-03   -1.551E-03   -3.299E-04    4.757E-03
+    12.00                               2.335E-02   -2.537E-02   -5.929E-03    3.827E-03   -1.783E-03   -3.619E-04    5.416E-03
+    14.00                               2.317E-02   -2.518E-02   -3.964E-03    4.198E-03   -2.038E-03   -3.927E-04    5.981E-03
+    16.00                               2.295E-02   -2.494E-02   -2.733E-03    4.401E-03   -2.164E-03   -4.097E-04    6.206E-03
+    18.00                               2.294E-02   -2.493E-02   -3.374E-03    4.598E-03   -2.255E-03   -4.300E-04    6.501E-03
 0*** VEHICLE WEIGHT = 109334.00 LB.
-0*** LEVEL FLIGHT LIFT COEFFICIENT = 0.61170
-1                             AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
-                                             CONFIGURATION AUXILIARY AND PARTIAL OUTPUT
-                                        WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
-                                                       CERES NASA TN D-5857
- -----------------------  FLIGHT CONDITIONS  ------------------------           --------------  REFERENCE DIMENSIONS  ------------
-  MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
- NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
-             FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.800   65617.00     774.37   1.1548E+02     389.970     4.4788E+05          3455.000     16.300   233.000    49.000    -0.470
-
-
-                                                       BASIC BODY PROPERTIES
-
-            WETTED AREA      XCG     ZCG     BASE AREA     ZERO LIFT DRAG   BASE DRAG   FRICTION DRAG   PRESSURE DRAG
-             0.1576E+04    49.00   -0.47      11.5200        0.1332E-02    0.1689E-03    0.1087E-02      0.7633E-04
-
-
-                                         XCG RELATIVE TO THEORETICAL LEADING EDGE MAC= -10.67
-
-
-                                                       BASIC PLANFORM PROPERTIES
-
-                                    TAPER     ASPECT   QUARTER CHORD             QUARTER CHORD              ZERO LIFT    FRICTION
-                         AREA       RATIO      RATIO       SWEEP        MAC        X(MAC)       Y(MAC)        DRAG     COEFFICIENT
-0      WING
-   TOTAL THEORITICAL
-+                     0.3431E+04    0.446    0.1447E+02    18.000    0.162E+02    0.637E+02    0.486E+02                       
-       TOTAL EXPOSED
-+                     0.3237E+04    0.456    0.1409E+02    18.000    0.159E+02    0.646E+02    0.514E+02    0.244E-01    0.306E-02
-0  HORIZONTAL TAIL
-   TOTAL THEORITICAL
-+                     0.1068E+04    0.444    0.3884E+01    28.200    0.174E+02    0.838E+02    0.140E+02                       
-       TOTAL EXPOSED
-+                     0.9686E+03    0.462    0.3717E+01    28.200    0.169E+02    0.845E+02    0.154E+02    0.275E-02    0.303E-02
-0   VERTICAL TAIL
-   TOTAL THEORITICAL
-+                     0.6977E+03    0.647    0.1422E+01    40.200    0.225E+02    0.102E+03    0.146E+02                       
-       TOTAL EXPOSED
-+                     0.6054E+03    0.673    0.1295E+01    40.200    0.219E+02    0.104E+03    0.166E+02      NA           NA  
-0*** NA PRINTED WHEN METHOD NOT APPLICABLE
-1                             AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
-                                             CONFIGURATION AUXILIARY AND PARTIAL OUTPUT
-                                        WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
-                                                       CERES NASA TN D-5857
- -----------------------  FLIGHT CONDITIONS  ------------------------           --------------  REFERENCE DIMENSIONS  ------------
-  MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
- NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
-             FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.800   65617.00     774.37   1.1548E+02     389.970     4.4788E+05          3455.000     16.300   233.000    49.000    -0.470
-0          CLA-B(W)= 3.783E-03     CLA-W(B)= 5.151E-02     K-B(W)= 7.586E-02     K-W(B)= 1.033E+00     XAC/C-B(W)= 6.105E-01
-0          CLA-B(H)= 1.646E-03     CLA-H(B)= 2.115E-02     K-B(H)= 8.209E-02     K-H(B)= 1.055E+00     XAC/C-B(H)= 6.166E-01
-1                             AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
-                                             CONFIGURATION AUXILIARY AND PARTIAL OUTPUT
-                                        WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
-                                                       CERES NASA TN D-5857
- -----------------------  FLIGHT CONDITIONS  ------------------------           --------------  REFERENCE DIMENSIONS  ------------
-  MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
- NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
-             FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.800   65617.00     774.37   1.1548E+02     389.970     4.4788E+05          3455.000     16.300   233.000    49.000    -0.470
-
-
-                                                      *** WING DATA FAIRING ***
-                                       CDL/CL**2 =-0.1611E+00     CLB/CL = 0.1640E-02
-            FORCE BREAK MACH NUMBER (ZERO SWEEP) = 0.7816E+00     FORCE BREAK MACH NUMBER (WITH SWEEP) = 0.8001E+00
-                      MACH(A) = 0.870     CLA(A) =-0.8678E-02     MACH(B) = 0.940     CLA(B) = 0.4232E-01
-                                                (CLB/CL)M=0.6 = 0.7089E-02     (CLB/CL)M=1.4 = 0.1000E-29
-
-                                                  LIFT-CURVE-SLOPE INTERPOLATION TABLE
-                                                      MACH               CL-ALPHA
-                                                     0.700               0.9764E-01
-                                                     0.800               0.4979E-01
-                                                     0.870              -0.8678E-02
-                                                     0.940               0.4232E-01
-                                                     1.400               0.6014E-01
-
-
-                                                   *** WING-BODY DATA FAIRING ***
-            CLB/CL = 0.5692E-03     (CLB/CL)MFB = 0.4595E-03     (CLB/CL)M=1.4 = 0.1000E-29     (CNA)M=1.4 = 0.6451E-01
-
-
-
-
-                                                   *** HORIZONTAL TAIL DATA FAIRING ***
-                                       CDL/CL**2 = 0.2164E+00     CLB/CL =-0.8373E-03
-            FORCE BREAK MACH NUMBER (ZERO SWEEP) = 0.8305E+00     FORCE BREAK MACH NUMBER (WITH SWEEP) = 0.8540E+00
-                      MACH(A) = 0.924     CLA(A) = 0.8254E-02     MACH(B) = 0.994     CLA(B) = 0.1575E-01
-                                                (CLB/CL)M=0.6 =-0.8967E-03     (CLB/CL)M=1.4 = 0.1000E-29
-
-                                                  LIFT-CURVE-SLOPE INTERPOLATION TABLE
-                                                      MACH               CL-ALPHA
-                                                     0.750               0.1931E-01
-                                                     0.854               0.1853E-01
-                                                     0.924               0.8254E-02
-                                                     0.994               0.1575E-01
-                                                     1.400               0.1472E-01
-
-
-                                              *** HORIZONTAL TAIL-BODY DATA FAIRING ***
-            CLB/CL =-0.1413E-02     (CLB/CL)MFB =-0.8410E-03     (CLB/CL)M=1.4 = 0.1000E-29     (CNA)M=1.4 = 0.1566E-01
-
-
-
-
-                                           *** BODY-WING-HORIZONTAL TAIL DATA FAIRING ***
-                                                DRAG DIVERGENCE MACH NUMBER = 0.749
-                                                      MACH                 CDO
-                                                     0.600               0.8936E-02
-                                                     0.700               0.9249E-02
-                                                     1.100              -NaN       
-                                                     1.400              -NaN       
-1
+0*** LEVEL FLIGHT LIFT COEFFICIENT = 0.90949
 1          THE FOLLOWING IS A LIST OF ALL INPUT CARDS FOR THIS CASE.
 0
 1 END OF JOB.
