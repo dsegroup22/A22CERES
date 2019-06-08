@@ -6,7 +6,7 @@ Created on Wed May 15 11:26:38 2019
 """
 
 import numpy as np
-from math import *
+from math import pi, sqrt, exp,atan, tan
 import sys
 sys.path.append('../')
 
@@ -135,7 +135,7 @@ def HLD_weight(HLD, FP):
     #Sum TE flap + LE flap weight        
     W_hld = W_tef + HLD[5]
     
-    return W_hld
+    return 0#W_hld
     
     
 

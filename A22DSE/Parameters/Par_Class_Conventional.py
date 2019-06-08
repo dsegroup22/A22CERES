@@ -30,6 +30,7 @@ from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeightIteration
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
 struc= Conv.ParStruc
+assert isinstance(Conv.ParCntrl, object)
 sc = Conv.ParCntrl
 Payload=Conv.ParPayload
 

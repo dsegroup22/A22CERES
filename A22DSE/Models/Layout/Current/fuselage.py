@@ -10,6 +10,7 @@ import numpy as np
 from pathlib import Path
 os.chdir(Path(__file__).parents[2])
 sys.path.append('../../')
+from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
 import matplotlib as mpl
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
@@ -132,7 +133,7 @@ for i in range(0,4):
         fineness_n = 1.2 + i * 0.5
         for k in range(0,4):
             fineness_t = 2 + i
-            lst[i][j][k] = CD0(Conv, 24, 2, 0.01, fineness_f, fineness_n ,fineness_t)
+            lst[i][j][k] = CD0_diff(Conv, 24, 2, 0.01, fineness_f, fineness_n ,fineness_t)
             
             
 fig = plt.figure()

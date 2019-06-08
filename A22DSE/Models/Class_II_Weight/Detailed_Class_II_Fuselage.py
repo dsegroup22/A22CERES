@@ -27,7 +27,7 @@ def FuselageWeight(Aircraft):
     W_f=2*10.43*K_inl**1.42*(q_Dpsf/100)**0.283*(MTOMlbs/1000)**0.95*\
     (l_fuselage/h_fuselage)**0.71
 
-    #roskam: equation 5.28 (militairy)
+    #roskam: equation 5.28 (military)
     W_f_mil=2*11.03*K_inl**1.23*(q_Dpsf/100)**0.245*(MTOMlbs/1000)**0.98*\
     (l_fuselage/h_fuselage)**0.61
     
