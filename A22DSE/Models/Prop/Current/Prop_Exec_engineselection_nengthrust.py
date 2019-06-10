@@ -72,6 +72,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         Aircraft.ParProp.Engine_weight = engsel.weight
         Aircraft.ParAnFP.SFC = engsel.SFC 
         Aircraft.ParProp.Engine_cost = engsel.cost
+        Aircraft.ParProp.Thrust_ruise = T
     elif afterburner == True: #For afterburner
         neng = np.array([])
         for i in engaft: #Low bypass only everything else is the same
@@ -83,7 +84,9 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         Aircraft.ParProp.Engine_weight = engsel.weight
         Aircraft.ParAnFP.SFC = engsel.SFC 
         Aircraft.ParProp.Engine_cost = engsel.cost
+        Aircraft.ParProp.Thrust_cruise = T
     else:
         print('Specify whether you want afterburners or not in EngineChoice def')
+    return ()
     #return 
 
