@@ -20,7 +20,7 @@ class ParAnFPLst(object):
         self.e = None  #[-]                        DUMMY VALUE
         self.CD0 = None #[-]                       DUMMY VALUE
         self.S = None #[m_squared]               DUMMY VALUE
-        
+        self.dihedral = 0. #[rad]
         #cruise parameters
         self.TtoW = None #[-]                                                                        air to fuel ratio                           by POPS
         self.Mdd = None #[-]
@@ -223,6 +223,7 @@ class ParLayoutConfig(object):
          self.z_cg= np.array([0.,0.]) #DUMMY VALUE #[m] z_cg range (most low & high) determined in gearlocation_quad
          self.y_nose=0 # [m] front landing gear y-position for quad LG configuration
          self.z_cg_over_h_fus=0.6   #DUMMY VALUE
+         self.sweepLEvt = 0.5 #DUMMY VALUE WILL BE CHANGED BY LULU IN TAIL SIZING
          
 class ParProp(object):
     

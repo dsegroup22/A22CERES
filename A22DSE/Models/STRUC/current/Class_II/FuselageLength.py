@@ -187,6 +187,6 @@ def eas(Aircraft, ISA_model):
     
     
 def Fuselage(Conv):
-    a = GetTotalFuselageLength(Conv, max(Conv.ParLayoutConfig.xvt, Conv.ParLayoutConfig.xht), 2, 0.01)
+    a = GetTotalFuselageLength(Conv, Conv.ParLayoutConfig.l_freq, 2, 0.01)
     return a
     

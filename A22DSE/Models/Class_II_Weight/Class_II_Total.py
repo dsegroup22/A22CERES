@@ -16,10 +16,10 @@ from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled\
 from A22DSE.Models.Class_II_Weight.Class_II_LG import Class_II_Weight_LG
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassI_AndAHalf, ComputeCD0
 from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
-from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
+from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing, Method1, Method2
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
-
+from A22DSE.Models.def_Collection_ClassII_Sizing import ClassIISizing
 
 
 # =============================================================================
@@ -42,13 +42,15 @@ def ClassIIWeight_MTOW(Aircraft):
     #CLass II weights & positions
     Aircraft.ParStruc.LG_weight_tot,Aircraft.ParStruc.LG_weight_nose, \
     Aircraft.ParStruc.LG_weight_main  = Class_II_Weight_LG(Aircraft)
+    
     struc.Wing_weight=2*Total_Wing(Aircraft)/ISA_model.g0 # [kg] whole wing (2 sides)
+#    struc.Wing_weight = Method2(Aircraft)
     struc.Wf=FuselageWeight(Aircraft)[0]/ISA_model.g0 #[kg]
     
     #get the wing group and fuselage group
     Layout.x_lemac, Aircraft.ParStruc.Weight_FusGroup,Aircraft.ParStruc.Weight_WingGroup,\
     Layout.xcg_fuselagegroup = oecg(Aircraft)
-    
+
     #calculate new OEW and new MTOW
     struc.OEW = struc.Weight_WingGroup + struc.Weight_FusGroup #[kg]
     MTOW = struc.OEW + struc.FW + Aircraft.ParPayload.m_payload
@@ -75,12 +77,14 @@ def ClassIIWeightIteration(Aircraft):
 #                          ITERATE HERE FOR NEW MTOW
 # =============================================================================
     itcount = 0
-    while(itcount<20):
+    while(itcount<8):
          #update values for CD0, wfratio, S, Thrust, tail size, etc.
-         Aircraft.ParAnFP.CD0 = ComputeCD0(Aircraft)
+         ComputeCD0(Aircraft)
          Wfratio_flighttime_flightrange(Aircraft)
          WingSurface_Thrust_FuelWeight(Aircraft)
          ClassI_AndAHalf()
+         ClassIISizing(Conv)
+         
         
          #chose correct engines
          EngineChoice(Aircraft,ISA_model,False)
@@ -91,18 +95,18 @@ def ClassIIWeightIteration(Aircraft):
          #calculate old and new masses
          MTOW_old = struc.MTOW
          struc.MTOW = ClassIIWeight_MTOW(Aircraft)
-
          #check if error is small enough, if it is, return MTOW
          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
-         
          if error<0.01:
-             return struc.MTOW
+             break
          itcount+=1    
          
     #if after 20 iterations, still not converged, error occurs
+
     if error>0.01:
-        print(Aircraft.ParPayload.m_payload)
-        raise ValueError('The MTOW does not converge') 
+        print('MTOW did not converge')
+        #raise ValueError('The MTOW does not converge') 
+
 
 
 

@@ -11,14 +11,29 @@ from datcomconvertermatlab import *
 
 
 
-file=open('A22DSE\DATCOM\Current\CERESorig.dat','r')
+file=open('A22DSE\Models\DATCOM\Current\CERESorig.dat','r')
 
 lines=file.readlines()
+def printer(a):
+    return print(lines[a]), print(len(lines[a]))
+
+printer(4)
+a=lines[4].split(',')[0]+','
+b=lines[4].split(',')[1]+','
+c=lines[4].split(',')[2]+','
+d=lines[4].split(',')[3]+','
+e=lines[4].split(',')[4]+','
+f=lines[4].split(',')[5]+','
+g=lines[4].split(',')[6].split('=')[0]+'='+str(round(float(Struc.MTOW/Conversion.lbs2kg),1))+','
+h=lines[4].split(',')[7]
+lines[4]=a+b+c+d+e+f+g+h
+printer(4)
+
 
 printer(5)
 a=lines[5].split(',')[0].split('=')[0]+'='+str(round(float(anfp.S/Conversion.ft2m**2),1))+','
 b=lines[5].split(',')[1].split('=')[0]+'='+str(round(float(anfp.MAC/Conversion.ft2m),1))+','
-c=lines[5].split(',')[2].split('=')[0]+'='+str(round(float(anfp.b/Conversion.ft2m),1))+'$ \n'
+c=lines[5].split(',')[2].split('=')[0]+'='+str(2*SSPN_WG)+'$ \n'
 lines[5]=a+b+c
 printer(5)
 
@@ -27,9 +42,9 @@ printer(6)
 a=lines[6].split(',')[0].split('=')[0]+'='+str(round(float(np.average(Layout.x_cg)/Conversion.ft2m),1))+','
 b=lines[6].split(',')[1].split('=')[0]+'='+str(round(float((Layout.z_cg_over_h_fus-0.5)*Layout.h_fuselage/Conversion.ft2m*2),1))+','
 c=lines[6].split(',')[2].split('=')[0]+'='+str(XW)+','
-d=lines[6].split(',')[3]+','
+d=lines[6].split(',')[3].split('=')[0]+'='+str(ZW)+','
 e=lines[6].split(',')[4]+','
-f=lines[6].split(',')[5]+','
+f=lines[6].split(',')[5].split('=')[0]+'='+str(XH)+','
 g=lines[6].split(',')[6]
 lines[6]=a+b+c+d+e+f+g
 printer(6)
@@ -45,8 +60,8 @@ printer(16)
 printer(17)
 a=lines[17].split(',')[0].split('=')[0]+'='+str(SAVSI_WG)+','
 b=lines[17].split(',')[1].split('=')[0]+'='+str(CHSTAT_WG)+','
-c=lines[17].split(',')[2]+','
-d=lines[17].split(',')[3]+','
+c=lines[17].split(',')[2].split('=')[0]+'='+str(TWISTA_WG)+','
+d=lines[17].split(',')[3].split('=')[0]+'='+str(DHDADI_WG)+','
 e=lines[17].split(',')[4]
 lines[17]=a+b+c+d+e
 printer(17)
@@ -64,8 +79,8 @@ printer(19)
 printer(20)
 a=lines[20].split(',')[0].split('=')[0]+'='+str(SAVSI_HT)+','
 b=lines[20].split(',')[1].split('=')[0]+'='+str(CHSTAT_HT)+','
-c=lines[20].split(',')[2]+','
-d=lines[20].split(',')[3]+','
+c=lines[20].split(',')[2].split('=')[0]+'='+str(TWISTA_HT)+','
+d=lines[20].split(',')[3].split('=')[0]+'='+str(DHDADI_HT)+','
 e=lines[20].split(',')[4]
 lines[20]=a+b+c+d+e
 printer(20)
@@ -91,7 +106,37 @@ printer(23)
 
 file.close()
 
-file=open('A22DSE\DATCOM\Current\CERES.dat','w')
-for line in lines:
+file=open('A22DSE\Models\DATCOM\Current\Airfoiltools.txt','r')
+
+alines=file.readlines()
+
+file.close()
+
+import numpy as np
+
+Xcs=np.array([0])
+for i in range(25):
+    Xcs=np.append(Xcs,Xcs[-1]+0.04)
+upper=alines[3:104:4]
+lower=alines[105::4]
+
+alines[180].split(' ')[2]
+alines[180].split(' ')[3].replace('\n','')
+uppers=np.array([])
+for line in upper:
+    uppers=np.append(uppers,float(line.split(' ')[-1].replace('\n','')))
+
+
+lowers=np.array([])
+for line in lower:
+    lowers=np.append(lowers,float(line.split(' ')[-1].replace('\n','')))
+a=' $WGSCHR TYPEIN=1.0, NPTS=26.0,\n'
+b=' XCORD= 0.0, '+np.array2string(Xcs[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+',\n'
+c=' YUPPER= 0.0, '+np.array2string(uppers[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+',\n'
+d=' YLOWER= 0.0, '+np.array2string(lowers[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+'$\n'
+liness=[a,b,c,d]
+linesss=lines[:15]+liness+lines[16:]
+file=open('A22DSE\Models\DATCOM\Current\CERES.dat','w')
+for line in linesss:
     file.write(line)
 file.close()

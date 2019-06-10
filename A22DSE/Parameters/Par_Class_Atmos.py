@@ -6,7 +6,7 @@ class Atmos(object):
         self.g0 = 9.80665
         self.rho0 = 1.225
         self.p0 = 101325.
-        self.T0 = 273.15        
+        self.T0 = 288.15        
         self.h_cruise = 20000. #[m]
         self.R = 287            # unit
         self.gamma  = 1.4       # unit
@@ -85,7 +85,27 @@ class Atmos(object):
     
                         rho = p/(R*T)
             output= np.array([T,p,rho])
-            
+        
+        
         return output
+    
+    def GiveMeMach(self, height, velocity):
+        '''
+        INPUT: self-explanatory
+        OUTPUT: returns Mach number [-] and speed of sound in [m/s] @ altitude
+        DESCRIPTION: due to HIGH demand
+        '''
+        import numpy as np
+        
+        T,p, rho = self.ISAFunc([height])  # [T, p, rho]
+        
+        # speed of sound @ height
+        a_h = np.sqrt(self.gamma*self.R*T)
+        
+        # Mach number
+        M = velocity/a_h
+        return np.array([M, a_h])
+        
+        
 
 

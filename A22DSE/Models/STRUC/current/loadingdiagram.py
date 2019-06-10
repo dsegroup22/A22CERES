@@ -7,6 +7,13 @@ Created on Wed May 15 16:51:16 2019
 
 #loading diagrams
 
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[4])
+
+
+from A22DSE.Parameters.Par_Class_Conventional import Conv
+
 import numpy as np
 g=9.80665
 #eliptical lift distribution
@@ -31,7 +38,8 @@ def Loading_Diagrams(Aircraft):
     anfp=Aircraft.ParAnFP
     struc=Aircraft.ParStruc
     layout=Aircraft.ParLayoutConfig
-    m_engine=layout.m_engine
+    prop = Aircraft.ParProp
+    m_engine=prop.Engine_weight
     y_engine=layout.y_engine
     b=anfp.b
     x=np.linspace(0,b/2,100)
@@ -117,3 +125,25 @@ def Loading_Diagrams(Aircraft):
 #
 #x=np.linspace(-40,40,500)
 #y=eliptical(x,100,80)
+    
+class Diagrams(object):
+   def __init__(self, Aircraft):
+       self.halfspan = Aircraft.ParAnFP.b/2
+       self.Forces = np.ones(8,1)
+       self.Positions = np.arange(8)
+       self.yrange = np.linspace(0,self.halfspan, 50)
+   def VDiagram(self):
+       V = np.zeros(self.yrange.shape)
+       for i in range(len(self.yrange)):
+            V = np.heaviside(self.yrange[i] - self.Positions, 0)*self.Forces
+            
+       return V
+   def MDiagram(self):
+       for i in range(len(self.VDiagram())):
+           M = np.heaviside(self.yrange[i] - self.Positions, 0)\
+           *self.VDiagram()*self.yrange[i]
+            
+       return M
+   def GetForces(self):
+       return None
+       

@@ -26,7 +26,7 @@ def Payload_optimiser_wf(payload_lst):
     for payload in payload_lst:
         
         Conv.ParPayload.m_payload = payload #[kg]        
-        mtow = ClassIIWeightIteration(Conv) #generate appropriate fuel weight for each 
+        ClassIIWeightIteration(Conv) #generate appropriate fuel weight for each 
         
         #append values to the appropriate list
         wf_lst[index_x] = struc.FW #[kg]
@@ -88,7 +88,7 @@ def Payload_optimiser_Both(X_steps):
 #            f1 and f2 are normalised functions of fuel weight and fleet size
 #            respectively.
     
-    payload_lst = np.linspace(9000.,11000.,X_steps)
+    payload_lst = np.linspace(5000.,13000.,X_steps)
     wf_lst = Payload_optimiser_wf(payload_lst)
     fleetsize_lst, flightsperyear = Payload_optimiser_fleety1(payload_lst)
     
@@ -96,9 +96,9 @@ def Payload_optimiser_Both(X_steps):
     
     f1 = abs(wf_tot_y1/(wf_tot_y1[-1]-wf_tot_y1[0]))
     f2 = abs(fleetsize_lst/(fleetsize_lst[-1]-fleetsize_lst[0]))  
-    plot = False
+    plot = True
     if plot:
-        plt.step(payload_lst,fleetsize_lst)#,'-ob',markersize=4)
+        plt.plot(payload_lst,wf_tot_y1,'-ob',markersize=4)
         plt.xlabel('Payload mass per ac [kg]')
         plt.ylabel('Fleet size in year 1')
     return payload_lst, f1,f2
