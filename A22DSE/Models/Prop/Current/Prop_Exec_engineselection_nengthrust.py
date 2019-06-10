@@ -72,6 +72,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         
         Aircraft.ParProp.Engine_name = engsel.name #Append aircraft stuff
         Aircraft.ParStruc.N_engines = np.amin(neng)/engsel.weight
+        Aircraft.ParProp.N_engines = np.amin(neng)/engsel.weight
         Aircraft.ParProp.Engine_weight = engsel.weight
         Aircraft.ParAnFP.SFC = engsel.SFC 
         Aircraft.ParProp.Engine_cost = engsel.cost
@@ -87,6 +88,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         
         Aircraft.ParProp.Engine_name = engsel.name
         Aircraft.ParStruc.N_engines = np.amin(neng)/engsel.weight
+        Aircraft.ParProp.N_engines = np.amin(neng)/engsel.weight
         Aircraft.ParProp.Engine_weight = engsel.weight
         Aircraft.ParAnFP.SFC = engsel.SFC 
         Aircraft.ParProp.Engine_cost = engsel.cost
