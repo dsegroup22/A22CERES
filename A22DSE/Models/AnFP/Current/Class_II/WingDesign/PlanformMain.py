@@ -13,6 +13,7 @@ os.chdir(Path(__file__).parents[6])
 #print (os.getcwd())
 import numpy as np
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign import FunctionsPlanform
+from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 from matplotlib import cm

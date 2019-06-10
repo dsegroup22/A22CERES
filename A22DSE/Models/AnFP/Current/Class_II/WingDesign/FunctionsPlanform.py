@@ -10,25 +10,11 @@ from pathlib import Path
 os.chdir(Path(__file__).parents[6])
 from A22DSE.Models.AnFP.Current.InitialSizing import AnFP_Exec_CD0
 
-
 # =============================================================================
-# UNFINISHED WORK
+#           FUNCTIONS FOR SUBSONIC WING PLANFORM DESIGN
 # =============================================================================
 import numpy as np
 from scipy.optimize import fsolve
-    
-#def OptimalARWing(CL, Fprop, phi_3):
-#    ''' INPUT: Eq. lift-coefficient [-], Propulsion weight penalty, phi_3,
-#    semi-analytical relationship, drag-divergence Mach number [-]
-#    , critica Mach number, Sweep angle [rad]
-#    OUTPUT: Aspect Ratio of the wing
-#    DESCRIPTION: Computes the partial optimal AR of the wing using the method
-#    described in Torenbeek CH10. In this method, the AR is optimised in minimum
-#    MTOW (due to wing penalty).'''
-#    eCurl = np.average([0.9,0.95])
-#    Aw = np.power(CL,0.6)*(2*Fprop/(3*np.pi*eCurl))
-#    
-#    return Aw
 
 def friction_coef(Aircraft):
     '''
@@ -63,46 +49,42 @@ def DynamicPressEq(Aircraft, ISA_model):
     AnFP = Aircraft.ParAnFP
     ISAFunc = ISA_model.ISAFunc
     h_cruise = AnFP.h_cruise
-#    h_cruise = 11000
     
     # Compute Mach number
     a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
     Mcruise = AnFP.V_cruise/a
     P = ISAFunc([h_cruise])[1]
     
+    
     # Compute dynamic pressure eq.
     q_eq = 0.5*ISA_model.gamma*np.power(Mcruise, 2)*1.025*P
     
     return q_eq
 
-def ComputeCL_eq(ISA_model, MTOWi, Aircraft):
-    ''' INPUT:
-    OUTPUT: returns CL_hat
-    DESCRIPTION: Returns CL_hat based on (independent) wing loading and the
-    Mach number it flies at and wing surface area. This is a selection
-    variable.'''
-        
-    #DEFINE VARIABLES
-    AnFP = Aircraft.ParAnFP
-    ISAFunc = ISA_model.ISAFunc
-    h_cruise = Aircraft.ParAnFP.h_cruise
-#    MTOW = Aircraft.ParStruc.MTOW
+#def ComputeCL_eq(ISA_model, MTOWi, Aircraft):
+#    ''' INPUT:
+#    OUTPUT: returns CL_hat
+#    DESCRIPTION: Returns CL_hat based on (independent) wing loading and the
+#    Mach number it flies at and wing surface area. This is a selection
+#    variable.'''
+#        
+#    #DEFINE VARIABLES
+#    AnFP = Aircraft.ParAnFP
+#    ISAFunc = ISA_model.ISAFunc
+#    h_cruise = Aircraft.ParAnFP.h_cruise
+#    
+#    # Compute Mach number
+#    a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise])[0])
+#    Mcruise = AnFP.V_cruise/a
+#    P = ISAFunc([h_cruise])[1]
+#    
+#    CL_hat = MTOWi*ISA_model.g0/ \
+#    (0.5*ISA_model.gamma*np.power(Mcruise,2)*1.025*AnFP.S
+#                    *P)
+#    
+##    print(CL_hat)
+#    return CL_hat
     
-    # Compute Mach number
-    a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise])[0])
-    Mcruise = AnFP.V_cruise/a
-    P = ISAFunc([h_cruise])[1]
-    
-#    print ("Mcruise: " + repr(Mcruise) + " P: " + repr(P) + " h: " + 
-#           repr(h_cruise))
-    #Compute CL_hat
-    # TODO: Verify S == Sw and M is indeed the cruise Mach.
-    CL_hat = MTOWi*ISA_model.g0/ \
-    (0.5*ISA_model.gamma*np.power(Mcruise,2)*1.025*AnFP.S
-                    *P)
-    
-#    print(CL_hat)
-    return CL_hat
 def ComputeTheta1(Aircraft, ISA_model, Sweepi):
     '''
     INPUT: returns dimless. quasi-analytical parameter for transonic planform
@@ -129,6 +111,8 @@ def ComputeTheta1(Aircraft, ISA_model, Sweepi):
     (tc*np.cos(Sweepi)**2)
     
     return theta1
+
+
 def ComputeTheta2(Aircraft, ISA_model):
     '''INPUT:
        OUTPUT: returns dimless. quasi-analytical parameter for transonic
@@ -195,7 +179,9 @@ def CDpCurlFunc(Aircraft, ISA_model, Sweepi):
         return (1.2+1.3)/2
 
     def ComputeRe():
-
+        '''
+        Computes the experienced Re of the chord
+        '''
         if np.abs((h_cruise-20000)/20000) <= 0.05:
             v = 0.0000143226
         else:
@@ -239,7 +225,7 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     - mu_T is assumed as a "typical value"
     - Induced drag coeff. of the engine nacelle is acquired from Cranfield
         for typical transonic-operating engines
-    '''    
+    '''
     def ComputeDragNacelle(Cdi, D):
         return (0.5*ISA_model.ISAFunc([h_cruise])[2]*
                 AnFP.V_cruise**2*np.pi*D**2/4*Cdi)
@@ -253,12 +239,12 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
         return delta-deltaMD*np.sqrt(1+2*mu_T/(tau_bar*delta)*eta_0bar*Hg/Req)
     
     AnFP = Aircraft.ParAnFP
-#    Struct = Aircraft.ParStruc
+#   Struct = Aircraft.ParStruc
     ISAFunc = ISA_model.ISAFunc
     h_cruise = Aircraft.ParAnFP.h_cruise
     ConversTool = Aircraft.ConversTool
     lbf2N       = 4.44822
-    WfuMTOW = 0.20
+    WfuMTOW = Aircraft.ParStruc.wfratio
     C_T = 0.56*ConversTool.lbs2kg/lbf2N
     Rmis  = Aircraft.ParAnFP.s_cruise       # mission range
     Rlost = False                           # range lost dependent on CdM
@@ -279,7 +265,7 @@ def ComputeFprop(Aircraft, ISA_model, MTOWi):
     T_TO = 60000.                                  #values for EJ200
     Cldes = 0.56                                    #airfoil
 
-    #compute mu_0
+    #compute eta_0
     eta_0 = 0.0287*Mcruise/(C_T/np.sqrt(theta))
     Dnac = ComputeDragNacelle(Cdi, Diameter)
     eta_0bar = eta_0*(1-Dnac/T)
@@ -397,6 +383,7 @@ def GetOptCLCurve(Aircraft, ISA_model, MTOWi, Sweepi, Awi):
     #prerequisites
     CDpCurl = CDpCurlFunc(Aircraft, ISA_model, Sweepi)
     Theta1  = ComputeTheta1(Aircraft, ISA_model, Sweepi)
+#    Theta1  = ComputeTheta3(Aircraft, ISA_model)
     Theta2  = ComputeTheta2(Aircraft, ISA_model)
     Fprop   = ComputeFprop(Aircraft, ISA_model, MTOWi)
     
@@ -553,8 +540,5 @@ def GetTransOptAw(Aircraft, ISA_model, CL_eq, MTOWi, sweep):
     theta3 = ComputeTheta3(Aircraft, ISA_model)
     eCurl = np.average([0.9, 0.95]) 
     
-#    print((2*Fprop/(3*np.pi*theta3), np.cos(sweep)**3*(Mcrit-Mdd*np.cos(sweep)), 
-#           (np.cos(sweep)**3*(Mcrit-Mdd*np.cos(sweep))-0.11*CL_eq**1.5)))
-
     return (CL_eq**0.6*(2*Fprop/(3*np.pi*theta3*eCurl)*(np.cos(sweep)**3*(
             Mcrit-Mdd*np.cos(sweep))-0.11*CL_eq**1.5))**0.4)
