@@ -3,12 +3,15 @@
 import numpy as np
 
 class Engine:
-    def __init__(self,name, thrust, weight, SFC, cost):
+    def __init__(self,name, thrust, weight, SFC, cost, bpr, LPC, HPC):
         self.name = name #The engine name
         self.thrust = thrust #The engine thrust
         self.weight = weight #The engine weight
         self.SFC = SFC #The engine SFC
         self.cost = cost #The engine cost
+        self.bpr = bpr #The engine bypass ratio
+        self.LPC = LPC #The engine LPC
+        self.HPC = HPC #The engine HPC
     
 
 def Lowbypassafter(Aircraft, Fsl, ISA_model):
@@ -48,15 +51,15 @@ def Highbypass(Aircraft, Fsl, ISA_model):
 def EngineChoice(Aircraft,ISA_model,afterburner):
     T = Aircraft.ParAnFP.TWactcruise*Aircraft.ParStruc.MTOW*9.80665 #[N]
     
-    engnonaft = [Engine('F118-GE-101',75700,1429,18.63814634*10e-06,999999999999),\
-                 Engine('AE3007H',36880,745.7,17.703406*10e-06,4.0),\
-                 Engine('EJ200',60000,1000,22.00*10e-06,8.5),\
-                 Engine('F110-GE-100',73800,1800,21.10246*10e-06,7.12),\
-                 Engine('F100-PW-200',65270,1467,20.39432426*10e-06,6.36)] #Array of engine objects describing each non A/B engine
+    engnonaft = [Engine('F118-GE-101',75700,1429,18.63814634*10e-06,999999999999,0.9,3.5,7.7),\
+                 Engine('AE3007H',36880,745.7,17.703406*10e-06,4.0,4.85,1.7,13.53),\
+                 Engine('EJ200',60000,1000,22.00*10e-06,8.5,0.4,4.2,6.2),\
+                 Engine('F110-GE-100',73800,1800,21.10246*10e-06,7.12,0.76,4.,7.6),\
+                 Engine('F100-PW-200',65270,1467,20.39432426*10e-06,6.36,0.7,3.06,8)] #Array of engine objects describing each non A/B engine
                  
-    engaft = [Engine('EJ200 A/B',90000,1000,49.00*10e-06,8.5),\
-              Engine('F110-GE-100 A/B',124600,1800,55.82946266*10e-06,7.12),\
-              Engine('F100-PW-200 A/B',106000,1467,70.8136259*10e-06,6.36)]#Array of engine objects describing each A/B engine
+    engaft = [Engine('EJ200 A/B',90000,1000,49.00*10e-06,8.5,0.4,4.2,6.2),\
+              Engine('F110-GE-100 A/B',124600,1800,55.82946266*10e-06,7.12,0.76,4.,7.6),\
+              Engine('F100-PW-200 A/B',106000,1467,70.8136259*10e-06,6.36,0.7,3.06,8)]#Array of engine objects describing each A/B engine
     
     if afterburner == False: #If no afterburner
         neng = np.array([]) #Total engine weight matrix
@@ -69,9 +72,14 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         
         Aircraft.ParProp.Engine_name = engsel.name #Append aircraft stuff
         Aircraft.ParStruc.N_engines = np.amin(neng)/engsel.weight
+        Aircraft.ParProp.N_engines = np.amin(neng)/engsel.weight
         Aircraft.ParProp.Engine_weight = engsel.weight
         Aircraft.ParAnFP.SFC = engsel.SFC 
         Aircraft.ParProp.Engine_cost = engsel.cost
+        Aircraft.ParProp.Thrust_cruise = T
+        Aircraft.ParProp.Engine_bpr = engsel.bpr
+        Aircraft.ParProp.Engine_LPC = engsel.LPC
+        Aircraft.ParProp.Engine_HPC = engsel.HPC
     elif afterburner == True: #For afterburner
         neng = np.array([])
         for i in engaft: #Low bypass only everything else is the same
@@ -80,10 +88,16 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         
         Aircraft.ParProp.Engine_name = engsel.name
         Aircraft.ParStruc.N_engines = np.amin(neng)/engsel.weight
+        Aircraft.ParProp.N_engines = np.amin(neng)/engsel.weight
         Aircraft.ParProp.Engine_weight = engsel.weight
         Aircraft.ParAnFP.SFC = engsel.SFC 
         Aircraft.ParProp.Engine_cost = engsel.cost
+        Aircraft.ParProp.Thrust_cruise = T
+        Aircraft.ParProp.Engine_bpr = engsel.bpr
+        Aircraft.ParProp.Engine_LPC = engsel.LPC
+        Aircraft.ParProp.Engine_HPC = engsel.HPC
     else:
         print('Specify whether you want afterburners or not in EngineChoice def')
+    return ()
     #return 
 

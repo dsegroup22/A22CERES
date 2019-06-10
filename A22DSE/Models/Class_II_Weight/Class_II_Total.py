@@ -16,7 +16,7 @@ from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled\
 from A22DSE.Models.Class_II_Weight.Class_II_LG import Class_II_Weight_LG
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassI_AndAHalf, ComputeCD0
 from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
-from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing
+from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing, Method1, Method2
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 from A22DSE.Models.def_Collection_ClassII_Sizing import ClassIISizing
@@ -44,7 +44,7 @@ def ClassIIWeight_MTOW(Aircraft):
     Aircraft.ParStruc.LG_weight_main  = Class_II_Weight_LG(Aircraft)
     
     struc.Wing_weight=2*Total_Wing(Aircraft)/ISA_model.g0 # [kg] whole wing (2 sides)
-    
+#    struc.Wing_weight = Method2(Aircraft)
     struc.Wf=FuselageWeight(Aircraft)[0]/ISA_model.g0 #[kg]
     
     #get the wing group and fuselage group
