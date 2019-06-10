@@ -76,7 +76,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         Aircraft.ParProp.Engine_weight = engsel.weight
         Aircraft.ParAnFP.SFC = engsel.SFC 
         Aircraft.ParProp.Engine_cost = engsel.cost
-        Aircraft.ParProp.Thrust_ruise = T
+        Aircraft.ParProp.Thrust_cruise = T
         Aircraft.ParProp.Engine_bpr = engsel.bpr
         Aircraft.ParProp.Engine_LPC = engsel.LPC
         Aircraft.ParProp.Engine_HPC = engsel.HPC

@@ -171,11 +171,12 @@ ParAnFP
 {'Engine_weight': 1000
  'Engine_weight_Total': 8000.0
  'Engine_name': 'EJ200'
+ 'N_engines': 8.0
  'Engine_cost': 8.5
  'Thrust_ruise': 32699.52613573486
- 'bpr': 0.4
- 'lpc': 4.2
- 'hpc': 6.2}
+ 'Engine_bpr': 0.4
+ 'Engine_LPC': 4.2
+ 'Engine_HPC': 6.2}
 
 
  ParClassII
