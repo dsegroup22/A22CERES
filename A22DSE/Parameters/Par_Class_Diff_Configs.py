@@ -78,7 +78,7 @@ def ClassIAircraft():
     Conv.ParAnFP.CD0 = 0.015
     Conv.ParAnFP.e = 0.85
     Conv.ParAnFP.M_cruise = 0.7
-    Conv.ParAnFP.Mdd = 0.75
+    Conv.ParAnFP.Mdd = 0.78
     Conv.ParAnFP.T_to = 200000
     #Parameters useful to class II estimation
     Conv.ParAnFP.wm_un = 0          #Undercarriage in the wing on (1) or off (0)
