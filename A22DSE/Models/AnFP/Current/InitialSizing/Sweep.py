@@ -23,7 +23,7 @@ def wing_sweep(Aircraft):
     M_crit=0.935
     M_dd=Aircraft.ParAnFP.Mdd
     tc=Aircraft.ParAnFP.tc
-    cossweep=3/8*M_crit/M_dd*(1+np.sqrt(1-32*tc*M_dd/9/M_crit/M_crit))
-    sweep=np.arccos(cossweep)
+    cossweep=(0.75*M_crit/M_dd)
+    sweep =np.arccos(cossweep)
     
     return sweep
