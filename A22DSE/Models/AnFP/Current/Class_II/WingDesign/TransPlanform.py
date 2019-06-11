@@ -31,8 +31,8 @@ plot = True
 CL_i = np.linspace(0.3, 1.00, res)
 sweep_i = np.linspace(np.deg2rad(0), np.deg2rad(40), res)
 #tc_w  = np.linspace(0.10, 0.15, 4)
-Mdd = 0.73
-Aw = 21.0
+Mdd = 0.78
+Aw = 17.5
 TSFC = 0.061243
 CL, sweep = np.meshgrid(CL_i, sweep_i)
 
@@ -76,6 +76,9 @@ def Intersect(y,z):
     return x
 
 CL_des = Intersect(CL_optLst, CL_i)
+tc_des = (FormFuncs.Compute_tc_limit(Conv, CL_des, sweep_opt)/
+          np.cos(sweep_opt)**2)
+FWP_opt = FormFuncs.ComputeFWP(Conv, Fprop, theta2, theta3, Aw, CL_des, sweep_opt)
 # Optimum CL/CD
 
 
@@ -91,7 +94,7 @@ if plot == True:
     ax.set_title('wireframe');
     
     plt.figure(2)
-    cp = plt.contour(np.rad2deg(sweep), CL, FWP)
+    cp = plt.contour(np.rad2deg(sweep), CL, FWP, 30)
     plt.plot(np.rad2deg(sweep_i), CL_optLst, color = 'r', linestyle ='dashed',
              label = r'Partial optimum $\hat{C}_L$')
     plt.axvline(np.rad2deg(sweep_opt), color = 'orange', linestyle = 'dashed',
