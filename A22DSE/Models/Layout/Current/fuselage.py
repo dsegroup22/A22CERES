@@ -8,11 +8,12 @@ import os
 import sys
 import numpy as np
 from pathlib import Path
-sys.path.append('../../')
+#sys.path.append('../../')
 os.chdir(Path(__file__).parents[4])
+print(os.getcwd())
+from A22DSE.Parameters.Par_Class_Conventional import Conv
 from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
-os.chdir(Path(__file__).parents[2])
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
+
 import matplotlib.pyplot as plt
 
 
@@ -184,22 +185,27 @@ def FuselageWeight_opt(Aircraft, fineness_f, SF):
     
     W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
     W_f_tor=W_shell+W_bulkheads+W_fl
-    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N,W_f_tor #[N]
+    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N #[N]
 
 
 lst = []
 lst1 = []
 
-for i in np.arange(2, 20 ,0.5):
+for i in np.arange(2, 20 ,0.1):
     CD0 = CD0_diff(Conv, i, 1.5)
-    W_f = FuselageWeight_opt(Conv, i)
+    W_f = FuselageWeight_opt(Conv, i, 1.5)
     lst.append(CD0)
     lst1.append(W_f)
     
-plt.figure()    
-plt.plot(np.arange(2, 20, 0.5),lst)
-plt.figure(2)
-plt.plot(np.arange(2, 12.5, 0.5),lst1)
-plt.ylabel('some numbers')
+#plt.figure()    
+#plt.plot(np.arange(2, 20, 0.1),lst)
+#plt.figure(2)
+#plt.plot(np.arange(2, 20, 0.1),lst1)
+#plt.ylabel('some numbers')
     
-
+def Fuselage(Aircraft):
+    a = Fuselage_iter(Aircraft, 8, 1.5)
+    b = a[0:3]
+    c = a[4]
+    d = a[3]
+    return b, c, d, c
