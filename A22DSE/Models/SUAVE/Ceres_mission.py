@@ -14,8 +14,8 @@ import pylab as plt
 # SUAVE Imports
 import SUAVE
 import os
-os.chdir(Path(__file__).parents[3])
 from pathlib import Path
+os.chdir(Path(__file__).parents[3])
 from SUAVE.Core import Data, Units 
 from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
 from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Propulsion import compute_turbofan_geometry
