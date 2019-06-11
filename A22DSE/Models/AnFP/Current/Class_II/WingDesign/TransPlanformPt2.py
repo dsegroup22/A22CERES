@@ -25,7 +25,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 #                       SELECTION VARIABLES AND CONSTANTS
 # =============================================================================
 res = 100
-plot = True
+plot = False
 
 CL_i = np.linspace(0.3, 1.2, res)
 sweep_opt = (FormFuncs.ComputePartialSweepOpt(Conv))
@@ -89,7 +89,7 @@ if plot == True:
     ax.set_title('wireframe');
     
     plt.figure(2)
-    cp = plt.contour(CL, Aw, FWP)
+    cp = plt.contour(CL, Aw, FWP, 20)
     plt.plot(CL_i, Aw_opt, color = 'r', linestyle = 'dashed',
              label = r'Partial optimum $\hat{C}_L$')
     plt.plot(CL_optLst, Aw_i, color = 'orange', linestyle = 'dashed',

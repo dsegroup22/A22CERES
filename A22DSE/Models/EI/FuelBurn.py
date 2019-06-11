@@ -40,18 +40,18 @@ def GetMach(Mach, data):
     newdata = data[newdata]
     return newdata
 
-
-file = open("testfile.txt", "r") 
-file = file.readlines()    
-heading = file[1]
-file = file[4:]
-
-for i in range(len(file)):
-    file[i] = file[i].split()
-    for j in range(len(file[i])):
-        file[i][j] = float(file[i][j])
-data = file
-data = np.array(data)
+#
+#file = open("testfile.txt", "r") 
+#file = file.readlines()    
+#heading = file[1]
+#file = file[4:]
+#
+#for i in range(len(file)):
+#    file[i] = file[i].split()
+#    for j in range(len(file[i])):
+#        file[i][j] = float(file[i][j])
+#data = file
+#data = np.array(data)
 
 def GetEngineProp(altitude, Mach):
     info = GetMach(Mach, GetAltitude(altitude, data))

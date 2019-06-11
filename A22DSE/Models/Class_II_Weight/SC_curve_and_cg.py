@@ -17,7 +17,7 @@ def scplot(Aircraft):
     A = anfp.A   #8.
     Lambda = Aircraft.ParAnFP.Sweep_LE   #!!!!!!!!!!!!!
     beta = sqrt(1-M**2)
-    CLalphaw = 2*pi*A/(2.+ sqrt(4.+(A*beta/etha)**2*(1.+(tan(radians(Lambda))/beta)**2))) #/rad
+    CLalphaw = 0.14*(180/pi) #2*pi*A/(2.+ sqrt(4.+(A*beta/etha)**2*(1.+(tan(radians(Lambda))/beta)**2))) #/rad
     bf = Aircraft.ParLayoutConfig.w_fuselage #[m] wing span inside the fuselage
     b = anfp.b #[m] total wing span
     layoutconfig = Aircraft.ParLayoutConfig
@@ -37,7 +37,7 @@ def scplot(Aircraft):
     xac = 0.25*MAC+Aircraft.ParLayoutConfig.x_lemac #30.
     deda =  0.006 #0.1 #(0.006 from horizontaltail calculation)
     VhV = 1. #1 for T tail and canard
-    CLAh = 1.2
+    CLAh = 1
     CLh = -0.8
     Cmac = -0.3
     #-----------parameters-----------------
@@ -55,10 +55,9 @@ def scplot(Aircraft):
     a = np.polyfit(xcg_mac,ShSs,1)
     b = np.polyfit(xcg_mac,ShSc,1)
     
-    
-    solve1 = np.array([[1,-a[0],0],[1,0,-b[0]],[0,1,-1]])
-    solve2=np.array([a[1],b[1],0.59])
-    x = np.linalg.solve(solve1, solve2)
+#    solve1 = np.array([[1,-a[0],0],[1,0,-b[0]],[0,1,-1]])
+#    solve2=np.array([a[1],b[1],0.59])
+#    x = np.linalg.solve(solve1, solve2)
     #------------plot--------------------
     plt.plot(xcg_mac,ShSc,"r-",xcg_mac,ShSs,"g--")
     plt.ylim(0,1)
@@ -69,8 +68,7 @@ def scplot(Aircraft):
     plt.savefig('SCPlot.png')
     plt.show()
     
-    
-
+    #return CLalphaw
 
 #--------------cg-----------------------
 def oecg(Aircraft):
