@@ -118,11 +118,14 @@ def update_weights(segment):
     conditions = segment.state.conditions
     m0         = conditions.weights.total_mass[0,0]
     mdot_fuel  = conditions.weights.vehicle_mass_rate
+    mdot_pay   = conditions.weights.vehicle_payload_rate*np.ones((len(conditions.weights.vehicle_mass_rate),1))
     g          = conditions.freestream.gravity
     I          = segment.state.numerics.time.integrate
 
     # calculate
-    m = m0 + np.dot(I, -mdot_fuel )
+    pay = np.dot(I,-mdot_pay )
+    fuel = np.dot(I, -mdot_fuel )
+    m = m0 + fuel + pay
 
     # weight
     W = m*g
