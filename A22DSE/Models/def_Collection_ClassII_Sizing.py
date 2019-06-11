@@ -20,7 +20,7 @@ BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg
 from A22DSE.Models.Layout.Current.Area import FusAreas
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import xoe
 from A22DSE.Parameters.Par_Class_Diff_Configs import (ISA_model)
-from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (Fuselage)
+from A22DSE.Models.Layout.Current.fuselage import Fuselage
 from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
@@ -126,7 +126,8 @@ def ClassIISizing(Conv):
     step = 100
     Conv.ParAnFP.C_L_design, Conv.ParAnFP.tc_w, Conv.ParAnFP.FWP = (
 
-    TransPlanform.ComputePlanform(Conv, step, Conv.ParAnFP.A, False))
+    TransPlanform.ComputePlanform(Conv, ISA_model,
+                                  step, Conv.ParAnFP.A, False))
     
     #Control surface
     aileron(Conv)
