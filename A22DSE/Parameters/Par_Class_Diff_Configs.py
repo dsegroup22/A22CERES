@@ -113,7 +113,6 @@ def ClassIAircraft():
     
     Conv.ParAnFP.LD_airfoil = 90 #lift to drag ratio [-] at Cldes = 0.55 obtained from graph of Cl/Cd
 
-    Conv.ParAnFP.Sweep25 = wing_sweep(Conv)
 
     
     

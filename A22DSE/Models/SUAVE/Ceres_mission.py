@@ -198,10 +198,10 @@ def vehicle_setup(Aircraft):
     # used for noise calculations
     landing_gear = SUAVE.Components.Landing_Gear.Landing_Gear()
     landing_gear.tag = "main_landing_gear"
-    landing_gear.main_tire_diameter = Aircraft.ParClassII_LG.prelim_tire_diam
-    landing_gear.nose_tire_diameter = Aircraft.ParClassII_LG.prelim_tire_diam
-    landing_gear.main_strut_length  = Aircraft.ParLayoutConfig.lg_l_main
-    landing_gear.nose_strut_length  = Aircraft.ParLayoutConfig.lg_l_nose
+    landing_gear.main_tire_diameter = Aircraft.ParClassII_LG.prelim_tire_diam*Units.meter
+    landing_gear.nose_tire_diameter = Aircraft.ParClassII_LG.prelim_tire_diam*Units.meter
+    landing_gear.main_strut_length  = Aircraft.ParLayoutConfig.lg_l_main*Units.meter
+    landing_gear.nose_strut_length  = Aircraft.ParLayoutConfig.lg_l_nose*Units.meter
     landing_gear.main_units  = 2    #number of main landing gear units
     landing_gear.nose_units  = 1    #number of nose landing gear
     landing_gear.main_wheels = 2    #number of wheels on the main landing gear
@@ -216,15 +216,15 @@ def vehicle_setup(Aircraft):
     wing.tag = 'main_wing'
     
     wing.aspect_ratio            = Aircraft.ParAnFP.A
-    wing.sweeps.quarter_chord    = Aircraft.ParAnFP.Sweep25
+    wing.sweeps.quarter_chord    = Aircraft.ParAnFP.Sweep25*Units.radians #Check this!!!!!!!!
     wing.thickness_to_chord      = Aircraft.ParAnFP.tc
     wing.taper                   = Aircraft.ParAnFP.taper
     wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil
-    wing.spans.projected         = Aircraft.ParAnFP.b
-    wing.chords.root             = Aircraft.ParAnFP.c_r
-    wing.chords.tip              = Aircraft.ParAnFP.c_t
-    wing.chords.mean_aerodynamic = Aircraft.ParAnFP.MAC
-    wing.areas.reference         = Aircraft.ParAnFP.S
+    wing.spans.projected         = Aircraft.ParAnFP.b*Units.meter
+    wing.chords.root             = Aircraft.ParAnFP.c_r*Units.meter
+    wing.chords.tip              = Aircraft.ParAnFP.c_t*Units.meter
+    wing.chords.mean_aerodynamic = Aircraft.ParAnFP.MAC*Units.meter
+    wing.areas.reference         = Aircraft.ParAnFP.S*Units['meters**2']
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees
     wing.origin                  = [10,0,-1.27] # meters
@@ -252,15 +252,15 @@ def vehicle_setup(Aircraft):
     wing.tag = 'horizontal_stabilizer'
     
     wing.aspect_ratio            = Aircraft.ParLayoutConfig.Aht
-    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25ht
+    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25ht*Units.degrees
     wing.thickness_to_chord      = 0.08 #Find this
     wing.taper                   = Aircraft.ParLayoutConfig.trht
     wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil     #Check, was 0.9
-    wing.spans.projected         = Aircraft.ParLayoutConfig.bh
-    wing.chords.root             = Aircraft.ParLayoutConfig.c_rht
-    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tht
-    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_h                   #Fix
-    wing.areas.reference         = Aircraft.ParLayoutConfig.Sht
+    wing.spans.projected         = Aircraft.ParLayoutConfig.bh*Units.meter
+    wing.chords.root             = Aircraft.ParLayoutConfig.c_rht*Units.meter
+    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tht*Units.meter
+    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_h*Units.meter          #Fix
+    wing.areas.reference         = Aircraft.ParLayoutConfig.Sht*Units['meters**2']
     wing.twists.root             = 3.0 * Units.degrees
     wing.twists.tip              = 3.0 * Units.degrees  
     wing.origin                  = [32.83,0,1.14] # meters
@@ -279,15 +279,15 @@ def vehicle_setup(Aircraft):
     wing.tag = 'vertical_stabilizer'    
 
     wing.aspect_ratio            = Aircraft.ParLayoutConfig.Avt
-    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25vt
+    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25vt*Units.degrees
     wing.thickness_to_chord      = 0.08                         #Fix
     wing.taper                   = Aircraft.ParLayoutConfig.trvt
     wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil
-    wing.spans.projected         = Aircraft.ParLayoutConfig.bv
-    wing.chords.root             = Aircraft.ParLayoutConfig.c_rvt
-    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tvt
-    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_v      
-    wing.areas.reference         = Aircraft.ParLayoutConfig.Svt 
+    wing.spans.projected         = Aircraft.ParLayoutConfig.bv*Units.meter
+    wing.chords.root             = Aircraft.ParLayoutConfig.c_rvt*Units.meter
+    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tvt*Units.meter
+    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_v*Units.meter
+    wing.areas.reference         = Aircraft.ParLayoutConfig.Svt *Units['meter**2']
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees  
     wing.origin                  = [28.79,0,1.54] # meters
@@ -311,24 +311,24 @@ def vehicle_setup(Aircraft):
     fuselage.seat_pitch            = 0     * Units.meter
     fuselage.fineness.nose         = Aircraft.ParStruc.fineness_n
     fuselage.fineness.tail         = Aircraft.ParStruc.fineness_t
-    fuselage.lengths.nose          = Aircraft.ParLayoutConfig.l_nose
-    fuselage.lengths.tail          = Aircraft.ParLayoutConfig.l_tail
-    fuselage.lengths.cabin         = Aircraft.ParLayoutConfig.l_fuselage-\
-    Aircraft.ParLayoutConfig.l_nose-Aircraft.ParLayoutConfig.l_tail
-    fuselage.lengths.total         = Aircraft.ParLayoutConfig.l_fuselage
+    fuselage.lengths.nose          = Aircraft.ParLayoutConfig.l_nose*Units.meter
+    fuselage.lengths.tail          = Aircraft.ParLayoutConfig.l_tail*Units.meter
+    fuselage.lengths.cabin         = Aircraft.ParLayoutConfig.l_fuselage*Units.meter-\
+    Aircraft.ParLayoutConfig.l_nose*Units.meter-Aircraft.ParLayoutConfig.l_tail*Units.meter
+    fuselage.lengths.total         = Aircraft.ParLayoutConfig.l_fuselage*Units.meter
     fuselage.lengths.fore_space    = 6.    * Units.meter
     fuselage.lengths.aft_space     = 5.    * Units.meter
-    fuselage.width                 = Aircraft.ParLayoutConfig.w_fuselage
-    fuselage.heights.maximum       = Aircraft.ParLayoutConfig.h_fuselage
-    fuselage.effective_diameter    = Aircraft.ParLayoutConfig.d_fuselage
-    fuselage.areas.side_projected  = Aircraft.ParLayoutConfig.TotalSidearea
-    fuselage.areas.wetted          = Aircraft.ParLayoutConfig.S_wet_fuselage
-    fuselage.areas.front_projected = Aircraft.ParLayoutConfig.S_front
+    fuselage.width                 = Aircraft.ParLayoutConfig.w_fuselage*Units.meter
+    fuselage.heights.maximum       = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
+    fuselage.effective_diameter    = Aircraft.ParLayoutConfig.d_fuselage*Units.meter
+    fuselage.areas.side_projected  = Aircraft.ParLayoutConfig.TotalSidearea*Units['meters**2']
+    fuselage.areas.wetted          = Aircraft.ParLayoutConfig.S_wet_fuselage*Units['meters**2']
+    fuselage.areas.front_projected = Aircraft.ParLayoutConfig.S_front*Units['meters**2']
     fuselage.differential_pressure = 5.0e4 * Units.pascal # Maximum differential pressure
     
-    fuselage.heights.at_quarter_length          = Aircraft.ParLayoutConfig.h_fuselage
-    fuselage.heights.at_three_quarters_length   = Aircraft.ParLayoutConfig.h_fuselage
-    fuselage.heights.at_wing_root_quarter_chord = Aircraft.ParLayoutConfig.h_fuselage
+    fuselage.heights.at_quarter_length          = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
+    fuselage.heights.at_three_quarters_length   = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
+    fuselage.heights.at_wing_root_quarter_chord = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
     
     # add to vehicle
     vehicle.append_component(fuselage)
@@ -596,38 +596,38 @@ def configs_setup(vehicle):
 
     return configs
 
-#def simple_sizing(configs):
-#
-#    base = configs.base
-#    base.pull_base()
-#
-#    # zero fuel weight
-#    base.mass_properties.max_zero_fuel = 0.9 * base.mass_properties.max_takeoff 
-#
-#    # wing areas
-#    for wing in base.wings:
-#        wing.areas.wetted   = 2.0 * wing.areas.reference
-#        wing.areas.exposed  = 0.8 * wing.areas.wetted
-#        wing.areas.affected = 0.6 * wing.areas.wetted
-#
-#    # diff the new data
-#    base.store_diff()
-#
-#    # ------------------------------------------------------------------
-#    #   Landing Configuration
-#    # ------------------------------------------------------------------
-#    landing = configs.landing
-#
-#    # make sure base data is current
-#    landing.pull_base()
-#
-#    # landing weight
-#    landing.mass_properties.landing = 0.85 * base.mass_properties.takeoff
-#
-#    # diff the new data
-#    landing.store_diff()
-#
-#    return
+def simple_sizing(configs):
+
+    base = configs.base
+    base.pull_base()
+
+    # zero fuel weight
+    base.mass_properties.max_zero_fuel = 0.9 * base.mass_properties.max_takeoff 
+
+    # wing areas
+    for wing in base.wings:
+        wing.areas.wetted   = 2.0 * wing.areas.reference
+        wing.areas.exposed  = 0.8 * wing.areas.wetted
+        wing.areas.affected = 0.6 * wing.areas.wetted
+
+    # diff the new data
+    base.store_diff()
+
+    # ------------------------------------------------------------------
+    #   Landing Configuration
+    # ------------------------------------------------------------------
+    landing = configs.landing
+
+    # make sure base data is current
+    landing.pull_base()
+
+    # landing weight
+    landing.mass_properties.landing = 0.85 * base.mass_properties.takeoff
+
+    # diff the new data
+    landing.store_diff()
+
+    return
 
 # ----------------------------------------------------------------------
 #   Define the Mission
