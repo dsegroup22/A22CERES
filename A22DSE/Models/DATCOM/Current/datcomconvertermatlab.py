@@ -32,11 +32,11 @@ XV=round(float(Layout.x_apex_vt/Conversion.ft2m),1)
 ZV=round(float(0),1)
 
 NX=round(float(4),1)
-X='[0.0,4.0,8.7,64.5,78.7]'
-ZU='[0.0,2.6,2.6,2.6]'
-ZL = '[0.0,-2.6,-2.6,-0.66]'
-R = '[0.0,4.6,4.6,0.33]'
-S = '[0.0,38.4,38.4,0.34]'
+#X='[0.0,4.0,8.7,64.5,78.7]'
+#ZU='[0.0,2.6,2.6,2.6]'
+#ZL = '[0.0,-2.6,-2.6,-0.66]'
+#R = '[0.0,4.6,4.6,0.33]'
+#S = '[0.0,38.4,38.4,0.34]'
 X=np.round(np.array([0.0,Layout.l_nose,Layout.l_nose+Layout.l_cabin,Layout.l_fuselage])/Conversion.ft2m,1)
 ZU=np.round(np.array([0.0,Layout.h_fuselage/2,Layout.h_fuselage/2,Layout.h_fuselage/2])/Conversion.ft2m,1)
 ZL=np.round(np.array([0.0,-Layout.h_fuselage/2,-Layout.h_fuselage/2,Layout.h_fuselage/2-Layout.h_APU/2,])/Conversion.ft2m,1)
