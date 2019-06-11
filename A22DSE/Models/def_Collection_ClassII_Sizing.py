@@ -46,8 +46,8 @@ def ClassIISizing(Conv):
     Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
     
     step = 50
-    Conv.ParAnFP.C_L_design, Conv.ParAnFP.A = PlanformMain.GetARTransWing(
-    Conv, ISA_model, step, False)
+#    Conv.ParAnFP.C_L_design, Conv.ParAnFP.A = PlanformMain.GetARTransWing(
+#    Conv, ISA_model, step, False)
     
     #Oswald Efficiency
     anfp.e = OswaldEfficiency(Conv)

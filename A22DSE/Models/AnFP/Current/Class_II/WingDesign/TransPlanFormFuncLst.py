@@ -24,9 +24,9 @@ ASSUMPTIONS:
     - omegaS = 210 N/m²
     - e_curl = 0.80
     - shape_factor = 3.0    (2.5 < x < 3.5)
-    - d_(w+h) = 1.25
+    - d_(w+h) = 1.25        (total wing profile drag)
     - CDc = 0.0010
-    - Mdd = 0.935           (2nd gen supercritical airfoils)
+    - M* = 0.935           (2nd gen supercritical airfoils)
 '''
 
 
@@ -262,6 +262,7 @@ def ComputePartialAwOpt(Aircraft, ISA_model,
                          - 0.11 * CL**1.5))**0.4)
     
     return Aw_opt
+
 
 def ComputeSpanLoading(Aircraft, ISA_model, Fprop, theta2, theta3, TSFC,
                        sweep, CL):
