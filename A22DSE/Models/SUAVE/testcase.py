@@ -13,6 +13,9 @@ import pylab as plt
 
 # SUAVE Imports
 import SUAVE
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[3])
 from SUAVE.Core import Data, Units 
 from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
 from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Propulsion import compute_turbofan_geometry
@@ -21,6 +24,7 @@ from SUAVE.Input_Output.Results import  print_parasite_drag,  \
      print_engine_data,   \
      print_mission_breakdown, \
      print_weight_breakdown
+from A22DSE.Parameters.Par_Class_Conventional import Conv
 
 # ----------------------------------------------------------------------
 #   Main
