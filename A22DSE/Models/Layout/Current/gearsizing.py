@@ -9,7 +9,8 @@ import os
 import sys
 import numpy as np
 
-def LG_loads(Aircraft):
+
+def LG_loads(Aircraft, g):
     struc = Aircraft.ParStruc
     config = Aircraft.ParLayoutConfig
     
@@ -20,10 +21,10 @@ def LG_loads(Aircraft):
     N = config.x_cg[1] - config.lg_x_nose
     J = config.z_cg[0]
     
-    max_static_main =  ((MTOW*(F-M))/(2*F)) * 2.20462
-    max_static_nose = ((MTOW*(F-L))/F) * 2.20462
-    min_static_nose = ((MTOW*(F-N))/F) * 2.20462
-    max_braking_load = max_static_nose + ((10*J*MTOW*2.20462*0.3048**2)/(32.2*F*0.3048))*0,45359
+    max_static_main =  ((MTOW*(F-M))/(2*F)) * 2.20462 * g
+    max_static_nose = ((MTOW*(F-L))/F) * 2.20462 * g
+    min_static_nose = ((MTOW*(F-N))/F) * 2.20462 * g
+    max_braking_load = max_static_nose + ( (10 * J *MTOW*2.20462*0.3048**2) / (32.2*F*0.3048) ) *0.45359 * g
     
     return max_static_main, max_static_nose, min_static_nose, max_braking_load
 
