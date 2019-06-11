@@ -206,6 +206,9 @@ def htscplot(Conv):
     Sh = 0.45*Sw
     Vh = 1
     
+    kh = 1.1
+    Vd = 1.4*AnFP.V_cruise 
     l_constraint = Vh*MAC*Sw/Sh
+    mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(0.63624)))-2.5)
     
-    return l_constraint
+    return l_constraint, mh
