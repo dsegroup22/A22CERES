@@ -206,7 +206,7 @@ def Method1(Aircraft):
     b = anfp.b*3.28084 #in ft
     
     
-    Ww = 5340*(b/100)**3*0.453592 #kg
+    Ww = 5340 * (b/100)**3 * 0.453592 #kg
     return Ww
 
 
