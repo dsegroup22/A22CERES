@@ -194,5 +194,18 @@ def htail(Aircraft,ISA):
     Aircraft.ParLayoutConfig.Sht = Sh
     Aircraft.ParLayoutConfig.xht = l_arm_opt
     Aircraft.ParLayoutConfig.mac_h = mac_h
-    #return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
+    return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
 #def rudder(Aircraft):
+
+
+def htscplot(Conv):
+    AnFP = Conv.ParAnFP
+    MAC = AnFP.MAC
+    Sw = AnFP.S
+
+    Sh = 0.45*Sw
+    Vh = 1
+    
+    l_constraint = Vh*MAC*Sw/Sh
+    
+    return l_constraint
