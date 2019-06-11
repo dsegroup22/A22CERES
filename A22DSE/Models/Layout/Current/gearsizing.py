@@ -18,8 +18,12 @@ def LG_loads(Aircraft):
     M = config.lg_x_main - config.x_cg[1]
     L = config.x_cg[0] - config.lg_x_nose
     N = config.x_cg[1] - config.lg_x_nose
+    J = config.z_cg[0]
     
-    max_static_main =  MTOW*(F-M)/2*F
-    max_static_nose = MTOW*(F-L)/F
-    min_static_nose = MTOW(F-N)/F
-    return max_static_main, max_static_nose, min_static_nose
+    max_static_main =  ((MTOW*(F-M))/(2*F)) * 2.20462
+    max_static_nose = ((MTOW*(F-L))/F) * 2.20462
+    min_static_nose = ((MTOW*(F-N))/F) * 2.20462
+    max_braking_load = max_static_nose + ((10*J*MTOW*2.20462*0.3048**2)/(32.2*F*0.3048))*0,45359
+    
+    return max_static_main, max_static_nose, min_static_nose, max_braking_load
+
