@@ -56,6 +56,24 @@ def Wing_Geo(Aircraft):
     return [Sweep_25_rad, Sweep_LE, Sweep_50, b, Taper, c_r, c_t, c_mac, y_mac]
 
 
+
+def Wing_Geo_Additional(Aircraft):
+    """
+    This function calculates additional geometric properties of the wing
+    """
+    layout = Aircraft.ParLayoutConfig
+    afnp = Aircraft.ParAnFP
+    
+    #get parameters
+    y_mac = afnp.y_MAC
+    Sweep_LE = afnp.Sweep_LE
+    #calculate new things
+    x_LE_root = layout.x_lemac - y_mac*np.tan(Sweep_LE)
+    
+    return(x_LE_root)
+
+
+
 def Basic_Wing(Aircraft): #geometry, wing_specs, FP
     #INPUT: General wing planform geometry, other specifications such 
     #as statistical weight and t/c, flight profile parameters
