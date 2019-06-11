@@ -168,19 +168,17 @@ def vehicle_setup(Aircraft):
     # ------------------------------------------------------------------    
     
     vehicle = SUAVE.Vehicle()
-    vehicle.tag = 'Boeing_737-800'    
+    vehicle.tag = 'Ceres Aircraft'    
     
     # ------------------------------------------------------------------
     #   Vehicle-level Properties
     # ------------------------------------------------------------------    
 
     # mass properties
-    vehicle.mass_properties.max_takeoff               = Aircraft.ParStruc.MTOW
-    vehicle.mass_properties.takeoff                   = Aircraft.ParStruc.MTOW   
-    vehicle.mass_properties.operating_empty           = Aircraft.ParStruc.OEWratio*Aircraft.ParStruc.MTOW
-    vehicle.mass_properties.takeoff                   = Aircraft.ParStruc.MTOW
-    vehicle.mass_properties.max_zero_fuel             = Aircraft.ParStruc.MTOW-Aircraft.ParStruc.FW
-    vehicle.mass_properties.cargo                     = Aircraft.ParPayload.m_payload
+    vehicle.mass_properties.max_takeoff               = Aircraft.ParStruc.MTOW * Units.kg
+    vehicle.mass_properties.operating_empty           = Aircraft.ParStruc.OEWratio*Aircraft.ParStruc.MTOW * Units.kg
+    vehicle.mass_properties.max_zero_fuel             = (Aircraft.ParStruc.MTOW-Aircraft.ParStruc.FW) * Units.kg
+    vehicle.mass_properties.cargo                     = Aircraft.ParPayload.m_payload * Units.kg
     
     # envelope properties
     vehicle.envelope.ultimate_load = 2.5 #Fix This
@@ -200,10 +198,10 @@ def vehicle_setup(Aircraft):
     # used for noise calculations
     landing_gear = SUAVE.Components.Landing_Gear.Landing_Gear()
     landing_gear.tag = "main_landing_gear"
-    landing_gear.main_tire_diameter = Aircraft.ParClassII_LG.prelim_tire_diam
-    landing_gear.nose_tire_diameter = Aircraft.ParClassII_LG.prelim_tire_diam
-    landing_gear.main_strut_length  = Aircraft.ParLayoutConfig.lg_l_main
-    landing_gear.nose_strut_length  = Aircraft.ParLayoutConfig.lg_l_nose
+    landing_gear.main_tire_diameter = Aircraft.ParClassII_LG.prelim_tire_diam*Units.meter
+    landing_gear.nose_tire_diameter = Aircraft.ParClassII_LG.prelim_tire_diam*Units.meter
+    landing_gear.main_strut_length  = Aircraft.ParLayoutConfig.lg_l_main*Units.meter
+    landing_gear.nose_strut_length  = Aircraft.ParLayoutConfig.lg_l_nose*Units.meter
     landing_gear.main_units  = 2    #number of main landing gear units
     landing_gear.nose_units  = 1    #number of nose landing gear
     landing_gear.main_wheels = 2    #number of wheels on the main landing gear
@@ -218,15 +216,15 @@ def vehicle_setup(Aircraft):
     wing.tag = 'main_wing'
     
     wing.aspect_ratio            = Aircraft.ParAnFP.A
-    wing.sweeps.quarter_chord    = Aircraft.ParAnFP.Sweep25
+    wing.sweeps.quarter_chord    = Aircraft.ParAnFP.Sweep25*Units.radians #Check this!!!!!!!!
     wing.thickness_to_chord      = Aircraft.ParAnFP.tc
     wing.taper                   = Aircraft.ParAnFP.taper
     wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil
-    wing.spans.projected         = Aircraft.ParAnFP.b
-    wing.chords.root             = Aircraft.ParAnFP.c_r
-    wing.chords.tip              = Aircraft.ParAnFP.c_t
-    wing.chords.mean_aerodynamic = Aircraft.ParAnFP.MAC
-    wing.areas.reference         = Aircraft.ParAnFP.S
+    wing.spans.projected         = Aircraft.ParAnFP.b*Units.meter
+    wing.chords.root             = Aircraft.ParAnFP.c_r*Units.meter
+    wing.chords.tip              = Aircraft.ParAnFP.c_t*Units.meter
+    wing.chords.mean_aerodynamic = Aircraft.ParAnFP.MAC*Units.meter
+    wing.areas.reference         = Aircraft.ParAnFP.S*Units['meters**2']
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees
     wing.origin                  = [10,0,-1.27] # meters
@@ -254,15 +252,15 @@ def vehicle_setup(Aircraft):
     wing.tag = 'horizontal_stabilizer'
     
     wing.aspect_ratio            = Aircraft.ParLayoutConfig.Aht
-    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25ht
+    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25ht*Units.degrees
     wing.thickness_to_chord      = 0.08 #Find this
     wing.taper                   = Aircraft.ParLayoutConfig.trht
     wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil     #Check, was 0.9
-    wing.spans.projected         = Aircraft.ParLayoutConfig.bh
-    wing.chords.root             = Aircraft.ParLayoutConfig.c_rht
-    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tht
-    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_h                   #Fix
-    wing.areas.reference         = Aircraft.ParLayoutConfig.Sht
+    wing.spans.projected         = Aircraft.ParLayoutConfig.bh*Units.meter
+    wing.chords.root             = Aircraft.ParLayoutConfig.c_rht*Units.meter
+    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tht*Units.meter
+    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_h*Units.meter          #Fix
+    wing.areas.reference         = Aircraft.ParLayoutConfig.Sht*Units['meters**2']
     wing.twists.root             = 3.0 * Units.degrees
     wing.twists.tip              = 3.0 * Units.degrees  
     wing.origin                  = [32.83,0,1.14] # meters
@@ -281,15 +279,15 @@ def vehicle_setup(Aircraft):
     wing.tag = 'vertical_stabilizer'    
 
     wing.aspect_ratio            = Aircraft.ParLayoutConfig.Avt
-    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25vt
+    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25vt*Units.degrees
     wing.thickness_to_chord      = 0.08                         #Fix
     wing.taper                   = Aircraft.ParLayoutConfig.trvt
     wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil
-    wing.spans.projected         = Aircraft.ParLayoutConfig.bv
-    wing.chords.root             = Aircraft.ParLayoutConfig.c_rvt
-    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tvt
-    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_v      
-    wing.areas.reference         = Aircraft.ParLayoutConfig.Svt 
+    wing.spans.projected         = Aircraft.ParLayoutConfig.bv*Units.meter
+    wing.chords.root             = Aircraft.ParLayoutConfig.c_rvt*Units.meter
+    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tvt*Units.meter
+    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_v*Units.meter
+    wing.areas.reference         = Aircraft.ParLayoutConfig.Svt *Units['meter**2']
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees  
     wing.origin                  = [28.79,0,1.54] # meters
@@ -313,27 +311,29 @@ def vehicle_setup(Aircraft):
     fuselage.seat_pitch            = 0     * Units.meter
     fuselage.fineness.nose         = Aircraft.ParStruc.fineness_n
     fuselage.fineness.tail         = Aircraft.ParStruc.fineness_t
-    fuselage.lengths.nose          = Aircraft.ParLayoutConfig.l_nose
-    fuselage.lengths.tail          = Aircraft.ParLayoutConfig.l_tail
-    fuselage.lengths.cabin         = Aircraft.ParLayoutConfig.l_fuselage-\
-    Aircraft.ParLayoutConfig.l_nose-Aircraft.ParLayoutConfig.l_tail
-    fuselage.lengths.total         = Aircraft.ParLayoutConfig.l_fuselage
+    fuselage.lengths.nose          = Aircraft.ParLayoutConfig.l_nose*Units.meter
+    fuselage.lengths.tail          = Aircraft.ParLayoutConfig.l_tail*Units.meter
+    fuselage.lengths.cabin         = Aircraft.ParLayoutConfig.l_fuselage*Units.meter-\
+    Aircraft.ParLayoutConfig.l_nose*Units.meter-Aircraft.ParLayoutConfig.l_tail*Units.meter
+    fuselage.lengths.total         = Aircraft.ParLayoutConfig.l_fuselage*Units.meter
     fuselage.lengths.fore_space    = 6.    * Units.meter
     fuselage.lengths.aft_space     = 5.    * Units.meter
-    fuselage.width                 = Aircraft.ParLayoutConfig.w_fuselage
-    fuselage.heights.maximum       = Aircraft.ParLayoutConfig.h_fuselage
-    fuselage.effective_diameter    = Aircraft.ParLayoutConfig.d_fuselage
-    fuselage.areas.side_projected  = Aircraft.ParLayoutConfig.TotalSidearea
-    fuselage.areas.wetted          = Aircraft.ParLayoutConfig.S_wet_fuselage
-    fuselage.areas.front_projected = Aircraft.ParLayoutConfig.S_front
+    fuselage.width                 = Aircraft.ParLayoutConfig.w_fuselage*Units.meter
+    fuselage.heights.maximum       = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
+    fuselage.effective_diameter    = Aircraft.ParLayoutConfig.d_fuselage*Units.meter
+    fuselage.areas.side_projected  = Aircraft.ParLayoutConfig.TotalSidearea*Units['meters**2']
+    fuselage.areas.wetted          = Aircraft.ParLayoutConfig.S_wet_fuselage*Units['meters**2']
+    fuselage.areas.front_projected = Aircraft.ParLayoutConfig.S_front*Units['meters**2']
     fuselage.differential_pressure = 5.0e4 * Units.pascal # Maximum differential pressure
     
-    fuselage.heights.at_quarter_length          = Aircraft.ParLayoutConfig.h_fuselage
-    fuselage.heights.at_three_quarters_length   = Aircraft.ParLayoutConfig.h_fuselage
-    fuselage.heights.at_wing_root_quarter_chord = Aircraft.ParLayoutConfig.h_fuselage
+    fuselage.heights.at_quarter_length          = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
+    fuselage.heights.at_three_quarters_length   = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
+    fuselage.heights.at_wing_root_quarter_chord = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
     
     # add to vehicle
     vehicle.append_component(fuselage)
+    
+
 
     # ------------------------------------------------------------------
     #   Turbofan Network
@@ -346,8 +346,8 @@ def vehicle_setup(Aircraft):
     # setup
     turbofan.number_of_engines = Aircraft.ParStruc.N_engines
     turbofan.bypass_ratio      = Aircraft.ParProp.Engine_bpr
-    turbofan.engine_length     = 2.5 * Units.meter
-    turbofan.nacelle_diameter  = 1.58 * Units.meter
+    turbofan.engine_length     = Conv.ParProp.Engine_length * Units.meter
+    turbofan.nacelle_diameter  = Conv.ParProp.Engine_diameter * Units.meter
     turbofan.origin            = [[13.72, 4.86,-1.9],[13.72, -4.86,-1.9]] # meters
     
     #compute engine areas
@@ -501,11 +501,11 @@ def vehicle_setup(Aircraft):
     thrust.tag ='compute_thrust'
  
     #total design thrust (includes all the engines)
-    thrust.total_design             = Aircraft.ParProp.Thrust_cruise
+    thrust.total_design             = Aircraft.ParProp.Thrust_cruise * Units.N
  
     #design sizing conditions
-    altitude      = Aircraft.ParAnFP.h_cruise
-    mach_number   = Aircraft.ParAnFP.M_cruise
+    altitude      = Aircraft.ParAnFP.h_cruise * Units.meter
+    mach_number   = Aircraft.ParAnFP.M_cruise 
     isa_deviation = 0.
     
     #Engine setup for noise module    
@@ -644,7 +644,7 @@ def mission_setup(analyses):
 
     #airport
     airport = SUAVE.Attributes.Airports.Airport()
-    airport.altitude   =  0.0  * Units.m
+    airport.altitude   =  0.0  * Units.ft
     airport.delta_isa  =  0.0
     airport.atmosphere = SUAVE.Attributes.Atmospheres.Earth.US_Standard_1976()
 
@@ -655,8 +655,6 @@ def mission_setup(analyses):
 
     # base segment
     base_segment = Segments.Segment()
-    
-
 
     # ------------------------------------------------------------------
     #   First Climb Segment: Constant Speed, Constant Rate
@@ -664,132 +662,160 @@ def mission_setup(analyses):
 
     segment = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
     segment.tag = "climb_1"
-    
+
     segment.analyses.extend( analyses.takeoff )
-    
-    segment.altitude_start = 0.0*Units.km
-    segment.ind_air_speed = 200*Units['m/s']
-    segment.throttle = 1
-    segment.altitude_end = 2.5*Units.km
-    
+
+    segment.altitude_start = 0.0   * Units.km
+    segment.altitude_end   = 10000   * Units.ft
+    segment.throttle = 1.0
+    segment.air_speed      = 180 * Units.knots
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+    #segment.air_speed_end = 190 * Units['m/s']
+    #segment.climb_rate     = 6.0   * Units['m/s']
+
+    # add to misison
+    mission.append_segment(segment)
+
+    # ------------------------------------------------------------------
+    #   Second Climb Segment: Constant Speed, Constant Rate
+    # ------------------------------------------------------------------    
+
+    segment = Segments.Climb.Constant_Throttle_Constant_EAS(base_segment)
+    segment.tag = "climb_2"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 8.0   * Units.km
+    segment.throttle = 1.0
+    segment.eas      = 285 * Units.knots
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+    #segment.climb_rate     = 6.0   * Units['m/s']
+
     # add to mission
     mission.append_segment(segment)
 
-#    # ------------------------------------------------------------------
-#    #   Second Climb Segment: Constant Speed, Constant Rate
-#    # ------------------------------------------------------------------    
-#
-#    segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
-#    segment.tag = "climb_2"
-#
-#    segment.analyses.extend( analyses.cruise )
-#
-#    segment.altitude_end   = 8.0   * Units.km
-#    segment.air_speed      = 190.0 * Units['m/s']
-#    segment.climb_rate     = 6.0   * Units['m/s']
-#
-#    # add to mission
-#    mission.append_segment(segment)
-#
-#
+
+    # ------------------------------------------------------------------
+    #   Third Climb Segment: constant Speed, Constant Rate
+    # ------------------------------------------------------------------    
+
+    segment = Segments.Climb.Constant_Throttle_Constant_Mach(base_segment)
+    segment.tag = "climb_3"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end = 35000 * Units.ft
+    segment.mach_number = 0.75 
+ #   segment.air_speed      = 190.0 * Units['m/s']
+    segment.throttle = 1.0
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+
     # ------------------------------------------------------------------    
     #   Cruise Segment: Constant Speed, Constant Altitude
     # ------------------------------------------------------------------    
 
-    segment = Segments.Cruise.Constant_Speed_Constant_Altitude_Loiter(base_segment)
+    segment = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
     segment.tag = "cruise"
 
     segment.analyses.extend( analyses.cruise )
 
-    segment.altitude = Aircraft.ParAnFP.h_cruise*Units.m
-    segment.time = Aircraft.ParAnFP.t_cruise*Units.s
-    segment.air_speed = Aircraft.ParAnFP.V_cruise*Units['m/s']
+    segment.air_speed  = 230.412 * Units['m/s']
+    segment.distance   = 1250. * Units.km
+    segment.state.conditions.weights.vehicle_payload_rate = 0.008*segment.air_speed *Units['kg/s']
 
     # add to mission
     mission.append_segment(segment)
 
-#    # ------------------------------------------------------------------
-#    #   First Descent Segment: Constant Speed, Constant Rate
-#    # ------------------------------------------------------------------
-#
-#    segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
-#    segment.tag = "descent_1"
-#
-#    segment.analyses.extend( analyses.cruise )
-#
-#    segment.altitude_end = 20.0   * Units.km
-#    segment.air_speed    = 220.0 * Units['m/s']
-#    segment.descent_rate = 4.5   * Units['m/s']
-#
-#    # add to mission
-#    mission.append_segment(segment)
-#
-#    # ------------------------------------------------------------------
-#    #   Second Descent Segment: Constant Speed, Constant Rate
-#    # ------------------------------------------------------------------
-#
-#    segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
-#    segment.tag = "descent_2"
-#
-#    segment.analyses.extend( analyses.landing )
-#
-#    segment.altitude_end = 6.0   * Units.km
-#    segment.air_speed    = 195.0 * Units['m/s']
-#    segment.descent_rate = 5.0   * Units['m/s']
-#
-#    # add to mission
-#    mission.append_segment(segment)
-#
-#    # ------------------------------------------------------------------
-#    #   Third Descent Segment: Constant Speed, Constant Rate
-#    # ------------------------------------------------------------------
-#
-#    segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
-#    segment.tag = "descent_3"
-#
-#    segment.analyses.extend( analyses.landing )
-#    analyses.landing.aerodynamics.settings.spoiler_drag_increment = 0.00
-#
-#    segment.altitude_end = 4.0   * Units.km
-#    segment.air_speed    = 170.0 * Units['m/s']
-#    segment.descent_rate = 5.0   * Units['m/s']
-#
-#    # add to mission
-#    mission.append_segment(segment)
-#
-#    # ------------------------------------------------------------------
-#    #   Fourth Descent Segment: Constant Speed, Constant Rate
-#    # ------------------------------------------------------------------
-#
-#    segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
-#    segment.tag = "descent_4"
-#
-#    segment.analyses.extend( analyses.landing )
-#    analyses.landing.aerodynamics.settings.spoiler_drag_increment = 0.00
-#
-#    segment.altitude_end = 2.0   * Units.km
-#    segment.air_speed    = 150.0 * Units['m/s']
-#    segment.descent_rate = 5.0   * Units['m/s']
-#
-#    # add to mission
-#    mission.append_segment(segment)
-#
-#    # ------------------------------------------------------------------
-#    #   Fifth Descent Segment: Constant Speed, Constant Rate
-#    # ------------------------------------------------------------------
-#
-#    segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
-#    segment.tag = "descent_5"
-#
-#    segment.analyses.extend( analyses.landing )
-#    analyses.landing.aerodynamics.settings.spoiler_drag_increment = 0.00
-#
-#    segment.altitude_end = 0.0   * Units.km
-#    segment.air_speed    = 145.0 * Units['m/s']
-#    segment.descent_rate = 3.0   * Units['m/s']
-#
-#    # append to mission
-#    mission.append_segment(segment)
+    # ------------------------------------------------------------------
+    #   First Descent Segment: Constant Speed, Constant Rate
+    # ------------------------------------------------------------------
+
+    segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
+    segment.tag = "descent_1"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end = 8.0   * Units.km
+    segment.air_speed    = 220.0 * Units['m/s']
+    segment.descent_rate = 4.5   * Units['m/s']
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+
+    # ------------------------------------------------------------------
+    #   Second Descent Segment: Constant Speed, Constant Rate
+    # ------------------------------------------------------------------
+
+    segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
+    segment.tag = "descent_2"
+
+    segment.analyses.extend( analyses.landing )
+
+    segment.altitude_end = 6.0   * Units.km
+    segment.air_speed    = 195.0 * Units['m/s']
+    segment.descent_rate = 5.0   * Units['m/s']
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+
+    # ------------------------------------------------------------------
+    #   Third Descent Segment: Constant Speed, Constant Rate
+    # ------------------------------------------------------------------
+
+    segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
+    segment.tag = "descent_3"
+
+    segment.analyses.extend( analyses.landing )
+    analyses.landing.aerodynamics.settings.spoiler_drag_increment = 0.00
+
+    segment.altitude_end = 4.0   * Units.km
+    segment.air_speed    = 170.0 * Units['m/s']
+    segment.descent_rate = 5.0   * Units['m/s']
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+
+    # ------------------------------------------------------------------
+    #   Fourth Descent Segment: Constant Speed, Constant Rate
+    # ------------------------------------------------------------------
+
+    segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
+    segment.tag = "descent_4"
+
+    segment.analyses.extend( analyses.landing )
+    analyses.landing.aerodynamics.settings.spoiler_drag_increment = 0.00
+
+    segment.altitude_end = 2.0   * Units.km
+    segment.air_speed    = 150.0 * Units['m/s']
+    segment.descent_rate = 5.0   * Units['m/s']
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+
+    # ------------------------------------------------------------------
+    #   Fifth Descent Segment: Constant Speed, Constant Rate
+    # ------------------------------------------------------------------
+
+    segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
+    segment.tag = "descent_5"
+
+    segment.analyses.extend( analyses.landing )
+    analyses.landing.aerodynamics.settings.spoiler_drag_increment = 0.00
+
+    segment.altitude_end = 0.0   * Units.km
+    segment.air_speed    = 145.0 * Units['m/s']
+    segment.descent_rate = 3.0   * Units['m/s']
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # append to mission
+    mission.append_segment(segment)
 
     # ------------------------------------------------------------------
     #   Mission definition complete    
@@ -797,18 +823,6 @@ def mission_setup(analyses):
 
     return mission
 
-def missions_setup(base_mission):
-
-    # the mission container
-    missions = SUAVE.Analyses.Mission.Mission.Container()
-
-    # ------------------------------------------------------------------
-    #   Base Mission
-    # ------------------------------------------------------------------
-
-    missions.base = base_mission
-
-    return missions  
 
 # ----------------------------------------------------------------------
 #   Plot Mission
