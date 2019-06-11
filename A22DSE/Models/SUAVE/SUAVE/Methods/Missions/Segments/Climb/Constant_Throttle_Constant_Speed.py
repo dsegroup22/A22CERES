@@ -9,7 +9,6 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-import SUAVE
 
 # ----------------------------------------------------------------------
 #  Unpack Unknowns
@@ -74,29 +73,20 @@ def initialize_conditions(segment):
     
     # unpack
     throttle   = segment.throttle
-    air_speedI  = segment.ind_air_speed                      #Indicated
-    alt0       = segment.altitude_start
+    air_speed = segment.air_speed
+    alt0       = segment.altitude_start 
     altf       = segment.altitude_end
     t_nondim   = segment.state.numerics.dimensionless.control_points
     conditions = segment.state.conditions  
-    
-    #check for initial altitude
+
+    # check for initial altitude
     if alt0 is None:
         if not segment.state.initials: raise AttributeError('initial altitude not set')
         alt0 = -1.0 *segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
     
-    # discretize on altitude
-    alt = t_nondim * (altf-alt0) + alt0
-    conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
-    
-    # Update freestream to get speed of sound
-    SUAVE.Methods.Missions.Segments.Common.Aerodynamics.update_atmosphere(segment)
-    air_speed =  air_speedI * np.sqrt(1.225/conditions.freestream.density)
-
-
     # pack conditions  
     conditions.propulsion.throttle[:,0] = throttle
-    conditions.frames.inertial.velocity_vector[:,0] = air_speed[:,0] # start up value
+    conditions.frames.inertial.velocity_vector[:,0] = air_speed # start up value
 
 ## @ingroup Methods-Missions-Segments-Climb
 def update_differentials_altitude(segment):
@@ -168,15 +158,12 @@ def update_velocity_vector_from_wind_angle(segment):
     
     # unpack
     conditions = segment.state.conditions 
-    v_ind      = segment.ind_air_speed 
-    SUAVE.Methods.Missions.Segments.Common.Aerodynamics.update_atmosphere(segment)
-    v_mag =  v_ind * np.sqrt(1.225/conditions.freestream.density)
+    v_mag      = segment.air_speed 
     alpha      = segment.state.unknowns.wind_angle[:,0][:,None]
     theta      = segment.state.unknowns.body_angle[:,0][:,None]
     
     # Flight path angle
     gamma = theta-alpha
-
 
     # process
     v_x =  v_mag * np.cos(gamma)
