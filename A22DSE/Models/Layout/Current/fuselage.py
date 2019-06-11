@@ -10,70 +10,96 @@ import numpy as np
 from pathlib import Path
 os.chdir(Path(__file__).parents[2])
 sys.path.append('../../')
+
+from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
 import matplotlib as mpl
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
-from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (GetFuselageLength, GetCabinLength)
+## Sizing ##
 
-def Useful_for_me(Aircraft, L_freq, SF0, dSF, finesness_f, fineness_n, fineness_t):
-    '''
-    INPUT: Aircraft object, req. fuselage length, initial size factor, step
-    size
-    OUTPUT: returns the fuselage length, eq. diameter, cabin dimensions and
-    nose diameter
-    DESCRIPTION: Runs the above functions to determine the final fuselage di-
-    mensions that satisfy the two requirements: Q_fus > Q_r and L_f > L_freq
-    '''
-    #constraints and constants
-    Q_r = Aircraft.ParPayload.m_payload/Aircraft.ParPayload.rho_payload
+
+
+def GetNoseLength_opt(Aircraft, D_f):
+
+    fineness_n = Aircraft.ParStruc.fineness_n #Predetermined Fineness
+    
+    #Size requirement 
+    UF = 1.2                        #[-]
+    pax_height = 1.50*UF            #[m]
+    
+    #Nose length
+    L_n = fineness_n*D_f            #[m]
+    
+    if D_f < pax_height:
+        L_n = fineness_n*pax_height #[m]
+    return L_n
+
+
+
+def GetTailLength_opt(Aircraft, D_F):
+
+    fineness_t = Aircraft.ParStruc.fineness_t #Predetermined Fineness
+    L_t = D_f*fineness_t                                  #[m]
+    return L_t
+
+def GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t):
+    #Constraints
+#   Q_r = Aircraft.ParPayload.m_payload/Aircraft.ParPayload.rho_payload #volume
     A_inr = 0.636
-    SFi = SF0
     
-    #fineness_f = Struct.fineness_c
-    #fineness_n = Struct.fineness_n
-    #fineness_t = Struct.fineness_t
+    #design requirements
+    ovalrate = 1.75
+    D_eq = np.sqrt(A_inr*SF/(np.pi/4))
     
- 
-    #iterator
-    dSFi = dSF
     
-    #initial values
-    L_fi = np.sum(GetFuselageLength(Aircraft, fineness_f, fineness_n, 
-                                fineness_t, SFi, L_freq))
-    D_eq = GetCabinLength(Aircraft, fineness_f, SFi)[1]
-    Q_fus = A_inr * SFi * (L_fi - 2 * D_eq)
-    
-    while L_fi < L_freq or Q_fus < Q_r:
-#        print("im in")
-        SFi += dSFi
-        L_fi = np.sum(GetFuselageLength(Aircraft, fineness_f, fineness_n, 
-                                fineness_t, SFi, L_freq))
-        D_eq = GetCabinLength(Aircraft, fineness_f, SFi)[1]
-        Q_fus = A_inr * SFi * (L_fi -2 * D_eq)
+    #Calculate cabin using tail arm as a leading factor
+    L_c = max(Aircraft.ParLayoutConfig.xvt, Aircraft.ParLayoutConfig.xht) - \
+    L_n - L_t
         
-    L_fi = GetFuselageLength(Aircraft, fineness_f, fineness_n,
-                                     fineness_t, SFi, L_freq)
-    D_eq, dim_cabin = GetCabinLength(Aircraft, fineness_f, SFi)[1:]
-    D_n = np.sqrt(dim_cabin[0]*dim_cabin[1])
-    if D_n < 1.50*1.20:
-        D_n = 1.50*1.20
+    D_f = L_c/fineness_f
+    
+    if D_f<D_eq:
+        D_f = D_eq
         
-#    print (Q_fus, Q_r, L_fi)
-    return L_fi, D_eq, dim_cabin, D_n
+    h = D_f/np.sqrt(ovalrate)
+    w = ovalrate*h
 
-def FusAreas(Aircraft, L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t):
+    return L_c, D_f, np.array([h, w])
+
+def Fuselage_iter(Aircraft, fineness_f, SF):
+    L_n = 2.67
+    L_t = 4.27
+    
+    for i in range(1000):
+        D_f = GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t)[1]
+        L_n = GetNoseLength_opt(Aircraft, D_f)
+        L_t = GetTailLength_opt(Aircraft, D_f)
+    
+    Q_r = Aircraft.ParPayload.m_payload/Aircraft.ParPayload.rho_payload
+    
+    Q_fus = D_f**2 * np.pi/4 * GetCabinLength_rev(Aircraft, fineness_f,  SF, L_n, L_t)[0]
+    
+    
+    if Q_fus < Q_r:
+        print('Fuselage too small')
+    return L_n, GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t)[0], L_t,\
+    GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t)[2], D_f
+
+## Important to optimisation ##
+
+def FusAreas_mod(Aircraft, fineness_f, SF):
 
     config = Aircraft.ParLayoutConfig
 
     
-    l_nose= Useful_for_me(Aircraft,L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t)[0][0]
-    l_cabin= Useful_for_me(Aircraft,L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t)[0][1]
-    l_tail= Useful_for_me(Aircraft,L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t)[0][2]
+    l_nose= Fuselage_iter(Aircraft,fineness_f, SF)[0]
+    l_cabin= Fuselage_iter(Aircraft,fineness_f, SF)[1]
+    l_tail= Fuselage_iter(Aircraft,fineness_f, SF)[2]
     
-    h_fuselage=config.h_fuselage
-    w_fuselage=config.w_fuselage
-    d_fuselage=config.d_fuselage
+    h_fuselage=Fuselage_iter(Aircraft, fineness_f, SF)[3][0]
+    w_fuselage=Fuselage_iter(Aircraft, fineness_f, SF)[3][1]
+    d_fuselage=Fuselage_iter(Aircraft, fineness_f, SF)[4]
     d_cockpit=config.d_cockpit
     
     h_APU=config.h_APU
@@ -93,10 +119,9 @@ def FusAreas(Aircraft, L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t):
     Sw_tail=Sw_fullcone-Sw_imagcone
     
     S_wet=Sw_nose+Sw_cabin+Sw_tail
-    #print (e,Sw_nose,Sw_cabin,Sw_tail)
     return S_wet
 
-def friction_coef(Aircraft, L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t):
+def friction_coef(Aircraft, fineness_f, SF):
     #INPUT: V_cruise, atmospheric conditions, span, wetted area
     #OUTPUT: friction coefficient
     anfp = Aircraft.ParAnFP
@@ -107,22 +132,79 @@ def friction_coef(Aircraft, L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t
     rho = 0.0880349 #density
     nu = mu / rho #kinematic friction
     
-    S_wet = FusAreas(Aircraft, L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t)
+    S_wet = FusAreas_mod(Aircraft, fineness_f, SF)
     
     Re = (S_wet / b) * V / nu
     C_fe = 0.00258 + 0.00102*np.exp(-6.28e-9 * Re) + 0.00295*np.exp(-2.01e-8*\
                                    Re)
     return C_fe
 
-def CD0_diff(Aircraft, L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t):
-    #INPUT: 
-    
+def CD0_diff(Aircraft, fineness_f, SF):
     anfp = Aircraft.ParAnFP
     S = anfp.S
-    C_fe = friction_coef(Aircraft, L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t)
-    S_fus = FusAreas(Aircraft, L_freq, SF0, dSF, fineness_f, fineness_n, fineness_t)
+    C_fe = friction_coef(Aircraft, fineness_f, SF)
+    S_fus = FusAreas_mod(Aircraft, fineness_f, SF)
     CD0_fus = C_fe *(S_fus/S)
     return CD0_fus
+
+
+#def FuselageWeight_opt(Aircraft, fineness_f):
+#    anfp = Aircraft.ParAnFP
+#    struc = Aircraft.ParStruc
+#    
+#    SF0 = 1
+#    dSF = 0.01
+#    L_freq = max(Aircraft.ParLayoutConfig.xvt, Aircraft.ParLayoutConfig.xht)
+#    
+#    h_fuselage= Fus_Dim_opt(Aircraft, L_freq, SF0, dSF, fineness_f)[2][0]    #[m]
+#    w_fuselage=Fus_Dim_opt(Aircraft, L_freq, SF0, dSF, fineness_f)[2][0]    #[m]
+#
+#    l_fuselage=sum(Fus_Dim_opt(Aircraft, L_freq, SF0, dSF, fineness_f)[0])    #[m]
+#    K_inl=1.                      #roskam page 77 part V
+#    MTOMlbs = struc.MTOW/Aircraft.ConversTool.lbs2kg
+#    q_Dpsf = anfp.q_dive/Aircraft.ConversTool.psf2Pa
+#    
+#    
+#    #Roskam part V (Chapter 5.3)
+#    #roskam: equation 5.26 (commercial)
+#    W_f=2*10.43*K_inl**1.42*(q_Dpsf/100)**0.283*(MTOMlbs/1000)**0.95*\
+#    (l_fuselage/h_fuselage)**0.71
+#
+#    #roskam: equation 5.28 (militairy)
+#    W_f_mil=2*11.03*K_inl**1.23*(q_Dpsf/100)**0.245*(MTOMlbs/1000)**0.98*\
+#    (l_fuselage/h_fuselage)**0.61
+#    
+#    
+##    torenbeek method  (Chapter 8.3.3)  
+#    l_ref=1.5 #[m]
+#    n_ult=2.5
+#    d_fuselage=np.average([h_fuselage,w_fuselage])    
+#    
+#    C_shell=60          #[N/m^3]
+#    Omega_fl=160        #[N/m^2]
+#    
+#    W_shell=C_shell*d_fuselage**2*l_fuselage
+#    W_bulkheads=C_shell*d_fuselage**2*l_ref
+#    
+#    W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
+#    W_f_tor=W_shell+W_bulkheads+W_fl
+#    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N,W_f_tor #[N]
+#
+
+lst = []
+lst1 = []
+
+for i in np.arange(2, 20 ,0.5):
+    CD0 = CD0_diff(Conv, i, 1.5)
+    #W_f = FuselageWeight_opt(Conv, i)
+    lst.append(CD0)
+    #lst1.append(W_f)
+    
+plt.figure()    
+plt.plot(np.arange(2, 20, 0.5),lst)
+#plt.figure(2)
+#plt.plot(np.arange(2, 12.5, 0.5),lst1)
+plt.ylabel('some numbers')
 
 lst = np.empty((4, 4, 4))
 
@@ -132,7 +214,7 @@ for i in range(0,4):
         fineness_n = 1.2 + i * 0.5
         for k in range(0,4):
             fineness_t = 2 + i
-            lst[i][j][k] = CD0(Conv, 24, 2, 0.01, fineness_f, fineness_n ,fineness_t)
+            lst[i][j][k] = CD0_diff(Conv, 24, 2, 0.01, fineness_f, fineness_n ,fineness_t)
             
             
 fig = plt.figure()
@@ -141,6 +223,5 @@ x = lst[0]
 y = lst[1]
 z = lst[2]
 ax.scatter3D(x, y, z);
+
 plt.show()
-            
-    

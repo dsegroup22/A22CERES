@@ -6,7 +6,7 @@ Created on Wed May 15 11:26:38 2019
 """
 
 import numpy as np
-from math import *
+from math import pi, sqrt, exp,atan, tan
 import sys
 sys.path.append('../')
 
@@ -41,8 +41,8 @@ def Wing_Geo(Aircraft):
     S = anfp.S
     
     Sweep_50 = Sweep_50 * pi / 180.
-    Taper = 0.45 * exp( -0.0375 * Sweep_50_rad) 
-    Sweep_25_rad = atan( tan(Sweep_50_rad) + (4 / AR) * 0.25 \
+    Taper = 0.45 * exp( -0.0375 * Sweep_50) 
+    Sweep_25_rad = atan( tan(Sweep_50) + (4 / AR) * 0.25 \
                     * (1 - Taper) / (1 + Taper))
     Sweep_LE = atan( tan(Sweep_25_rad) - (4 / AR) * -0.25 \
                     * (1 - Taper) / ( 1 + Taper))
@@ -135,7 +135,7 @@ def HLD_weight(HLD, FP):
     #Sum TE flap + LE flap weight        
     W_hld = W_tef + HLD[5]
     
-    return W_hld
+    return 0#W_hld
     
     
 

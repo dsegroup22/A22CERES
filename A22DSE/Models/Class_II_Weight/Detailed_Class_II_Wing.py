@@ -198,3 +198,38 @@ def Total_Wing(Aircraft):
 #    Omega_ail = 3*Omega_ref*k_bal*(S_ail/S_ref)**0.044
 #    Omega_sp = 2.2*Omega_ref*(S_sp/S_ref)**0.032
 #    return Omega_ail*S_ail + Omega_sp*S_sp
+
+"""The next methods are proposed in 'A Brief Summary of the Accuracy of Some Methods of Prediction
+and a Suggested 'First Approximation' of Greater Accuracy ' """
+def Method1(Aircraft):
+    anfp = Aircraft.ParAnFP
+    b = anfp.b*3.28084 #in ft
+    
+    
+    Ww = 5340*(b/100)**3*0.453592 #kg
+    return Ww
+
+
+def Method2(Aircraft):
+#    anfp = Aircraft.ParAnFP
+    struc = Aircraft.ParStruc
+    Wg = (struc.OEWratio*struc.MTOW) /0.453592 #lb
+    
+    Ww  = 0.0114 * Wg  *0.453592 #kg
+    
+    return Ww
+
+"""from Torenbeek 1982"""
+def Tore(Aircraft):
+    anfp = Aircraft.ParAnFP
+    struc = Aircraft.ParStruc
+    N = anfp.n_ult
+    tc = anfp.tc
+    cwr = 1
+    b = anfp.b
+    sweep = anfp.Sweep_50
+    Sref =1
+    WZF = struc.MTOW - struc.FW
+    
+    Ww = 0.00667*N**0.55*(tc*cwr)**-0.3*(b/cos(sweep))**1.05*(1+sqrt(1.905*cos(sweep)/b))*(WZF/Sref)**-0.3*WZF
+    return Ww

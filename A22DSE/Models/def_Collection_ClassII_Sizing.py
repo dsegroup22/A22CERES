@@ -25,6 +25,8 @@ from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign import PlanformMain 
+from A22DSE.Models.AnFP.Current.Class_II.WingDesign.def_OswaldEfficiency import OswaldEfficiency
+from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 
 
 
@@ -46,8 +48,9 @@ def ClassIISizing(Conv):
     step = 50
     Conv.ParAnFP.C_L_design, Conv.ParAnFP.A = PlanformMain.GetARTransWing(
     Conv, ISA_model, step, False)
-
     
+    #Oswald Efficiency
+    anfp.e = OswaldEfficiency(Conv)
     #engine position
     Conv.ParProp.Engine_weight_Total = Conv.ParProp.Engine_weight*Conv.ParStruc.N_engines
     Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
@@ -57,7 +60,7 @@ def ClassIISizing(Conv):
     #fuel tank layout
     Conv.ParLayoutConfig.b_fueltank = 0.60 * Conv.ParAnFP.b #Estimated from figure from Torenbeek p337 
     
-    Layout.TotalSidearea,Layout.S_wet_fuselage=FusAreas(Conv)
+    Layout.TotalSidearea,Layout.S_wet_fuselage,Layout.S_front=FusAreas(Conv)
     
     
     Conv.ParPayload.V_tank=PayloadtankVolume(Conv)
@@ -65,7 +68,11 @@ def ClassIISizing(Conv):
     Conv.ParPayload.A_inlet=InletArea(Conv,ISA_model)
     Conv.ParPayload.d_inlet=np.sqrt(4*Conv.ParPayload.A_inlet/np.pi)
     Conv.ParPayload.m_burner=BurnerMass(Conv)
-    Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259. # scale length based on mass compared to original PT6A-68Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259*(0.48/Conv.ParPayload.d_inlet)**2 # scale length based on mass compared to original PT6A-68
+    Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259. 
+    # scale length based on mass compared to original 
+    #PT6A-68Conv.ParPayload.l_burner=1.83388*Conv.ParPayload.m_burner/259*
+    #(0.48/Conv.ParPayload.d_inlet)**2
+    # scale length based on mass compared to original PT6A-68
     
     
     Conv.ParPayload.m_tank=PayloadtankMass(Conv)
@@ -85,11 +92,15 @@ def ClassIISizing(Conv):
     #vertical
     vtail(Conv)
     
+    #positions lemacs of tails
+    Layout.x_lemacv=Conv.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xvt-0.25*Layout.mac_v
+    Layout.x_lemach=Conv.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xht-0.25*Layout.mac_h
+    
     #fuselage sizing
 
     #Struct = Conv.ParStruc
     #Layout.l_fuselage = 24 #[m] length of fuselage
-    
+    Layout.l_freq = fuselagereq(Conv)
     Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = Fuselage(Conv)
     Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
     Layout.l_fuselage = np.sum(Layout.l_fuselage)   
@@ -98,6 +109,7 @@ def ClassIISizing(Conv):
     Layout.w_fuselage = Layout.dim_cabin[1]
     
     
-    Layout.x_apex_wing=Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
-    
+    Layout.x_apex_wing = Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
+    Layout.x_apex_ht = Layout.x_lemach-Layout.y_MACh*np.tan(Layout.sweepLEht)
+    Layout.x_apex_vt = Layout.x_lemacv-Layout.y_MACv*np.tan(Layout.sweepLEvt)
 

@@ -11,7 +11,6 @@ sys.path.append('../')
 
 
 #Determine CD0
-
 def S_wet_wing(Aircraft):
     #INPUT: thickness to chord ratio of the wing, taper ratio, surface area and A
     #OUTPUT: wetted wing area

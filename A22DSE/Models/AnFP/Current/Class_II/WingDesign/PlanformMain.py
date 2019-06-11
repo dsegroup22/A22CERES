@@ -13,13 +13,14 @@ os.chdir(Path(__file__).parents[6])
 #print (os.getcwd())
 import numpy as np
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign import FunctionsPlanform
+from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 # =============================================================================
-#
+# 
 # =============================================================================
 #MTOW_I = Conv.ParStruc.MTOW
 #step = 50
@@ -89,7 +90,43 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 # =============================================================================
 
 def GetARTransWing(Aircraft, ISAmodel, step, plot):
+    ''' 
+    INPUT: 
+    Aircraft, ISA calculator model, step size, and BOOLEAN for plotting
+    OUTPUT: 
+    Multi-valued output; [0]: design C_L, [1]: optimal wing aspect
+    ratio
+    DESCRIPTION: 
+    Find the design lift coefficient and optimal aspect ratio of the wing
+    Return Lift coefficient and optimal
     
+    This method uses the planform design of transonic and subsonic wings
+    explained by Torenbeek in Advanced Aircraft Design chapter 10.
+    
+    Torenbeek makes use of wing penalty function (WPF) and the propulsion
+    weight penalty function (Fprop). Where WPF = f(theta1, theta2, theta3,
+    CL, Aw,CDp),
+    where:
+        theta1, theta2 := semi-analytical dimensionless parameters
+        CL_design, Aw
+        CDp := profile drag
+    
+    and Fprop = f(Req, H/g, mu_T, delta), where:
+    Req := eq. range derived from lost range and required mission range
+    mu_T:= power plant weight over the Take-off thrust
+    delta:= rel. density of the altitude
+    H/g := conv. gas turbine engine fuel
+    
+    Torenbeek uses Fprop and WPF to optimise CL, A, Sweep and wing average t/c
+    for minimum MTOW. It is explained that minimising WPF is equivalent to
+    minimising for MTOW, therefore weights of the various components that is
+    usually required to determine more accurate (Class II) MTOW, is not ne-
+    cessary. However, it is assumed the engine parameters are known.
+    
+    Thus, this module outputs [CL, A, Sweep, average t/c], as
+    PlanformMain = f(FWP, Fprop)
+    
+    '''
     CL_eq = np.linspace(0.2, 1.5, step)
     Aw = np.linspace(4, 18, step)
     MTOW  = Aircraft.ParStruc.MTOW
@@ -108,11 +145,10 @@ def GetARTransWing(Aircraft, ISAmodel, step, plot):
                     ISAmodel, CL_eqi, MTOW, sweep)))
         AwTrans_des.append(float(FunctionsPlanform.GetTransOptAw(Aircraft,
         ISAmodel, CL_eqi, MTOW, sweep)))
-    
-    
+
     def Intersect(y,z):
-        return int((np.argwhere(np.diff(np.sign(np.array(y) 
-                - np.array(z)))).flatten()))
+        return int((np.argwhere(np.diff(np.sign(y 
+                - z))).flatten()))
     
     idx = Intersect(Aw, AwTrans_des)
     
@@ -123,7 +159,7 @@ def GetARTransWing(Aircraft, ISAmodel, step, plot):
         plt.plot(list(CL_eq), AwTrans_des)
         plt.axvline(x = Aircraft.ParAnFP.C_L_max_cruise, ymin = 0, ymax = 18)
         plt.show()
-
+        
     return CL_des[idx], AwTrans_des[idx]
 
 ## =============================================================================

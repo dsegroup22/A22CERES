@@ -78,7 +78,7 @@ def ClassIAircraft():
     Conv.ParAnFP.CD0 = 0.015
     Conv.ParAnFP.e = 0.85
     Conv.ParAnFP.M_cruise = 0.7
-    Conv.ParAnFP.Mdd = 0.7
+    Conv.ParAnFP.Mdd = 0.75
     Conv.ParAnFP.T_to = 200000
     #Parameters useful to class II estimation
     Conv.ParAnFP.wm_un = 0          #Undercarriage in the wing on (1) or off (0)
@@ -129,7 +129,9 @@ def PrelimTail():
     Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
     Layout.c_rvt,Layout.c_tvt,Layout.bv,\
     Conv.ParLayoutConfig.Sweep25vt,Conv.ParLayoutConfig.Wvt,\
-    Conv.ParLayoutConfig.mac_h,Conv.ParLayoutConfig.mac_v = ctail(Conv)
+    Conv.ParLayoutConfig.mac_h,Conv.ParLayoutConfig.mac_v,Layout.y_MACh,Layout.y_MACv = ctail(Conv)
+
+    
     
 def ClassI_AndAHalf():
 
@@ -181,3 +183,7 @@ def ClassI_AndAHalf():
     
     
     Conv.ParAnFP.CLMAX = CLMAX(Conv).GetCLMAX()
+ClassIAircraft()
+ClassI_AndAHalf()
+PrelimTail()
+ComputeCD0(Conv)
