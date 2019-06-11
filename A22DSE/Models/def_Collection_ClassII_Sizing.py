@@ -28,7 +28,7 @@ from A22DSE.Models.AnFP.Current.Class_II.WingDesign import PlanformMain
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign.def_OswaldEfficiency import OswaldEfficiency
 from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 from A22DSE.Models.Layout.Current.Engine_Placements import Engines_placement
-
+from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
 
 def ClassIISizing(Conv):
     #get shortcuts
@@ -114,7 +114,11 @@ def ClassIISizing(Conv):
     Layout.x_apex_wing = Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
     Layout.x_apex_ht = Layout.x_lemach-Layout.y_MACh*np.tan(Layout.sweepLEht)
     Layout.x_apex_vt = Layout.x_lemacv-Layout.y_MACv*np.tan(Layout.sweepLEvt)
-
+    
+    #engine selection
+    EngineChoice(Conv,ISA_model,False)
     
     #engine placement
     Engines_placement(Conv)
+
+    

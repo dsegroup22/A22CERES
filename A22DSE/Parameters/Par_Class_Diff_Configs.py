@@ -4,10 +4,9 @@ Created on Mon May 13 15:30:54 2019
 
 @author: Nout
 """
-import sys
+
 import os
 from pathlib import Path
-import copy
 import numpy as np
 #sys.path.append('../')
 os.chdir(Path(__file__).parents[2])

@@ -30,5 +30,5 @@ def WingSurface_Thrust_FuelWeight(Aircraft):
 def Wfratio_flighttime_flightrange(Aircraft):
 
      Aircraft.ParStruc.wfratioclimb, wfcruise, Aircraft.ParAnFP.Rangeclimbcruise,\
-     Aircraft.ParAnFP.Timeclimbcruise = FuelFractions(Aircraft,ISA_model)
+     Aircraft.ParAnFP.tclimbcruise = FuelFractions(Aircraft,ISA_model)
      Aircraft.ParStruc.wfratio = 1-wfcruise
