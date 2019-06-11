@@ -6,7 +6,7 @@ Created on Wed May 15 11:26:38 2019
 """
 
 import numpy as np
-from math import pi, sqrt, exp,atan, tan
+from math import pi, sqrt, exp,atan, tan, cos
 import sys
 sys.path.append('../')
 
@@ -114,45 +114,45 @@ def Basic_Wing(Aircraft): #geometry, wing_specs, FP
     return(W_basic)    
     #return W_basic
 
-def HLD_weight(HLD, FP):
-#INPUT is list containing High lift devices specification and flight profile
-#OUTPUT is weight of the high lift devices
-    
-    #determine constant
-    if HLD[4] == 1:
-        k_f = 1.
-    elif HLD[4] == 2:
-        k_f = 1.15
-    elif HLD[4] == 3:
-        k_f = 1.30
-    else:
-        k_f = 1.45
-    
-    #calculate TE flap weight
-    W_tef = HLD[0] * 2.706 * k_f * (HLD[0]*HLD[2]) ** (3./16.) \
-    * ((0.01*FP[2])**2. * sin(HLD[1]) * cos(HLD[3]) / HLD[6])**(3./4.)
-    
-    #Sum TE flap + LE flap weight        
-    W_hld = W_tef + HLD[5]
-    
-    return 0#W_hld
-    
-    
-
-def ClassII_Wing(Sweep_25, AR, S, wing_specs, FP, HLD):
-    
-    geometry = Wing_Geo(Sweep_25, AR, S) #import wing geometry
-    W_basic = Basic_Wing(geometry, wing_specs, FP)
-    W_hld = HLD_weight(HLD, FP)
-    
-    if wing_specs[5] == 1:
-        W_sp = 0.015 * wing_specs[4]
-    else:
-        W_sp = 0.
-    
-    Wing_group = W_basic + 1.2*(W_hld + W_sp)
-    
-    return Wing_group
+#def HLD_weight(HLD, FP):
+##INPUT is list containing High lift devices specification and flight profile
+##OUTPUT is weight of the high lift devices
+#    
+#    #determine constant
+#    if HLD[4] == 1:
+#        k_f = 1.
+#    elif HLD[4] == 2:
+#        k_f = 1.15
+#    elif HLD[4] == 3:
+#        k_f = 1.30
+#    else:
+#        k_f = 1.45
+#    
+#    #calculate TE flap weight
+#    W_tef = HLD[0] * 2.706 * k_f * (HLD[0]*HLD[2]) ** (3./16.) \
+#    * ((0.01*FP[2])**2. * sin(HLD[1]) * cos(HLD[3]) / HLD[6])**(3./4.)
+#    
+#    #Sum TE flap + LE flap weight        
+#    W_hld = W_tef + HLD[5]
+#    
+#    return 0#W_hld
+#    
+#    
+#
+#def ClassII_Wing(Sweep_25, AR, S, wing_specs, FP, HLD):
+#    
+#    geometry = Wing_Geo(Sweep_25, AR, S) #import wing geometry
+#    W_basic = Basic_Wing(geometry, wing_specs, FP)
+#    W_hld = HLD_weight(HLD, FP)
+#    
+#    if wing_specs[5] == 1:
+#        W_sp = 0.015 * wing_specs[4]
+#    else:
+#        W_sp = 0.
+#    
+#    Wing_group = W_basic + 1.2*(W_hld + W_sp)
+#    
+#    return Wing_group
 
 
     

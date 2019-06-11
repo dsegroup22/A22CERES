@@ -14,9 +14,10 @@ os.chdir(Path(__file__).parents[3])
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled\
  import WingSurface_Thrust_FuelWeight, Wfratio_flighttime_flightrange
 from A22DSE.Models.Class_II_Weight.Class_II_LG import Class_II_Weight_LG
+from A22DSE.Models.Class_II_Weight.Class_II_Wing import Basic_Wing
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassI_AndAHalf, ComputeCD0
 from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
-from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing, Method1, Method2
+from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing, Method1, Method2, Tore
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import oecg
 from A22DSE.Models.def_Collection_ClassII_Sizing import ClassIISizing
@@ -43,7 +44,7 @@ def ClassIIWeight_MTOW(Aircraft):
     Aircraft.ParStruc.LG_weight_tot,Aircraft.ParStruc.LG_weight_nose, \
     Aircraft.ParStruc.LG_weight_main  = Class_II_Weight_LG(Aircraft)
     
-    struc.Wing_weight=2*Total_Wing(Aircraft)/ISA_model.g0 # [kg] whole wing (2 sides)
+    struc.Wing_weight=2*Basic_Wing(Aircraft)/ISA_model.g0 # [kg] whole wing (2 sides)
 #    struc.Wing_weight = Method2(Aircraft)
     struc.Wf=FuselageWeight(Aircraft)[0]/ISA_model.g0 #[kg]
     
@@ -60,6 +61,7 @@ def ClassIIWeight_MTOW(Aircraft):
 
 def ClassIIWeightIteration(Aircraft):
     struc= Aircraft.ParStruc
+    anfp= Aircraft.ParAnFP
     
 #DESCRIPTION:
 #   This function iterates the MTOW for 20 iterations, or less if it converges 
@@ -95,6 +97,9 @@ def ClassIIWeightIteration(Aircraft):
          #calculate old and new masses
          MTOW_old = struc.MTOW
          struc.MTOW = ClassIIWeight_MTOW(Aircraft)
+         print(struc.Weight_WingGroup)
+         print(struc.OEW)
+         print(anfp.b)
          #check if error is small enough, if it is, return MTOW
          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
          if error<0.01:
