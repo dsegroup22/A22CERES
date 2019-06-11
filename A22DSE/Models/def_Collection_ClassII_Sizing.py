@@ -20,7 +20,7 @@ BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg
 from A22DSE.Models.Layout.Current.Area import FusAreas
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import xoe
 from A22DSE.Parameters.Par_Class_Diff_Configs import (ISA_model)
-from A22DSE.Models.Layout.Current.fuselage import Fuselage
+from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (Fuselage)
 from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
@@ -46,7 +46,7 @@ def ClassIISizing(Conv):
 # =============================================================================
 #                           WING PLANFORM DESIGN
 # =============================================================================
-    Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive, Conv.ParAnFP.n_lim = flightenvelope(Conv)
+    Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
     
 #    Conv.ParAnFP.C_L_design, Conv.ParAnFP.A = PlanformMain.GetARTransWing(
 #    Conv, ISA_model, step, False)
@@ -135,7 +135,7 @@ def ClassIISizing(Conv):
     aileron(Conv)
     
     
-    #Stability derivatives DATCOM
+    #Stability derivatives DATCOM [/rad]
     anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot, anfp.C_l_p,\
     anfp.C_Y_p,anfp.C_n_p,anfp.C_n_r,anfp.C_l_r,anfp.C_l_q,anfp.C_m_q=C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,\
     C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q

@@ -75,7 +75,9 @@ def PayloadtankLength(Aircraft):
     #inputs total Payload mass, Payload density and tank diameter
     V_sphere=d_tank**3/6*np.pi # Volume of 2 half spheres [m^3]
     if V_sphere>PayloadtankVolume(Aircraft):
-        raise ValueError('to large d_tank')
+        d_tank=9PayloadtankVolume(Aircraft)/np.pi*6)**(1/3)
+        return d_tank
+        print ('spherical tank with diameter = '+str(d_tank))
     V_cyl=PayloadtankVolume(Aircraft)-V_sphere # Volume of cylindrical part of the tank [m^3]
     l_cyl=V_cyl/(d_tank**2*np.pi/4) # Length of cylindrical part of the tank [m]
     return l_cyl+d_tank #[m]
@@ -91,7 +93,9 @@ def PayloadtankMass(Aircraft):
     #inputs total Payload mass, Payload density, tank diameter, tank thickness and tank material density
     V_sphere=d_tank**3/6*np.pi # Volume of 2 half spheres [m^3]
     if V_sphere>PayloadtankVolume(Aircraft):
-        raise ValueError('to large d_tank')
+        d_tank=9PayloadtankVolume(Aircraft)/np.pi*6)**(1/3)
+        return d_tank**2*np.pi*t_tank*rho_tank
+        print ('spherical tank with diameter = '+str(d_tank))
     V_cyl=PayloadtankVolume(Aircraft)-V_sphere # Volume of cylindrical part of the tank [m^3]
     l_cyl=V_cyl/(d_tank**2*np.pi/4) # Length of cylindrical part of the tank [m]
     A_sphere=d_tank**2*np.pi # Surface area of 2 half spheres [m^2]
