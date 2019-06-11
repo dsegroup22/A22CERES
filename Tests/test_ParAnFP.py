@@ -32,14 +32,14 @@ import numpy as np
 #    assert (np.isclose(CD0_curr, TestAC.ParAnFP.CD0,rtol = 0.05))
 #    return
 
-def test_WingGeo():
-    ParAnFP = TestAC.ParAnFP
-    WingGeo_Curr = Wing_Geo(TestAC)    
-    WingGeoAC    = [ParAnFP.Sweep_25, ParAnFP.Sweep_LE, ParAnFP.Sweep_50,
-                    ParAnFP.b, ParAnFP.taper, ParAnFP.c_r, ParAnFP.c_t,
-                    ParAnFP.MAC, ParAnFP.y_MAC]
-    assert (np.allclose(WingGeo_Curr, WingGeoAC,rtol = 0.05))
-    return
+#def test_WingGeo():
+#    ParAnFP = TestAC.ParAnFP
+#    WingGeo_Curr = Wing_Geo(TestAC)    
+#    WingGeoAC    = [ParAnFP.Sweep_25, ParAnFP.Sweep_LE, ParAnFP.Sweep_50,
+#                    ParAnFP.b, ParAnFP.taper, ParAnFP.c_r, ParAnFP.c_t,
+#                    ParAnFP.MAC, ParAnFP.y_MAC]
+#    assert (np.allclose(WingGeo_Curr, WingGeoAC,rtol = 0.05))
+#    return
     
 def test_WSandTW():
     out = WSandTW(False, TestAC,ISA_model)
