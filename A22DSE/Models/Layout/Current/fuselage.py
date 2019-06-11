@@ -188,14 +188,14 @@ def FuselageWeight_opt(Aircraft, fineness_f, SF):
     return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N #[N]
 
 
-lst = []
-lst1 = []
+#lst = []
+#lst1 = []
 
-for i in np.arange(2, 20 ,0.1):
-    CD0 = CD0_diff(Conv, i, 1.5)
-    W_f = FuselageWeight_opt(Conv, i, 1.5)
-    lst.append(CD0)
-    lst1.append(W_f)
+#for i in np.arange(2, 20 ,0.1):
+#    CD0 = CD0_diff(Conv, i, 1.5)
+#    W_f = FuselageWeight_opt(Conv, i, 1.5)
+#    lst.append(CD0)
+#    lst1.append(W_f)
     
 #plt.figure()    
 #plt.plot(np.arange(2, 20, 0.1),lst)
