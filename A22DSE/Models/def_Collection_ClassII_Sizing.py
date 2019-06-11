@@ -24,7 +24,7 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (Fuselage)
 from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
-from A22DSE.Models.AnFP.Current.Class_II.WingDesign import PlanformMain 
+from A22DSE.Models.AnFP.Current.Class_II.WingDesign import TransPlanform 
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign.def_OswaldEfficiency import OswaldEfficiency
 from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 from A22DSE.Models.Layout.Current.Engine_Placements import Engines_placement
@@ -45,7 +45,6 @@ def ClassIISizing(Conv):
 # =============================================================================
     Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
     
-    step = 50
 #    Conv.ParAnFP.C_L_design, Conv.ParAnFP.A = PlanformMain.GetARTransWing(
 #    Conv, ISA_model, step, False)
     
@@ -120,5 +119,11 @@ def ClassIISizing(Conv):
     
     #engine placement
     Engines_placement(Conv)
+    
+    # Wing planform
+    
+    step = 100
+    Conv.ParAnFP.C_L_design, Conv.ParAnFP.tc_w, Conv.ParAnFP.FWP = (
+    TransPlanform.ComputePlanform(Conv, step, Conv.ParAnFP.A, False))
 
     
