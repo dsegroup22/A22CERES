@@ -189,7 +189,7 @@ def CD0_diff(Aircraft, fineness_f, SF):
 #    W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
 #    W_f_tor=W_shell+W_bulkheads+W_fl
 #    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N,W_f_tor #[N]
-#
+
 
 lst = []
 lst1 = []
@@ -206,22 +206,3 @@ plt.plot(np.arange(2, 20, 0.5),lst)
 #plt.plot(np.arange(2, 12.5, 0.5),lst1)
 plt.ylabel('some numbers')
 
-lst = np.empty((4, 4, 4))
-
-for i in range(0,4):
-    fineness_f = 8 + i
-    for j in range(0,4):
-        fineness_n = 1.2 + i * 0.5
-        for k in range(0,4):
-            fineness_t = 2 + i
-            lst[i][j][k] = CD0_diff(Conv, 24, 2, 0.01, fineness_f, fineness_n ,fineness_t)
-            
-            
-fig = plt.figure()
-ax = plt.axes(projection ='3d')
-x = lst[0]
-y = lst[1]
-z = lst[2]
-ax.scatter3D(x, y, z);
-
-plt.show()

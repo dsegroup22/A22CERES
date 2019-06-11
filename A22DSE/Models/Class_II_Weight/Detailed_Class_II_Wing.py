@@ -55,7 +55,7 @@ def R_en(Aircraft):
     Sweep_25 =anfp.Sweep_25             #[rad]
 
 
-    x_eng = config.x_engine     	    #[-] dimensionless
+    x_eng = 0.25     	    #[-] dimensionless config.x_engine
     x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
     +0.02*np.sin(Sweep_25)              #[-] dimensionless p330
     MTOM = struc.MTOW                   #kg
@@ -70,7 +70,7 @@ def R_f(Aircraft):
     struc = Aircraft.ParStruc
     config = Aircraft.ParLayoutConfig
     
-    b_f = config.b_fueltank             #[m]
+    b_f = 0.8            #[m] config.b_fueltank
     b = anfp.b                          #[m]
     taper = anfp.taper                  #[-]
     MTOW = struc.MTOW                   #kg
@@ -137,7 +137,7 @@ def LE_TE_Weight(Aircraft):
     b_st=b/np.cos(Sweep_50)  #[m]
 
 
-    q_D = anfp.q_dive       #[Pa] Dynamic pressure
+    q_D = 0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2       #[Pa] Dynamic pressure
 
     
     Omega_LE = 3.15*k_fle*Omega_ref*(q_D/q_ref)**0.25 \
@@ -206,7 +206,7 @@ def Method1(Aircraft):
     b = anfp.b*3.28084 #in ft
     
     
-    Ww = 5340*(b/100)**3*0.453592 #kg
+    Ww = 5340 * (b/100)**3 * 0.453592 #kg
     return Ww
 
 
@@ -215,7 +215,7 @@ def Method2(Aircraft):
     struc = Aircraft.ParStruc
     Wg = (struc.OEWratio*struc.MTOW) /0.453592 #lb
     
-    Ww  = 0.0114 * Wg  *0.453592 #kg
+    Ww  = 0.114 * Wg  *0.453592 #kg
     
     return Ww
 
