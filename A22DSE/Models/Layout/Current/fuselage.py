@@ -12,7 +12,7 @@ import numpy as np
 #os.chdir(Path(__file__).parents[4])
 #print(os.getcwd())
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
-#from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
+from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 #
 #import matplotlib.pyplot as plt
 
