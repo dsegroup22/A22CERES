@@ -177,16 +177,16 @@ def vehicle_setup():
     # ------------------------------------------------------------------    
 
     # mass properties
-    vehicle.mass_properties.max_takeoff               = 79015.8 * Units.kilogram 
-    vehicle.mass_properties.takeoff                   = 79015.8 * Units.kilogram   
-    vehicle.mass_properties.operating_empty           = 62746.4 * Units.kilogram 
-    vehicle.mass_properties.takeoff                   = 79015.8 * Units.kilogram 
-    vehicle.mass_properties.max_zero_fuel             = 62732.0 * Units.kilogram 
-    vehicle.mass_properties.cargo                     = 10000.  * Units.kilogram   
+    
+    vehicle.mass_properties.max_takeoff               = Aircraft.ParStruc.MTOW * Units.kg
+    vehicle.mass_properties.takeoff                   = Aircraft.ParStruc.MTOW * Units.kg
+    vehicle.mass_properties.operating_empty           = Aircraft.ParStruc.OEWratio*Aircraft.ParStruc.MTOW * Units.kg
+    vehicle.mass_properties.max_zero_fuel             = (Aircraft.ParStruc.MTOW-Aircraft.ParStruc.FW) * Units.kg
+    vehicle.mass_properties.cargo                     = Aircraft.ParPayload.m_payload * Units.kg 
     
     # envelope properties
-    vehicle.envelope.ultimate_load = 2.5
-    vehicle.envelope.limit_load    = 1.5
+    vehicle.envelope.ultimate_load = Aircraft.ParAnFP.n_ult
+    vehicle.envelope.limit_load    = Aircraft.ParAnFP.n_lim
 
     # basic parameters
     vehicle.reference_area         = 124.862 * Units['meters**2']  
@@ -919,7 +919,7 @@ def plot_mission(results,line_style='bo-'):
         axes.grid(True)           
         
     return
-
+Aircraft=Conv
 if __name__ == '__main__': 
     main()    
     plt.show()
