@@ -211,6 +211,7 @@ class ParLayoutConfig(object):
      def __init__(self):
          
          self.x_begin_emp = 18 #DUMMY VALUE #[m] xlocation of where the empenage starts
+         self.y_begin_aileron = None
          self.h_fuselage = 1 #DUMMY VALUE #[m] height of fuselage (cabin)
          self.w_fuselage = 3 #DUMMY VALUE 3[m] with of fuselage (cabin)
          self.d_fuselage = None
@@ -229,6 +230,10 @@ class ParProp(object):
     
     def __init__(self):
         self.Engine_weight = None
+        self.psi = 0.45 # from adsee slides
+        self.xf_c = -0.2 #from adsee slides
+        self.h_c = 0.0451 #from adsee slides
+        self.Engine_length = 1 #dummy, gets updated in EnginePlacement
 
 class Aircraft(object):
             

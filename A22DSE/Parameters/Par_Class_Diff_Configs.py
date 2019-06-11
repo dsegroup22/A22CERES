@@ -4,10 +4,9 @@ Created on Mon May 13 15:30:54 2019
 
 @author: Nout
 """
-import sys
+
 import os
 from pathlib import Path
-import copy
 import numpy as np
 #sys.path.append('../')
 os.chdir(Path(__file__).parents[2])
@@ -25,6 +24,7 @@ from A22DSE.Models.Class_II_Weight.tailsizing import (ctail,ttail)
 from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_CD0 import CD0
 from A22DSE.Models.AnFP.Current.AirfoilSelection.airfoilNASASC20712 import (
         Airfoil)
+from A22DSE.Models.Class_II_Weight.Class_II_Wing import Wing_Geo_Additional
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign.C_L_curve import\
  (C_L_CurveCruise,C_L_CurveLowSpeed)
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (
@@ -112,7 +112,6 @@ def ClassIAircraft():
     
     Conv.ParAnFP.LD_airfoil = 90 #lift to drag ratio [-] at Cldes = 0.55 obtained from graph of Cl/Cd
 
-    Conv.ParAnFP.Sweep25 = wing_sweep(Conv)
 
     
     
@@ -139,6 +138,7 @@ def ClassI_AndAHalf():
     Conv.ParAnFP.Sweep_25, Conv.ParAnFP.Sweep_LE, Conv.ParAnFP.Sweep_50, Conv.ParAnFP.b,Conv.ParAnFP.taper,\
     Conv.ParAnFP.c_r, Conv.ParAnFP.c_t, Conv.ParAnFP.MAC, Conv.ParAnFP.y_MAC = Wing_Geo(Conv)
     
+    Conv.ParLayoutConfig.x_LE_root = Wing_Geo_Additional(Conv)
     
     #PRELIMINAIRY ENGINE POSITION
     Conv.ParLayoutConfig.y_loc_eng = Conv.ParAnFP.b/8#b/3 #[m] DUMMY VALUE

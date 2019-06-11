@@ -8,9 +8,10 @@ import os
 import sys
 import numpy as np
 from pathlib import Path
-os.chdir(Path(__file__).parents[2])
 sys.path.append('../../')
+os.chdir(Path(__file__).parents[4])
 from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
+os.chdir(Path(__file__).parents[2])
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
 import matplotlib.pyplot as plt
 
