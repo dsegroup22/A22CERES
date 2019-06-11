@@ -20,7 +20,8 @@ def scplot(Aircraft):
     CLalphaw = 2*pi*A/(2.+ sqrt(4.+(A*beta/etha)**2*(1.+(tan(radians(Lambda))/beta)**2))) #/rad
     bf = Aircraft.ParLayoutConfig.w_fuselage #[m] wing span inside the fuselage
     b = anfp.b #[m] total wing span
-    Snet = 42 #[m^2] S less the projection of the central wing part inside the fuselage
+    layoutconfig = Aircraft.ParLayoutConfig
+    Snet = anfp.S - anfp.c_r*layoutconfig.w_fuselage #[m^2] S less the projection of the central wing part inside the fuselage
     S = anfp.S 
     CLalphaAh = CLalphaw*(1+2.15*bf/b)*(Snet/S)+pi/2.*bf**2/S
     
@@ -34,7 +35,7 @@ def scplot(Aircraft):
     MAC = Aircraft.ParAnFP.MAC
     lh = Aircraft.ParLayoutConfig.xht #15.  #negative for canard
     xac = 0.25*MAC+Aircraft.ParLayoutConfig.x_lemac #30.
-    deda =  0.1 #(0.006 from horizontaltail calculation)
+    deda =  0.006 #0.1 #(0.006 from horizontaltail calculation)
     VhV = 1. #1 for T tail and canard
     CLAh = 1.2
     CLh = -0.8
@@ -47,18 +48,28 @@ def scplot(Aircraft):
     xcg = np.arange(0.,100.,1.)
     ShSs = 1/(CLalphah/CLalphaAh*(1-deda)*lh/MAC*VhV**2)*(xcg-xac+margin)
     
-    
+    xcg_mac = (xcg-Aircraft.ParLayoutConfig.x_lemac)/MAC
     #---------controllability--------------
     ShSc = 1/(CLh/CLAh*lh/MAC*VhV**2)*(xcg+Cmac/CLAh-xac)
     
+    a = np.polyfit(xcg_mac,ShSs,1)
+    b = np.polyfit(xcg_mac,ShSc,1)
     
+    
+    solve1 = np.array([[1,-a[0],0],[1,0,-b[0]],[0,1,-1]])
+    solve2=np.array([a[1],b[1],0.59])
+    x = np.linalg.solve(solve1, solve2)
     #------------plot--------------------
-#    plt.plot(xcg-Aircraft.ParLayoutConfig.x_lemac,ShSc,"r-",xcg,ShSs,"g--")
-#    plt.ylim(0,1)
-#    #plt.xlim(0,50)
-#    plt.show()
+    plt.plot(xcg_mac,ShSc,"r-",xcg_mac,ShSs,"g--")
+    plt.ylim(0,1)
+    plt.xlim(0,1)
+    plt.ylabel('Sh/S')
+    plt.xlabel('xcg/MAC')
+    plt.title('Scissor Plot')
+    plt.savefig('SCPlot.png')
+    plt.show()
     
-   # return xac, MAC
+    
 
 
 #--------------cg-----------------------
