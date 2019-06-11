@@ -22,15 +22,15 @@ from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled\
  import WingSurface_Thrust_FuelWeight, Wfratio_flighttime_flightrange
 import numpy as np
 
-def test_CD0():
-    ''' 
-    INPUT:
-    OUTPUT:
-    DESCRIPTION:                                                            '''
-    
-    CD0_curr = ComputeCD0(TestAC)
-    assert (np.isclose(CD0_curr, TestAC.ParAnFP.CD0,rtol = 0.05))
-    return
+#def test_CD0():
+#    ''' 
+#    INPUT:
+#    OUTPUT:
+#    DESCRIPTION:                                                            '''
+#    
+#    CD0_curr = ComputeCD0(TestAC)
+#    assert (np.isclose(CD0_curr, TestAC.ParAnFP.CD0,rtol = 0.05))
+#    return
 
 def test_WingGeo():
     ParAnFP = TestAC.ParAnFP
