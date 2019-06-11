@@ -13,6 +13,9 @@ import pylab as plt
 
 # SUAVE Imports
 import SUAVE
+import os
+os.chdir(Path(__file__).parents[3])
+from pathlib import Path
 from SUAVE.Core import Data, Units 
 from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
 from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Propulsion import compute_turbofan_geometry
@@ -21,7 +24,7 @@ from SUAVE.Input_Output.Results import  print_parasite_drag,  \
      print_engine_data,   \
      print_mission_breakdown, \
      print_weight_breakdown
-from A22CERES.A22DSE.Parameters.Par_Class_Conventional import Conv
+from A22DSE.Parameters.Par_Class_Conventional import Conv
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------
@@ -174,7 +177,7 @@ def vehicle_setup(Aircraft):
     # mass properties
     vehicle.mass_properties.max_takeoff               = Aircraft.ParStruc.MTOW
     vehicle.mass_properties.takeoff                   = Aircraft.ParStruc.MTOW   
-    vehicle.mass_properties.operating_empty           = Aircraft.ParStruc.OEW
+    vehicle.mass_properties.operating_empty           = Aircraft.ParStruc.OEWratio*Aircraft.ParStruc.MTOW
     vehicle.mass_properties.takeoff                   = Aircraft.ParStruc.MTOW
     vehicle.mass_properties.max_zero_fuel             = Aircraft.ParStruc.MTOW-Aircraft.ParStruc.FW
     vehicle.mass_properties.cargo                     = Aircraft.ParPayload.m_payload
@@ -256,8 +259,8 @@ def vehicle_setup(Aircraft):
     wing.taper                   = Aircraft.ParLayoutConfig.trht
     wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil     #Check, was 0.9
     wing.spans.projected         = Aircraft.ParLayoutConfig.bh
-    wing.chords.root             = Aircraft.ParLayoutConfig.Cr_h
-    wing.chords.tip              = Aircraft.ParLayoutConfig.Ct_h
+    wing.chords.root             = Aircraft.ParLayoutConfig.c_rht
+    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tht
     wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_h                   #Fix
     wing.areas.reference         = Aircraft.ParLayoutConfig.Sht
     wing.twists.root             = 3.0 * Units.degrees
@@ -283,8 +286,8 @@ def vehicle_setup(Aircraft):
     wing.taper                   = Aircraft.ParLayoutConfig.trvt
     wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil
     wing.spans.projected         = Aircraft.ParLayoutConfig.bv
-    wing.chords.root             = Aircraft.ParLayoutConfig.cr_v
-    wing.chords.tip              = Aircraft.ParLayoutConfig.ct_v
+    wing.chords.root             = Aircraft.ParLayoutConfig.c_rvt
+    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tvt
     wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_v      
     wing.areas.reference         = Aircraft.ParLayoutConfig.Svt 
     wing.twists.root             = 0.0 * Units.degrees
