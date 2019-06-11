@@ -14,10 +14,10 @@ sys.path.append('../../../../../')
 #import A22DSE.Parameters.Par_Class_Diff_Configs as Aircraft
 from A22DSE.Models.POPS.Current.cruisecalculations import CruiseRange
 
-def Lowbypassafter(Aeroplane, Fsl, ISA_model):
-    Tamb, Pamb = ISA_model.ISAFunc([Aeroplane.ParAnFP.h_cruise])[0:2] #Calculation of ambient conditions
-    theta0 = Tamb/288.15*(1+0.4/2*Aeroplane.ParAnFP.Mdd**2) #Calculation of total temp relative with 1D compressibility
-    delta0 = Pamb/101325*(1+0.4/2*Aeroplane.ParAnFP.Mdd**2)**(1.4/0.4) #Calculation of total temp relative with 1D compressibility
+def Lowbypassafter(height, Fsl, ISA_model,M):
+    Tamb, Pamb = ISA_model.ISAFunc([height])[0:2] #Calculation of ambient conditions
+    theta0 = Tamb/288.15*(1+0.4/2*M**2) #Calculation of total temp relative with 1D compressibility
+    delta0 = Pamb/101325*(1+0.4/2*M**2)**(1.4/0.4) #Calculation of total temp relative with 1D compressibility
     TR = 1.0 #Throttle ratio
     if theta0 <= TR:
         F = Fsl*delta0 #Empirical formula "General Aviation Aircraft Design, Applied Methods and Procedures" page 200
@@ -81,6 +81,7 @@ def FuelFractions(Aeroplane,atmosphere):
     h = np.array([0])
     t = np.array([0])
     d = np.array([0])
+    v = 0
     vspeed = np.array([250*0.5144])
 
     WS = WS0
@@ -92,7 +93,8 @@ def FuelFractions(Aeroplane,atmosphere):
     while h[-1] < haccel:
         T, press, rho = atmosphere.ISAFunc([h[-1]])
         WS = WS0*(0.99*0.99*0.995*wfratio)
-        TW = TW0/(0.99*0.99*0.995*wfratio)*Lowbypassafter(Aeroplane, 1, atmosphere)
+        TW = TW0/(0.99*0.99*0.995*wfratio)*Lowbypassafter(h[-1], 1, atmosphere, v/np.sqrt(1.4*287.05*T))
+
         v,RCs = optRCV(WS,TW,CD0,A,e,rho,g,deltav)
         if v > 250*0.5144:
             v = 250*0.5144
@@ -119,9 +121,10 @@ def FuelFractions(Aeroplane,atmosphere):
     ##    print(RCs)
 
     while h[-1] < hcruise:
+        
         T, press, rho = atmosphere.ISAFunc([h[-1]])
         WS = WS0*(0.99*0.99*0.995*wfratio)
-        TW = TW0/(0.99*0.99*0.995*wfratio)*Lowbypassafter(Aeroplane, 1, atmosphere)
+        TW = TW0/(0.99*0.99*0.995*wfratio)*Lowbypassafter(h[-1], 1, atmosphere, v/np.sqrt(1.4*287.05*T))
         v,RCs = optRCV(WS,TW,CD0,A,e,rho,g,deltav)
         if v > Mdd*np.sqrt(1.4*287.05*T):
             v = Mdd*np.sqrt(1.4*287.05*T)
@@ -154,7 +157,7 @@ def FuelFractions(Aeroplane,atmosphere):
     while d[-1]-dstart < rdump:
         
         WS = WS0*(0.99*0.99*0.995*wfratio)
-        TWmax = TW0/(0.99*0.99*0.995*wfratio)*Lowbypassafter(Aeroplane, 1, atmosphere)
+        TWmax = TW0/(0.99*0.99*0.995*wfratio)*Lowbypassafter(h[-1], 1, atmosphere, v/np.sqrt(1.4*287.05*T))
         RCs = 0
         CL = np.sqrt(CD0*np.pi*A*e/3)
         v = np.sqrt(2*WS/(rho*CL))
