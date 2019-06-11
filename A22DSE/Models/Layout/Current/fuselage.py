@@ -10,11 +10,10 @@ import numpy as np
 from pathlib import Path
 os.chdir(Path(__file__).parents[2])
 sys.path.append('../../')
-
+from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
-import matplotlib as mpl
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+
 
 ## Sizing ##
 
@@ -40,7 +39,7 @@ def GetNoseLength_opt(Aircraft, D_f):
 def GetTailLength_opt(Aircraft, D_F):
 
     fineness_t = Aircraft.ParStruc.fineness_t #Predetermined Fineness
-    L_t = D_f*fineness_t                                  #[m]
+    L_t = D_F *fineness_t                                  #[m]
     return L_t
 
 def GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t):
@@ -54,13 +53,13 @@ def GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t):
     
     
     #Calculate cabin using tail arm as a leading factor
-    L_c = max(Aircraft.ParLayoutConfig.xvt, Aircraft.ParLayoutConfig.xht) - \
-    L_n - L_t
+    L_c = fuselagereq(Aircraft) - L_n - L_t
         
     D_f = L_c/fineness_f
     
     if D_f<D_eq:
         D_f = D_eq
+        L_c = D_f * fineness_f
         
     h = D_f/np.sqrt(ovalrate)
     w = ovalrate*h
@@ -151,10 +150,6 @@ def CD0_diff(Aircraft, fineness_f, SF):
 def FuselageWeight_opt(Aircraft, fineness_f, SF):
     anfp = Aircraft.ParAnFP
     struc = Aircraft.ParStruc
-    
-    SF0 = 1
-    dSF = 0.01
-    L_freq = max(Aircraft.ParLayoutConfig.xvt, Aircraft.ParLayoutConfig.xht)
     
     h_fuselage= Fuselage_iter(Aircraft, fineness_f, SF)[3][0]    #[m]
     w_fuselage= Fuselage_iter(Aircraft, fineness_f, SF)[3][1]    #[m]
