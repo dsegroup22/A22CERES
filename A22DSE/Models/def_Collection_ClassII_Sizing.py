@@ -125,6 +125,7 @@ def ClassIISizing(Conv):
     
     step = 100
     Conv.ParAnFP.C_L_design, Conv.ParAnFP.tc_w, Conv.ParAnFP.FWP = (
+
     TransPlanform.ComputePlanform(Conv, step, Conv.ParAnFP.A, False))
     
     #Control surface
