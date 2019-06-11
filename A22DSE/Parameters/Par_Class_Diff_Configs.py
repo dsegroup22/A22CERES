@@ -74,7 +74,7 @@ def ComputeCD0(Aircraft):
 
 def ClassIAircraft():
     #Parameters not determined from functionss
-    Conv.ParAnFP.A = 23.5
+    Conv.ParAnFP.A = 16.0
     Conv.ParAnFP.CD0 = 0.015
     Conv.ParAnFP.e = 0.85
     Conv.ParAnFP.M_cruise = 0.7
