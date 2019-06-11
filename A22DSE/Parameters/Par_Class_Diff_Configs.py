@@ -4,10 +4,9 @@ Created on Mon May 13 15:30:54 2019
 
 @author: Nout
 """
-import sys
+
 import os
 from pathlib import Path
-import copy
 import numpy as np
 #sys.path.append('../')
 os.chdir(Path(__file__).parents[2])
@@ -75,7 +74,7 @@ def ComputeCD0(Aircraft):
 
 def ClassIAircraft():
     #Parameters not determined from functionss
-    Conv.ParAnFP.A = 14.38
+    Conv.ParAnFP.A = 23.5
     Conv.ParAnFP.CD0 = 0.015
     Conv.ParAnFP.e = 0.85
     Conv.ParAnFP.M_cruise = 0.7

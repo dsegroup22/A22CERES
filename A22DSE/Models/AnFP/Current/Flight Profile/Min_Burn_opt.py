@@ -13,7 +13,14 @@ import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[5])
 
-#from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
+from A22DSE.Parameters.Par_Class_Conventional import Conv
+
+anfp = Conv.ParAnFP
+struc = Conv.ParStruc
+prop = Conv.ParProp
+
+
+
 
 def getatm(h):
     T = np.zeros(h.shape)
@@ -32,16 +39,16 @@ def getatm(h):
 SFC = 26.25  * 10**-6 #kg/s/N
 MThrust = 60*10**3 #N
 
-n_engines = 4
+n_engines = prop.N_engines
 
-W = 43326*9.81 #N
+W = struc.MTOW * 9.81
 
-S = 225
-CD0 = 0.018310155060415745
-CL = 0.7*0.86
-A = 14.38
-e = 0.73
+S = anfp.S
+CD0 = anfp.CD0
 
+A = anfp.A
+e = anfp.e
+CL = m.sqrt(CD0*m.pi*A*e)
 """Minimum time climb"""
 #Max RC
 
@@ -54,6 +61,7 @@ V, H =  np.meshgrid(V,H)
 shape = H.shape
 MaxT = np.ones(shape)
 rho = getatm(np.ravel(H))[1]
+setting = np.linspace(0.2,1,res)
 for i in range(len(MaxT[0])):
     MaxT[i,:] = MThrust * rho[res*i]/rho[0]
 
@@ -118,7 +126,7 @@ plt.clabel(b, inline=1, fontsize=10)
 plt.show()
 
 
-#plt.figure(2)
-#a = plt.plot(He_ar, np.divide(1,RCs_tmin))
-#plt.title('Climb time ='+ str(float(np.trapz(np.divide(1,RCs_tmin),He_ar))/60)+'min')
-#plt.show()
+plt.figure(2)
+a = plt.plot(He_ar, np.divide(1,RCs_tmin))
+plt.title('Climb time ='+ str(float(np.trapz(np.divide(1,RCs_tmin),He_ar))/60)+'min')
+plt.show()

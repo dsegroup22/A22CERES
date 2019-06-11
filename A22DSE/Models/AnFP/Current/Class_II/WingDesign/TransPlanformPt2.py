@@ -25,7 +25,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 #                       SELECTION VARIABLES AND CONSTANTS
 # =============================================================================
 res = 100
-plot = False
+plot = True
 
 CL_i = np.linspace(0.3, 1.2, res)
 sweep_opt = (FormFuncs.ComputePartialSweepOpt(Conv))

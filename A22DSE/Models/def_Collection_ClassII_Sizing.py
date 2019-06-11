@@ -24,11 +24,12 @@ from A22DSE.Models.STRUC.current.Class_II.FuselageLength import (Fuselage)
 from A22DSE.Models.SC.TailSizing.horizontaltail import htail
 from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
-from A22DSE.Models.AnFP.Current.Class_II.WingDesign import PlanformMain 
+from A22DSE.Models.AnFP.Current.Class_II.WingDesign import TransPlanform 
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign.def_OswaldEfficiency import OswaldEfficiency
 from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 from A22DSE.Models.Layout.Current.Engine_Placements import Engines_placement
-
+from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
+from A22DSE.Models.SC.ControlSurface.aileron_sizing import aileron
 
 def ClassIISizing(Conv):
     #get shortcuts
@@ -45,7 +46,6 @@ def ClassIISizing(Conv):
 # =============================================================================
     Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
     
-    step = 50
 #    Conv.ParAnFP.C_L_design, Conv.ParAnFP.A = PlanformMain.GetARTransWing(
 #    Conv, ISA_model, step, False)
     
@@ -114,7 +114,21 @@ def ClassIISizing(Conv):
     Layout.x_apex_wing = Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
     Layout.x_apex_ht = Layout.x_lemach-Layout.y_MACh*np.tan(Layout.sweepLEht)
     Layout.x_apex_vt = Layout.x_lemacv-Layout.y_MACv*np.tan(Layout.sweepLEvt)
-
+    
+    #engine selection
+    EngineChoice(Conv,ISA_model,False)
     
     #engine placement
     Engines_placement(Conv)
+    
+    # Wing planform
+    
+    step = 100
+    Conv.ParAnFP.C_L_design, Conv.ParAnFP.tc_w, Conv.ParAnFP.FWP = (
+
+    TransPlanform.ComputePlanform(Conv, step, Conv.ParAnFP.A, False))
+    
+    #Control surface
+    aileron(Conv)
+
+    

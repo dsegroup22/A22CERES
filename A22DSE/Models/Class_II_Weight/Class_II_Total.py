@@ -15,7 +15,7 @@ from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_def_InitsizingUncoupled\
  import WingSurface_Thrust_FuelWeight, Wfratio_flighttime_flightrange
 from A22DSE.Models.Class_II_Weight.Class_II_LG import Class_II_Weight_LG
 from A22DSE.Models.Class_II_Weight.Class_II_Wing import Basic_Wing
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ClassI_AndAHalf, ComputeCD0
+from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, ISA_model, ComputeCD0
 from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Wing import Total_Wing, Method1, Method2, Tore
 from A22DSE.Models.Class_II_Weight.Detailed_Class_II_Fuselage import FuselageWeight
@@ -61,7 +61,7 @@ def ClassIIWeight_MTOW(Aircraft):
 
 def ClassIIWeightIteration(Aircraft):
     struc= Aircraft.ParStruc
-    anfp= Aircraft.ParAnFP
+    #anfp= Aircraft.ParAnFP
     
 #DESCRIPTION:
 #   This function iterates the MTOW for 20 iterations, or less if it converges 
@@ -84,12 +84,9 @@ def ClassIIWeightIteration(Aircraft):
          ComputeCD0(Aircraft)
          Wfratio_flighttime_flightrange(Aircraft)
          WingSurface_Thrust_FuelWeight(Aircraft)
-         ClassI_AndAHalf()
          ClassIISizing(Conv)
          
-        
-         #chose correct engines
-         EngineChoice(Aircraft,ISA_model,False)
+
          
          #get new wingweight over MTOW
          struc.Mw_Mtow = struc.Wing_weight/struc.MTOW
