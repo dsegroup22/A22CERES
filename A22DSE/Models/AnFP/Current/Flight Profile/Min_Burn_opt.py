@@ -30,23 +30,23 @@ def getatm(h):
     return T, rho, p
 
 SFC = 26.25  * 10**-6 #kg/s/N
-MThrust = 80*10**3 #N
+MThrust = 60*10**3 #N
 
-n_engines = 6
+n_engines = 4
 
-W = 65000*9.81 #N
+W = 43326*9.81 #N
 
-S = 400
-CD0 = 0.01
+S = 225
+CD0 = 0.018310155060415745
 CL = 0.7*0.86
-A = 13
-e = 0.75
+A = 14.38
+e = 0.73
 
 """Minimum time climb"""
 #Max RC
 
 res = 500
-res1 = 50
+res1 = 100
 z=res*res/res1
 H = np.linspace(0,22000,res)
 V = np.linspace(0,275,res)
@@ -77,31 +77,21 @@ He_ar = np.linspace(2000,22162.895,res1)
 RCs_tmin = np.zeros(res1)
 V_tmin = np.zeros(res1)
 H_tmin = np.zeros(res1)
+thrust_tmin = np.zeros(res1)
 for i in range(len(He_ar)):
     RCs_tmin[i] = np.amax(RCs[np.where(np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))])
     index=(int(np.where(RCs == np.amax(RCs[np.where(\
         np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))]))[0]),\
     int(np.where(RCs == np.amax(RCs[np.where(\
         np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))]))[1]))
-#    print(index)
+    
+    thrust_tmin[i] = MaxT[index]
     V_tmin[i] = V[index]
     H_tmin[i] = H[index]
     
 #compute mdot/RCs
 
-#He_opt = np.linspace(2000,22162.895,res1)
-#RCs_opt = np.zeros(res1)
-#V_opt = np.zeros(res1)
-#H_opt = np.zeros(res1)
-#for i in range(len(He_opt)):
-#    RCs_opt[i] = np.amax(RCs[np.where(np.logical_and(He_opt[i]> He-z/res , He_opt[i] < He+z/res))])
-#    index=(int(np.where(RCs == np.amax(RCs[np.where(\
-#        np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))]))[0]),\
-#    int(np.where(RCs == np.amax(RCs[np.where(\
-#        np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))]))[1]))
-##    print(index)
-#    V_tmin[i] = V[index]
-#    H_tmin[i] = H[index]       
+     
        
 #integrate         
        
@@ -111,13 +101,10 @@ for i in range(len(He_ar)):
        
        
        
-       
-#dRCdV = dRCdV.reshape(shape)
+tmin = float(np.trapz(np.divide(1,RCs_tmin),He_ar))/60
+fuel = float(np.trapz(np.divide(thrust_tmin,RCs_tmin),He_ar))*SFC*n_engines
 
 
-
-rho = rho.reshape(shape)
-#invRCs = np.divide(1,RCs)
 
 
 
