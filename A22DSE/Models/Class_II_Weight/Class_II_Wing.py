@@ -69,7 +69,7 @@ def Basic_Wing(Aircraft): #geometry, wing_specs, FP
     anfp = Aircraft.ParAnFP             #Short Cut
     struc = Aircraft.ParStruc           #Short Cut
     
-    n_engines = anfp.n_engines          #Amount of Wing Mounted Engines    
+    n_engines = struc.N_engines          #Amount of Wing Mounted Engines    
     wm_un = anfp.wm_un                  #Undercarriage in Fuselage or Wing
     MZF = struc.MTOW - struc.FW         #Zero Fuel Weight   
     tc_r = anfp.tc #
