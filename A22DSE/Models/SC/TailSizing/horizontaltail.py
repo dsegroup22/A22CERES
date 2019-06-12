@@ -138,7 +138,7 @@ def htail(Aircraft,ISA):
 #    
     mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
     
-    ShS = 0.45
+    ShS = 0.3
     Sh_ite = ShS*Sw #new horizotal tail surface area
     tail_diff = abs((Sh_ite - Sh))/Sh
 ##    
@@ -146,11 +146,8 @@ def htail(Aircraft,ISA):
         Sh = Sh_ite
         l_arm_opt = Vh*MAC*Sw/Sh
         mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
-        
-        
-##        
-#   
     
+    #l_arm_opt = 12
     #using scissor plot and update values of Sh
     
     #---------------- elevator design procedure 
@@ -209,7 +206,7 @@ def htail(Aircraft,ISA):
     Aircraft.ParLayoutConfig.Sht = Sh
     Aircraft.ParLayoutConfig.xht = l_arm_opt
     Aircraft.ParLayoutConfig.mac_h = mac_h
-    #return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
+    return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
 #def rudder(Aircraft):
 
 
