@@ -76,7 +76,8 @@ def fuselageopt(Aircraft,xht):
     CLv = CLv0 + CLvbeta*beta+CLvdeltar*deltar 
     rho = 1.225  #takeoff air density
     Vmc = 1.13*Aircraft.ParAnFP.V_stall   #1.13*vstall!!!!!!
-    Svi = 0.5*Aircraft.ParAnFP.T_to*Aircraft.ParLayoutConfig.y_engine/(lvi*0.5*rho*Vmc**2*CLv)
+    Svi = Aircraft.ParAnFP.T_to/Aircraft.ParStruc.N_engines*\
+    Aircraft.ParLayoutConfig.y_eng_out/(lvi*0.5*rho*Vmc**2*CLv)
     anfp = Aircraft.ParAnFP
     Vc = anfp.V_cruise
     Kv = 1
