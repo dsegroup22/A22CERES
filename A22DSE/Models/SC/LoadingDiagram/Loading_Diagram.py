@@ -11,16 +11,22 @@ def loadingdiag(Aircraft):
     """DESCRIPTION: loading diagram based on SAED lecture
        INPUT: OEW, x_lemac, 
     """
-    rangecg = np.array([1,1.15,0.85])
+
+    xcg_totalpayload_empty_aft = Aircraft.ParPayload.xcg_totalpayload_empty
+    xcg_totalpayload_empty_fwd = Aircraft.ParPayload.xcg_totalpayload_empty_fwd
+    rangecg = np.array([0.9,1,1.1])
+
     xcg_fwd = []
     xcg_aft = []
     y = []
     
     for i in range(len(rangecg)):
         MAC = Aircraft.ParAnFP.MAC
+        lh = Aircraft.ParLayoutConfig.xht
           
         #xpayload = np.array([0.8,0.7,0.6,0.5,0.4,0.3,0.2]*l_fuselage)
-        xcg_totalpayload_empty = Aircraft.ParPayload.xcg_totalpayload_empty
+        xcg_totalpayload_empty = 18 #Aircraft.ParPayload.xcg_totalpayload_empty
+        #print (xcg_totalpayload_empty)
         
         fuel_mass = Aircraft.ParStruc.FW
         payload_mass = Aircraft.ParPayload.m_payload #13500 #append value [kg]
@@ -28,7 +34,7 @@ def loadingdiag(Aircraft):
         x_lemac = Aircraft.ParLayoutConfig.x_lemac*rangecg[i]
         
         oew = Aircraft.ParStruc.OEW
-        x_oew = Aircraft.ParLayoutConfig.x_oe*rangecg[i]*MAC + x_lemac
+        x_oew = Aircraft.ParLayoutConfig.x_oe*MAC + x_lemac
         
         top = x_oew*oew #append real value
         bottom = oew #kg append real value
@@ -84,7 +90,10 @@ def loadingdiag(Aircraft):
         
     plt.plot(xcg_fwd,y)
     plt.plot(xcg_aft,y)
+    plt.ylabel('xcg/l_fuselage')
+    plt.xlabel('xcg/MAC')
+    plt.title('Loading diagram')
     plt.xlim(0,1)
     plt.show()
     
-    return xcg_fwd, xcg_aft, y
+    
