@@ -46,7 +46,8 @@ def ClassIISizing(Conv):
 # =============================================================================
 #                           WING PLANFORM DESIGN
 # =============================================================================
-    Conv.ParAnFP.n_ult, Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
+    Conv.ParAnFP.n_ult, Conv.ParAnFP.n_min, \
+    Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
     
 #    Conv.ParAnFP.C_L_design, Conv.ParAnFP.A = PlanformMain.GetARTransWing(
 #    Conv, ISA_model, step, False)

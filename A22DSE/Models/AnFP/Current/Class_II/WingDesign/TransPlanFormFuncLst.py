@@ -275,4 +275,16 @@ def ComputeSpanLoading(Aircraft, ISA_model, Fprop, theta2, theta3, TSFC,
     CDpCurl = ComputeCDpCurl(Aircraft, CL, sweep)
     
     return CL**(-1/3) * ((CDpCurl * Fprop + theta2)/theta3 * tc_limit)**(2/3)
+
+def ComputeSpanLoadingCL(Aircraft, ISA_model, Fprop, theta2, theta3, TSFC,
+                       sweep, Aw, CL):
+    
+    # Constants
+    Fprop = ComputeFprop(Aircraft, ISA_model, TSFC)
+    tc_limit = Compute_tc_limit(Aircraft, CL, sweep)
+    
+    # Compute profile drag
+    CDpCurl = ComputeCDpCurl(Aircraft, CL, sweep)
+    
+    return (((CDpCurl * Fprop + theta2)/theta3 * tc_limit)**(2/3)/Aw)**3
     

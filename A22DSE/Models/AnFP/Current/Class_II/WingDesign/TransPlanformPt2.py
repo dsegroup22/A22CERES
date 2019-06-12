@@ -30,9 +30,8 @@ plot = True
 CL_i = np.linspace(0.3, 1.2, res)
 sweep_opt = (FormFuncs.ComputePartialSweepOpt(Conv))
 #tc_w  = np.linspace(0.10, 0.15, 4)
-Mdd = 0.82
-Aw_i = np.linspace(1.5, 25, res)
-TSFC = 0.061243
+Aw_i = np.linspace(3, 25, res)
+TSFC = Conv.ParProp.SFC_cruise*3600
 CL, Aw = np.meshgrid(CL_i, Aw_i)
 
 theta2 = FormFuncs.ComputeTheta2(Conv, ISA_model)
@@ -89,11 +88,12 @@ if plot == True:
     ax.set_title('wireframe');
     
     plt.figure(2)
-    cp = plt.contour(CL, Aw, FWP, 20)
+    cp = plt.contour(CL, Aw, FWP, 15)
     plt.plot(CL_i, Aw_opt, color = 'r', linestyle = 'dashed',
              label = r'Partial optimum $\hat{C}_L$')
     plt.plot(CL_optLst, Aw_i, color = 'orange', linestyle = 'dashed',
              label = r'Partial optimum $A_w$')
+    plt.plot(CL_i, WB, linestyle = 'dotted')
     plt.xlim((CL_i[0], CL_i[-1]))
     plt.ylim((Aw_i[0], Aw_i[-1]))
     plt.xlabel(r'$\hat{C}_L$')
