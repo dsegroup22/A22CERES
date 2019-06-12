@@ -186,11 +186,11 @@ def vehicle_setup():
     
     # envelope properties
     vehicle.envelope.ultimate_load = Aircraft.ParAnFP.n_ult
-    vehicle.envelope.limit_load    = Aircraft.ParAnFP.n_lim
+    vehicle.envelope.limit_load    = 15 #Aircraft.ParAnFP.n_lim
 
     # basic parameters
     vehicle.reference_area         = 124.862 * Units['meters**2']  
-    vehicle.passengers             = 170
+    vehicle.passengers             = 0
     vehicle.systems.control        = "fully powered" 
     vehicle.systems.accessories    = "medium range"
 
@@ -201,10 +201,10 @@ def vehicle_setup():
     landing_gear = SUAVE.Components.Landing_Gear.Landing_Gear()
     landing_gear.tag = "main_landing_gear"
     
-    landing_gear.main_tire_diameter = 1.12000 * Units.m
-    landing_gear.nose_tire_diameter = 0.6858 * Units.m
-    landing_gear.main_strut_length  = 1.8 * Units.m
-    landing_gear.nose_strut_length  = 1.3 * Units.m
+    landing_gear.main_tire_diameter = Aircraft.ParClassII_LG.prelim_tire_diam*Units.meter
+    landing_gear.nose_tire_diameter = Aircraft.ParClassII_LG.prelim_tire_diam*Units.meter
+    landing_gear.main_strut_length  = Aircraft.ParLayoutConfig.lg_l_main*Units.meter
+    landing_gear.nose_strut_length  = Aircraft.ParLayoutConfig.lg_l_nose*Units.meter
     landing_gear.main_units  = 2    #number of main landing gear units
     landing_gear.nose_units  = 1    #number of nose landing gear
     landing_gear.main_wheels = 2    #number of wheels on the main landing gear
@@ -219,15 +219,15 @@ def vehicle_setup():
     wing.tag = 'main_wing'
     
     wing.aspect_ratio            = 10.18
-    wing.sweeps.quarter_chord    = 25 * Units.deg
-    wing.thickness_to_chord      = 0.1
-    wing.taper                   = 0.1
-    wing.span_efficiency         = 0.9
-    wing.spans.projected         = 34.32 * Units.meter
-    wing.chords.root             = 7.760 * Units.meter
-    wing.chords.tip              = 0.782 * Units.meter
-    wing.chords.mean_aerodynamic = 4.235 * Units.meter
-    wing.areas.reference         = 124.862 * Units['meters**2']  
+    wing.sweeps.quarter_chord    = Aircraft.ParAnFP.Sweep_25*Units.radians
+    wing.thickness_to_chord      = Aircraft.ParAnFP.tc
+    wing.taper                   = Aircraft.ParAnFP.taper
+    wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil
+    wing.spans.projected         = Aircraft.ParAnFP.b*Units.meter
+    wing.chords.root             = Aircraft.ParAnFP.c_r*Units.meter
+    wing.chords.tip              = Aircraft.ParAnFP.c_t*Units.meter
+    wing.chords.mean_aerodynamic = Aircraft.ParAnFP.MAC*Units.meter
+    wing.areas.reference         = Aircraft.ParAnFP.S*Units['meters**2']
     wing.twists.root             = 4.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees
     wing.origin                  = [13.61,0,-1.27] # meters
