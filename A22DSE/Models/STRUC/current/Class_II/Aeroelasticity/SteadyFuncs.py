@@ -7,12 +7,15 @@ Created on Tue Jun 11 11:49:51 2019
 
 import numpy as np
 import sys
-sys.path.append('../../../../../../')
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[6])
 import numpy as np
 import scipy.linalg as slin
 import matplotlib.pyplot as plt
 import control.matlab as control
-
+from A22DSE.Models.STRUC.current.Structural_Model.struc_functions import (
+        TorsionalStiffness)
 class airfoilAE(object):
     '''
     Kh = bending stiffness; Ktheta = torsional stiffness; xtheta = displacement
@@ -58,3 +61,15 @@ def Init2DOFSS(par, Aircraft, ISA_model):
     
     a0, a2, a4 = ComputeConstants()
     return M, K, A0, a0, a2, a4
+
+
+def ComputeDivSpeed(par, height, ISA_model):
+    '''
+    OUTPUT: returns qDiv
+    '''
+    
+    return par.Ktheta/(par.CLa * par.e * par.c * par.S)
+
+
+    
+    
