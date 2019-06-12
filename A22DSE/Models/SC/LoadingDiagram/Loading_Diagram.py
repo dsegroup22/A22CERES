@@ -25,7 +25,7 @@ def loadingdiag(Aircraft):
         lh = Aircraft.ParLayoutConfig.xht
           
         #xpayload = np.array([0.8,0.7,0.6,0.5,0.4,0.3,0.2]*l_fuselage)
-        xcg_totalpayload_empty = 17 #Aircraft.ParPayload.xcg_totalpayload_empty
+        xcg_totalpayload_empty = 18 #Aircraft.ParPayload.xcg_totalpayload_empty
         #print (xcg_totalpayload_empty)
         
         fuel_mass = Aircraft.ParStruc.FW
@@ -96,4 +96,4 @@ def loadingdiag(Aircraft):
     plt.xlim(0,1)
     plt.show()
     
-    return xcg_totalpayload_empty_fwd, xcg_totalpayload_empty_aft
+    
