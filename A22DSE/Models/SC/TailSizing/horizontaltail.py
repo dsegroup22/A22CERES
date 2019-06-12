@@ -138,15 +138,18 @@ def htail(Aircraft,ISA):
 #    
     mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
     
-    ShS = np.array([0.3])
+    ShS = np.array([0.3,0.18])
     for i in range(len(ShS)):
         Sh_ite = ShS[i]*Sw #new horizotal tail surface area
         tail_diff = abs((Sh_ite - Sh))/Sh
+        print (Sh_ite)
     ##    
         if tail_diff > 0.1:
             Sh = Sh_ite
             l_arm_opt = Vh*MAC*Sw/Sh
+            bh = sqrt(AR_h*Sh)
             mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
+        
         else:
             break
     

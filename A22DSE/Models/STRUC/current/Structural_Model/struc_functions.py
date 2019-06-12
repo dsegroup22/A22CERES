@@ -120,6 +120,10 @@ def skin_moi(x,t_skin): #needs to be checked
         
     return moi_skin
     
+def moi_wing(x,t_skin,t_rib):
+    
+    
+    return moi_wing
 
 def Area(chord): #finished
     x_rib1=0.2*chord

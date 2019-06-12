@@ -25,13 +25,12 @@ g=9.80665
 #    x=np.linspace(-b/2,b/2,1000)
 #    return L**2*(1-(x*2/b)**2)**0.5
 
-def Eliptical(Aircraft):
+def Eliptical(Aircraft,x):
     #function that returns an eliptical lift distribution, where L is the max lift and b the span
     anfp=Aircraft.ParAnFP
     struc=Aircraft.ParStruc
     MTOW=struc.MTOW
     b=anfp.b
-    x=np.linspace(0,b/2,1000)
     return 4*MTOW/(np.pi*b)*np.sqrt(1-4*x**2/b**2)
 
 def Loading_Diagrams(Aircraft):
@@ -67,7 +66,7 @@ def Loading_Diagrams(Aircraft):
         M_l.append(M_l_i)
     M_l-=M_l[-1]
     
-    return V,np.array(M_l)
+    return x,V,np.array(M_l)
 
     
 #
