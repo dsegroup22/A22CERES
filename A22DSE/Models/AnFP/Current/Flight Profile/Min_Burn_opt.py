@@ -22,10 +22,10 @@ prop = Conv.ParProp
 
 ISA_model = Atmos()
 
-def Lowbypass(Aircraft, Fsl, ISA_model, H):
+def Lowbypass(Aircraft, Fsl, ISA_model, H, M):
     Tamb, Pamb = ISA_model.ISAFunc([H])[0:2]
-    theta0 = Tamb/288.15*(1+0.4/2*Aircraft.ParAnFP.Mdd**2)
-    delta0 = Pamb/101325*(1+0.4/2*Aircraft.ParAnFP.Mdd**2)**(1.4/0.4)
+    theta0 = Tamb/288.15*(1+0.4/2*M**2)
+    delta0 = Pamb/101325*(1+0.4/2*M**2)**(1.4/0.4)
     TR = 1.0
     if theta0 <= TR:
         F = 0.6*Fsl*delta0 #Empirical formula "General Aviation Aircraft Design, Applied Methods and Procedures" page 200
@@ -73,13 +73,20 @@ V, H =  np.meshgrid(V,H)
 shape = H.shape
 MaxT = np.ones(shape)
 rho = getatm(np.ravel(H))[1]
-setting = np.linspace(0.2,1,res)
+T = getatm(np.ravel(H))[0]
+#setting = np.linspace(0.2,1,res)
 Thrust = np.ones(res)
-for i in range(len(H)):
-    Thrust[i] = Lowbypass(Conv, MThrust, ISA_model, H[i])
-for i in range(len(MaxT[0])):
-#    MaxT[i,:] = MThrust * rho[res*i]/rho[0]
-    MaxT[i,:] = Thrust
+
+
+M = np.ravel(V)/np.sqrt(1.4*287*(273.15+T))
+H = np.ravel(H)
+MaxT = np.ravel(MaxT)
+for i in range(len(np.ravel(H))):
+    MaxT[i] = Lowbypass(Conv,MThrust, ISA_model,H[i], anfp.Mdd)
+MaxT = MaxT.reshape(shape)
+#for i in range(len(MaxT[0])):
+##    MaxT[i,:] = MThrust * rho[res*i]/rho[0]
+#    MaxT[:,i] = Thrust
 
 
 He = np.ravel(H) + np.power(np.ravel(V),2)/2/9.81
@@ -87,6 +94,8 @@ He = np.ravel(H) + np.power(np.ravel(V),2)/2/9.81
 
 RCs = (np.ravel(MaxT)*n_engines-0.5*np.ravel(rho)*np.power(np.ravel(V),2)*S*\
        (CD0+CL**2/m.pi/A/e))*np.ravel(V)/W
+       
+
        
 RCs = RCs.reshape(shape)  
 He = He.reshape(shape)
