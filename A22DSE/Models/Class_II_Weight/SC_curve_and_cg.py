@@ -128,7 +128,7 @@ def oecg(Aircraft):
         lh = Aircraft.ParLayoutConfig.xht
           
         #xpayload = np.array([0.8,0.7,0.6,0.5,0.4,0.3,0.2]*l_fuselage)
-        xcg_totalpayload_empty = 17 #Aircraft.ParPayload.xcg_totalpayload_empty
+        xcg_totalpayload_empty = xpl #17 #Aircraft.ParPayload.xcg_totalpayload_empty
         #print (xcg_totalpayload_empty)
         
         fuel_mass = Aircraft.ParStruc.FW
