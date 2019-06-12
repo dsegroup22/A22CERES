@@ -4,7 +4,10 @@ Created on Tue Jun 11 11:58:22 2019
 
 @author: menno
 """
+import os
+from pathlib import Path
 import numpy as np
+os.chdir(Path(__file__).parents[4])
 
 file=open('A22DSE\Models\DATCOM\Current\datcom.out','r')
 
