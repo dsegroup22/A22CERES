@@ -86,7 +86,7 @@ def oecg(Aircraft):
     xwg = (xwing*Wwing+xengine*Wengine)/Wwg
     #print(xengine)
     #fuselage group: fuselage, horizontal tail, vertical tail, nose landing gear, main landing gear
-    lf = 24   #[m] fuselage length!!!!!! NOT APPENDED YET!!!!!!!
+    lf = 24 #max(Aircraft.ParLayoutConfig.xvt, Aircraft.ParLayoutConfig.xht) + Aircraft.ParLayoutConfig.l_nose  #[m] fuselage length!!!!!! NOT APPENDED YET!!!!!!!
     xf = 0.42*lf  #[m] fuselage cg location
     Wf = Aircraft.ParStruc.Wf         #[kg]
     xht = 0.25*lf+Aircraft.ParLayoutConfig.xht  #[m]
