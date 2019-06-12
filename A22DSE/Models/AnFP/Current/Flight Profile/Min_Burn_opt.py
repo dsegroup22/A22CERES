@@ -87,7 +87,8 @@ V_tmin = np.zeros(res1)
 H_tmin = np.zeros(res1)
 thrust_tmin = np.zeros(res1)
 for i in range(len(He_ar)):
-    RCs_tmin[i] = np.amax(RCs[np.where(np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))])
+    RCs_tmin[i] = np.amax(RCs[np.where(np.logical_and(He_ar[i]> He-z/res \
+                          , He_ar[i] < He+z/res))])
     index=(int(np.where(RCs == np.amax(RCs[np.where(\
         np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))]))[0]),\
     int(np.where(RCs == np.amax(RCs[np.where(\
@@ -128,14 +129,8 @@ plt.show()
 
 plt.figure(2)
 a = plt.plot(He_ar, np.divide(1,RCs_tmin))
-plt.title('Climb time ='+ str(float(np.trapz(np.divide(1,RCs_tmin),He_ar))/60)+'min')
-plt.show()
-
-W = 0.95*struc.MTOW
-RCs = (np.ravel(MaxT)*n_engines-0.5*np.ravel(rho)*np.power(np.ravel(V),2)*S*\
-       (CD0+CL**2/m.pi/A/e))*np.ravel(V)/W
-a = plt.contour(np.power(V,2)/2/9.81,H,He,5,colors='k', linewidths = 0.5)
-b = plt.contour(np.power(V,2)/2/9.81,H,RCs,20,colors='k')       
+plt.title('Climb time ='+ str(float(np.trapz(np.divide(1,RCs_tmin),He_ar))\
+                              /60)+'min')
 plt.show()
 
 
