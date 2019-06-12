@@ -56,7 +56,7 @@ def Engines_placement(Aircraft):
         
         layout.x_eng_g2 = xf_c*c-lf_eng + x_le_eng_g2
         layout.eng_height_under_wing_g2 = h_c*c
-        
+        layout.y_eng_out = layout.y_eng_g2
         
         
     if struc.N_engines == 3 or struc.N_engines == 5:
@@ -74,7 +74,7 @@ def Engines_placement(Aircraft):
         
         layout.x_eng_g2 = xf_c*c-lf_eng + x_le_eng_g2
         layout.eng_height_under_wing_g2 = h_c*c
-        
+        layout.y_eng_out = layout.y_eng_g2
 
         
     if struc.N_engines == 6 or struc.N_engines == 8:
@@ -97,7 +97,7 @@ def Engines_placement(Aircraft):
         
         layout.x_eng_g3 = xf_c*c-lf_eng + x_le_eng_g3
         layout.eng_height_under_wing_g2 = h_c*c
-        
+        layout.y_eng_out = layout.y_eng_g3
         
         
     if struc.N_engines == 7:
@@ -124,7 +124,8 @@ def Engines_placement(Aircraft):
         
         layout.x_eng_g3 = xf_c*c-lf_eng + x_le_eng_g3
         layout.eng_height_under_wing_g2 = h_c*c
-        
+        layout.y_eng_out = layout.y_eng_g3
+   
         
 
         
