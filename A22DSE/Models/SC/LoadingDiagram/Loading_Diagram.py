@@ -94,7 +94,7 @@ def loadingdiag(Aircraft):
     plt.plot(xcg_aft,y)
     plt.ylabel('xcg/l_fuselage')
     plt.xlabel('xcg/MAC')
-    plt.title('Loading diagram')
+    plt.title('CG Range')
     plt.xlim(0,1)
     plt.show()
     
