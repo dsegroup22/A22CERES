@@ -33,6 +33,9 @@ def skin_eq_upper(chord): #finished
     OUTPUT: polynomal function
     ''' 
     #read datafile
+#    import os
+#    from pathlib import Path
+#    os.chdir(Path(__file__).parents[6])
     f=open("NASASC20712data_1.txt", "r")
     data_f=f.read()
     data_f = data_f.split('\n')

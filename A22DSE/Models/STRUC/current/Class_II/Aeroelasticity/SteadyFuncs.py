@@ -8,12 +8,14 @@ Created on Tue Jun 11 11:49:51 2019
 import numpy as np
 import sys
 import os
+from pathlib import Path
 os.chdir(Path(__file__).parents[6])
 import numpy as np
 import scipy.linalg as slin
 import matplotlib.pyplot as plt
 import control.matlab as control
-#from A22DSE.Models.STRUC.current.
+from A22DSE.Models.STRUC.current.Structural_Model.struc_functions import (
+        TorsionalStiffness)
 class airfoilAE(object):
     '''
     Kh = bending stiffness; Ktheta = torsional stiffness; xtheta = displacement
