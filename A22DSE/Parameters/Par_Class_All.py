@@ -100,6 +100,9 @@ class ParStrucLst(object):
             self.fineness_t = 2.
             self.Wf         = None
             self.Mw_Mtow= 0.185
+            
+            #material constants
+            self.max_yield_stress = 110e6 #DUMMY VALUE, NEEDS TO BE UPDATED
 class ParPayloadLst(object):
     
     def __init__(self):
