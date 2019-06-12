@@ -89,6 +89,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         Aircraft.ParProp.Engine_length = engsel.length
         Aircraft.ParProp.Engine_diameter = engsel.diameter
         Aircraft.ParProp.SFC_cruise = engsel.SFC_cruise
+        Aircraft.ParProp.T_sl = engsel.thrust*np.amin(neng)/engsel.weight
 
     elif afterburner == True: #For afterburner
         neng = np.array([])
@@ -109,6 +110,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         Aircraft.ParProp.Engine_length = engsel.length
         Aircraft.ParProp.Engine_diameter = engsel.diameter
         Aircraft.ParProp.SFC_cruise = engsel.SFC_cruise
+        Aircraft.ParProp.Thrust_sl = engsel.thrust*np.amin(neng)/engsel.weight
 
     else:
         print('Specify whether you want afterburners or not in EngineChoice def')
