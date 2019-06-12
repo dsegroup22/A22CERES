@@ -82,9 +82,9 @@ def vtail(Aircraft):
     Aircraft.ParLayoutConfig.trvt = trvi
     Aircraft.ParLayoutConfig.Sweep25vt = swquart
     Aircraft.ParLayoutConfig.Sweep50vt = degrees(swhalf)
-    Aircraft.ParLayoutConfig.cr_v = crv
-    Aircraft.ParLayoutConfig.ct_v = ctv
-    Aircraft.ParLayoutConfig.b_v = bv
+    Aircraft.ParLayoutConfig.c_rvt = crv
+    Aircraft.ParLayoutConfig.c_tvt = ctv
+    Aircraft.ParLayoutConfig.bv = bv
     Aircraft.ParLayoutConfig.Wvt = Wvt
     Aircraft.ParLayoutConfig.mac_v = mac_v
     Aircraft.ParLayoutConfig.sweepLEvt = swle

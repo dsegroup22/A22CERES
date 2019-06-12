@@ -108,7 +108,7 @@ def htail(Aircraft,ISA):
     sweep_h = sweep_main+5*pi/180
     #Gamma = sweep_h #dihedral angle
     
-    ch_root = Aircraft.ParLayoutConfig.ct_v #3/2*Vh*((1+tr_h)/(1+tr_h+tr_h**2))
+    ch_root = Aircraft.ParLayoutConfig.c_tvt #3/2*Vh*((1+tr_h)/(1+tr_h+tr_h**2))
     ch_tip = ch_root*tr_h
     bh = sqrt(AR_h*Sh) #Sh/Vh
     
@@ -200,9 +200,9 @@ def htail(Aircraft,ISA):
     #de_max_up = (CLh/CLalphah - alpha_h) /tau_e
     mac_h = (2./3.) * ch_root * (1. + tr_h + tr_h**2.)/(1. + tr_h)
     #finish once we have all parameters
-    Aircraft.ParLayoutConfig.Cr_h =ch_root
-    Aircraft.ParLayoutConfig.Ct_h = ch_tip
-    Aircraft.ParLayoutConfig.b_h = bh
+    Aircraft.ParLayoutConfig.c_rht =ch_root
+    Aircraft.ParLayoutConfig.c_tht = ch_tip
+    Aircraft.ParLayoutConfig.bh = bh
     Aircraft.ParLayoutConfig.sweepLEht = sweep_h
     Aircraft.ParLayoutConfig.sweep25ht = sweep_h25
     Aircraft.ParLayoutConfig.sweep50ht = sweep_h50
