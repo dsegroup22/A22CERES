@@ -19,12 +19,11 @@ def loadingdiag(Aircraft):
     for i in range(len(rangecg)):
         MAC = Aircraft.ParAnFP.MAC
           
-    
         #xpayload = np.array([0.8,0.7,0.6,0.5,0.4,0.3,0.2]*l_fuselage)
         xcg_totalpayload_empty = Aircraft.ParPayload.xcg_totalpayload_empty
         
         fuel_mass = Aircraft.ParStruc.FW
-        payload_mass = 13500 #append value [kg]
+        payload_mass = Aircraft.ParPayload.m_payload #13500 #append value [kg]
         
         x_lemac = Aircraft.ParLayoutConfig.x_lemac*rangecg[i]
         
@@ -33,7 +32,7 @@ def loadingdiag(Aircraft):
         
         top = x_oew*oew #append real value
         bottom = oew #kg append real value
-        payload_mlist = np.ones(payload_mass)
+        payload_mlist = np.ones(int(payload_mass))
         
         cg_range = [x_oew]
         wrange = [oew]
@@ -52,7 +51,7 @@ def loadingdiag(Aircraft):
         
         #xf must be changed to the loading of the sulphur
         #loading for payload
-        for i in range(payload_mass):
+        for i in range(int(payload_mass)):
             cg = ((top + xcg_totalpayload_empty*payload_mlist[i]))/(bottom + payload_mlist[i])
             top = (top + xcg_totalpayload_empty*payload_mlist[i])
             bottom = bottom + payload_mlist[i]
@@ -61,8 +60,7 @@ def loadingdiag(Aircraft):
      
         #loading for fuel
     #    for i in range(fuel_mass):
-    
-        
+            
         cg_range_mac = (cg_range-x_lemac)/MAC
         x_oew_mac = Aircraft.ParLayoutConfig.x_oe / MAC
         
