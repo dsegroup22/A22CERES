@@ -7,13 +7,20 @@ Created on Mon Jun 10 11:43:50 2019
 import numpy as np
 import matplotlib.pyplot as plt
 import math as m
-from mpl_toolkits.mplot3d import Axes3D
+#from mpl_toolkits.mplot3d import Axes3D
 
 import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[5])
 
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
+from A22DSE.Parameters.Par_Class_Conventional import Conv
+
+anfp = Conv.ParAnFP
+struc = Conv.ParStruc
+prop = Conv.ParProp
+
+
+
 
 def getatm(h):
     T = np.zeros(h.shape)
@@ -29,45 +36,70 @@ def getatm(h):
     rho = np.multiply(p ,1/(0.2869*(T+273.1)))
     return T, rho, p
 
-SFC = 22 #g/s/kN
+SFC = 26.25  * 10**-6 #kg/s/N
+MThrust = 60*10**3 #N
 
- #kN
+n_engines = prop.N_engines
 
-n_engines = 6
+W = struc.MTOW * 9.81
 
+S = anfp.S
+CD0 = anfp.CD0
+
+A = anfp.A
+e = anfp.e
+CL = m.sqrt(CD0*m.pi*A*e)
 """Minimum time climb"""
 #Max RC
 
-res = 100
+res = 500
+res1 = 100
+z=res*res/res1
 H = np.linspace(0,22000,res)
 V = np.linspace(0,275,res)
 V, H =  np.meshgrid(V,H)
 shape = H.shape
 MaxT = np.ones(shape)
 rho = getatm(np.ravel(H))[1]
+setting = np.linspace(0.2,1,res)
 for i in range(len(MaxT[0])):
-    MaxT[i,:] = 80*10**3 * rho[100*i]/rho[0]
+    MaxT[i,:] = MThrust * rho[res*i]/rho[0]
 
 
 He = np.ravel(H) + np.power(np.ravel(V),2)/2/9.81
-W = 60000*9.81 #N
 
-S = 400
-CD0 = 0.01
-CL = 0.7
-A = 13
-e = 0.75
 
 RCs = (np.ravel(MaxT)*n_engines-0.5*np.ravel(rho)*np.power(np.ravel(V),2)*S*\
        (CD0+CL**2/m.pi/A/e))*np.ravel(V)/W
        
-       
-#compute 1/RCs
+RCs = RCs.reshape(shape)  
+He = He.reshape(shape)
+H = H.reshape(shape)
+V = V.reshape(shape)     
 
-       
+
+
+tclimb=np.zeros((res))
+
+He_ar = np.linspace(2000,22162.895,res1)
+RCs_tmin = np.zeros(res1)
+V_tmin = np.zeros(res1)
+H_tmin = np.zeros(res1)
+thrust_tmin = np.zeros(res1)
+for i in range(len(He_ar)):
+    RCs_tmin[i] = np.amax(RCs[np.where(np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))])
+    index=(int(np.where(RCs == np.amax(RCs[np.where(\
+        np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))]))[0]),\
+    int(np.where(RCs == np.amax(RCs[np.where(\
+        np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))]))[1]))
+    
+    thrust_tmin[i] = MaxT[index]
+    V_tmin[i] = V[index]
+    H_tmin[i] = H[index]
+    
 #compute mdot/RCs
 
-       
+     
        
 #integrate         
        
@@ -77,16 +109,34 @@ RCs = (np.ravel(MaxT)*n_engines-0.5*np.ravel(rho)*np.power(np.ravel(V),2)*S*\
        
        
        
-       
+tmin = float(np.trapz(np.divide(1,RCs_tmin),He_ar))/60
+fuel = float(np.trapz(np.divide(thrust_tmin,RCs_tmin),He_ar))*SFC*n_engines
 
-He = He.reshape(shape)
-RCs = RCs.reshape(shape)
-H = H.reshape(shape)
-V = V.reshape(shape)
-rho = rho.reshape(shape)
+
+
+
+
+plt.figure(1)
 a = plt.contour(np.power(V,2)/2/9.81,H,He,5,colors='k', linewidths = 0.5)
 b = plt.contour(np.power(V,2)/2/9.81,H,RCs,20,colors='k')
-plt.plot(2162.9,20000,'k o')
+plt.plot(np.power(V_tmin,2)/2/9.81,H_tmin)
+plt.plot(206**2/2/9.81,20000,'k o')
+plt.plot(np.ones(res)*129**2/2/9.81,H[:,0])
 plt.clabel(b, inline=1, fontsize=10)
 plt.show()
+
+
+plt.figure(2)
+a = plt.plot(He_ar, np.divide(1,RCs_tmin))
+plt.title('Climb time ='+ str(float(np.trapz(np.divide(1,RCs_tmin),He_ar))/60)+'min')
+plt.show()
+
+W = 0.95*struc.MTOW
+RCs = (np.ravel(MaxT)*n_engines-0.5*np.ravel(rho)*np.power(np.ravel(V),2)*S*\
+       (CD0+CL**2/m.pi/A/e))*np.ravel(V)/W
+a = plt.contour(np.power(V,2)/2/9.81,H,He,5,colors='k', linewidths = 0.5)
+b = plt.contour(np.power(V,2)/2/9.81,H,RCs,20,colors='k')       
+plt.show()
+
+
 

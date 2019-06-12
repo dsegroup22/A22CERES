@@ -54,7 +54,7 @@ OUTPUTS: float e Oswald efficiency is added to the Conv object
     K_e_f = 1.-2.*(d_fus/b)**2. #[-]penalty for the fuselage
     K_e_M = a_e*(M_cruise/M_comp-1)**b_e + 1. #[-] penalty for machnumber
     K_e_D = 0.873 #penalty for induced drag, for method 2
-    K_e_dihedral = ((1.+(1./kwl)*(1./np.cos(dihedral)-1.))**2)**-1 #gives value larger than 1???
+    K_e_dihedral = ((1.+(1./kwl)*(1./np.cos(dihedral)-1.))**2) #gives value larger than 1
 
     # variables for final calculation of e for method 1
     Q = 1./(e_theo*K_e_f)

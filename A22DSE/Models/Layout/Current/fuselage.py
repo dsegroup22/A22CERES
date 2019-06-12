@@ -4,17 +4,18 @@ Created on Wed Jun  5 15:40:08 2019
 
 @author: kamph
 """
-import os
-import sys
+#import os
+#import sys
 import numpy as np
-from pathlib import Path
-os.chdir(Path(__file__).parents[2])
-sys.path.append('../../')
+#from pathlib import Path
+##sys.path.append('../../')
+#os.chdir(Path(__file__).parents[4])
+#print(os.getcwd())
+#from A22DSE.Parameters.Par_Class_Conventional import Conv
+from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
+#
+#import matplotlib.pyplot as plt
 
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
-import matplotlib as mpl
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
 
 ## Sizing ##
 
@@ -40,7 +41,7 @@ def GetNoseLength_opt(Aircraft, D_f):
 def GetTailLength_opt(Aircraft, D_F):
 
     fineness_t = Aircraft.ParStruc.fineness_t #Predetermined Fineness
-    L_t = D_f*fineness_t                                  #[m]
+    L_t = D_F *fineness_t                                  #[m]
     return L_t
 
 def GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t):
@@ -54,13 +55,13 @@ def GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t):
     
     
     #Calculate cabin using tail arm as a leading factor
-    L_c = max(Aircraft.ParLayoutConfig.xvt, Aircraft.ParLayoutConfig.xht) - \
-    L_n - L_t
+    L_c = fuselagereq(Aircraft) - L_n - L_t
         
     D_f = L_c/fineness_f
     
     if D_f<D_eq:
         D_f = D_eq
+        L_c = D_f * fineness_f
         
     h = D_f/np.sqrt(ovalrate)
     w = ovalrate*h
@@ -148,80 +149,63 @@ def CD0_diff(Aircraft, fineness_f, SF):
     return CD0_fus
 
 
-#def FuselageWeight_opt(Aircraft, fineness_f):
-#    anfp = Aircraft.ParAnFP
-#    struc = Aircraft.ParStruc
-#    
-#    SF0 = 1
-#    dSF = 0.01
-#    L_freq = max(Aircraft.ParLayoutConfig.xvt, Aircraft.ParLayoutConfig.xht)
-#    
-#    h_fuselage= Fus_Dim_opt(Aircraft, L_freq, SF0, dSF, fineness_f)[2][0]    #[m]
-#    w_fuselage=Fus_Dim_opt(Aircraft, L_freq, SF0, dSF, fineness_f)[2][0]    #[m]
-#
-#    l_fuselage=sum(Fus_Dim_opt(Aircraft, L_freq, SF0, dSF, fineness_f)[0])    #[m]
-#    K_inl=1.                      #roskam page 77 part V
-#    MTOMlbs = struc.MTOW/Aircraft.ConversTool.lbs2kg
-#    q_Dpsf = anfp.q_dive/Aircraft.ConversTool.psf2Pa
-#    
-#    
-#    #Roskam part V (Chapter 5.3)
-#    #roskam: equation 5.26 (commercial)
-#    W_f=2*10.43*K_inl**1.42*(q_Dpsf/100)**0.283*(MTOMlbs/1000)**0.95*\
-#    (l_fuselage/h_fuselage)**0.71
-#
-#    #roskam: equation 5.28 (militairy)
-#    W_f_mil=2*11.03*K_inl**1.23*(q_Dpsf/100)**0.245*(MTOMlbs/1000)**0.98*\
-#    (l_fuselage/h_fuselage)**0.61
-#    
-#    
-##    torenbeek method  (Chapter 8.3.3)  
-#    l_ref=1.5 #[m]
-#    n_ult=2.5
-#    d_fuselage=np.average([h_fuselage,w_fuselage])    
-#    
-#    C_shell=60          #[N/m^3]
-#    Omega_fl=160        #[N/m^2]
-#    
-#    W_shell=C_shell*d_fuselage**2*l_fuselage
-#    W_bulkheads=C_shell*d_fuselage**2*l_ref
-#    
-#    W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
-#    W_f_tor=W_shell+W_bulkheads+W_fl
-#    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N,W_f_tor #[N]
-#
-
-lst = []
-lst1 = []
-
-for i in np.arange(2, 20 ,0.5):
-    CD0 = CD0_diff(Conv, i, 1.5)
-    #W_f = FuselageWeight_opt(Conv, i)
-    lst.append(CD0)
-    #lst1.append(W_f)
+def FuselageWeight_opt(Aircraft, fineness_f, SF):
+    anfp = Aircraft.ParAnFP
+    struc = Aircraft.ParStruc
     
-plt.figure()    
-plt.plot(np.arange(2, 20, 0.5),lst)
+    h_fuselage= Fuselage_iter(Aircraft, fineness_f, SF)[3][0]    #[m]
+    w_fuselage= Fuselage_iter(Aircraft, fineness_f, SF)[3][1]    #[m]
+
+    l_fuselage=sum(Fuselage_iter(Aircraft, fineness_f, SF)[0:3])    #[m]
+    K_inl=1.                      #roskam page 77 part V
+    MTOMlbs = struc.MTOW/Aircraft.ConversTool.lbs2kg
+    q_Dpsf = anfp.q_dive/Aircraft.ConversTool.psf2Pa
+    
+    
+    #Roskam part V (Chapter 5.3)
+    #roskam: equation 5.26 (commercial)
+    W_f=2*10.43*K_inl**1.42*(q_Dpsf/100)**0.283*(MTOMlbs/1000)**0.95*\
+    (l_fuselage/h_fuselage)**0.71
+
+    #roskam: equation 5.28 (militairy)
+    W_f_mil=2*11.03*K_inl**1.23*(q_Dpsf/100)**0.245*(MTOMlbs/1000)**0.98*\
+    (l_fuselage/h_fuselage)**0.61
+    
+    
+#    torenbeek method  (Chapter 8.3.3)  
+    l_ref=1.5 #[m]
+    n_ult=2.5
+    d_fuselage=np.average([h_fuselage,w_fuselage])    
+    
+    C_shell=60          #[N/m^3]
+    Omega_fl=160        #[N/m^2]
+    
+    W_shell=C_shell*d_fuselage**2*l_fuselage
+    W_bulkheads=C_shell*d_fuselage**2*l_ref
+    
+    W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
+    W_f_tor=W_shell+W_bulkheads+W_fl
+    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N #[N]
+
+
+#lst = []
+#lst1 = []
+
+#for i in np.arange(2, 20 ,0.1):
+#    CD0 = CD0_diff(Conv, i, 1.5)
+#    W_f = FuselageWeight_opt(Conv, i, 1.5)
+#    lst.append(CD0)
+#    lst1.append(W_f)
+    
+#plt.figure()    
+#plt.plot(np.arange(2, 20, 0.1),lst)
 #plt.figure(2)
-#plt.plot(np.arange(2, 12.5, 0.5),lst1)
-plt.ylabel('some numbers')
-
-lst = np.empty((4, 4, 4))
-
-for i in range(0,4):
-    fineness_f = 8 + i
-    for j in range(0,4):
-        fineness_n = 1.2 + i * 0.5
-        for k in range(0,4):
-            fineness_t = 2 + i
-            lst[i][j][k] = CD0_diff(Conv, 24, 2, 0.01, fineness_f, fineness_n ,fineness_t)
-            
-            
-fig = plt.figure()
-ax = plt.axes(projection ='3d')
-x = lst[0]
-y = lst[1]
-z = lst[2]
-ax.scatter3D(x, y, z);
-
-plt.show()
+#plt.plot(np.arange(2, 20, 0.1),lst1)
+#plt.ylabel('some numbers')
+    
+def Fuselage(Aircraft):
+    a = Fuselage_iter(Aircraft, 8, 1.5)
+    b = a[0:3]
+    c = a[4]
+    d = a[3]
+    return b, c, d, c
