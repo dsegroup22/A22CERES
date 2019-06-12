@@ -122,6 +122,10 @@ def ClassIISizing(Conv):
     
     #engine selection
     EngineChoice(Conv,ISA_model,False)
+    
+    #Control surface
+    aileron(Conv)
+    
     #engine placement
     Engines_placement(Conv)
 
@@ -134,8 +138,7 @@ def ClassIISizing(Conv):
     TransPlanform.ComputePlanform(Conv, ISA_model,
                                   step, Conv.ParAnFP.A, False))
     
-    #Control surface
-    aileron(Conv)
+
     
     
     #Stability derivatives DATCOM [/rad]
