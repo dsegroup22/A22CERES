@@ -56,7 +56,7 @@ def Engines_placement(Aircraft):
         
         layout.x_eng_g2 = xf_c*c-lf_eng + x_le_eng_g2
         layout.eng_height_under_wing_g2 = h_c*c
-        
+        layout.y_eng_out = layout.y_eng_g2
         
         
     if struc.N_engines == 3 or struc.N_engines == 5:
@@ -74,13 +74,13 @@ def Engines_placement(Aircraft):
         
         layout.x_eng_g2 = xf_c*c-lf_eng + x_le_eng_g2
         layout.eng_height_under_wing_g2 = h_c*c
-        
+        layout.y_eng_out = layout.y_eng_g2
 
         
     if struc.N_engines == 6 or struc.N_engines == 8:
         layout.y_eng_g2 = 0.4*b
         layout.y_eng_g1 = np.nan
-        layout.y_eng_g3 = layout.y_begin_aileron
+        layout.y_eng_g3 = layout.y_aileron
         
         #get x and z position for g2
         x_le_eng_g2 = x_LE_root+layout.y_eng_g2*np.tan(Sweep_LE)
@@ -97,13 +97,13 @@ def Engines_placement(Aircraft):
         
         layout.x_eng_g3 = xf_c*c-lf_eng + x_le_eng_g3
         layout.eng_height_under_wing_g2 = h_c*c
-        
+        layout.y_eng_out = layout.y_eng_g3
         
         
     if struc.N_engines == 7:
         layout.y_eng_g2 = 0.4*b
         layout.y_eng_g1 = 0.
-        layout.y_eng_g3 = layout.y_begin_aileron
+        layout.y_eng_g3 = layout.y_aileron
     
         
         #get x position for g1
@@ -124,7 +124,8 @@ def Engines_placement(Aircraft):
         
         layout.x_eng_g3 = xf_c*c-lf_eng + x_le_eng_g3
         layout.eng_height_under_wing_g2 = h_c*c
-        
+        layout.y_eng_out = layout.y_eng_g3
+   
         
 
         
