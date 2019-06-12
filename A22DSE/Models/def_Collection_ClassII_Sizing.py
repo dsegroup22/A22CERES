@@ -40,6 +40,7 @@ def ClassIISizing(Conv):
     struc= Conv.ParStruc
     sc = Conv.ParCntrl
     Payload=Conv.ParPayload
+    prop = Conv.ParProp
 
     #OEW position wrt mac
     Conv.ParLayoutConfig.x_oe = xoe(Conv)
@@ -122,6 +123,9 @@ def ClassIISizing(Conv):
     EngineChoice(Conv,ISA_model,False)
     #engine placement
     Engines_placement(Conv)
+    
+    
+     
     
     # Wing planform
     

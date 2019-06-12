@@ -41,7 +41,7 @@ ClassI_AndAHalf()
 PrelimTail()
 ComputeCD0(Conv)
 
-anfp.TtoW = anfp.TtoW+0.2
+anfp.TtoW = anfp.TtoW+0.15
 
 #CLASS II
 
