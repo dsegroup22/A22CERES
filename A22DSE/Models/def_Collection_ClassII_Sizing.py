@@ -30,8 +30,8 @@ from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 from A22DSE.Models.Layout.Current.Engine_Placements import Engines_placement
 from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
 from A22DSE.Models.SC.ControlSurface.aileron_sizing import aileron
-from A22DSE.Models.DATCOM.Current.datcomrunread import C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,\
-C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q
+#from A22DSE.Models.DATCOM.Current.datcomrunread import C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,\
+#C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q
 
 def ClassIISizing(Conv):
     #get shortcuts
@@ -84,7 +84,8 @@ def ClassIISizing(Conv):
     
     
     Payload.xcg_tank,Payload.xcg_burner,Payload.x_burner_end,\
-    Payload.xcg_totalpayload_empty=Payloadcg(Conv)
+    Payload.xcg_totalpayload_empty,Payload.xcg_tank_fwd,Payload.xcg_burner_fwd,\
+    Payload.x_burner_end_fwd,Payload.xcg_totalpayload_empty_fwd=Payloadcg(Conv)
     
     anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
     anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
@@ -122,6 +123,10 @@ def ClassIISizing(Conv):
     Layout.x_begin_emp = Layout.l_nose+Layout.l_cabin
     #engine selection
     EngineChoice(Conv,ISA_model,False)
+    
+    #Control surface
+    aileron(Conv)
+    
     #engine placement
     Engines_placement(Conv)
 
@@ -134,12 +139,11 @@ def ClassIISizing(Conv):
     TransPlanform.ComputePlanform(Conv, ISA_model,
                                   step, Conv.ParAnFP.A, False))
     
-    #Control surface
-    aileron(Conv)
+
     
     
     #Stability derivatives DATCOM [/rad]
-    anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot, anfp.C_l_p,\
-    anfp.C_Y_p,anfp.C_n_p,anfp.C_n_r,anfp.C_l_r,anfp.C_l_q,anfp.C_m_q=C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,\
-    C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q
+#    anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot, anfp.C_l_p,\
+#    anfp.C_Y_p,anfp.C_n_p,anfp.C_n_r,anfp.C_l_r,anfp.C_l_q,anfp.C_m_q=C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,\
+#    C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q
     

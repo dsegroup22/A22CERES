@@ -11,7 +11,7 @@ def loadingdiag(Aircraft):
     """DESCRIPTION: loading diagram based on SAED lecture
        INPUT: OEW, x_lemac, 
     """
-    rangecg = np.array([1,1.1,0.9])
+    rangecg = np.array([1,1.15,0.85])
     xcg_fwd = []
     xcg_aft = []
     y = []
@@ -84,7 +84,7 @@ def loadingdiag(Aircraft):
         
     plt.plot(xcg_fwd,y)
     plt.plot(xcg_aft,y)
-    plt.xlim(0,2)
+    plt.xlim(0,1)
     plt.show()
     
     return xcg_fwd, xcg_aft, y
