@@ -176,14 +176,14 @@ def vehicle_setup(Aircraft):
 
     # mass properties
     vehicle.mass_properties.max_takeoff               = Aircraft.ParStruc.MTOW * Units.kg
-    vehicle.mass.properties.takeoff                   = Aircraft.ParStruc.MTOW * Units.kg
+    vehicle.mass_properties.takeoff                   = Aircraft.ParStruc.MTOW * Units.kg
     vehicle.mass_properties.operating_empty           = Aircraft.ParStruc.OEWratio*Aircraft.ParStruc.MTOW * Units.kg
     vehicle.mass_properties.max_zero_fuel             = (Aircraft.ParStruc.MTOW-Aircraft.ParStruc.FW) * Units.kg
     vehicle.mass_properties.cargo                     = Aircraft.ParPayload.m_payload * Units.kg
     
     # envelope properties
     vehicle.envelope.ultimate_load = Aircraft.ParAnFP.n_ult
-    vehicle.envelope.limit_load    = Aircraft.ParAnFP.n_lim
+#    vehicle.envelope.limit_load    = Aircraft.ParAnFP.n_lim
 
     # basic parameters
     vehicle.reference_area         = Aircraft.ParAnFP.S
@@ -258,7 +258,7 @@ def vehicle_setup(Aircraft):
     wing.spans.projected         = Aircraft.ParLayoutConfig.bh*Units.meter
     wing.chords.root             = Aircraft.ParLayoutConfig.c_rht*Units.meter
     wing.chords.tip              = Aircraft.ParLayoutConfig.c_tht*Units.meter
-    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_h*Units.meter          #Fix
+    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_h*Units.meter          
     wing.areas.reference         = Aircraft.ParLayoutConfig.Sht*Units['meters**2']
     wing.twists.root             = 3.0 * Units.degrees
     wing.twists.tip              = 3.0 * Units.degrees  

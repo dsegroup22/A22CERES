@@ -99,8 +99,7 @@ def htail(Aircraft,ISA):
     
     CL= (2*Wavg)/(rho*V_cruise**2*Sw)
     
-    
-    CLh = (Cmaf*(AR_main*(cos(sweep_main))**2)/(AR_main+2*cos(sweep_main)) + (CL*(h-h0)) )/ (etha*Vh)
+    CLh = -0.8 #(Cmaf*(AR_main*(cos(sweep_main))**2)/(AR_main+2*cos(sweep_main)) + (CL*(h-h0)) )/ (etha*Vh)
      
     #must be iterated with the right cg, Wavg, h etc.
     #no incidence angle as it is not a fixed tail 
@@ -122,6 +121,9 @@ def htail(Aircraft,ISA):
     sweep_h50 = atan(tan(sweep_h)-(4/AR_h)*(0.5-0)*((1-tr_h)/(1+tr_h)))
     sweep_h25 =  atan(tan(sweep_h)-(4/AR_h)*(0.25-0)*((1-tr_h)/(1+tr_h)))
     
+    
+ 
+    
     #-----incidence 
     beta = sqrt(1-M_cruise**2)
     
@@ -135,6 +137,19 @@ def htail(Aircraft,ISA):
 #    plt.show()
 #    
     mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
+    
+    ShS = 0.45
+    Sh_ite = ShS*Sw #new horizotal tail surface area
+    tail_diff = abs((Sh_ite - Sh))/Sh
+##    
+    if tail_diff > 0.1:
+        Sh = Sh_ite
+        l_arm_opt = Vh*MAC*Sw/Sh
+        mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
+        
+        
+##        
+#   
     
     #using scissor plot and update values of Sh
     
@@ -194,7 +209,7 @@ def htail(Aircraft,ISA):
     Aircraft.ParLayoutConfig.Sht = Sh
     Aircraft.ParLayoutConfig.xht = l_arm_opt
     Aircraft.ParLayoutConfig.mac_h = mac_h
-    return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
+    #return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
 #def rudder(Aircraft):
 
 

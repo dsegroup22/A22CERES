@@ -42,7 +42,7 @@ class ParAnFPLst(object):
         self.rho_SL = 1.225 #[kg/m3]
         self.T_to = None			#[N]                 DUMMY
         self.Vr = 50						#[m/s]            DUMMY
-        
+        self.V_max_TO = 150. #[m/s]
         #landing parameters
         self.CL_land = 1.4				#[-]                       DUMMY VALUE
         self.CD_land = 0.3				#[-]                       DUMMY VALUE                                               cruise mach number                          by POPS
@@ -100,6 +100,9 @@ class ParStrucLst(object):
             self.fineness_t = 2.
             self.Wf         = None
             self.Mw_Mtow= 0.185
+            
+            #material constants
+            self.max_yield_stress = 110e6 #DUMMY VALUE, NEEDS TO BE UPDATED
 class ParPayloadLst(object):
     
     def __init__(self):
@@ -218,6 +221,7 @@ class ParLayoutConfig(object):
          self.d_cockpit = None
          self.dim_cabin = None
          self.d_engine = 1.6 #DUMMY VALUE #[m] diameter of engine
+         self.d_end_fus = 0.5 #[m] DUMMY VALUE
          self.d_nacelle_engine = self.d_engine*1.2
          self.x_lemac = 14 #DUMMY VALUE #[m] xlocation of LEMAC, from nose
          self.y_cg= np.array([0.,0.]) #DUMMY VALUE #[m] y_cg range (most forward & aft) 

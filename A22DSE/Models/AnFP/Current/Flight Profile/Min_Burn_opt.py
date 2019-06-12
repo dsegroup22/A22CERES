@@ -14,12 +14,24 @@ from pathlib import Path
 os.chdir(Path(__file__).parents[5])
 
 from A22DSE.Parameters.Par_Class_Conventional import Conv
+from A22DSE.Parameters.Par_Class_Atmos import Atmos
 
 anfp = Conv.ParAnFP
 struc = Conv.ParStruc
 prop = Conv.ParProp
 
+ISA_model = Atmos()
 
+def Lowbypass(Aircraft, Fsl, ISA_model, H, M):
+    Tamb, Pamb = ISA_model.ISAFunc([H])[0:2]
+    theta0 = Tamb/288.15*(1+0.4/2*M**2)
+    delta0 = Pamb/101325*(1+0.4/2*M**2)**(1.4/0.4)
+    TR = 1.0
+    if theta0 <= TR:
+        F = 0.6*Fsl*delta0 #Empirical formula "General Aviation Aircraft Design, Applied Methods and Procedures" page 200
+    else:
+        F = 0.6*Fsl*delta0*(1-3.8*(theta0-TR)/(theta0))
+    return F
 
 
 def getatm(h):
@@ -61,9 +73,20 @@ V, H =  np.meshgrid(V,H)
 shape = H.shape
 MaxT = np.ones(shape)
 rho = getatm(np.ravel(H))[1]
-setting = np.linspace(0.2,1,res)
-for i in range(len(MaxT[0])):
-    MaxT[i,:] = MThrust * rho[res*i]/rho[0]
+T = getatm(np.ravel(H))[0]
+#setting = np.linspace(0.2,1,res)
+Thrust = np.ones(res)
+
+
+M = np.ravel(V)/np.sqrt(1.4*287*(273.15+T))
+H = np.ravel(H)
+MaxT = np.ravel(MaxT)
+for i in range(len(np.ravel(H))):
+    MaxT[i] = Lowbypass(Conv,MThrust, ISA_model,H[i], anfp.Mdd)
+MaxT = MaxT.reshape(shape)
+#for i in range(len(MaxT[0])):
+##    MaxT[i,:] = MThrust * rho[res*i]/rho[0]
+#    MaxT[:,i] = Thrust
 
 
 He = np.ravel(H) + np.power(np.ravel(V),2)/2/9.81
@@ -71,6 +94,8 @@ He = np.ravel(H) + np.power(np.ravel(V),2)/2/9.81
 
 RCs = (np.ravel(MaxT)*n_engines-0.5*np.ravel(rho)*np.power(np.ravel(V),2)*S*\
        (CD0+CL**2/m.pi/A/e))*np.ravel(V)/W
+       
+
        
 RCs = RCs.reshape(shape)  
 He = He.reshape(shape)
@@ -87,7 +112,8 @@ V_tmin = np.zeros(res1)
 H_tmin = np.zeros(res1)
 thrust_tmin = np.zeros(res1)
 for i in range(len(He_ar)):
-    RCs_tmin[i] = np.amax(RCs[np.where(np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))])
+    RCs_tmin[i] = np.amax(RCs[np.where(np.logical_and(He_ar[i]> He-z/res \
+                          , He_ar[i] < He+z/res))])
     index=(int(np.where(RCs == np.amax(RCs[np.where(\
         np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))]))[0]),\
     int(np.where(RCs == np.amax(RCs[np.where(\
@@ -128,15 +154,21 @@ plt.show()
 
 plt.figure(2)
 a = plt.plot(He_ar, np.divide(1,RCs_tmin))
-plt.title('Climb time ='+ str(float(np.trapz(np.divide(1,RCs_tmin),He_ar))/60)+'min')
+plt.title('Climb time ='+ str(float(np.trapz(np.divide(1,RCs_tmin),He_ar))\
+                              /60)+'min')
 plt.show()
 
-W = 0.95*struc.MTOW
+
+W = struc.MTOW * 0.95 * 9.81
 RCs = (np.ravel(MaxT)*n_engines-0.5*np.ravel(rho)*np.power(np.ravel(V),2)*S*\
        (CD0+CL**2/m.pi/A/e))*np.ravel(V)/W
+       
+RCs = RCs.reshape(shape)
+
+
+plt.figure(3)
 a = plt.contour(np.power(V,2)/2/9.81,H,He,5,colors='k', linewidths = 0.5)
-b = plt.contour(np.power(V,2)/2/9.81,H,RCs,20,colors='k')       
+b = plt.contour(np.power(V,2)/2/9.81,H,RCs,20,colors='k')
+plt.plot(206**2/2/9.81,20000,'k o')
+plt.clabel(b, inline=1, fontsize=10)
 plt.show()
-
-
-
