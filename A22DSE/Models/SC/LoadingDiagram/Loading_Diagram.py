@@ -86,7 +86,7 @@ def loadingdiag(Aircraft):
         
     plt.plot(xcg_fwd,y)
     plt.plot(xcg_aft,y)
-    plt.xlim(0,1)
+    plt.xlim(0,2)
     plt.show()
     
     return xcg_fwd, xcg_aft, y
