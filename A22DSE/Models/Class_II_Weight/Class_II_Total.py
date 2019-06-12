@@ -44,7 +44,8 @@ def ClassIIWeight_MTOW(Aircraft):
     Aircraft.ParStruc.LG_weight_tot,Aircraft.ParStruc.LG_weight_nose, \
     Aircraft.ParStruc.LG_weight_main  = Class_II_Weight_LG(Aircraft)
     
-    struc.Wing_weight = Basic_Wing(Aircraft)#/ISA_model.g0 # [kg] whole wing (2 sides)
+    #struc.Wing_weight = Basic_Wing(Aircraft) 
+    struc.Wing_weight = 2.*Total_Wing(Conv)/ISA_model.g0 # [kg] whole wing (2 sides)
 #    struc.Wing_weight = Method2(Aircraft)
     struc.Wf=FuselageWeight(Aircraft)[0]/ISA_model.g0 #[kg]
     
@@ -55,14 +56,14 @@ def ClassIIWeight_MTOW(Aircraft):
     #calculate new OEW and new MTOW
     struc.OEW = struc.Weight_WingGroup + struc.Weight_FusGroup #[kg]
     MTOW = struc.OEW + struc.FW + Aircraft.ParPayload.m_payload
-    struc.OEWratio = struc.OEW/struc.MTOW
+    struc.OEWratio = struc.OEW/MTOW
     return MTOW
 
 
 def ClassIIWeightIteration(Aircraft):
     struc= Aircraft.ParStruc
-    #anfp= Aircraft.ParAnFP
-    
+    anfp= Aircraft.ParAnFP
+    prop = Aircraft.ParProp
 #DESCRIPTION:
 #   This function iterates the MTOW for 20 iterations, or less if it converges 
 #   earlier. If it converges, it returns the updated MTOW, if not, it returns
@@ -93,13 +94,17 @@ def ClassIIWeightIteration(Aircraft):
          
          #calculate old and new masses
          MTOW_old = struc.MTOW
+         
          struc.MTOW = ClassIIWeight_MTOW(Aircraft)
+    
          #print(struc.Weight_WingGroup)
          #print(struc.OEW)
          #print(anfp.b)
          #check if error is small enough, if it is, return MTOW
          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
-         if error<0.01:
+         print(struc.MTOW)
+
+         if error<0.005:
              break
          itcount+=1    
          

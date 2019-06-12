@@ -40,6 +40,7 @@ def ClassIISizing(Conv):
     struc= Conv.ParStruc
     sc = Conv.ParCntrl
     Payload=Conv.ParPayload
+    prop = Conv.ParProp
 
     #OEW position wrt mac
     Conv.ParLayoutConfig.x_oe = xoe(Conv)
@@ -53,7 +54,7 @@ def ClassIISizing(Conv):
 #    Conv, ISA_model, step, False)
     
     #Oswald Efficiency
-#    anfp.e = OswaldEfficiency(Conv)
+    anfp.e = OswaldEfficiency(Conv)
     #engine weight
     Conv.ParProp.Engine_weight_Total = Conv.ParProp.Engine_weight*Conv.ParStruc.N_engines
     
@@ -92,6 +93,7 @@ def ClassIISizing(Conv):
     #horizontal
     #function gives Surface, weight, Aspect ratio, optimal arm etc
     htail(Conv,ISA_model)
+   
     #vertical
     vtail(Conv)
     
@@ -120,9 +122,9 @@ def ClassIISizing(Conv):
     
     #engine selection
     EngineChoice(Conv,ISA_model,False)
-    
     #engine placement
     Engines_placement(Conv)
+
     
     # Wing planform
     

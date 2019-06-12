@@ -35,7 +35,7 @@ def vtail(Aircraft):
     Vmc = 1.13*Aircraft.ParAnFP.V_stall   #1.13*vstall!!!!!!
 #    Lv = 0.5*rho*Vmc**2*Sv*CLv
 #    oeidif =Lv*lvi-0.5*Aircraft.ParAnFP.T_to*Aircraft.ParLayoutConfig.y_engine#Aircraft.ParLayoutConfig.y_loc_eng
-    Svi = 0.5*Aircraft.ParAnFP.T_to*Aircraft.ParLayoutConfig.y_engine/(lvi*0.5*rho*Vmc**2*CLv)
+    Svi = Aircraft.ParAnFP.T_to/Aircraft.ParStruc.N_engines*Aircraft.ParLayoutConfig.y_eng_out/(lvi*0.5*rho*Vmc**2*CLv)
 #    print(Sv,Svi,(abs(Svi-Sv))/Sv)
     
 #    if (abs(Svi-Sv))/Sv > 0.1:

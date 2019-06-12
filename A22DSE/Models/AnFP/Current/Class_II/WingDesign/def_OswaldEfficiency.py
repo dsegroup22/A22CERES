@@ -63,8 +63,8 @@ OUTPUTS: float e Oswald efficiency is added to the Conv object
     
     
     #final e
-    e = K_e_M/(Q+P*np.pi*A)*K_e_dihedral #[-] Method 1 Kroo
-    #e = e_theo*K_e_f*K_e_M*K_e_D*K_e_dihedral # [-] Method 2 Paper mentioned above
+    #e = K_e_M/(Q+P*np.pi*A)*K_e_dihedral #[-] Method 1 Kroo
+    e = e_theo*K_e_f*K_e_M*K_e_D*K_e_dihedral # [-] Method 2 Paper mentioned above
     
     return (e)
 
