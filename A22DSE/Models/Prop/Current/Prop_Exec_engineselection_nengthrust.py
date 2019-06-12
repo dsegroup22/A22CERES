@@ -77,8 +77,8 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         engsel = engnonaft[np.concatenate(np.where(neng == np.amin(neng)))[0]] #Select engine with lowest total mass
         
         Aircraft.ParProp.Engine_name = engsel.name #Append aircraft stuff
-        Aircraft.ParStruc.N_engines = np.amin(neng)/engsel.weight
-        Aircraft.ParProp.N_engines = np.amin(neng)/engsel.weight
+        Aircraft.ParStruc.N_engines = 4#np.amin(neng)/engsel.weight
+        Aircraft.ParProp.N_engines = 4#np.amin(neng)/engsel.weight
         Aircraft.ParProp.Engine_weight = engsel.weight
         Aircraft.ParAnFP.SFC = engsel.SFC 
         Aircraft.ParProp.Engine_cost = engsel.cost
