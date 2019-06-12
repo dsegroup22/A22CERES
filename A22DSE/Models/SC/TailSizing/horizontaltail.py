@@ -103,12 +103,12 @@ def htail(Aircraft,ISA):
      
     #must be iterated with the right cg, Wavg, h etc.
     #no incidence angle as it is not a fixed tail 
-    AR_h = 2/3 * AR_main
+    AR_h = 0.5 * AR_main
     tr_h = 0.348
     sweep_h = sweep_main+5*pi/180
     #Gamma = sweep_h #dihedral angle
     
-    ch_root = 3/2*Vh*((1+tr_h)/(1+tr_h+tr_h**2))
+    ch_root = Aircraft.ParLayoutConfig.Ct_v #3/2*Vh*((1+tr_h)/(1+tr_h+tr_h**2))
     ch_tip = ch_root*tr_h
     bh = sqrt(AR_h*Sh) #Sh/Vh
     
