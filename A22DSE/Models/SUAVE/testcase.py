@@ -186,7 +186,7 @@ def vehicle_setup():
     
     # envelope properties
     vehicle.envelope.ultimate_load = Aircraft.ParAnFP.n_ult
-    vehicle.envelope.limit_load    = 15 #Aircraft.ParAnFP.n_lim
+    vehicle.envelope.limit_load    = Aircraft.ParAnFP.n_lim
 
     # basic parameters
     vehicle.reference_area         = 124.862 * Units['meters**2']  
@@ -679,14 +679,14 @@ def mission_setup(analyses):
     #   Second Climb Segment: Constant Throttle, Constant Mach
     # ------------------------------------------------------------------    
 
-    segment = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
+    segment = Segments.Climb.Constant_Throttle_Constant_Mach(base_segment)
     segment.tag = "climb_2"
 
     segment.analyses.extend( analyses.cruise )
 
     segment.altitude_start = 3.0   * Units.km
     segment.altitude_end   = 12.0   * Units.km
-    segment.air_speed    = 250 * Units.knots
+    segment.mach_number    = 0.6 
     segment.throttle       = 1.0
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
@@ -697,11 +697,10 @@ def mission_setup(analyses):
     segment.tag = "climb_3"
 
     segment.analyses.extend( analyses.cruise )
-    
-    segment.state.numerics.number_control_points = 50
+
     segment.altitude_start = 12.0   * Units.km
     segment.altitude_end   = 20.0   * Units.km
-    segment.mach_number    = 0.67 
+    segment.mach_number    = 0.6 
     segment.throttle       = 1.0
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
@@ -738,7 +737,7 @@ def mission_setup(analyses):
 
     segment.altitude_start = 20.0 *Units.km
     segment.altitude_end = 0.0   * Units.km
-    segment.equivalent_air_speed      = 200.0 * Units['m/s']
+    segment.air_speed    = 200.0 * Units['m/s']
     segment.descent_rate = 1800.   * Units['ft/min']
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 

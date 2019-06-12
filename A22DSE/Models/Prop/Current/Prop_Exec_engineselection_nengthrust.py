@@ -69,12 +69,18 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
     
     if afterburner == False: #If no afterburner
         neng = np.array([]) #Total engine weight matrix
+        t_eng = np.array([]) 
         for i in engnonaft:
             if i.name == 'AE3007H': #For high bypass
-                neng = np.append(neng,[np.ceil(T/Highbypass(Aircraft, i.thrust, ISA_model))*i.weight]) #Calculate total engine mass
+                T_eng = Highbypass(Aircraft, i.thrust, ISA_model)
+                neng = np.append(neng,[np.ceil(T/T_eng)*i.weight]) #Calculate total engine mass
+                t_eng = np.append(t_eng, np.ceil(T/T_eng)*T_eng)
             else: #The rest
-                neng = np.append(neng,[np.ceil(T/Lowbypassafter(Aircraft, i.thrust, ISA_model))*i.weight]) #Calculate total engine mass
+                T_eng = Lowbypassafter(Aircraft, i.thrust, ISA_model)
+                neng = np.append(neng,[np.ceil(T/T_eng)*i.weight]) #Calculate total engine mass
+                t_eng = np.append(t_eng, np.ceil(T/T_eng)*T_eng)
         engsel = engnonaft[np.concatenate(np.where(neng == np.amin(neng)))[0]] #Select engine with lowest total mass
+        tengsel = t_eng[np.concatenate(np.where(neng == np.amin(neng)))[0]]
         
         Aircraft.ParProp.Engine_name = engsel.name #Append aircraft stuff
         Aircraft.ParStruc.N_engines = np.amin(neng)/engsel.weight
@@ -90,12 +96,17 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         Aircraft.ParProp.Engine_diameter = engsel.diameter
         Aircraft.ParProp.SFC_cruise = engsel.SFC_cruise
         Aircraft.ParProp.T_sl = engsel.thrust*np.amin(neng)/engsel.weight
+        Aircraft.ParProp.T_cruise_available = tengsel
 
     elif afterburner == True: #For afterburner
         neng = np.array([])
+        t_eng = np.array([]) 
         for i in engaft: #Low bypass only everything else is the same
+            T_eng = Highbypass(Aircraft, i.thrust, ISA_model)
             neng = np.append(neng,[np.ceil(T/Lowbypassafter(Aircraft, i.thrust, ISA_model))*i.weight])
+            t_eng = np.append(t_eng, np.ceil(T/T_eng)*T_eng)
         engsel = engaft[np.concatenate(np.where(neng == np.amin(neng)))[0]]
+        tengsel = t_eng[np.concatenate(np.where(neng == np.amin(neng)))[0]]
         
         Aircraft.ParProp.Engine_name = engsel.name
         Aircraft.ParStruc.N_engines = np.amin(neng)/engsel.weight
@@ -111,6 +122,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
         Aircraft.ParProp.Engine_diameter = engsel.diameter
         Aircraft.ParProp.SFC_cruise = engsel.SFC_cruise
         Aircraft.ParProp.T_sl = engsel.thrust*np.amin(neng)/engsel.weight
+        Aircraft.ParProp.T_cruise_available = tengsel
 
     else:
         print('Specify whether you want afterburners or not in EngineChoice def')

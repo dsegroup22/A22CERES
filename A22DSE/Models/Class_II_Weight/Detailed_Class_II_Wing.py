@@ -37,7 +37,6 @@ def R_wg(Aircraft):
     #Determines wing relief factor due to structure, can be more precise by
     #using exact y locations of wing group and CoP
     struc = Aircraft.ParStruc
-
     MTOM = struc.MTOW                   #[kg]
     M_w = struc.Mw_Mtow * struc.MTOW    #[kg]
     #y_wg
@@ -53,15 +52,34 @@ def R_en(Aircraft):
     taper = anfp.taper                  #[-]
     n_ult = anfp.n_ult                         #[-]
     Sweep_25 =anfp.Sweep_25             #[rad]
-
-
-    x_eng = 0.25     	    #[-] dimensionless config.x_engine
-    x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
-    +0.02*np.sin(Sweep_25)              #[-] dimensionless p330
-    MTOM = struc.MTOW                   #kg
-    M_eng =  prop.Engine_weight         #kg
     
-    return 3 * (x_eng**2 / x_cp) * (M_eng / MTOM)
+    if struc.N_engines == 2 or struc.N_engines == 3:
+        y_eng = config.y_eng_g2/(anfp.b/2)     	    #[-] dimensionless config.y_engine
+        x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
+        +0.02*np.sin(Sweep_25)              #[-] dimensionless p330
+        MTOM = struc.MTOW                   #kg
+        M_eng =  prop.Engine_weight         #kg
+        R_eng = 3 * (y_eng**2 / x_cp) * (M_eng / MTOM) 
+
+    if struc.N_engines >= 4:
+        y_eng = config.y_eng_g2/(anfp.b/2)     	    #[-] dimensionless config.y_engine
+        x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
+        +0.02*np.sin(Sweep_25)              #[-] dimensionless p330
+        MTOM = struc.MTOW                   #kg
+        M_eng =  prop.Engine_weight*2         #kg
+        R_eng = 3 * (y_eng**2 / x_cp) * (M_eng / MTOM)
+    
+    if struc.N_engines ==6 or struc.N_engines ==7:
+        y_eng_g3 = config.y_eng_g3/(anfp.b/2)
+        M_eng_g3 =  prop.Engine_weight         #kg
+        R_eng += 3 * (y_eng_g3**2 / x_cp) * (M_eng_g3 / MTOM)
+    
+    if struc.N_engines ==8:
+        y_eng_g3 = config.y_eng_g3/(anfp.b/2)
+        M_eng_g3 =  prop.Engine_weight*2         #kg
+        R_eng += 3 * (y_eng_g3**2 / x_cp) * (M_eng_g3 / MTOM)
+        
+    return R_eng
 
 def R_f(Aircraft):
     #Determines fuel relief factor, for layout it is necessary that inner

@@ -84,9 +84,6 @@ def initialize_conditions(segment):
     if alt0 is None:
         if not segment.state.initials: raise AttributeError('initial altitude not set')
         alt0 = -1.0 *segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
-    
-    alt = t_nondim * (altf-alt0) + alt0
-    conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
 
     SUAVE.Methods.Missions.Segments.Common.Aerodynamics.update_atmosphere(segment)
     
