@@ -75,7 +75,7 @@ def oecg(Aircraft):
     xcg_totalpayload_empty_aft = Aircraft.ParPayload.xcg_totalpayload_empty
     xcg_totalpayload_empty_fwd = Aircraft.ParPayload.xcg_totalpayload_empty_fwd
     payload_empty = np.arange(int(xcg_totalpayload_empty_fwd), int(xcg_totalpayload_empty_aft),1)
-    -------------------------
+    #-------------------------
     xoe = 0.25 #25% MAC estimate for wing-mounted engine configuration, in the MAC ref 
     #wing group: wing + engine
     MAC = Aircraft.ParAnFP.MAC
