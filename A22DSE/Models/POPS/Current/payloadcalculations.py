@@ -118,11 +118,15 @@ def Payloadcg(Aircraft):
     #xcg_tank=xcg_burner-(l_tank+l_burner)/2 # most aft poossible position: place tank directly ahead of the payload
 
     xcg_tank=l_nose+l_cabin-(l_tank-d_tank)/2 # most aft possible position: cylindrical tank section ennds at end of cylindrical cabin section
+    xcg_tank_fwd=l_nose+(l_tank-d_tank)/2
     xcg_burner=xcg_tank+(l_tank+l_burner)/2 # placed directly aft of the tank
+    xcg_burner_fwd=xcg_tank_fwd+(l_tank+l_burner)/2
     x_burner_end=xcg_burner+l_burner/2 # check that the burner does not extend further than the fuselage
+    x_burner_end_fwd=xcg_burner_fwd+l_burner/2
     xcg_totalpayload_empty=((xcg_tank*m_tank+xcg_burner*m_burner)/(m_tank+m_burner))
+    xcg_totalpayload_empty_fwd=((xcg_tank_fwd*m_tank+xcg_burner_fwd*m_burner)/(m_tank+m_burner))
     
-    return(xcg_tank,xcg_burner,x_burner_end,xcg_totalpayload_empty)
+    return(xcg_tank_fwd,xcg_burner_fwd,x_burner_end_fwd,xcg_totalpayload_empty_fwd)
     
     
 def PayloadtankLengthEllipse(Aircraft):
