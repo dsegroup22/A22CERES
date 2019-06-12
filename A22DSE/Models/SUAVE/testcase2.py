@@ -667,8 +667,21 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.takeoff )
 
     segment.altitude_start = 0.0   * Units.km
-    segment.altitude_end   = 3.0   * Units.km
+    segment.altitude_end   = 1.0   * Units.km
     segment.air_speed      = 125.0 * Units['m/s']
+    segment.climb_rate       = 45.0 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to misison
+    mission.append_segment(segment)
+    
+    segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
+    segment.tag = "climb_2"
+
+    segment.analyses.extend( analyses.takeoff )
+
+    segment.altitude_end   = 2.0   * Units.km
+    segment.equivalent_air_speed      = 220.0 * Units.knots
     segment.climb_rate       = 45.0 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
