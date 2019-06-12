@@ -41,11 +41,20 @@ def Init2DOFSS(par, Aircraft, ISA_model):
     
     M = np.matrix([[par.m, par.Stheta],
                [par.Stheta, par.Itheta]])
-    K = np.matrix([[par.Kh, 0], [0, Ktheta]])
+    K = np.matrix([[par.Kh, 0], [0, par.Ktheta]])
     A0 = np.matrix([[0 -1* par.S * par.CLa],
                     [0, 2 * par.S * par.e * par.b * par.CLa]])
+
+    q = 0.5*ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])[-1]* \
+    Aircraft.ParAnFP.V_cruise
     
-    control.ss()
-    q = Aircraft
+    def ComputeConstants():
+        a4 = par.m * par.Itheta - par.Stheta**2
+        a0 = par.Kh * (par.Ktheta -2 * par.e * par.b * q * par.S * par.CLa)
+        a2 = (par.m * par.Ktheta + par.Itheta * par.Kh - (2* par.m * par.e *
+              par.b + par.Stheta) * q * par.S * par.CLa)
+        
+        return a0, a2, a4
     
-    return None
+    a0, a2, a4 = ComputeConstants()
+    return M, K, A0, a0, a2, a4
