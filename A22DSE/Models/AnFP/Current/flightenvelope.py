@@ -28,7 +28,7 @@ def flightenvelope(Aircraft):
     ngminc = 1-0.5*rho*Vc*eas*Kg*Aircraft.ParAnFP.C_L_alpha_cruise*15.24/(Aircraft.ParStruc.MTOW/Aircraft.ParAnFP.S)
     ngmaxd = 1+0.5*rho*Vd*eas*Kg*Aircraft.ParAnFP.C_L_alpha_cruise*7.62/(Aircraft.ParStruc.MTOW/Aircraft.ParAnFP.S)
     ngmind = 1-0.5*rho*Vd*eas*Kg*Aircraft.ParAnFP.C_L_alpha_cruise*7.62/(Aircraft.ParStruc.MTOW/Aircraft.ParAnFP.S)
-    return(max(ngmaxc,nmax),min(nmin,ngminc),Vs,Vd)
+    return(max(ngmaxc,nmax)*1.5,max(ngmaxc,nmax),Vs,Vd)
 
 #    x_mu1 = np.arange(0,Va,1)
 #    y_mu1 = x_mu1**2*0.5*rho*CLmax*Aircraft.ParAnFP.S/Aircraft.ParStruc.MTOW
