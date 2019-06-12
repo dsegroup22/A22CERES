@@ -11,14 +11,25 @@ import numpy as np
 
 #structural wing model functions
 
-def chord(bi,Aircraft): #finished
+def chord(bi,Aircraft): #fin
+    ''' 
+    DESCRIPTION: function that calculates the chord at a span position
+    INPUT: span position in the aircraft body system (bi)
+    OUTPUT: chord length at the span position (chord)
+    ''' 
+    bi=abs(bi)
     c_r = Conv.ParAnFP.c_r
     c_t = Conv.ParAnFP.c_t
     b = Conv.ParAnFP.b
     chord = c_r - (c_r-c_t)*2/b*bi
     return chord
 
-def arc_length(x, y):  #finished
+def arc_length(x, y):  #fin
+    ''' 
+    DESCRIPTION: function that calculates the length of a curve
+    INPUT: arrays of x and y coordinates for a 2D curve (x,y)
+    OUTPUT: curve length (arc)
+    '''    
     npts = len(x)
     arc = np.sqrt((x[1] - x[0])**2 + (y[1] - y[0])**2)
     for k in range(1, npts):
@@ -26,16 +37,13 @@ def arc_length(x, y):  #finished
 
     return arc
 
-def skin_eq_upper(chord): #finished
+def skin_eq_upper(chord): #fin
     ''' 
-    DESCRIPTION: function that creates a polynomal fit for the airfoil for the upper skin
-    INPUT: array of x values from 0-1c
-    OUTPUT: polynomal function
+    DESCRIPTION: fucntion that makes a 25th order polynomial fit for the airfoil
+    INPUT: datafiles of upper airfoil and the chord length
+    OUTPUT: polynomal function of the upper airfoil
     ''' 
     #read datafile
-#    import os
-#    from pathlib import Path
-#    os.chdir(Path(__file__).parents[6])
     f=open("NASASC20712data_1.txt", "r")
     data_f=f.read()
     data_f = data_f.split('\n')
@@ -52,11 +60,11 @@ def skin_eq_upper(chord): #finished
     
     return func1
 
-def skin_eq_lower(chord): #finished
+def skin_eq_lower(chord): #fin
     ''' 
-    DESCRIPTION: function that creates a polynomal fit for the airfoil for the lower skin
-    INPUT: array of x values from 0-1c
-    OUTPUT: polynomal function
+    DESCRIPTION: fucntion that makes a 25th order polynomial fit for the airfoil
+    INPUT: datafiles of lower airfoil and the chord length
+    OUTPUT: polynomal function of the lower airfoil
     ''' 
     #read datafile
     f=open("NASASC20712data_2.txt", "r")
@@ -76,16 +84,23 @@ def skin_eq_lower(chord): #finished
     
     return func2
 
-def moi_stringer(t,b,h): #finished
+def moi_stringer(t,b,h): #fin
+    ''' 
+    DESCRIPTION: fucntion that moment of inetia of a stringer
+    INPUT: stringer dimensions widht (b), height (h), thickness (t)
+    OUTPUT: moment of inertia stringer
+    ''' 
     return 1/12*b*h**3+(h/2)**2*(b+h)*t
 
-def rib_moi(x_rib1,x_rib2,t_rib): #finished
+def rib_moi(chord,t_rib): #fin
     ''' 
     DESCRIPTION: function that calculates the moment of inertia of the ribs. 
     INPUT: locations of the ribs (x_rib1, x_rib2), tickness of the rib (t_rib),
     wing skin equations (eq_lowerskin, eq_upperskin)
     OUTPUT: moment of inertia ribs (moi_ribs)
     ''' 
+    x_rib1=0.2*chord
+    x_rib2=0.6*chord
     h_rib1=eq_upperskin(x_rib1)-eq_lowerskin(x_rib1)
     h_rib2=eq_upperskin(x_rib2)-eq_lowerskin(x_rib2)
     moi_ribs=1/12*t_rib*(h_rib1**3+h_rib2**3)
@@ -105,6 +120,10 @@ def skin_moi(x,t_skin): #needs to be checked
         
     return moi_skin
     
+def moi_wing(x,t_skin,t_rib):
+    
+    
+    return moi_wing
 
 def Area(chord): #finished
     x_rib1=0.2*chord
@@ -139,8 +158,6 @@ t_skin=0.003175
 t_rib=0.02
 
 def TwistSolver(chord, t_skin,t_rib): #finished
-    x_rib1=0.2*chord
-    x_rib2=0.6*chord
     A1,A2,A3=Area(chord)
     S1,S2,S3,h_rib1,h_rib2=S(chord)
     G_alu=26.9e9
@@ -156,11 +173,10 @@ def TwistSolver(chord, t_skin,t_rib): #finished
     return dthetadz
 
 def TorsionalStiffness(chord,t_skin,t_rib):  #finished
-    T=1
+    T=1 #unit torque to run the numerical calculation
     dthetadz=TwistSolver(chord,t_skin,t_rib)
     
     return abs(float(T/dthetadz))
-
 
 
 

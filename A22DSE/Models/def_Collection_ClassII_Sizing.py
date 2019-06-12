@@ -84,7 +84,7 @@ def ClassIISizing(Conv):
     
     
     Payload.xcg_tank,Payload.xcg_burner,Payload.x_burner_end,\
-    Payload.xcg_totalpayload_empty,Payload.xcg_tank_fwd,Payload.xcg_burner_fwd,\
+    Payload.xcg_totalpayload_empty,Payload.xcg_tank_fwd,Payload.xcg_burner_fwd, \
     Payload.x_burner_end_fwd,Payload.xcg_totalpayload_empty_fwd=Payloadcg(Conv)
     
     anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
