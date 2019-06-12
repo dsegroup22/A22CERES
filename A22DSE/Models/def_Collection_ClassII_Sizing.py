@@ -120,7 +120,7 @@ def ClassIISizing(Conv):
     Layout.x_apex_wing = Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
     Layout.x_apex_ht = Layout.x_lemach-Layout.y_MACh*np.tan(Layout.sweepLEht)
     Layout.x_apex_vt = Layout.x_lemacv-Layout.y_MACv*np.tan(Layout.sweepLEvt)
-    
+    Layout.x_begin_emp = Layout.l_nose+Layout.l_cabin
     #engine selection
     EngineChoice(Conv,ISA_model,False)
     
