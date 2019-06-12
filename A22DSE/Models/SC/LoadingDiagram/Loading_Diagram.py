@@ -11,9 +11,11 @@ def loadingdiag(Aircraft):
     """DESCRIPTION: loading diagram based on SAED lecture
        INPUT: OEW, x_lemac, 
     """
+
     xcg_totalpayload_empty_aft = Aircraft.ParPayload.xcg_totalpayload_empty
     xcg_totalpayload_empty_fwd = Aircraft.ParPayload.xcg_totalpayload_empty_fwd
     rangecg = np.array([0.9,1,1.1])
+
     xcg_fwd = []
     xcg_aft = []
     y = []
