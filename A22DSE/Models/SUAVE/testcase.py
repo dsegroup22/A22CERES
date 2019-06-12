@@ -218,7 +218,7 @@ def vehicle_setup():
     wing = SUAVE.Components.Wings.Main_Wing()
     wing.tag = 'main_wing'
     
-    wing.aspect_ratio            = 10.18
+    wing.aspect_ratio            = Aircraft.ParAnFP.A
     wing.sweeps.quarter_chord    = Aircraft.ParAnFP.Sweep_25*Units.radians
     wing.thickness_to_chord      = Aircraft.ParAnFP.tc
     wing.taper                   = Aircraft.ParAnFP.taper
@@ -254,18 +254,18 @@ def vehicle_setup():
     wing = SUAVE.Components.Wings.Wing()
     wing.tag = 'horizontal_stabilizer'
     
-    wing.aspect_ratio            = 6.16     
-    wing.sweeps.quarter_chord    = 40 * Units.deg
+    wing.aspect_ratio            = Aircraft.ParLayoutConfig.Aht
+    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25ht*Units.degrees
     wing.thickness_to_chord      = 0.08
-    wing.taper                   = 0.2
+    wing.taper                   = Aircraft.ParLayoutConfig.trht
     wing.span_efficiency         = 0.9
-    wing.spans.projected         = 14.2 * Units.meter
-    wing.chords.root             = 4.7  * Units.meter
-    wing.chords.tip              = .955 * Units.meter
-    wing.chords.mean_aerodynamic = 8.0  * Units.meter
-    wing.areas.reference         = 32.488   * Units['meters**2']  
+    wing.spans.projected         = Aircraft.ParLayoutConfig.bh*Units.meter
+    wing.chords.root             = Aircraft.ParLayoutConfig.c_rht*Units.meter
+    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tht*Units.meter
+    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_h*Units.meter          #Fix
+    wing.areas.reference         = Aircraft.ParLayoutConfig.Sht*Units['meters**2']
     wing.twists.root             = 3.0 * Units.degrees
-    wing.twists.tip              = 3.0 * Units.degrees  
+    wing.twists.tip              = 3.0 * Units.degrees 
     wing.origin                  = [32.83,0,1.14] # meters
     wing.vertical                = False 
     wing.symmetric               = True
@@ -281,16 +281,16 @@ def vehicle_setup():
     wing = SUAVE.Components.Wings.Wing()
     wing.tag = 'vertical_stabilizer'    
 
-    wing.aspect_ratio            = 1.91
-    wing.sweeps.quarter_chord    = 25. * Units.deg
-    wing.thickness_to_chord      = 0.08
-    wing.taper                   = 0.25
-    wing.span_efficiency         = 0.9
-    wing.spans.projected         = 7.777 * Units.meter
-    wing.chords.root             = 8.19  * Units.meter
-    wing.chords.tip              = 0.95  * Units.meter
-    wing.chords.mean_aerodynamic = 4.0   * Units.meter
-    wing.areas.reference         = 27.316 * Units['meters**2']  
+    wing.aspect_ratio            = Aircraft.ParLayoutConfig.Avt
+    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25vt*Units.degrees
+    wing.thickness_to_chord      = 0.08                         #Fix
+    wing.taper                   = Aircraft.ParLayoutConfig.trvt
+    wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil
+    wing.spans.projected         = Aircraft.ParLayoutConfig.bv*Units.meter
+    wing.chords.root             = Aircraft.ParLayoutConfig.c_rvt*Units.meter
+    wing.chords.tip              = Aircraft.ParLayoutConfig.c_tvt*Units.meter
+    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_v*Units.meter
+    wing.areas.reference         = Aircraft.ParLayoutConfig.Svt *Units['meter**2']
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees  
     wing.origin                  = [28.79,0,1.54] # meters
@@ -310,27 +310,28 @@ def vehicle_setup():
     fuselage.tag = 'fuselage'
     
     fuselage.number_coach_seats    = vehicle.passengers
-    fuselage.seats_abreast         = 6
-    fuselage.seat_pitch            = 1     * Units.meter
-    fuselage.fineness.nose         = 1.6
-    fuselage.fineness.tail         = 2.
-    fuselage.lengths.nose          = 6.4   * Units.meter
-    fuselage.lengths.tail          = 8.0   * Units.meter
-    fuselage.lengths.cabin         = 28.85 * Units.meter
-    fuselage.lengths.total         = 38.02 * Units.meter
+    fuselage.seats_abreast         = 0
+    fuselage.seat_pitch            = 0     * Units.meter
+    fuselage.fineness.nose         = Aircraft.ParStruc.fineness_n
+    fuselage.fineness.tail         = Aircraft.ParStruc.fineness_t
+    fuselage.lengths.nose          = Aircraft.ParLayoutConfig.l_nose*Units.meter
+    fuselage.lengths.tail          = Aircraft.ParLayoutConfig.l_tail*Units.meter
+    fuselage.lengths.cabin         = Aircraft.ParLayoutConfig.l_fuselage*Units.meter-\
+    Aircraft.ParLayoutConfig.l_nose*Units.meter-Aircraft.ParLayoutConfig.l_tail*Units.meter
+    fuselage.lengths.total         = Aircraft.ParLayoutConfig.l_fuselage*Units.meter
     fuselage.lengths.fore_space    = 6.    * Units.meter
     fuselage.lengths.aft_space     = 5.    * Units.meter
-    fuselage.width                 = 3.74  * Units.meter
-    fuselage.heights.maximum       = 3.74  * Units.meter
-    fuselage.effective_diameter    = 3.74     * Units.meter
-    fuselage.areas.side_projected  = 142.1948 * Units['meters**2'] 
-    fuselage.areas.wetted          = 446.718  * Units['meters**2'] 
-    fuselage.areas.front_projected = 12.57    * Units['meters**2'] 
-    fuselage.differential_pressure = 5.0e4 * Units.pascal # Maximum differential pressure
+    fuselage.width                 = Aircraft.ParLayoutConfig.w_fuselage*Units.meter
+    fuselage.heights.maximum       = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
+    fuselage.effective_diameter    = Aircraft.ParLayoutConfig.d_fuselage*Units.meter
+    fuselage.areas.side_projected  = Aircraft.ParLayoutConfig.TotalSidearea*Units['meters**2']
+    fuselage.areas.wetted          = Aircraft.ParLayoutConfig.S_wet_fuselage*Units['meters**2']
+    fuselage.areas.front_projected = Aircraft.ParLayoutConfig.S_front*Units['meters**2']
+    fuselage.differential_pressure = 0.345e5 * Units.pascal # Maximum differential pressure
     
-    fuselage.heights.at_quarter_length          = 3.74 * Units.meter
-    fuselage.heights.at_three_quarters_length   = 3.65 * Units.meter
-    fuselage.heights.at_wing_root_quarter_chord = 3.74 * Units.meter
+    fuselage.heights.at_quarter_length          = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
+    fuselage.heights.at_three_quarters_length   = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
+    fuselage.heights.at_wing_root_quarter_chord = Aircraft.ParLayoutConfig.h_fuselage*Units.meter
     
     # add to vehicle
     vehicle.append_component(fuselage)
@@ -344,10 +345,10 @@ def vehicle_setup():
     turbofan.tag = 'turbofan'
     
     # setup
-    turbofan.number_of_engines = 2
-    turbofan.bypass_ratio      = 5.4
-    turbofan.engine_length     = 2.71 * Units.meter
-    turbofan.nacelle_diameter  = 2.05 * Units.meter
+    turbofan.number_of_engines = Aircraft.ParStruc.N_engines
+    turbofan.bypass_ratio      = Aircraft.ParProp.Engine_bpr
+    turbofan.engine_length     = Conv.ParProp.Engine_length * Units.meter
+    turbofan.nacelle_diameter  = Conv.ParProp.Engine_diameter * Units.meter
     turbofan.origin            = [[13.72, 4.86,-1.9],[13.72, -4.86,-1.9]] # meters
     
     #compute engine areas
@@ -390,7 +391,7 @@ def vehicle_setup():
 
     # setup
     compressor.polytropic_efficiency = 0.91
-    compressor.pressure_ratio        = 1.14    
+    compressor.pressure_ratio        = Aircraft.ParProp.Engine_LPC     
     
     # add to network
     turbofan.append(compressor)
@@ -404,7 +405,7 @@ def vehicle_setup():
     
     # setup
     compressor.polytropic_efficiency = 0.91
-    compressor.pressure_ratio        = 13.415    
+    compressor.pressure_ratio        = Aircraft.ParProp.Engine_HPC       
     
     # add to network
     turbofan.append(compressor)
@@ -501,11 +502,11 @@ def vehicle_setup():
     thrust.tag ='compute_thrust'
  
     #total design thrust (includes all the engines)
-    thrust.total_design             = 2*24000. * Units.N #Newtons
+    thrust.total_design             = Aircraft.ParProp.Thrust_cruise * Units.N
  
     #design sizing conditions
-    altitude      = 35000.0*Units.ft
-    mach_number   = 0.78 
+    altitude      = Aircraft.ParAnFP.h_cruise * Units.meter
+    mach_number   = Aircraft.ParAnFP.M_cruise 
     isa_deviation = 0.
     
     #Engine setup for noise module    
@@ -684,13 +685,24 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise )
 
     segment.altitude_start = 3.0   * Units.km
-    segment.altitude_end   = 8.0   * Units.km
+    segment.altitude_end   = 12.0   * Units.km
     segment.mach_number    = 0.6 
-    segment.climb_rate     = 6.0   * Units['m/s']
     segment.throttle       = 1.0
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
-#    segment.state.numerics.dimensionless.control_points [Unitless]
+    # add to mission
+    mission.append_segment(segment)
+    
+    segment = Segments.Climb.Constant_Throttle_Constant_Mach(base_segment)
+    segment.tag = "climb_3"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_start = 12.0   * Units.km
+    segment.altitude_end   = 20.0   * Units.km
+    segment.mach_number    = 0.6 
+    segment.throttle       = 1.0
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
     mission.append_segment(segment)
@@ -705,13 +717,14 @@ def mission_setup(analyses):
 
     segment.analyses.extend( analyses.cruise )
 
-    segment.altitude   = 8.0 * Units.km
-    segment.air_speed  = 230.412 * Units['m/s']
-    segment.time       = 300 * Units.min
-    segment.state.conditions.weights.vehicle_payload_rate = 0
+    segment.altitude   = 20.0 * Units.km
+    segment.air_speed  = Aircraft.ParAnFP.V_cruise * Units['m/s']
+    segment.time       = Aircraft.ParAnFP.t_cruise * Units.seconds
+    segment.state.conditions.weights.vehicle_payload_rate = Aircraft.ParPayload.disperRatePerTime
 
     # add to mission
     mission.append_segment(segment)
+    
 
     # ------------------------------------------------------------------
     #   First Descent Segment: Constant Speed, Constant Rate
@@ -722,9 +735,9 @@ def mission_setup(analyses):
 
     segment.analyses.extend( analyses.landing )
 
-    segment.altitude_start = 8.0 *Units.km
+    segment.altitude_start = 20.0 *Units.km
     segment.altitude_end = 0.0   * Units.km
-    segment.air_speed    = 195.0 * Units['m/s']
+    segment.air_speed    = 200.0 * Units['m/s']
     segment.descent_rate = 1800.   * Units['ft/min']
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
@@ -767,12 +780,12 @@ def plot_mission(results,line_style='bo-'):
     for segment in results.segments.values():
 
         time   = segment.conditions.frames.inertial.time[:,0] / Units.min
-        Thrust = segment.conditions.frames.body.thrust_force_vector[:,0] / Units.lbf
+        Thrust = segment.conditions.frames.body.thrust_force_vector[:,0] / Units.kN
         eta    = segment.conditions.propulsion.throttle[:,0]
 
         axes = fig.add_subplot(2,1,1)
         axes.plot( time , Thrust , line_style )
-        axes.set_ylabel('Thrust (lbf)',axis_font)
+        axes.set_ylabel('Thrust (kN)',axis_font)
         axes.grid(True)
 
         axes = fig.add_subplot(2,1,2)
@@ -781,8 +794,8 @@ def plot_mission(results,line_style='bo-'):
         axes.set_ylabel('Throttle',axis_font)
         axes.grid(True)	
 
-        plt.savefig("B737_engine.pdf")
-        plt.savefig("B737_engine.png")
+        plt.savefig("Ceres_engine.pdf")
+        plt.savefig("Ceres_engine.png")
 
     # ------------------------------------------------------------------
     #   Aerodynamics 2
@@ -812,8 +825,8 @@ def plot_mission(results,line_style='bo-'):
         axes.set_ylabel('AOA (deg)',axis_font)
         axes.grid(True)
 
-        plt.savefig("B737_aero.pdf")
-        plt.savefig("B737_aero.png")
+        plt.savefig("Ceres_aero.pdf")
+        plt.savefig("Ceres_aero.png")
 
     # ------------------------------------------------------------------
     #   Aerodynamics 2
@@ -848,8 +861,8 @@ def plot_mission(results,line_style='bo-'):
     axes.set_xlabel('Time (min)')
     axes.set_ylabel('CD')
     axes.grid(True)
-    plt.savefig("B737_drag.pdf")
-    plt.savefig("B737_drag.png")
+    plt.savefig("Ceres_drag.pdf")
+    plt.savefig("Ceres_drag.png")
 
     # ------------------------------------------------------------------
     #   Altitude, sfc, vehicle weight
@@ -860,15 +873,15 @@ def plot_mission(results,line_style='bo-'):
 
         time     = segment.conditions.frames.inertial.time[:,0] / Units.min
         aoa      = segment.conditions.aerodynamics.angle_of_attack[:,0] / Units.deg
-        mass     = segment.conditions.weights.total_mass[:,0] / Units.lb
-        altitude = segment.conditions.freestream.altitude[:,0] / Units.ft
+        mass     = segment.conditions.weights.total_mass[:,0] / Units.kg
+        altitude = segment.conditions.freestream.altitude[:,0] / Units.m
         mdot     = segment.conditions.weights.vehicle_mass_rate[:,0]
         thrust   =  segment.conditions.frames.body.thrust_force_vector[:,0]
         sfc      = (mdot / Units.lb) / (thrust /Units.lbf) * Units.hr
 
         axes = fig.add_subplot(3,1,1)
         axes.plot( time , altitude , line_style )
-        axes.set_ylabel('Altitude (ft)',axis_font)
+        axes.set_ylabel('Altitude (m)',axis_font)
         axes.grid(True)
 
         axes = fig.add_subplot(3,1,3)
@@ -879,11 +892,11 @@ def plot_mission(results,line_style='bo-'):
 
         axes = fig.add_subplot(3,1,2)
         axes.plot( time , mass , 'ro-' )
-        axes.set_ylabel('Weight (lb)',axis_font)
+        axes.set_ylabel('Weight (kg)',axis_font)
         axes.grid(True)
 
-        plt.savefig("B737_mission.pdf")
-        plt.savefig("B737_mission.png")
+        plt.savefig("Ceres_mission.pdf")
+        plt.savefig("Ceres_mission.png")
         
     # ------------------------------------------------------------------
     #   Velocities
@@ -902,8 +915,8 @@ def plot_mission(results,line_style='bo-'):
         mach     = segment.conditions.freestream.mach_number[:,0]
 
         axes = fig.add_subplot(3,1,1)
-        axes.plot( time , velocity / Units.kts, line_style )
-        axes.set_ylabel('velocity (kts)',axis_font)
+        axes.plot( time , velocity / Units['m/s'], line_style )
+        axes.set_ylabel('velocity (m/s)',axis_font)
         axes.grid(True)
 
         axes = fig.add_subplot(3,1,2)

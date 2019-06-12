@@ -53,7 +53,7 @@ def ClassIISizing(Conv):
 #    Conv, ISA_model, step, False)
     
     #Oswald Efficiency
-#    anfp.e = OswaldEfficiency(Conv)
+    anfp.e = OswaldEfficiency(Conv)
     #engine weight
     Conv.ParProp.Engine_weight_Total = Conv.ParProp.Engine_weight*Conv.ParStruc.N_engines
     
@@ -121,7 +121,6 @@ def ClassIISizing(Conv):
     
     #engine selection
     EngineChoice(Conv,ISA_model,False)
-    
     #engine placement
     Engines_placement(Conv)
     

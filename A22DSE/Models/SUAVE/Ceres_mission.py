@@ -258,7 +258,7 @@ def vehicle_setup(Aircraft):
     wing.spans.projected         = Aircraft.ParLayoutConfig.bh*Units.meter
     wing.chords.root             = Aircraft.ParLayoutConfig.c_rht*Units.meter
     wing.chords.tip              = Aircraft.ParLayoutConfig.c_tht*Units.meter
-    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_h*Units.meter          #Fix
+    wing.chords.mean_aerodynamic = Aircraft.ParLayoutConfig.mac_h*Units.meter          
     wing.areas.reference         = Aircraft.ParLayoutConfig.Sht*Units['meters**2']
     wing.twists.root             = 3.0 * Units.degrees
     wing.twists.tip              = 3.0 * Units.degrees  
