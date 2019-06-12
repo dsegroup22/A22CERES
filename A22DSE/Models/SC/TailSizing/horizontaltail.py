@@ -99,8 +99,7 @@ def htail(Aircraft,ISA):
     
     CL= (2*Wavg)/(rho*V_cruise**2*Sw)
     
-    
-    CLh = (Cmaf*(AR_main*(cos(sweep_main))**2)/(AR_main+2*cos(sweep_main)) + (CL*(h-h0)) )/ (etha*Vh)
+    CLh = -0.8 #(Cmaf*(AR_main*(cos(sweep_main))**2)/(AR_main+2*cos(sweep_main)) + (CL*(h-h0)) )/ (etha*Vh)
      
     #must be iterated with the right cg, Wavg, h etc.
     #no incidence angle as it is not a fixed tail 
