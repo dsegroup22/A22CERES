@@ -46,14 +46,14 @@ def ClassIISizing(Conv):
 # =============================================================================
 #                           WING PLANFORM DESIGN
 # =============================================================================
-    Conv.ParAnFP.n_ult, Conv.ParAnFP.n_min, \
+    Conv.ParAnFP.n_ult, Conv.ParAnFP.n_lim, \
     Conv.ParAnFP.V_stall, Conv.ParAnFP.V_dive = flightenvelope(Conv)
     
 #    Conv.ParAnFP.C_L_design, Conv.ParAnFP.A = PlanformMain.GetARTransWing(
 #    Conv, ISA_model, step, False)
     
     #Oswald Efficiency
-    anfp.e = OswaldEfficiency(Conv)
+#    anfp.e = OswaldEfficiency(Conv)
     #engine weight
     Conv.ParProp.Engine_weight_Total = Conv.ParProp.Engine_weight*Conv.ParStruc.N_engines
     
