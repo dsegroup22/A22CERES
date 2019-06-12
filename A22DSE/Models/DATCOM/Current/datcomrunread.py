@@ -54,7 +54,7 @@ for j in range(len(lines)):
                    
             C_m_a,C_Y_b,C_n_b=np.array(dataline[8:11]).astype(float)
             C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b=np.round(np.array([C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b])*180/np.pi,5)
-            #print(C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,j)
+            print(C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,j)
         if k==1 or k==3:
             dataline=my_split(lines[j+9].strip(),)
             C_L_adots=np.array([])
@@ -89,7 +89,7 @@ for j in range(len(lines)):
 
             C_l_q,C_m_q=np.array(dataline[1:3]).astype(float)
             C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q=np.round(np.array([C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q])*180/np.pi,5)
-            #print(C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q,j)
+            print(C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q,j)
         
         k+=1
         
