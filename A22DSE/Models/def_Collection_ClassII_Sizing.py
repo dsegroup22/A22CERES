@@ -92,6 +92,7 @@ def ClassIISizing(Conv):
     #horizontal
     #function gives Surface, weight, Aspect ratio, optimal arm etc
     htail(Conv,ISA_model)
+   
     #vertical
     vtail(Conv)
     
@@ -123,6 +124,8 @@ def ClassIISizing(Conv):
     
     #engine placement
     Engines_placement(Conv)
+    
+
     
     # Wing planform
     
