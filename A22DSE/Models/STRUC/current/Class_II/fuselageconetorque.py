@@ -32,10 +32,10 @@ def GetStressShear(t,do,V,A):
 
 
 
-do = 1000 * 10**-3 #m
-t  = np.linspace(0.1,10) * 10**-3
+do = 750 * 10**-3 #m
+t  = np.linspace(0.1,20) * 10**-3
 di = do - 2*t
-T = 6 * 0.5 * 1.225 * 150**2 * 1.2 * 30  #Nm
+T = 5 * 0.5 * 1.225 * 150**2 * 1.2 * 30  #Nm
 V = 0.5 * 1.225 * 150**2 * 1.2 * 30  #N
 A = m.pi * (do/2)**2
 sigma = GetSigma(T,do,di) + GetStressShear(t,do,V,A)
