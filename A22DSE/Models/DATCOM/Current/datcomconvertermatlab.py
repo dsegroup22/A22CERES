@@ -42,7 +42,9 @@ ZU=np.round(np.array([0.0,Layout.h_fuselage/2,Layout.h_fuselage/2,Layout.h_fusel
 ZL=np.round(np.array([0.0,-Layout.h_fuselage/2,-Layout.h_fuselage/2,Layout.h_fuselage/2-Layout.h_APU/2,])/Conversion.ft2m,1)
 R=np.round(np.array([0.0,Layout.w_fuselage/2,Layout.w_fuselage/2,Layout.h_APU/2])/Conversion.ft2m,1)
 S=np.round(np.array([0.0,Layout.w_fuselage*Layout.h_fuselage*np.pi/4,Layout.w_fuselage*Layout.h_fuselage*np.pi/4,Layout.h_APU**2*np.pi/4,])/Conversion.ft2m**2,1)
-
+h=((Layout.w_fuselage-Layout.h_fuselage)/(Layout.w_fuselage-Layout.h_fuselage))**2
+P=np.round(np.array([0.0,np.pi*(Layout.h_fuselage+Layout.w_fuselage)/2*(1+3*h/(10+np.sqrt(4-3*h))),\
+                         np.pi*(Layout.h_fuselage+Layout.w_fuselage)/2*(1+3*h/(10+np.sqrt(4-3*h))),Layout.h_APU*np.pi])/Conversion.ft2m,1)
 CHRDTP_WG=round(float(anfp.c_t/Conversion.ft2m),1)
 SSPN_WG = round(float(anfp.b/2/Conversion.ft2m),1)
 SSPNE_WG = 0.9*SSPN_WG

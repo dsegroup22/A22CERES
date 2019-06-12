@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-9
 """
 Created on Thu Jun  6 09:38:38 2019
 
@@ -19,11 +19,9 @@ def printer(a):
 
 printer(4)
 a=lines[4].split(',')[0]+','
-b=lines[4].split(',')[1]+','
-c=lines[4].split(',')[2]+','
-d=lines[4].split(',')[3].split('=')[0]+'='+str(round(float(Struc.MTOW/Conversion.lbs2kg),1))+','
-e=lines[4].split(',')[4]
-lines[4]=a+b+c+d+e
+b=lines[4].split(',')[1].split('=')[0]+'='+str(round(float(Struc.MTOW/Conversion.lbs2kg),1))+','
+c=lines[4].split(',')[2]
+lines[4]=a+b+c
 printer(4)
 
 
@@ -45,6 +43,54 @@ f=lines[6].split(',')[5].split('=')[0]+'='+str(XH)+','
 g=lines[6].split(',')[6]
 lines[6]=a+b+c+d+e+f+g
 printer(6)
+
+printer(7)
+a=lines[7].split(',')[0].split('=')[0]+'='+str(ZH)+','
+b=lines[7].split(',')[1].split('=')[0]+'='+str(ALIH)+','
+c=lines[7].split(',')[2].split('=')[0]+'='+str(XV)+','
+d=lines[7].split(',')[3].split('=')[0]+'='+str(ZV)+','
+e=lines[7].split(',')[4]
+lines[7]=a+b+c+d+e
+printer(7)
+
+printer(8)
+a=lines[8].split(',')[0].split('=')[0]+'='+str(NX)+','
+b=lines[8].split(',')[1]+','
+c=lines[8].split(',')[2]
+lines[8]=a+b+c
+printer(8)
+
+
+a='  X='
+b=np.array2string(X,separator=',').replace(' ','').replace('[','').replace(']','')
+c=', \n'
+lines[9]=a+b+c
+
+
+a='  ZU='
+b=np.array2string(ZU,separator=',').replace(' ','').replace('[','').replace(']','')
+c=', \n'
+lines[10]=a+b+c
+
+a='  ZL='
+b=np.array2string(ZL,separator=',').replace(' ','').replace('[','').replace(']','')
+c=', \n'
+lines[11]=a+b+c
+
+a='  S='
+b=np.array2string(S,separator=',').replace(' ','').replace('[','').replace(']','')
+c=', \n'
+lines[12]=a+b+c
+
+a='  P='
+b=np.array2string(P,separator=',').replace(' ','').replace('[','').replace(']','')
+c=', \n'
+lines[13]=a+b+c
+
+a='  R='
+b=np.array2string(R,separator=',').replace(' ','').replace('[','').replace(']','')
+c='$ \n'
+lines[14]=a+b+c
 
 printer(16)
 a=lines[16].split(',')[0].split('=')[0]+'='+str(CHRDR_WG)+','
@@ -85,10 +131,10 @@ printer(20)
 
 
 printer(22)
-a=lines[22].split(',')[0].split('=')[0]+'='+str(CHRDR_HT)+','
-b=lines[22].split(',')[1].split('=')[0]+'='+str(CHRDTP_HT)+','
-c=lines[22].split(',')[2].split('=')[0]+'='+str(SSPN_HT)+','
-d=lines[22].split(',')[3].split('=')[0]+'='+str(SSPNE_HT)+',\n'
+a=lines[22].split(',')[0].split('=')[0]+'='+str(CHRDR_VT)+','
+b=lines[22].split(',')[1].split('=')[0]+'='+str(CHRDTP_VT)+','
+c=lines[22].split(',')[2].split('=')[0]+'='+str(SSPN_VT)+','
+d=lines[22].split(',')[3].split('=')[0]+'='+str(SSPNE_VT)+',\n'
 lines[22]=a+b+c+d
 printer(22)
 
