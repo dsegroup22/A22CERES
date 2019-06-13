@@ -3,12 +3,12 @@
 Created on Wed Jun  5 15:40:08 2019
 
 @author: kamph
-"""
+#"""
 #import os
 #import sys
 import numpy as np
 #from pathlib import Path
-##sys.path.append('../../')
+#sys.path.append('../../')
 #os.chdir(Path(__file__).parents[4])
 #print(os.getcwd())
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
