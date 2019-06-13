@@ -5,7 +5,7 @@ Created on Mon Jun  3 09:30:41 2019
 @author: menno & nikki
 """
 import numpy as np
-import scipy.integrate as integrate
+#import scipy.integrate as integrate
 import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[3])
@@ -52,7 +52,8 @@ def R_en(Aircraft):
     taper = anfp.taper                  #[-]
     n_ult = anfp.n_ult                         #[-]
     Sweep_25 =anfp.Sweep_25             #[rad]
-    
+    if struc.N_engines == 1:
+        R_eng = 0.
     if struc.N_engines == 2 or struc.N_engines == 3:
         y_eng = config.y_eng_g2/(anfp.b/2)     	    #[-] dimensionless config.y_engine
         x_cp = 1/(3*n_ult)*(4/np.pi+(n_ult-1)*(1+2*taper)/(1+taper)) \
@@ -86,7 +87,7 @@ def R_f(Aircraft):
     #bulkhead coincides with wing root
     anfp = Aircraft.ParAnFP
     struc = Aircraft.ParStruc
-    config = Aircraft.ParLayoutConfig
+    #config = Aircraft.ParLayoutConfig
     
     b_f = 0.8            #[m] config.b_fueltank
     b = anfp.b                          #[m]

@@ -11,6 +11,7 @@ import numpy as np
 #sys.path.append('../')
 os.chdir(Path(__file__).parents[2])
 #print(os.getcwd())
+import copy
 from A22DSE.Parameters.Par_Class_All import Aircraft
 from A22DSE.Parameters.Par_Class_Atmos import Atmos
 from A22DSE.Models.POPS.Current.cruisecalculations import (CruiseRange,
@@ -62,7 +63,7 @@ def ComputeCD0(Aircraft):
 #         = WSandTW(False,Aircraft,ISA_model)
 # =============================================================================
         
-        WingSurface_Thrust_FuelWeight(Conv)
+        WingSurface_Thrust_FuelWeight(Aircraft)
     
         
         AnFP.Sweep_25, AnFP.Sweep_LE, AnFP.Sweep_50, \
@@ -72,7 +73,7 @@ def ComputeCD0(Aircraft):
         error = abs((AnFP.S-Sold)/Sold)
     
 
-def ClassIAircraft():
+def ClassIAircraft(Conv):
     #Parameters not determined from functionss
     Conv.ParAnFP.A = 16.0
     Conv.ParAnFP.CD0 = 0.015
@@ -117,9 +118,9 @@ def ClassIAircraft():
     
 
 
-def PrelimTail():    
+def PrelimTail(Conv):    
     #Horizontal, Vertical tail design
-    
+    Layout = Conv.ParLayoutConfig
     Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
     Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
     Layout.c_rht,Layout.c_tht,Layout.bh,\
@@ -132,8 +133,8 @@ def PrelimTail():
 
     
     
-def ClassI_AndAHalf():
-
+def ClassI_AndAHalf(Conv):
+    Layout = Conv.ParLayoutConfig
     #Geometry: Sweep 0.25, le, 0.50 in radians, Span in meters, taper ratio, root, tip , MAC in meters
     Conv.ParAnFP.Sweep_25, Conv.ParAnFP.Sweep_LE, Conv.ParAnFP.Sweep_50, Conv.ParAnFP.b,Conv.ParAnFP.taper,\
     Conv.ParAnFP.c_r, Conv.ParAnFP.c_t, Conv.ParAnFP.MAC, Conv.ParAnFP.y_MAC = Wing_Geo(Conv)
@@ -187,7 +188,11 @@ def ClassI_AndAHalf():
     Conv.ParLayoutConfig.y_eng_g3 = 22.
     
     Conv.ParAnFP.CLMAX = CLMAX(Conv).GetCLMAX()
-ClassIAircraft()
-ClassI_AndAHalf()
-PrelimTail()
-ComputeCD0(Conv)
+    
+#TestAC = Aircraft()    
+#TestAC.ParPayload.m_payload = 10000.
+#ClassIAircraft(TestAC)
+#ClassI_AndAHalf(TestAC)
+#PrelimTail(TestAC)
+#ComputeCD0(TestAC)
+
