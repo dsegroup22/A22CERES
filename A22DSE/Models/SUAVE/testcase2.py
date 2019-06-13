@@ -255,7 +255,7 @@ def vehicle_setup():
     wing.tag = 'horizontal_stabilizer'
     
     wing.aspect_ratio            = Aircraft.ParLayoutConfig.Aht
-    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.Sweep25ht*Units.degrees
+    wing.sweeps.quarter_chord    = Aircraft.ParLayoutConfig.sweep25ht*Units.degrees
     wing.thickness_to_chord      = 0.08
     wing.taper                   = Aircraft.ParLayoutConfig.trht
     wing.span_efficiency         = 0.9
@@ -447,7 +447,7 @@ def vehicle_setup():
     
     # setup
     combustor.efficiency                = 0.99 
-    combustor.turbine_inlet_temperature = 1450 # K
+    combustor.turbine_inlet_temperature = 1650 # K
     combustor.pressure_ratio            = 0.95
     combustor.fuel_data                 = SUAVE.Attributes.Propellants.Jet_A()    
     
@@ -482,19 +482,19 @@ def vehicle_setup():
     # add to network
     turbofan.append(nozzle)
     
-#    # ------------------------------------------------------------------
-#    #  Component 10 - Fan
-#    
-#    # instantiate
-#    fan = SUAVE.Components.Energy.Converters.Fan()   
-#    fan.tag = 'fan'
-#
-#    # setup
-#    fan.polytropic_efficiency = 0.93
-#    fan.pressure_ratio        = 1.7    
-#    
-#    # add to network
-#    turbofan.append(fan)
+    # ------------------------------------------------------------------
+    #  Component 10 - Fan
+    
+    # instantiate
+    fan = SUAVE.Components.Energy.Converters.Fan()   
+    fan.tag = 'fan'
+
+    # setup
+    fan.polytropic_efficiency = 1
+    fan.pressure_ratio        = 1   
+    
+    # add to network
+    turbofan.append(fan)
     
     # ------------------------------------------------------------------
     #Component 10 : thrust (to compute the thrust)
@@ -503,7 +503,7 @@ def vehicle_setup():
  
     #total design thrust (includes all the engines)
     
-    thrust.total_design             = Aircraft.ParProp.Thrust_cruise * Units.N
+    thrust.total_design             = (Aircraft.ParProp.Thrust_cruise+300) * Units.N
 
 
     #design sizing conditions
@@ -1219,5 +1219,6 @@ def plot_mission(results,line_style='bo-'):
     return
 Aircraft=Conv
 if __name__ == '__main__': 
-    results = main()    
+    results = main()   
+    actualresults = results.segments.values()
     plt.show()
