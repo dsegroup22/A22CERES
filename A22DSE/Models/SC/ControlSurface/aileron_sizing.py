@@ -36,4 +36,4 @@ def aileron(Aircraft):
     Aircraft.ParLayoutConfig.y_aileron = b1
     Aircraft.ParLayoutConfig.y_aileron_end = b2
 #=========================================================================
-    return Cl_delta_a,Cl,V_app,L_A
+#    return Cl_delta_a,Cl,V_app,L_A
