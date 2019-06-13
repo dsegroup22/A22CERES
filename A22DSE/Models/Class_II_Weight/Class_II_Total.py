@@ -46,7 +46,7 @@ def ClassIIWeight_MTOW(Aircraft):
     
     #struc.Wing_weight = Basic_Wing(Aircraft) 
     struc.Wing_weight = 1.*Total_Wing(Conv)/ISA_model.g0 # [kg] whole wing (2 sides)
-#    struc.Wing_weight = Tore(Aircraft)
+#    struc.Wing_weight = Method2(Aircraft)
     struc.Wf=FuselageWeight(Aircraft)[0]/ISA_model.g0 #[kg]
     
     #get the wing group and fuselage group

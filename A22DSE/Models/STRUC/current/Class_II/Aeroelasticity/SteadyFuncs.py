@@ -7,15 +7,13 @@ Created on Tue Jun 11 11:49:51 2019
 
 import numpy as np
 import sys
-import os
-from pathlib import Path
-os.chdir(Path(__file__).parents[6])
+sys.path.append('../../../../../../')
 import numpy as np
 import scipy.linalg as slin
 import matplotlib.pyplot as plt
 import control.matlab as control
-from A22DSE.Models.STRUC.current.Structural_Model.struc_functions import (
-        TorsionalStiffness)
+import A22DSE.Models.STRUC.current.Structural_Model.struc_functions as StrucFun
+
 class airfoilAE(object):
     '''
     Kh = bending stiffness; Ktheta = torsional stiffness; xtheta = displacement
@@ -23,24 +21,29 @@ class airfoilAE(object):
     
     SUSPECT TO CHANGE SINCE ITHETA, STHETA ARE TBD.
     '''
-    def __init__(self, mass, Kh, Ktheta, xtheta, rtheta, Aircraft):
+    def __init__(self, mass, c, Kh, Ktheta, xtheta, rtheta, CLtheta, 
+                 CMacdelta, Aircraft):
         
         self.m  = mass
         self.xtheta = xtheta
-        self.c  = Aircraft.ParAnFP.c_r/Aircraft.ParAnFP.c_t*0.75 
-        self.b  = self.c/2                                   # half-chord
+        self.c  = c
+        self.b  = self.c/2                              # half-chord
         self.Kh = Kh                                    #
         self.Ktheta = Ktheta                            #
         self.Stheta = self.m * self.xtheta * self.b     #
         self.rtheta = rtheta * self.b                   #
-        self.Itheta = self.m*(self.rtheta*self.b)**2   #
-        self.e      = Aircraft.ParAnFP.e                # [-]
+        self.Itheta = self.m*(self.rtheta*self.b)**2    #
+        self.e      = 0.1                               # [-]
         self.S      = 2 * self.b                        # [m²]
-        self.CLa    = Aircraft.ParAnFP.cl_alpha         #[rad^(-1)]
-        
-    
+        self.CLa    = Aircraft.ParAnFP.C_L_a            #[rad^(-1)]
+        self.CLtheta = CLtheta                          # -1.8 / rad
+        self.CMacdelta = CMacdelta                      #
 
 def Init2DOFSS(par, Aircraft, ISA_model):
+    
+    # Constants
+    RegFact = 1.15
+    
     
     M = np.matrix([[par.m, par.Stheta],
                [par.Stheta, par.Itheta]])
@@ -48,9 +51,9 @@ def Init2DOFSS(par, Aircraft, ISA_model):
     A0 = np.matrix([[0 -1* par.S * par.CLa],
                     [0, 2 * par.S * par.e * par.b * par.CLa]])
 
-    q = 0.5*ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])[-1]* \
-    Aircraft.ParAnFP.V_cruise
-    
+    V = np.min([Aircraft.ParAnFP.V_cruise*RegFact, Aircraft.ParAnFP.V_dive])
+    q = 0.5*ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])[-1] * V**2
+
     def ComputeConstants():
         a4 = par.m * par.Itheta - par.Stheta**2
         a0 = par.Kh * (par.Ktheta -2 * par.e * par.b * q * par.S * par.CLa)
@@ -60,16 +63,24 @@ def Init2DOFSS(par, Aircraft, ISA_model):
         return a0, a2, a4
     
     a0, a2, a4 = ComputeConstants()
+    
     return M, K, A0, a0, a2, a4
 
 
 def ComputeDivSpeed(par, height, ISA_model):
     '''
-    OUTPUT: returns qDiv
+    INPUT: --
+    OUTPUT: returns Divergence Speed
+    DESCRIPTION: Divergence speed is the speed at which the aerodynamic forces
+    result in unstable or marginally stable aircraft.
     '''
+    q = par.Ktheta/(par.CLa * par.e * par.c * par.S)
+    T, p, rho = ISA_model.ISAFunc([height])
     
-    return par.Ktheta/(par.CLa * par.e * par.c * par.S)
+    return np.sqrt(q/(0.5*rho))
 
-
+def ComputeControlReversal(par, height, Aircraft, ISA_model):
     
+    q = -par.CLtheta * par.Ktheta / (par.CLa * par.c)
     
+    return None
