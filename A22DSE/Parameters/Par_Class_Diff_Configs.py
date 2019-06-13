@@ -123,7 +123,7 @@ def PrelimTail():
     Conv.ParLayoutConfig.Sht,Conv.ParLayoutConfig.xht,\
     Conv.ParLayoutConfig.Aht,Conv.ParLayoutConfig.trht,\
     Layout.c_rht,Layout.c_tht,Layout.bh,\
-    Conv.ParLayoutConfig.sweep25ht,Conv.ParLayoutConfig.Wht,\
+    Conv.ParLayoutConfig.Sweep25ht,Conv.ParLayoutConfig.Wht,\
     Conv.ParLayoutConfig.Svt,Conv.ParLayoutConfig.xvt,\
     Conv.ParLayoutConfig.Avt,Conv.ParLayoutConfig.trvt,\
     Layout.c_rvt,Layout.c_tvt,Layout.bv,\
@@ -181,10 +181,6 @@ def ClassI_AndAHalf():
     
     Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
     Conv.ParLayoutConfig.y_eng_out = Conv.ParLayoutConfig.y_engine
-    
-    Conv.ParLayoutConfig.y_eng_g1 = 0.
-    Conv.ParLayoutConfig.y_eng_g2 = 14.
-    Conv.ParLayoutConfig.y_eng_g3 = 22.
     
     Conv.ParAnFP.CLMAX = CLMAX(Conv).GetCLMAX()
 ClassIAircraft()

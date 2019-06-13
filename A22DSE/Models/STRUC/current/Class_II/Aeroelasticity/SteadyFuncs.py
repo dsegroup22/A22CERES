@@ -7,9 +7,7 @@ Created on Tue Jun 11 11:49:51 2019
 
 import numpy as np
 import sys
-import os
-from pathlib import Path
-os.chdir(Path(__file__).parents[6])
+sys.path.append('../../../../../../')
 import numpy as np
 import scipy.linalg as slin
 import matplotlib.pyplot as plt
@@ -65,6 +63,7 @@ def Init2DOFSS(par, Aircraft, ISA_model):
         return a0, a2, a4
     
     a0, a2, a4 = ComputeConstants()
+    
     return M, K, A0, a0, a2, a4
 
 
@@ -85,6 +84,3 @@ def ComputeControlReversal(par, height, Aircraft, ISA_model):
     q = -par.CLtheta * par.Ktheta / (par.CLa * par.c)
     
     return None
-
-    
-    
