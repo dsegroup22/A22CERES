@@ -107,7 +107,7 @@ def rib_moi(chord,t_rib): #fin
     
     return moi_ribs
 
-def skin_moi(x,t_skin): #needs to be checked
+def skin_moi(chord,t_skin): #needs to be checked
     '''
     DESCRIPTION: function that calculates the moment of inertia of the skin. 
     INPUT: tickness of the rib (t_rib), 
@@ -126,12 +126,21 @@ def skin_moi(x,t_skin): #needs to be checked
         
     return moi_skin
     
-def moi_wing(x,t_skin,t_rib):
-    
+def moi_wing(chord,t_skin,t_rib):
+    ''' 
+    DESCRIPTION: function that calculates the total moment of inertia of the wing (moi_wing)
+    INPUT: moi functions of all the structural components
+    OUTPUT: moment of inertia at a certain span position
+    '''     
     
     return moi_wing
 
 def Area(chord): #verified
+    ''' 
+    DESCRIPTION: function that calculates the areas of the cells of the wing (A1,A2,A3)
+    INPUT: chord length (chord)
+    OUTPUT: areas of the cells (A1,A2,A3)
+    '''     
     x_rib1=0.2*chord
     x_rib2=0.6*chord
     skin_upper_eq=skin_eq_upper(chord)
@@ -145,6 +154,11 @@ def Area(chord): #verified
     return A1,A2,A3
 
 def S(chord): #finished
+    ''' 
+    DESCRIPTION: function that calculates the circumferance of the cells of the wing (S1,S2,S3)
+    INPUT: chord length (chord)
+    OUTPUT: circumferance of the cells (S1,S2,S3)
+    '''    
     x_rib1=0.2*chord
     x_rib2=0.6*chord
     skin_upper_eq=skin_eq_upper(chord)
@@ -164,25 +178,36 @@ t_skin=0.003175
 t_rib=0.02
 
 def TwistSolver(chord, t_skin,t_rib): #finished
+    ''' 
+    DESCRIPTION: function that calculates rate of twist of wing
+    INPUT: chord length (chord), t_skin(t_skin), rib thickness (t_rib)
+    OUTPUT: rate of twist (dthetadz)
+    '''    
     A1,A2,A3=Area(chord)
     S1,S2,S3,h_rib1,h_rib2=S(chord)
     G_alu=26.9e9
     G_comp=5e9
     T=1 #unit torque to run the numerical calculation
     A=np.matrix([[0, 2*A1, 2*A2, 2*A3],  
-       [-1, 1/(2*A1)*(S1/G_alu/t_skin+h_rib1/G_comp/t_rib), -1/(2*A1)*(h_rib1/G_comp/t_rib),0  ],
-       [-1,  -1/(2*A2)*(h_rib1/G_comp/t_rib), 1/(2*A1)*(S2/G_alu/t_skin+h_rib2/G_comp/t_rib+h_rib1/G_comp/t_rib),  -1/(2*A1)*(h_rib2/G_comp/t_rib) ],
-       [-1, 0, -1/(2*A1)*(h_rib2/G_comp/t_rib), 1/(2*A3)*(S3/G_alu/t_skin+h_rib2/G_comp/t_rib)]])
+       [-1,     1/(2*A1)*(S1/G_alu/t_skin+h_rib1/G_comp/t_rib),     -1/(2*A1)*(h_rib1/G_comp/t_rib),     0  ],
+       [-1,  -1/(2*A2)*(h_rib1/G_comp/t_rib), 1/(2*A2)*((S2+h_rib1+h_rib2)/G_comp/t_rib),  -1/(2*A1)*(h_rib2/G_comp/t_rib) ],
+       [-1, 0, -1/(2*A3)*(h_rib2/G_comp/t_rib), 1/(2*A3)*(S3/G_alu/t_skin+h_rib2/G_comp/t_rib)]])
     b=np.matrix([T ,0,0,0])
     b=np.matrix.transpose(b)
     dthetadz = np.linalg.solve(A, b)[0]
     return dthetadz
 
-def TorsionalStiffness(chord,t_skin,t_rib):  #finished
+def TorsionalStiffness(chord,t_skin,t_rib):  #verified
+    ''' 
+    DESCRIPTION: function that calculates the torsional stiffness of wing section
+    INPUT: chord length (chord), t_skin(t_skin), rib thickness (t_rib)
+    OUTPUT: torsional stiffnes (Ktheta)
+    '''    
     T=1 #unit torque to run the numerical calculation
     dthetadz=TwistSolver(chord,t_skin,t_rib)
-    
-    return (T/dthetadz)
+    K_theta = T/dthetadz
+
+    return K_theta
 
 
 
