@@ -108,7 +108,7 @@ def htail(Aircraft,ISA):
     sweep_h = sweep_main+5*pi/180
     #Gamma = sweep_h #dihedral angle
     
-    ch_root = 3/2*Vh*((1+tr_h)/(1+tr_h+tr_h**2))
+    ch_root = Aircraft.ParLayoutConfig.c_tvt #3/2*Vh*((1+tr_h)/(1+tr_h+tr_h**2))
     ch_tip = ch_root*tr_h
     bh = sqrt(AR_h*Sh) #Sh/Vh
     
@@ -137,20 +137,32 @@ def htail(Aircraft,ISA):
 #    plt.show()
 #    
     mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
-    
-    ShS = np.array([0.3])
+
+#    
+#    ShS = 0.18
+#    Sh_ite = ShS*Sw #new horizotal tail surface area
+#    tail_diff = abs((Sh_ite - Sh))/Sh
+###    
+#    if tail_diff > 0.1:
+#        Sh = Sh_ite
+#        l_arm_opt = Vh*MAC*Sw/Sh
+#        mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
+        
+
+
+    ShS = np.array([0.18])
     for i in range(len(ShS)):
         Sh_ite = ShS[i]*Sw #new horizotal tail surface area
         tail_diff = abs((Sh_ite - Sh))/Sh
-    ##    
+
         if tail_diff > 0.1:
             Sh = Sh_ite
             l_arm_opt = Vh*MAC*Sw/Sh
+            bh = sqrt(AR_h*Sh)
             mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
         else:
             break
-    
-    #l_arm_opt = 12
+        
     #using scissor plot and update values of Sh
     
     #---------------- elevator design procedure 
@@ -197,9 +209,9 @@ def htail(Aircraft,ISA):
     #de_max_up = (CLh/CLalphah - alpha_h) /tau_e
     mac_h = (2./3.) * ch_root * (1. + tr_h + tr_h**2.)/(1. + tr_h)
     #finish once we have all parameters
-    Aircraft.ParLayoutConfig.Cr_h =ch_root
-    Aircraft.ParLayoutConfig.Ct_h = ch_tip
-    Aircraft.ParLayoutConfig.b_h = bh
+    Aircraft.ParLayoutConfig.c_rht =ch_root
+    Aircraft.ParLayoutConfig.c_tht = ch_tip
+    Aircraft.ParLayoutConfig.bh = bh
     Aircraft.ParLayoutConfig.sweepLEht = sweep_h
     Aircraft.ParLayoutConfig.sweep25ht = sweep_h25
     Aircraft.ParLayoutConfig.sweep50ht = sweep_h50
@@ -209,6 +221,7 @@ def htail(Aircraft,ISA):
     Aircraft.ParLayoutConfig.Sht = Sh
     Aircraft.ParLayoutConfig.xht = l_arm_opt
     Aircraft.ParLayoutConfig.mac_h = mac_h
+
     return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
 #def rudder(Aircraft):
 
