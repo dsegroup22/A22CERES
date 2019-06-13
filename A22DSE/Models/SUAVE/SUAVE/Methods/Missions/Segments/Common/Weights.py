@@ -35,17 +35,26 @@ def initialize_weights(segment):
         N/A
                                 
     """    
-    
+
  
     if segment.state.initials:
         m_initial = segment.state.initials.conditions.weights.total_mass[-1,0]
+        pay_initial = segment.state.initials.conditions.weights.payload_mass[-1,0]
+        fuel_initial = segment.state.initials.conditions.weights.fuel_mass[-1,0]
     else:
-       
         m_initial = segment.analyses.weights.vehicle.mass_properties.takeoff
+        pay_initial = segment.analyses.weights.vehicle.mass_properties.cargo
+        fuel_initial = 0
 
     m_current = segment.state.conditions.weights.total_mass
+    pay_current = segment.state.conditions.weights.payload_mass
+    fuel_current = segment.state.conditions.weights.fuel_mass
+    
     
     segment.state.conditions.weights.total_mass[:,:] = m_current + (m_initial - m_current[0,0])
+    
+    segment.state.conditions.weights.payload_mass[:,:]  = pay_current + (pay_initial - pay_current[0,0])
+    segment.state.conditions.weights.fuel_mass[:,:] = fuel_current + (fuel_initial - fuel_current[0,0])
         
     return
     
@@ -116,21 +125,33 @@ def update_weights(segment):
     
     # unpack
     conditions = segment.state.conditions
+    cargo      = segment.analyses.weights.mass_properties.cargo
+    pay0       = conditions.weights.payload_mass[0,0]
+    fuel0      = conditions.weights.fuel_mass[0,0]
     m0         = conditions.weights.total_mass[0,0]
     mdot_fuel  = conditions.weights.vehicle_mass_rate
     mdot_pay   = conditions.weights.vehicle_payload_rate*np.ones((len(conditions.weights.vehicle_mass_rate),1))
     g          = conditions.freestream.gravity
     I          = segment.state.numerics.time.integrate
 
+
     # calculate
-    pay = np.dot(I,-mdot_pay )
-    fuel = np.dot(I, -mdot_fuel )
-    m = m0 + fuel + pay
+    
+    pay_deploy = np.dot(I,-mdot_pay )
+    pay_deploy = np.where((pay_deploy + pay0) > 0, pay_deploy, -pay0)
+    pay = pay0 + pay_deploy
+    
+    fuel_burnt = np.dot(I, -mdot_fuel )
+    fuel = fuel0 - fuel_burnt
+    
+    m = m0 + fuel_burnt + pay_deploy
 
     # weight
     W = m*g
 
     # pack
+    conditions.weights.payload_mass[1:,0]                = pay[1:,0]
+    conditions.weights.fuel_mass[1:,0]                   = fuel[1:,0]
     conditions.weights.total_mass[1:,0]                  = m[1:,0] # don't mess with m0
     conditions.frames.inertial.gravity_force_vector[:,2] = W[:,0]
 
