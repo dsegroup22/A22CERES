@@ -11,24 +11,16 @@ def loadingdiag(Aircraft):
     """DESCRIPTION: loading diagram based on SAED lecture
        INPUT: OEW, x_lemac, 
     """
-
-    xcg_totalpayload_empty_aft = Aircraft.ParPayload.xcg_totalpayload_empty
-    xcg_totalpayload_empty_fwd = Aircraft.ParPayload.xcg_totalpayload_empty_fwd
-    rangecg = np.array([0.9,1,1.1])
-    label = ['Fuel +10%','Fuel 0%','Fuel -10%']
-    payload = ['Payload +10%','Payload 0%','Payload -10%']
-
+    rangecg = np.array([1,1.15,0.85])
     xcg_fwd = []
     xcg_aft = []
     y = []
     
     for i in range(len(rangecg)):
         MAC = Aircraft.ParAnFP.MAC
-        lh = Aircraft.ParLayoutConfig.xht
           
         #xpayload = np.array([0.8,0.7,0.6,0.5,0.4,0.3,0.2]*l_fuselage)
-        xcg_totalpayload_empty = 18 #Aircraft.ParPayload.xcg_totalpayload_empty
-        #print (xcg_totalpayload_empty)
+        xcg_totalpayload_empty = Aircraft.ParPayload.xcg_totalpayload_empty
         
         fuel_mass = Aircraft.ParStruc.FW
         payload_mass = Aircraft.ParPayload.m_payload #13500 #append value [kg]
@@ -36,7 +28,7 @@ def loadingdiag(Aircraft):
         x_lemac = Aircraft.ParLayoutConfig.x_lemac*rangecg[i]
         
         oew = Aircraft.ParStruc.OEW
-        x_oew = Aircraft.ParLayoutConfig.x_oe*MAC + x_lemac
+        x_oew = Aircraft.ParLayoutConfig.x_oe*rangecg[i]*MAC + x_lemac
         
         top = x_oew*oew #append real value
         bottom = oew #kg append real value
@@ -48,7 +40,7 @@ def loadingdiag(Aircraft):
         xfuel = 0.5*MAC+x_lemac #assumptions
         fuel_mlist = np.ones(int(fuel_mass))
         
-        for j in range(int(fuel_mass)):
+        for i in range(int(fuel_mass)):
             cg = (top + xfuel*fuel_mlist[i])/(bottom + fuel_mlist[i])
             top = (top + xfuel*fuel_mlist[i])
             bottom = bottom + fuel_mlist[i]
@@ -59,7 +51,7 @@ def loadingdiag(Aircraft):
         
         #xf must be changed to the loading of the sulphur
         #loading for payload
-        for j in range(int(payload_mass)):
+        for i in range(int(payload_mass)):
             cg = ((top + xcg_totalpayload_empty*payload_mlist[i]))/(bottom + payload_mlist[i])
             top = (top + xcg_totalpayload_empty*payload_mlist[i])
             bottom = bottom + payload_mlist[i]
@@ -80,22 +72,19 @@ def loadingdiag(Aircraft):
         
         
         #plt.plot((cg_range-x_lemac)/MAC,wrange)
-#        plt.plot(cg_range_mac[0:fuelindex+1],np.array(wrange[0:fuelindex+1]),label=label[i])
-#        plt.plot(cg_range_mac[fuelindex:],np.array(wrange[fuelindex:]), label=payload[i])
-#        plt.legend(loc=3)
-##        plt.axvline(x=max(cg_range_mac), color='gray', linestyle='--')
-##        plt.axvline(x=min(cg_range_mac), color='gray', linestyle='--')
-##        plt.axvline(x=max(cg_range_mac)+0.02, color='indianred', linestyle='--')
-##        plt.axvline(x=min(cg_range_mac)-0.02, color='indianred', linestyle='--')
+#        plt.plot(cg_range_mac[0:fuelindex+1],np.array(wrange[0:fuelindex+1]),color='palevioletred',label='Fuel')
+#        plt.plot(cg_range_mac[fuelindex:],np.array(wrange[fuelindex:]),color='plum', label='Payload')
+#        plt.legend(loc=1)
+#        plt.axvline(x=max(cg_range_mac), color='gray', linestyle='--')
+#        plt.axvline(x=min(cg_range_mac), color='gray', linestyle='--')
+#        plt.axvline(x=max(cg_range_mac)+0.02, color='indianred', linestyle='--')
+#        plt.axvline(x=min(cg_range_mac)-0.02, color='indianred', linestyle='--')
 #        plt.annotate('OEW',(x_oew_mac,oew))
 #        plt.show()
         
     plt.plot(xcg_fwd,y)
     plt.plot(xcg_aft,y)
-    plt.ylabel('xcg/l_fuselage')
-    plt.xlabel('xcg/MAC')
-    plt.title('CG Range')
     plt.xlim(0,1)
     plt.show()
     
-    
+    return xcg_fwd, xcg_aft, y
