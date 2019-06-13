@@ -68,7 +68,7 @@ def scplot(Aircraft):
     plt.savefig('SCPlot.png')
     plt.show()
     
-    
+
 
 #--------------cg-----------------------
 def oecg(Aircraft):
