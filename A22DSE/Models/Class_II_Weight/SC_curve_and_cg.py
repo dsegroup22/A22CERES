@@ -68,6 +68,7 @@ def scplot(Aircraft):
     plt.savefig('SCPlot.png')
     plt.show()
     
+    return A
     #return CLalphaw
 
 #--------------cg-----------------------

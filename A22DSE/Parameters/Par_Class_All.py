@@ -29,14 +29,14 @@ class ParAnFPLst(object):
         self.s_cruise = None
         self.V_cruise = None
         self.t_cruise = None
-        self.CL_cruise = 1.2          #[-]              DUMMY VALUE
-        self.CL_max_cruise = 1.5
+        self.CL_cruise = 0.6          #[-]              DUMMY VALUE
+        self.CL_max_cruise = 0.9
         self.c_j = 0.6/3600          #[s^-1]            DUMMY VALUE
         self.SFC = 16*10e-6				#[kg/N/s]          DUMMY VALUE
         self.LD = 16                 #[-]               DUMMY VALUE
         
         #takeoff parameters
-        self.CL_to = 1.2					#[-]                   DUMMY VALUE                                               cruise mach number                          by POPS
+        self.CL_to = 1.03				#[-]                   DUMMY VALUE                                               cruise mach number                          by POPS
         self.CD_to = 0.1					#[-]                   DUMMY VALUE                                               cruise mach number                          by POPS
         self.fieldlen_to = 2500 #m 
         self.rho_SL = 1.225 #[kg/m3]
@@ -44,8 +44,8 @@ class ParAnFPLst(object):
         self.Vr = 50						#[m/s]            DUMMY
         self.V_max_TO = 150. #[m/s]
         #landing parameters
-        self.CL_land = 1.4				#[-]                       DUMMY VALUE
-        self.CD_land = 0.3				#[-]                       DUMMY VALUE                                               cruise mach number                          by POPS
+        self.CL_land = 1.03				#[-]                       DUMMY VALUE
+        self.CD_land = 0.1				#[-]                       DUMMY VALUE                                               cruise mach number                          by POPS
         self.fieldlen_land = 2500 #m 
         
         #Operation parameters
