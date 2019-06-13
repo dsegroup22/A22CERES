@@ -80,10 +80,10 @@ Thrust = np.ones(res)
 
 M = np.ravel(V)/np.sqrt(1.4*287*(273.15+T))
 H = np.ravel(H)
-MaxT = np.ravel(MaxT)
+#MaxT = np.ravel(MaxT)
 #for i in range(len(np.ravel(H))):
 #    MaxT[i] = Lowbypass(Conv,MThrust, ISA_model,H[i], anfp.Mdd)
-#MaxT = MaxT.reshape(shape)
+MaxT = MaxT.reshape(shape)
 for i in range(len(MaxT[0])):
     MaxT[i,:] = MThrust * rho[res*i]/rho[0]
 #    MaxT[:,i] = Thrust
