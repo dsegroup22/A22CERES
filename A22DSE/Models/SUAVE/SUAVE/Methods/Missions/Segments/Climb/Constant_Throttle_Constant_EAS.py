@@ -88,6 +88,7 @@ def initialize_conditions(segment):
     alt = t_nondim * (altf-alt0) + alt0
     conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
 
+    
     SUAVE.Methods.Missions.Segments.Common.Aerodynamics.update_atmosphere(segment)
     
     rho = conditions.freestream.density

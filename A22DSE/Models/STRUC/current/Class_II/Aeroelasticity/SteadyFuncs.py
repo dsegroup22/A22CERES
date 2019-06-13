@@ -33,9 +33,9 @@ class airfoilAE(object):
         self.Stheta = self.m * self.xtheta * self.b     #
         self.rtheta = rtheta * self.b                   #
         self.Itheta = self.m*(self.rtheta*self.b)**2    #
-        self.e      = 0.1                               # [-]
-        self.S      = 2 * self.b                        # [m²]
-        self.CLa    = Aircraft.ParAnFP.C_L_a            #[rad^(-1)]
+        self.e      = 0.3                               # [-]
+        self.S      = Aircraft.ParAnFP.S / c            # [m²]
+        self.CLa    = Aircraft.ParAnFP.C_L_alpha_cruise #[rad^(-1)]
         self.CLtheta = CLtheta                          # -1.8 / rad
         self.CMacdelta = CMacdelta                      #
 
@@ -81,7 +81,7 @@ def ComputeDivSpeed(par, height, ISA_model):
 
 def ComputeControlReversal(par, height, ISA_model):
     
-    q = -par.CLtheta * par.Ktheta / (par.CLa * par.c)
+    q = -par.CLtheta * par.Ktheta / (par.CLa * par.CMacdelta * par.c * par.S)
     T, p, rho = ISA_model.ISAFunc([height])
     
     return np.sqrt(q/(0.5*rho))
