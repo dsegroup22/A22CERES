@@ -27,10 +27,10 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 res = 100
 plot = True
 
-CL_i = np.linspace(0.3, 1.2, res)
+CL_i = np.linspace(0.3, 1.0, res)
 sweep_opt = (FormFuncs.ComputePartialSweepOpt(Conv))
 #tc_w  = np.linspace(0.10, 0.15, 4)
-Aw_i = np.linspace(3, 25, res)
+Aw_i = np.linspace(4, 25, res)
 TSFC = Conv.ParProp.SFC_cruise*3600
 CL, Aw = np.meshgrid(CL_i, Aw_i)
 
@@ -44,9 +44,9 @@ Fprop = FormFuncs.ComputeFprop(Conv, ISA_model, TSFC)
 
     # wing penalty function contours
 FWP   = FormFuncs.ComputeFWP(Conv, Fprop, theta2, theta3, Aw, CL, sweep_opt)
-# t/c contours
+    # t/c contours
 
-# L/D contours
+    # L/D contours
 
 
 # =============================================================================
@@ -74,7 +74,10 @@ for i, Awi in enumerate(Aw_i):
     # Span-loading / Take-off field length
 WB = FormFuncs.ComputeSpanLoading(Conv, ISA_model, Fprop, theta2, theta3,
                                   TSFC, sweep_opt, CL_i)
-    
+    # Buffeting Limit
+CL_buffet = 0.91  # NASA paper of airfoil  NASA SC( 2)-0714
+onset_margin = 1.40 # Regulations require 30% margin betw. onset and cruise
+CL_lim    = CL_buffet/onset_margin #+10% higher than certification
 # =============================================================================
 #                       PLOTTING
 # =============================================================================
@@ -88,12 +91,14 @@ if plot == True:
     ax.set_title('wireframe');
     
     plt.figure(2)
-    cp = plt.contour(CL, Aw, FWP, 15)
+    cp = plt.contour(CL, Aw, FWP, 10)
     plt.plot(CL_i, Aw_opt, color = 'r', linestyle = 'dashed',
              label = r'Partial optimum $\hat{C}_L$')
     plt.plot(CL_optLst, Aw_i, color = 'orange', linestyle = 'dashed',
              label = r'Partial optimum $A_w$')
-    plt.plot(CL_i, WB, linestyle = 'dotted')
+    plt.plot(CL_i, WB, linestyle = 'dashed', color = 'purple')
+    plt.axvline(CL_lim, linestyle = 'dashed', color ='g',
+                label = 'Buffet Limit')
     plt.xlim((CL_i[0], CL_i[-1]))
     plt.ylim((Aw_i[0], Aw_i[-1]))
     plt.xlabel(r'$\hat{C}_L$')

@@ -44,5 +44,5 @@ def Get_t(Aircraft, do):
     V = 0.5 * 1.225 * 150**2 * 1.2 * layout.Svt  #N
     A = m.pi * (do/2)**2
     sigma = GetSigma(T,do,di) + GetStressShear(t,do,V,A)
-    sigmay = 207 * 10**6 #for al 6061
+    sigmay = 207 * 10**6 #for al 7075 t6
     return(min(t[np.where(sigma<sigmay)]))

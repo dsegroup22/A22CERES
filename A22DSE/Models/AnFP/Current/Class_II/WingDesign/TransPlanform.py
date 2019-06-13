@@ -26,14 +26,14 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 # =============================================================================
 
 def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
-    res = 500
+#    res = 500
     
     CL_i = np.linspace(0.3, 1.00, res)
     sweep_i = np.linspace(np.deg2rad(0), np.deg2rad(38), res)
     #tc_w  = np.linspace(0.10, 0.15, 4)
     TSFC = Aircraft.ParProp.SFC_cruise*3600
     CL, sweep = np.meshgrid(CL_i, sweep_i)
-    Aw = 23.5
+    Aw = 23.
     theta2 = FormFuncs.ComputeTheta2(Aircraft, ISA_model)
     theta3 = FormFuncs.ComputeTheta3(Aircraft, ISA_model)
     Fprop = FormFuncs.ComputeFprop(Aircraft, ISA_model, TSFC)
@@ -89,7 +89,9 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     WB = FormFuncs.ComputeSpanLoadingCL(Aircraft, ISA_model, Fprop, theta2, 
                                       theta3, TSFC, sweep_opt, Aw, CL_i)
         
-    
+    CL_buffet = 0.91  # NASA paper of airfoil  NASA SC( 2)-0714
+    onset_margin = 1.40 # Regulations require 30% margin betw. onset and cruise
+    CL_lim    = CL_buffet/onset_margin #+10% higher than certification
     # =========================================================================
     #                       PLOTTING
     # =========================================================================
@@ -102,13 +104,15 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
         ax.set_title('wireframe');
         
         plt.figure(2)
-        cp = plt.contour(np.rad2deg(sweep), CL, FWP, 25)
+        cp = plt.contour(np.rad2deg(sweep), CL, FWP, 20)
         plt.plot(np.rad2deg(sweep_i), CL_optLst, color = 'r', 
                  linestyle ='dashed',
                  label = r'Partial optimum $\hat{C}_L$')
         plt.axvline(np.rad2deg(sweep_opt), color = 'orange', 
                     linestyle = 'dashed',
                     label = r'Partial optimum $\Lambda_w$')
+        plt.axhline(CL_lim, linestyle = 'dashed', col = 'g',
+                    label = 'Buffet Limit')
         plt.ylim((CL_i[0], CL_i[-1]))
         plt.xlim((np.rad2deg(sweep_i[0]), np.rad2deg(sweep_i[-1])))
         plt.xlabel(r'$\Lambda_w$')
@@ -119,3 +123,13 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
         plt.title(r'WPF in $\Lambda_w$ - $\hat{C}_L$ design space')
     
     return CL_des, tc_des, FWP_opt
+
+
+def ClassII_Planform(Conv, ISA_model):
+    
+    step = 100
+    Conv.ParAnFP.C_L_design, Conv.ParAnFP.tc_w, Conv.ParAnFP.FWP = (
+    ComputePlanform(Conv, ISA_model, step, Conv.ParAnFP.A, False))
+    
+    
+    return

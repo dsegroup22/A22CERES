@@ -183,10 +183,6 @@ def ClassI_AndAHalf(Conv):
     Conv.ParLayoutConfig.y_engine = Conv.ParAnFP.b/2*0.25 #[m] engine at 25%
     Conv.ParLayoutConfig.y_eng_out = Conv.ParLayoutConfig.y_engine
     
-    Conv.ParLayoutConfig.y_eng_g1 = 0.
-    Conv.ParLayoutConfig.y_eng_g2 = 14.
-    Conv.ParLayoutConfig.y_eng_g3 = 22.
-    
     Conv.ParAnFP.CLMAX = CLMAX(Conv).GetCLMAX()
     
 #TestAC = Aircraft()    

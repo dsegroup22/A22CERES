@@ -26,6 +26,8 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import (Conv, ClassIAircraft,\
 PrelimTail, ClassI_AndAHalf, ComputeCD0)
 from A22DSE.Models.def_Collection_ClassII_Sizing import ClassIISizing
 from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeightIteration
+from A22DSE.Models.AnFP.Current.Class_II.\
+WingDesign.TransPlanform import ClassII_Planform
 
 #shortcuts
 Layout = Conv.ParLayoutConfig
@@ -34,6 +36,7 @@ struc= Conv.ParStruc
 assert isinstance(Conv.ParCntrl, object)
 sc = Conv.ParCntrl
 Payload=Conv.ParPayload
+
 
 Payload.m_payload = 10000.
 def TotalAC(Conv):
@@ -51,6 +54,7 @@ def TotalAC(Conv):
     ClassIIWeightIteration(Conv)
 
 TotalAC(Conv)
+
 # =============================================================================
 # #saving object as txt file
 # =============================================================================
