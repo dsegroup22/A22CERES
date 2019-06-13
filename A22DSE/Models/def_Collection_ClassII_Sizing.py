@@ -131,15 +131,6 @@ def ClassIISizing(Aircraft):
     Engines_placement(Aircraft)
 
     
-    # Wing planform
-    
-
-    step = 100
-    Aircraft.ParAnFP.C_L_design, Aircraft.ParAnFP.tc_w, Aircraft.ParAnFP.FWP = (
-
-    TransPlanform.ComputePlanform(Aircraft, ISA_model,
-                                  step, Aircraft.ParAnFP.A, False))
-    
    
     #Stability derivatives DATCOM [/rad]
 #    anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot, anfp.C_l_p,\

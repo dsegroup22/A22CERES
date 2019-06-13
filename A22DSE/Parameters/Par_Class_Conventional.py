@@ -53,7 +53,8 @@ def TotalAC(Conv):
     
     ClassIISizing(Conv)
     ClassIIWeightIteration(Conv)
-
+    ClassII_Planform(Conv)
+    
 TotalAC(Conv)
 # =============================================================================
 # #saving object as txt file
