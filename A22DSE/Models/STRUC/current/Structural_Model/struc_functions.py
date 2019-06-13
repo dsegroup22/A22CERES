@@ -239,7 +239,7 @@ def rib_moi(chord,t_rib): #checked and verified
 def skin_moi(chord,t_skin): #needs to be checked
     '''
     DESCRIPTION: function that calculates the moment of inertia of the skin. 
-    INPUT: tickness of the rib (t_rib), 
+    INPUT: tickness of the skin (t_skin), 
         wing skin equations (eq_lowerskin, eq_upperskin)
     OUTPUT: moment of inertia skin (moi_skin)    
     '''
@@ -252,12 +252,7 @@ def skin_moi(chord,t_skin): #needs to be checked
     for i in x:
         y_upper=skin_upper_eq(i)
         y_lower=skin_lower_eq(i)
-        dy_u=skin_upper_eq(i)-skin_upper_eq(i-dx)
-        dy_l=skin_lower_eq(i)-skin_lower_eq(i-dx)
-        ds_u=np.sqrt(dx**2+dy_u**2)
-        ds_l=np.sqrt(dx**2+dy_l**2)
-        moi_skin=moi_skin+y_upper**2*t_skin*ds_u+y_lower**2*t_skin*ds_l
-        
+        moi_skin=moi_skin+y_upper**2*t_skin*dx+y_lower**2*t_skin*dx
     return moi_skin
     
 def moi_stiffener(n,chord):  #n in multiples of 5
@@ -271,7 +266,6 @@ def moi_stiffener(n,chord):  #n in multiples of 5
     
     #cell 1
     spacing1=c1/n1
-    
     
     
     
