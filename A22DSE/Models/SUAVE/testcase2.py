@@ -186,10 +186,10 @@ def vehicle_setup():
     
     # envelope properties
     vehicle.envelope.ultimate_load = Aircraft.ParAnFP.n_ult
-    vehicle.envelope.limit_load    = 15 #Aircraft.ParAnFP.n_lim
+    vehicle.envelope.limit_load    = Aircraft.ParAnFP.n_lim
 
     # basic parameters
-    vehicle.reference_area         = 124.862 * Units['meters**2']  
+    vehicle.reference_area         = Aircraft.ParAnFP.S*Units['meters**2']  
     vehicle.passengers             = 0
     vehicle.systems.control        = "fully powered" 
     vehicle.systems.accessories    = "medium range"
@@ -505,6 +505,7 @@ def vehicle_setup():
     
     thrust.total_design             = Aircraft.ParProp.Thrust_cruise * Units.N
 
+
     #design sizing conditions
     altitude      = Aircraft.ParAnFP.h_cruise * Units.meter
     mach_number   = Aircraft.ParAnFP.M_cruise 
@@ -662,7 +663,7 @@ def mission_setup(analyses):
     #   First Climb Segment: Constant Throttle, Constant Speed
     # ------------------------------------------------------------------
 
-    segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
+    segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "climb_1"
 
     segment.analyses.extend( analyses.takeoff )
@@ -688,7 +689,6 @@ def mission_setup(analyses):
 
     # add to misison
     mission.append_segment(segment)
-
      
 
     segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
@@ -828,15 +828,15 @@ def mission_setup(analyses):
 
     segment.analyses.extend( analyses.cruise )
 
-    segment.altitude_end   = 11.0   * Units.km
-    segment.mach_number    = 0.7
-    segment.climb_rate       = 2 * Units['m/s']  
+    segment.altitude_end   = 15000.0   * Units.feet
+    segment.equivalent_air_speed    = 280 * Units.knots
+    segment.climb_rate       = 36.5 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
     mission.append_segment(segment)
-    
 
+    
     segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
     segment.tag = "climb_14"
 
@@ -863,23 +863,22 @@ def mission_setup(analyses):
     # add to mission
     mission.append_segment(segment)
 
+    # ------------------------------------------------------------------    
+    #   Cruise Segment: Constant Speed, Constant Altitude
+    # ------------------------------------------------------------------    
 
-#    # ------------------------------------------------------------------    
-#    #   Cruise Segment: Constant Speed, Constant Altitude
-#    # ------------------------------------------------------------------    
-#
-#    segment = Segments.Cruise.Constant_Speed_Constant_Altitude_Loiter(base_segment)
-#    segment.tag = "cruise"
-#
-#    segment.analyses.extend( analyses.cruise )
-#
-#    segment.altitude   = 20.0 * Units.km
-#    segment.air_speed  = Aircraft.ParAnFP.V_cruise * Units['m/s']
-#    segment.time       = Aircraft.ParAnFP.t_cruise * Units.seconds
-#    segment.state.conditions.weights.vehicle_payload_rate = Aircraft.ParPayload.disperRatePerTime
-#
-#    # add to mission
-#    mission.append_segment(segment)
+    segment = Segments.Cruise.Constant_Speed_Constant_Altitude_Loiter(base_segment)
+    segment.tag = "cruise"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude   = 20.0 * Units.km
+    segment.air_speed  = Aircraft.ParAnFP.V_cruise * Units['m/s']
+    segment.time       = Aircraft.ParAnFP.t_cruise * Units.seconds
+    segment.state.conditions.weights.vehicle_payload_rate = Aircraft.ParPayload.disperRatePerTime
+
+    # add to mission
+    mission.append_segment(segment)
 #    
 ##
 #    # ------------------------------------------------------------------
@@ -1072,8 +1071,8 @@ def plot_mission(results,line_style='bo-'):
         mach     = segment.conditions.freestream.mach_number[:,0]
 
         axes = fig.add_subplot(3,1,1)
-        axes.plot( time , velocity / Units['m/s'], line_style )
-        axes.set_ylabel('velocity (m/s)',axis_font)
+        axes.plot( time , velocity / Units.knots, line_style )
+        axes.set_ylabel('velocity (knots)',axis_font)
         axes.grid(True)
 
         axes = fig.add_subplot(3,1,2)
