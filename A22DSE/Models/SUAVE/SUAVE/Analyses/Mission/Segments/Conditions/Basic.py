@@ -76,6 +76,8 @@ class Basic(Conditions):
         
         # weights conditions
         self.weights.total_mass            = ones_1col * 0
+        self.weights.payload_mass          = ones_1col * 0
+        self.weights.fuel_mass             = ones_1col * 0
         self.weights.weight_breakdown      = Conditions()
         
         # energy conditions

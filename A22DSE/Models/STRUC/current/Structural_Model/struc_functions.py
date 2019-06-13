@@ -208,6 +208,9 @@ def TorsionalStiffness(chord,t_skin,t_rib):  #verified
 
     return K_theta
 
+#moment of intertia calculator
+
+
 def moi_stringer(t,b,h): #fin
     ''' 
     DESCRIPTION: fucntion that moment of inertia of a stringer
@@ -216,17 +219,19 @@ def moi_stringer(t,b,h): #fin
     ''' 
     return 1/12*b*h**3+(h/2)**2*(b+h)*t
 
-def rib_moi(chord,t_rib): #fin
+def rib_moi(chord,t_rib): #checked and verified
     ''' 
     DESCRIPTION: function that calculates the moment of inertia of the ribs. 
     INPUT: locations of the ribs (x_rib1, x_rib2), tickness of the rib (t_rib),
     wing skin equations (eq_lowerskin, eq_upperskin)
     OUTPUT: moment of inertia ribs (moi_ribs)
     ''' 
+    skin_upper_eq=skin_eq_upper(chord)
+    skin_lower_eq=skin_eq_lower(chord)
     x_rib1=0.2*chord
     x_rib2=0.6*chord
-    h_rib1=eq_upperskin(x_rib1)-eq_lowerskin(x_rib1)
-    h_rib2=eq_upperskin(x_rib2)-eq_lowerskin(x_rib2)
+    h_rib1=skin_upper_eq(x_rib1)-skin_lower_eq(x_rib1)
+    h_rib2=skin_upper_eq(x_rib2)-skin_lower_eq(x_rib2)
     moi_ribs=1/12*t_rib*(h_rib1**3+h_rib2**3)
     
     return moi_ribs
@@ -234,28 +239,101 @@ def rib_moi(chord,t_rib): #fin
 def skin_moi(chord,t_skin): #needs to be checked
     '''
     DESCRIPTION: function that calculates the moment of inertia of the skin. 
-    INPUT: tickness of the rib (t_rib), 
+    INPUT: tickness of the skin (t_skin), 
         wing skin equations (eq_lowerskin, eq_upperskin)
     OUTPUT: moment of inertia skin (moi_skin)    
     '''
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
-    steps=len(x)
+    steps=100
     dx=1/steps
+    x=np.linspace(0.,chord,steps)
     moi_skin=0
     for i in x:
-        y_upper=skin_eq_upper()
-        y_lower=skin_eq_lower()
+        y_upper=skin_upper_eq(i)
+        y_lower=skin_lower_eq(i)
         moi_skin=moi_skin+y_upper**2*t_skin*dx+y_lower**2*t_skin*dx
-        
     return moi_skin
     
+def moi_stiffener(n,chord):  #n in multiples of 5
+    #general parameters
+    c1=0.2*chord
+    c2=0.4*chord
+    c3=0.4*chord
+    n1=1/5*n
+    n2=2/5*n
+    n3=2/5*n
+    
+    #cell 1
+    spacing1=c1/n1
+    
+    
+    
+    return moi_stiffener
+
+
+
+
+
+def moi_root_stringers(chord, n, A): #multiple of 10, with min 20
+    #initise
+    skin_upper_eq=skin_eq_upper(chord)
+    skin_lower_eq=skin_eq_lower(chord)
+    c1=0.2*chord
+    c2=0.4*chord
+    c3=0.4*chord    
+    n1=int(1/5*n)
+    n2=int(2/5*n)
+    n3=int(2/5*n)
+    in_stri=[]
+    #calculate moment of inertia list
+    #cell 1
+    ds=c1/(n1/2)
+    x=0.2*chord
+    for i in range(n1):
+        inertia=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
+        x=x-ds
+        in_stri.append(inertia)
+    #cell 2
+    ds=(c2-1)/(n2/2)
+    x=0.2*chord
+    for j in range(n2):
+        inertia=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
+        x=x+ds
+        in_stri.append(inertia)    
+    #cell 3
+    ds=c2/(n2/2)
+    x=0.6*chord
+    for k in range(n3):
+        inertia=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
+        x=x+ds
+        in_stri.append(inertia)   
+    
+    
+    return in_stri #list of all stringers with inertia
+
+
+def moi_stringers(stringers,in_stri,bi):
+    bool=stringers(stringers>bi)
+    in_stri=bool*in_stri
+    
+    return sum(in_stri)
+
+
+    
+    
+    
+
+
+
+
+
+
 def moi_wing(chord,t_skin,t_rib):
     ''' 
     DESCRIPTION: function that calculates the total moment of inertia of the wing (moi_wing)
     INPUT: moi functions of all the structural components
     OUTPUT: moment of inertia at a certain span position
     '''     
-    
+    moi_wing=skin_moi(chord,t_skin)+rib_moi(chord,t_rib)
     return moi_wing
-
