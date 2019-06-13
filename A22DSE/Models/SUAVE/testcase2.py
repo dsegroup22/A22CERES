@@ -482,19 +482,19 @@ def vehicle_setup():
     # add to network
     turbofan.append(nozzle)
     
-    # ------------------------------------------------------------------
-    #  Component 10 - Fan
-    
-    # instantiate
-    fan = SUAVE.Components.Energy.Converters.Fan()   
-    fan.tag = 'fan'
-
-    # setup
-    fan.polytropic_efficiency = 0.93
-    fan.pressure_ratio        = 1.7    
-    
-    # add to network
-    turbofan.append(fan)
+#    # ------------------------------------------------------------------
+#    #  Component 10 - Fan
+#    
+#    # instantiate
+#    fan = SUAVE.Components.Energy.Converters.Fan()   
+#    fan.tag = 'fan'
+#
+#    # setup
+#    fan.polytropic_efficiency = 0.93
+#    fan.pressure_ratio        = 1.7    
+#    
+#    # add to network
+#    turbofan.append(fan)
     
     # ------------------------------------------------------------------
     #Component 10 : thrust (to compute the thrust)
