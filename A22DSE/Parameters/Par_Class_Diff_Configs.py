@@ -98,7 +98,7 @@ def ClassIAircraft(Conv):
     Conv.ParAnFP.V_cruise = Conv.ParAnFP.Get_V_cruise()
     Conv.ParPayload.disperRatePerTime = (Conv.ParPayload.m_payload
     /Conv.ParAnFP.t_cruise)
-    Conv.ParAnFP.Extrarange = 500*10**3 #[m]
+    Conv.ParAnFP.Extrarange = 1500*10**3 #[m]
     
     
     Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust, Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, \
