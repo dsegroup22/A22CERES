@@ -218,7 +218,7 @@ def ComputeFWP(Aircraft, Fprop, theta2, theta3, Aw, CL, sweep):
     
     # Constants
     CDc = 0.0010
-    eCurl = 0.80
+    eCurl = 0.85
     
     # Compute wing profile drag
     CDpCurl = ComputeCDpCurl(Aircraft, CL, sweep)
