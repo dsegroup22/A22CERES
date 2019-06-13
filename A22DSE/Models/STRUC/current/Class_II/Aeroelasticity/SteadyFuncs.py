@@ -79,8 +79,9 @@ def ComputeDivSpeed(par, height, ISA_model):
     
     return np.sqrt(q/(0.5*rho))
 
-def ComputeControlReversal(par, height, Aircraft, ISA_model):
+def ComputeControlReversal(par, height, ISA_model):
     
     q = -par.CLtheta * par.Ktheta / (par.CLa * par.c)
+    T, p, rho = ISA_model.ISAFunc([height])
     
-    return None
+    return np.sqrt(q/(0.5*rho))

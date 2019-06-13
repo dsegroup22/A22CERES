@@ -25,6 +25,7 @@ ASSUMPTIONS:
     - CDc = 0.0010
     - M* = 0.935           (2nd gen supercritical airfoils)
 '''
+
 def DynamicPressEq(Aircraft, ISA_model):
     '''
     INPUT: Aircraft and ISA model

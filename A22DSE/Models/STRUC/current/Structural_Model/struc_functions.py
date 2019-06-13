@@ -7,7 +7,11 @@ Created on Mon Jun 10 21:59:07 2019
 
 import matplotlib.pyplot as plt
 import numpy as np
-
+import sys
+import os
+#sys.path.append('../../../../../../')
+from pathlib import Path
+os.chdir(Path(__file__).parents[5])
 
 #structural wing model functions
 
@@ -18,9 +22,9 @@ def chord(bi,Aircraft): #verified
     OUTPUT: chord length at the span position (chord)
     ''' 
     bi=abs(bi)
-    c_r = Conv.ParAnFP.c_r
-    c_t = Conv.ParAnFP.c_t
-    b = Conv.ParAnFP.b
+    c_r = Aircraft.ParAnFP.c_r
+    c_t = Aircraft.ParAnFP.c_t
+    b = Aircraft.ParAnFP.b
     chord = c_r - (c_r-c_t)*2/b*bi
     return chord
 

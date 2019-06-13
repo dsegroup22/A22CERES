@@ -27,7 +27,7 @@ def Lowbypassafter(height, Fsl, ISA_model,M):
 
 def FuelFractions(Aeroplane,atmosphere):
 ##    atmosphere = Atmos()
-
+    anfp = Aeroplane.ParAnFP
     m_payload = Aeroplane.ParPayload.m_payload
     dispersionrate = Aeroplane.ParPayload.dispersionrate
     dt = 5 #[s] time increment
@@ -49,7 +49,7 @@ def FuelFractions(Aeroplane,atmosphere):
 
     haccel = 10000/3.28
     hcruise = Aeroplane.ParAnFP.h_cruise
-    s_cruise = m_payload/dispersionrate
+    s_cruise = anfp.s_cruise
     rdump = s_cruise + Aeroplane.ParAnFP.Extrarange
     Mdd = Aeroplane.ParAnFP.Mdd
 
