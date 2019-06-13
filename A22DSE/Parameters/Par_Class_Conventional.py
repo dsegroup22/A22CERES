@@ -38,6 +38,7 @@ sc = Conv.ParCntrl
 Payload=Conv.ParPayload
 
 
+
 Payload.m_payload = 10000.
 def TotalAC(Conv):
     #CLASS I
@@ -54,7 +55,6 @@ def TotalAC(Conv):
     ClassIIWeightIteration(Conv)
 
 TotalAC(Conv)
-
 # =============================================================================
 # #saving object as txt file
 # =============================================================================
