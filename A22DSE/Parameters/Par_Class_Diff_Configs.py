@@ -105,7 +105,7 @@ def ClassIAircraft(Conv):
                         Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise, Conv.ParAnFP.TWactcruise  = WSandTW(False,Conv,ISA_model)
     
     Conv.ParStruc.wfratio = Conv.ParStruc.FW/Conv.ParStruc.MTOW
-    
+    Conv.ParStruc.OEW = Conv.ParStruc.OEWratio*Conv.ParStruc.MTOW
     
     Conv.ParAnFP.cl_alpha,Conv.ParAnFP.cl_max,Conv.ParAnFP.tc,Conv.ParAnFP.Cd0,\
     Conv.ParAnFP.cm_0 = Airfoil(Conv)
