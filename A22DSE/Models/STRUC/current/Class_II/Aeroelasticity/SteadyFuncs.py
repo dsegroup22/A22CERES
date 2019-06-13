@@ -25,13 +25,13 @@ class airfoilAE(object):
                  CMacdelta, Aircraft):
         
         self.m  = mass
-        self.xtheta = xtheta
         self.c  = c
+        self.xtheta = xtheta * c
         self.b  = self.c/2                              # half-chord
         self.Kh = Kh                                    #
-        self.Ktheta = Ktheta                            #
+        self.Ktheta = Ktheta * c                        #
         self.Stheta = self.m * self.xtheta * self.b     #
-        self.rtheta = rtheta * self.b                   #
+        self.rtheta = rtheta * c                        #
         self.Itheta = self.m*(self.rtheta*self.b)**2    #
         self.e      = 0.3                               # [-]
         self.S      = Aircraft.ParAnFP.S / c            # [m²]
@@ -80,8 +80,56 @@ def ComputeDivSpeed(par, height, ISA_model):
     return np.sqrt(q/(0.5*rho))
 
 def ComputeControlReversal(par, height, ISA_model):
-    
+
     q = -par.CLtheta * par.Ktheta / (par.CLa * par.CMacdelta * par.c * par.S)
     T, p, rho = ISA_model.ISAFunc([height])
     
     return np.sqrt(q/(0.5*rho))
+
+def ComputeFlutter(par, height, ISA_model):
+    
+    # Dynamic Pressure
+    T, p, rho = ISA_model.ISAFunc([height])
+    q = 0.5 * rho
+    
+    # Compute Natural Frequencies
+    w_h = np.sqrt(par.Kh / par.m)
+    w_theta = np.sqrt(par.Ktheta / par.Itheta)
+    
+    whwtheta = w_h/w_theta
+    
+    # two conditions 
+    REQ1 = par.xtheta * (par.xtheta + 2 * par.e - 2 * par.e * (whwtheta)**2 * \
+                         (1 + 2 * par.e * par.xtheta / par.rtheta**2))
+    
+    REQ2 = par.xtheta + 2 * par.e + whwtheta**2 * (par.xtheta - 2 * par.e + 
+            4 * par.e * (par.xtheta / par.rtheta)**2)
+    
+#    print(REQ1, REQ2)
+    
+    # Determine Constants
+    C0 = (1 - (whwtheta)**2)**2 + 4 * (par.xtheta / par.rtheta)**2 * \
+    whwtheta**2
+    C1 = -2 * (par.xtheta + 2 * par.e + whwtheta**2 * (par.xtheta - 2 * par.e \
+                + 4 * par.e * par.xtheta**2/par.rtheta**2))
+    C2 = (par.xtheta + 2 * par.e)**2
+    
+    Q1 = (-C1 + np.sqrt(C1**2 -4 * C2 * C0))/(2 * C2)
+    Q2 = (-C1 - np.sqrt(C1**2 -4 * C2 * C0))/(2 * C2)
+    print(Q1, Q2)
+    if np.isnan(Q1) or np.isnan(Q2):
+        return None
+    
+    q1 = Q1 / (par.S * par.b * par.CLa) * par.Ktheta
+    q2 = Q2 / (par.S * par.b * par.CLa) * par.Ktheta
+    
+    q1 = q1/q
+    q2 = q1/q
+    
+    return np.sqrt(q1), np.sqrt(q2)
+    
+    
+
+    
+
+
