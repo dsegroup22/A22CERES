@@ -502,8 +502,9 @@ def vehicle_setup():
     thrust.tag ='compute_thrust'
  
     #total design thrust (includes all the engines)
+    
     thrust.total_design             = Aircraft.ParProp.Thrust_cruise * Units.N
- 
+
     #design sizing conditions
     altitude      = Aircraft.ParAnFP.h_cruise * Units.meter
     mach_number   = Aircraft.ParAnFP.M_cruise 
@@ -667,9 +668,9 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.takeoff )
 
     segment.altitude_start = 0.0   * Units.km
-    segment.altitude_end   = 1.0   * Units.km
-    segment.air_speed      = 125.0 * Units['m/s']
-    segment.climb_rate       = 45.0 * Units['m/s']  
+    segment.altitude_end   = 5000.0   * Units.feet
+    segment.equivalent_air_speed      = 250.0 * Units.knots
+    segment.climb_rate       = 40 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to misison
@@ -680,52 +681,183 @@ def mission_setup(analyses):
 
     segment.analyses.extend( analyses.takeoff )
 
-    segment.altitude_end   = 2.0   * Units.km
-    segment.equivalent_air_speed      = 220.0 * Units.knots
-    segment.climb_rate       = 45.0 * Units['m/s']  
+    segment.altitude_end   = 10000.0   * Units.feet
+    segment.equivalent_air_speed      = 250.0 * Units.knots
+    segment.climb_rate       = 37 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to misison
     mission.append_segment(segment)
 
-    # ------------------------------------------------------------------
-    #   Second Climb Segment: Constant Throttle, Constant Mach
-    # ------------------------------------------------------------------    
+     
 
-    segment = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
-    segment.tag = "climb_2"
-
-    segment.analyses.extend( analyses.cruise )
-
-    segment.altitude_start = 3.0   * Units.km
-    segment.altitude_end   = 28000.0   * Units.feet
-    segment.air_speed    = 250 * Units.knots
-    segment.throttle       = 1.0
-    segment.state.conditions.weights.vehicle_payload_rate = 0.0
-
-    segment = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
+    segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "climb_3"
 
     segment.analyses.extend( analyses.cruise )
 
-    segment.altitude_end   = 11.0   * Units.km
-    segment.mach_number    = 0.7
-    segment.throttle       = 1.0
+    segment.altitude_end   = 15000.0   * Units.feet
+    segment.equivalent_air_speed    = 280 * Units.knots
+    segment.climb_rate       = 36.5 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+
+
+    segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
+    segment.tag = "climb_4"
+
+    segment.analyses.extend( analyses.takeoff )
+
+
+    segment.altitude_end   = 20000.0   * Units.feet
+    segment.equivalent_air_speed      = 280.0 * Units.knots
+    segment.climb_rate       = 33.5 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
     mission.append_segment(segment)
     
-    segment = Segments.Climb.Constant_Throttle_Constant_Mach(base_segment)
-    segment.tag = "climb_4"
+    segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
+    segment.tag = "climb_5"
+
+    segment.analyses.extend( analyses.takeoff )
+
+
+    segment.altitude_end   = 25000.0   * Units.feet
+    segment.equivalent_air_speed      = 280.0 * Units.knots
+    #segment.throttle       = 1.0
+    segment.climb_rate       = 31.0 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+    
+    
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_6"
 
     segment.analyses.extend( analyses.cruise )
-    
-    segment.state.numerics.number_control_points = 16
-    #segment.altitude_start = 12.0   * Units.km
-    segment.altitude_end   = 20.0   * Units.km
+
+    segment.altitude_end   = 30000.0   * Units.feet
     segment.mach_number    = 0.7
-    segment.throttle       = 1.0
+    segment.climb_rate       = 26.0 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_7"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 35000.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 20.0 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+    
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_8"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 40000.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 17.0 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+    
+
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_9"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 45000.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 11.0 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+    
+
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_10"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 50000.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 8 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+    
+    
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_11"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 55000.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 5 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    segment = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
+    segment.tag = "climb_12"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 57500.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 4 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    segment = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
+    segment.tag = "climb_13"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 11.0   * Units.km
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 2 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+    
+
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_14"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 62500.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 0.8 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+    
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_15"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 20000.0   * Units.meter
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 50 * Units['ft/min']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
@@ -749,11 +881,12 @@ def mission_setup(analyses):
 #    # add to mission
 #    mission.append_segment(segment)
 #    
-#
+##
 #    # ------------------------------------------------------------------
 #    #   First Descent Segment: Constant Speed, Constant Rate
 #    # ------------------------------------------------------------------
 #
+
 #    segment = Segments.Descent.Constant_EAS_Constant_Rate(base_segment)
 #    segment.tag = "descent_1"
 #
