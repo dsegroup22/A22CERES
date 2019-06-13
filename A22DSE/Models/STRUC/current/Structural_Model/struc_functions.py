@@ -13,7 +13,7 @@ sys.path.append('../../../../../../')
 #from pathlib import Path
 #os.chdir(Path(__file__).parents[6])
 
-#structural wing model functions
+#structural wing model functions to calculate the torsional stiffness KTHETA
 
 def chord(bi,Aircraft): #verified
     ''' 
@@ -133,56 +133,6 @@ def skin_eq_lower(chord): #verified with data
     
     return func2
 
-def moi_stringer(t,b,h): #fin
-    ''' 
-    DESCRIPTION: fucntion that moment of inertia of a stringer
-    INPUT: stringer dimensions widht (b), height (h), thickness (t)
-    OUTPUT: moment of inertia stringer
-    ''' 
-    return 1/12*b*h**3+(h/2)**2*(b+h)*t
-
-def rib_moi(chord,t_rib): #fin
-    ''' 
-    DESCRIPTION: function that calculates the moment of inertia of the ribs. 
-    INPUT: locations of the ribs (x_rib1, x_rib2), tickness of the rib (t_rib),
-    wing skin equations (eq_lowerskin, eq_upperskin)
-    OUTPUT: moment of inertia ribs (moi_ribs)
-    ''' 
-    x_rib1=0.2*chord
-    x_rib2=0.6*chord
-    h_rib1=eq_upperskin(x_rib1)-eq_lowerskin(x_rib1)
-    h_rib2=eq_upperskin(x_rib2)-eq_lowerskin(x_rib2)
-    moi_ribs=1/12*t_rib*(h_rib1**3+h_rib2**3)
-    
-    return moi_ribs
-
-def skin_moi(chord,t_skin): #needs to be checked
-    '''
-    DESCRIPTION: function that calculates the moment of inertia of the skin. 
-    INPUT: tickness of the rib (t_rib), 
-        wing skin equations (eq_lowerskin, eq_upperskin)
-    OUTPUT: moment of inertia skin (moi_skin)    
-    '''
-    skin_upper_eq=skin_eq_upper(chord)
-    skin_lower_eq=skin_eq_lower(chord)
-    steps=len(x)
-    dx=1/steps
-    moi_skin=0
-    for i in x:
-        y_upper=skin_eq_upper()
-        y_lower=skin_eq_lower()
-        moi_skin=moi_skin+y_upper**2*t_skin*dx+y_lower**2*t_skin*dx
-        
-    return moi_skin
-    
-def moi_wing(chord,t_skin,t_rib):
-    ''' 
-    DESCRIPTION: function that calculates the total moment of inertia of the wing (moi_wing)
-    INPUT: moi functions of all the structural components
-    OUTPUT: moment of inertia at a certain span position
-    '''     
-    
-    return moi_wing
 
 def Area(chord): #verified
     ''' 
@@ -258,5 +208,54 @@ def TorsionalStiffness(chord,t_skin,t_rib):  #verified
 
     return K_theta
 
+def moi_stringer(t,b,h): #fin
+    ''' 
+    DESCRIPTION: fucntion that moment of inertia of a stringer
+    INPUT: stringer dimensions widht (b), height (h), thickness (t)
+    OUTPUT: moment of inertia stringer
+    ''' 
+    return 1/12*b*h**3+(h/2)**2*(b+h)*t
 
+def rib_moi(chord,t_rib): #fin
+    ''' 
+    DESCRIPTION: function that calculates the moment of inertia of the ribs. 
+    INPUT: locations of the ribs (x_rib1, x_rib2), tickness of the rib (t_rib),
+    wing skin equations (eq_lowerskin, eq_upperskin)
+    OUTPUT: moment of inertia ribs (moi_ribs)
+    ''' 
+    x_rib1=0.2*chord
+    x_rib2=0.6*chord
+    h_rib1=eq_upperskin(x_rib1)-eq_lowerskin(x_rib1)
+    h_rib2=eq_upperskin(x_rib2)-eq_lowerskin(x_rib2)
+    moi_ribs=1/12*t_rib*(h_rib1**3+h_rib2**3)
+    
+    return moi_ribs
+
+def skin_moi(chord,t_skin): #needs to be checked
+    '''
+    DESCRIPTION: function that calculates the moment of inertia of the skin. 
+    INPUT: tickness of the rib (t_rib), 
+        wing skin equations (eq_lowerskin, eq_upperskin)
+    OUTPUT: moment of inertia skin (moi_skin)    
+    '''
+    skin_upper_eq=skin_eq_upper(chord)
+    skin_lower_eq=skin_eq_lower(chord)
+    steps=len(x)
+    dx=1/steps
+    moi_skin=0
+    for i in x:
+        y_upper=skin_eq_upper()
+        y_lower=skin_eq_lower()
+        moi_skin=moi_skin+y_upper**2*t_skin*dx+y_lower**2*t_skin*dx
+        
+    return moi_skin
+    
+def moi_wing(chord,t_skin,t_rib):
+    ''' 
+    DESCRIPTION: function that calculates the total moment of inertia of the wing (moi_wing)
+    INPUT: moi functions of all the structural components
+    OUTPUT: moment of inertia at a certain span position
+    '''     
+    
+    return moi_wing
 
