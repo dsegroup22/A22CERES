@@ -11,16 +11,13 @@ from pathlib import Path
 os.chdir(Path(__file__).parents[6])
 
 
-import A22DSE.Models.AnFP.Current.\
-       Class_II.WingDesign.FunctionsPlanform as GenFunc
 # =============================================================================
 #               FUNCTIONS FOR TRANSONIC WING PLANFORM DESIGN
 # =============================================================================
 
 '''
 ASSUMPTIONS:
-    - muT = 0.25 (check muT func)
-    - rh  = 0.10
+    - muT = 0.25 - CHANGED; CHECK TORENBEEK FOR ADDITIONAL WEIGHTS
     - omegaS = 210 N/m²
     - e_curl = 0.80
     - shape_factor = 3.0    (2.5 < x < 3.5)
@@ -29,6 +26,28 @@ ASSUMPTIONS:
     - M* = 0.935           (2nd gen supercritical airfoils)
 '''
 
+def DynamicPressEq(Aircraft, ISA_model):
+    '''
+    INPUT: Aircraft and ISA model
+    OUTPUT: equivalent dynamic pressure coeff.
+    DESCRIPTION: Computes the dynamic pressure coeff and corrects it for the
+    fuel lost during climb and take-off by decreasing the MTOW by 2.5%
+    '''
+    # CONSTANTS AND VARIABLES
+    AnFP = Aircraft.ParAnFP
+    ISAFunc = ISA_model.ISAFunc
+    h_cruise = AnFP.h_cruise
+    
+    # Compute Mach number
+    a = np.sqrt(ISA_model.gamma*ISA_model.R*ISAFunc([h_cruise]))[0]
+    Mcruise = AnFP.V_cruise/a
+    P = ISAFunc([h_cruise])[1]
+    
+    
+    # Compute dynamic pressure eq.
+    q_eq = 0.5*ISA_model.gamma*np.power(Mcruise, 2)*1.025*P
+    
+    return q_eq
 
 def OverallEff(Aircraft, ISA_model, TSFC):
     '''
@@ -60,19 +79,20 @@ def ComputemuT(Aircraft):
     INPUT: 
     OUTPUT: powerplant weight per unit T_TO
     DESCRIPTION: W_nac is around 1% of MTOW according to parametric study;
-    for contingency we'll use 1.5%
+    for contingency we'll use 2%
     '''
     #todo: change np.min to np.MAX
     
     #ASSUMPTIONS AND CONSTANTS
     T_TO = Aircraft.ParAnFP.T_to
-    N_engine = T_TO/60000.
+    N_engine = Aircraft.ParProp.N_engines
+    NacelleFrac = 1.02
     
     #Determining Engine Weight
-    W_engineSheet = Aircraft.ParProp.Engine_weight*9.81*N_engine
+    W_engineSheet = Aircraft.ParProp.Engine_weight*9.81*N_engine*NacelleFrac
     W_engineStat  = 0.25 * T_TO
-
-    Wpp           = np.min([W_engineSheet,W_engineStat])
+    
+    Wpp           = W_engineSheet
     
     return Wpp / T_TO
 
@@ -89,8 +109,8 @@ def ComputeTheta2(Aircraft, ISA_model):
     #TODO: compute omegaS for composite wing
     
     rh = 0.10                                   # typical value REF Torenbeek
-    q_des = GenFunc.DynamicPressEq(Aircraft, ISA_model)
-    omegaS = 290  # N/m² for ALUMINIUM WING
+    q_des = DynamicPressEq(Aircraft, ISA_model)
+    omegaS = 210  # N/m² for ALUMINIUM WING
                   # Composite wing betw. 34% -  40% lighter than aluminium one
                   
     return (1+rh)*omegaS/q_des/10
@@ -107,7 +127,7 @@ def ComputeTheta3(Aircraft, ISA_model):
     #TODO: rh is approx. 0.10; CHANGE when Class II weights are set up.
     
     # CONSTANTS AND ASSUMPTIONS
-    rh = 0.10                                                # typical value
+    rh = Aircraft.ParLayoutConfig.Wht / Aircraft.ParStruc.Wing_weight
     WfuMTOW = Aircraft.ParStruc.wfratio
     fuelused = WfuMTOW*Aircraft.ParStruc.MTOW
     MZFW = (Aircraft.ParStruc.MTOW - fuelused)*ISA_model.g0
@@ -116,7 +136,7 @@ def ComputeTheta3(Aircraft, ISA_model):
     
     eta_cp = CoPLatCoor(Aircraft)                            # pg.236 Torenbeek
     n_ult = Aircraft.ParAnFP.n_ult
-    q_eq = GenFunc.DynamicPressEq(Aircraft, ISA_model)
+    q_eq = DynamicPressEq(Aircraft, ISA_model)
     
     
     return 0.0013*(1+rh)*eta_cp*n_ult*np.sqrt(MZFW/q_eq)/bref
@@ -198,7 +218,8 @@ def ComputeFWP(Aircraft, Fprop, theta2, theta3, Aw, CL, sweep):
     
     # Constants
     CDc = 0.0010
-    eCurl = 0.80
+    eCurl = 0.85
+    
     # Compute wing profile drag
     CDpCurl = ComputeCDpCurl(Aircraft, CL, sweep)
     
@@ -208,7 +229,7 @@ def ComputeFWP(Aircraft, Fprop, theta2, theta3, Aw, CL, sweep):
     FWP1 = theta3 * Aw * np.sqrt(Aw / CL) / tc_limit
     FWP2 = theta2 / CL
     
-    FWP3 = (CDpCurl + CDc) / CL + CL / (np.pi*Aw*eCurl)
+    FWP3 = ((CDpCurl + CDc) / CL + CL / (np.pi*Aw*eCurl))*Fprop
     
     FWP  = FWP1 + FWP2 + FWP3
     

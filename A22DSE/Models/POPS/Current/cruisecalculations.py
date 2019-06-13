@@ -11,7 +11,7 @@ def CruiseRange(Aircraft):
     dispersionrate = payl.dispersionrate
     #function that calculates the cruise range
         
-    return 2*m_payload/dispersionrate #cruise range [m]
+    return 2.*m_payload/dispersionrate #cruise range [m]
 
 def CruiseTime(Aircraft, ISA_model):
     import numpy as np
