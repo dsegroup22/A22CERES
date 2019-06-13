@@ -137,6 +137,7 @@ def htail(Aircraft,ISA):
 #    plt.show()
 #    
     mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
+
 #    
 #    ShS = 0.18
 #    Sh_ite = ShS*Sw #new horizotal tail surface area
@@ -147,13 +148,13 @@ def htail(Aircraft,ISA):
 #        l_arm_opt = Vh*MAC*Sw/Sh
 #        mh = kh*Sh*(62*(Sh**0.2*Vd)/(1000*sqrt(cos(sweep_h50)))-2.5)
         
+
+
     ShS = np.array([0.18])
-    
     for i in range(len(ShS)):
         Sh_ite = ShS[i]*Sw #new horizotal tail surface area
         tail_diff = abs((Sh_ite - Sh))/Sh
-        #print (Sh_ite)
-    ##    
+
         if tail_diff > 0.1:
             Sh = Sh_ite
             l_arm_opt = Vh*MAC*Sw/Sh
@@ -162,9 +163,6 @@ def htail(Aircraft,ISA):
         else:
             break
         
-##        
-#   
-    
     #using scissor plot and update values of Sh
     
     #---------------- elevator design procedure 
@@ -174,41 +172,41 @@ def htail(Aircraft,ISA):
     SeSh = 0.3
     cech = 0.3
     
-#    #---------------- iterative process 
-#    Vmc = 45 #m/s
-#    Vr = 1.05*Vmc
-#    
-#    T = 325000 #N 
-#    CL_to = AnFP.C_L_max_slow #1.5 #subject to change
-#    CD_to = 0.07
-#    Cm_ac_wf = -0.5
-#    mu = 0.03
-#    
-#    Lwf = 0.5*ISA.rho0*Vr**2*CL_to*Sw
-#    Dto = 0.5*ISA.rho0*Vr**2*CD_to*Sw
-#    Macwf = 0.5*ISA.rho0*Vr**2*Cm_ac_wf*Sw*MAC
-#    MTOW = Aircraft.ParStruc.MTOW
-#    
-#    a = (T-Dto-mu*(MTOW*ISA.g0-(Lwf+0.5*ISA.rho0*Vr**2*CLh*Sh)))/MTOW
-#    
-#    betah = sqrt(1-AnFP.M_cruise**2)
-#    CLalphah = 2*pi*AR_h/(2.+ sqrt(4.+(AR_h*betah/etha)**2*(1.+((tan(AnFP.Sweep_50))**2/betah**2)))) #/rad
-#
-#    Cm_deltae = - CLalphah*etha*Vh*bebh*tau_e #rate of change of aircraft pitching moment coefficient wrt elevator deflection
-#    CL_deltae = CLalphah*etha*(Sh/Sw)*bebh*tau_e #rate of change of aircraft lift coefficient wrt to elevator deflection
-#    CL_h_deltae = CLalphah*tau_e #rate of change of tail lift coefficient wrt elevator deflection
-#    
-#    #for large transport
-#    rot_t = 4 #[s] rotation time
-#    theta_dd = 5 #[deg/s] take-off pitch angular acceleration
-#    
-#    
-#    
-#    alpha_onset = 0
-#    ih = 0
-#   
-#    alpha_h = alpha_onset + ih - (2*CL_to)/(pi*AR_main)
-#    #de_max_up = (CLh/CLalphah - alpha_h) /tau_e
+    #---------------- iterative process 
+    Vmc = 45 #m/s
+    Vr = 1.05*Vmc
+    
+    T = 325000 #N 
+    CL_to = AnFP.C_L_max_slow #1.5 #subject to change
+    CD_to = 0.07
+    Cm_ac_wf = -0.5
+    mu = 0.03
+    
+    Lwf = 0.5*ISA.rho0*Vr**2*CL_to*Sw
+    Dto = 0.5*ISA.rho0*Vr**2*CD_to*Sw
+    Macwf = 0.5*ISA.rho0*Vr**2*Cm_ac_wf*Sw*MAC
+    MTOW = Aircraft.ParStruc.MTOW
+    
+    a = (T-Dto-mu*(MTOW*ISA.g0-(Lwf+0.5*ISA.rho0*Vr**2*CLh*Sh)))/MTOW
+    
+    betah = sqrt(1-AnFP.M_cruise**2)
+    CLalphah = 2*pi*AR_h/(2.+ sqrt(4.+(AR_h*betah/etha)**2*(1.+((tan(AnFP.Sweep_50))**2/betah**2)))) #/rad
+
+    Cm_deltae = - CLalphah*etha*Vh*bebh*tau_e #rate of change of aircraft pitching moment coefficient wrt elevator deflection
+    CL_deltae = CLalphah*etha*(Sh/Sw)*bebh*tau_e #rate of change of aircraft lift coefficient wrt to elevator deflection
+    CL_h_deltae = CLalphah*tau_e #rate of change of tail lift coefficient wrt elevator deflection
+    
+    #for large transport
+    rot_t = 4 #[s] rotation time
+    theta_dd = 5 #[deg/s] take-off pitch angular acceleration
+    
+    
+    
+    alpha_onset = 0
+    ih = 0
+   
+    alpha_h = alpha_onset + ih - (2*CL_to)/(pi*AR_main)
+    #de_max_up = (CLh/CLalphah - alpha_h) /tau_e
     mac_h = (2./3.) * ch_root * (1. + tr_h + tr_h**2.)/(1. + tr_h)
     #finish once we have all parameters
     Aircraft.ParLayoutConfig.c_rht =ch_root
@@ -223,7 +221,7 @@ def htail(Aircraft,ISA):
     Aircraft.ParLayoutConfig.Sht = Sh
     Aircraft.ParLayoutConfig.xht = l_arm_opt
     Aircraft.ParLayoutConfig.mac_h = mac_h
-    
+
     return (ch_root, ch_tip,bh,sweep_h,sweep_h25,sweep_h50,tr_h,AR_h,mh,Sh,l_arm_opt)
 #def rudder(Aircraft):
 

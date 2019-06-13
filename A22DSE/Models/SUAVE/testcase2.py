@@ -69,7 +69,7 @@ def main():
     # plt the old results
     plot_mission(results)
 
-    return
+    return results
 
 # ----------------------------------------------------------------------
 #   Analysis Setup
@@ -170,7 +170,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------    
     
     vehicle = SUAVE.Vehicle()
-    vehicle.tag = 'Boeing_737-800'    
+    vehicle.tag = 'Ceres Aircraft'    
     
     # ------------------------------------------------------------------
     #   Vehicle-level Properties
@@ -670,8 +670,8 @@ def mission_setup(analyses):
 
     segment.altitude_start = 0.0   * Units.km
     segment.altitude_end   = 5000.0   * Units.feet
-    segment.equivalent_air_speed      = 250.0 * Units.knots
-    segment.climb_rate       = 40 * Units['m/s']  
+    segment.equivalent_air_speed      = 225.0 * Units.knots
+    segment.climb_rate       = 43 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to misison
@@ -683,8 +683,8 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.takeoff )
 
     segment.altitude_end   = 10000.0   * Units.feet
-    segment.equivalent_air_speed      = 250.0 * Units.knots
-    segment.climb_rate       = 37 * Units['m/s']  
+    segment.equivalent_air_speed      = 230.0 * Units.knots
+    segment.climb_rate       = 39 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to misison
@@ -697,8 +697,8 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise )
 
     segment.altitude_end   = 15000.0   * Units.feet
-    segment.equivalent_air_speed    = 280 * Units.knots
-    segment.climb_rate       = 36.5 * Units['m/s']  
+    segment.equivalent_air_speed    = 240 * Units.knots
+    segment.climb_rate       = 35.5 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
@@ -712,8 +712,8 @@ def mission_setup(analyses):
 
 
     segment.altitude_end   = 20000.0   * Units.feet
-    segment.equivalent_air_speed      = 280.0 * Units.knots
-    segment.climb_rate       = 33.5 * Units['m/s']  
+    segment.equivalent_air_speed      = 240.0 * Units.knots
+    segment.climb_rate       = 30.8 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
@@ -726,36 +726,35 @@ def mission_setup(analyses):
 
 
     segment.altitude_end   = 25000.0   * Units.feet
-    segment.equivalent_air_speed      = 280.0 * Units.knots
-    #segment.throttle       = 1.0
-    segment.climb_rate       = 31.0 * Units['m/s']  
+    segment.equivalent_air_speed      = 240.0 * Units.knots
+    segment.climb_rate       = 26.5 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
     mission.append_segment(segment)
     
     
-    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "climb_6"
 
     segment.analyses.extend( analyses.cruise )
 
     segment.altitude_end   = 30000.0   * Units.feet
-    segment.mach_number    = 0.7
-    segment.climb_rate       = 26.0 * Units['m/s']  
+    segment.equivalent_air_speed      = 240.0 * Units.knots
+    segment.climb_rate       = 21.5 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
     mission.append_segment(segment)
 
-    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "climb_7"
 
     segment.analyses.extend( analyses.cruise )
 
     segment.altitude_end   = 35000.0   * Units.feet
-    segment.mach_number    = 0.7
-    segment.climb_rate       = 20.0 * Units['m/s']  
+    segment.equivalent_air_speed      = 240.0 * Units.knots
+    segment.climb_rate       = 17.6 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
@@ -768,7 +767,7 @@ def mission_setup(analyses):
 
     segment.altitude_end   = 40000.0   * Units.feet
     segment.mach_number    = 0.7
-    segment.climb_rate       = 17.0 * Units['m/s']  
+    segment.climb_rate       = 17.4 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
@@ -782,7 +781,7 @@ def mission_setup(analyses):
 
     segment.altitude_end   = 45000.0   * Units.feet
     segment.mach_number    = 0.7
-    segment.climb_rate       = 11.0 * Units['m/s']  
+    segment.climb_rate       = 12.5 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
@@ -796,7 +795,7 @@ def mission_setup(analyses):
 
     segment.altitude_end   = 50000.0   * Units.feet
     segment.mach_number    = 0.7
-    segment.climb_rate       = 8 * Units['m/s']  
+    segment.climb_rate       = 9.2 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
@@ -810,27 +809,46 @@ def mission_setup(analyses):
 
     segment.altitude_end   = 55000.0   * Units.feet
     segment.mach_number    = 0.7
-    segment.climb_rate       = 5 * Units['m/s']  
+    segment.climb_rate       = 5.8 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
-    segment = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
+    # add to mission
+    mission.append_segment(segment)
+
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
     segment.tag = "climb_12"
 
     segment.analyses.extend( analyses.cruise )
 
     segment.altitude_end   = 57500.0   * Units.feet
     segment.mach_number    = 0.7
-    segment.climb_rate       = 4 * Units['m/s']  
+    segment.climb_rate       = 3.7 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
-    segment = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
+    # add to mission
+    mission.append_segment(segment)
+
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
     segment.tag = "climb_13"
 
     segment.analyses.extend( analyses.cruise )
 
-    segment.altitude_end   = 15000.0   * Units.feet
-    segment.equivalent_air_speed    = 280 * Units.knots
-    segment.climb_rate       = 36.5 * Units['m/s']  
+    segment.altitude_end   = 59500.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 3.0 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_13"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 61000.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 2.3 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
@@ -842,9 +860,9 @@ def mission_setup(analyses):
 
     segment.analyses.extend( analyses.cruise )
 
-    segment.altitude_end   = 62500.0   * Units.feet
+    segment.altitude_end   = 62000.0   * Units.feet
     segment.mach_number    = 0.7
-    segment.climb_rate       = 0.8 * Units['m/s']  
+    segment.climb_rate       = 1.2 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
     # add to mission
@@ -855,10 +873,36 @@ def mission_setup(analyses):
 
     segment.analyses.extend( analyses.cruise )
 
+    segment.altitude_end   = 63000.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 0.8 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+    
+    #add to mission
+    mission.append_segment(segment)
+    
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_16"
+
+    segment.analyses.extend( analyses.cruise )
+
+    segment.altitude_end   = 64000.0   * Units.feet
+    segment.mach_number    = 0.7
+    segment.climb_rate       = 0.4 * Units['m/s']  
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+    
+    segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
+    segment.tag = "climb_17"
+
+    segment.analyses.extend( analyses.cruise )
+
     segment.altitude_end   = 20000.0   * Units.meter
     segment.mach_number    = 0.7
-    segment.climb_rate       = 50 * Units['ft/min']  
-    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+    segment.climb_rate       = 45 * Units['ft/min']  
+    segment.state.conditions.weights.vehicle_payload_rate = Aircraft.ParPayload.disperRatePerTime
 
     # add to mission
     mission.append_segment(segment)
@@ -879,26 +923,43 @@ def mission_setup(analyses):
 
     # add to mission
     mission.append_segment(segment)
-#    
-##
-#    # ------------------------------------------------------------------
-#    #   First Descent Segment: Constant Speed, Constant Rate
-#    # ------------------------------------------------------------------
-#
+    
 
-#    segment = Segments.Descent.Constant_EAS_Constant_Rate(base_segment)
-#    segment.tag = "descent_1"
-#
-#    segment.analyses.extend( analyses.landing )
-#
-#    segment.altitude_start = 20.0 *Units.km
-#    segment.altitude_end = 0.0   * Units.km
-#    segment.equivalent_air_speed      = 200.0 * Units['m/s']
-#    segment.descent_rate = 1800.   * Units['ft/min']
-#    segment.state.conditions.weights.vehicle_payload_rate = 0.0
-#
-#    # add to mission
-#    mission.append_segment(segment)
+    # ------------------------------------------------------------------
+    #   First Descent Segment: Constant Speed, Constant Rate
+    # ------------------------------------------------------------------
+
+
+
+    segment = Segments.Descent.Linear_Mach_Constant_Rate(base_segment)
+    segment.tag = "descent_1"
+
+    segment.analyses.extend( analyses.landing )
+
+    segment.altitude_start = 20.0 *Units.km
+    segment.altitude_end = 35000.0   * Units.feet
+    segment.mach_start = 0.7
+    segment.mach_end   = 0.7
+    segment.descent_rate = 1800.   * Units['ft/min']
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
+
+
+    segment = Segments.Descent.Constant_EAS_Constant_Rate(base_segment)
+    segment.tag = "descent_2"
+
+    segment.analyses.extend( analyses.landing )
+
+    segment.altitude_start = 35000.0   * Units.feet
+    segment.altitude_end = 0.0   * Units.km
+    segment.equivalent_air_speed      = 240.0 * Units.knots
+    segment.descent_rate = 1800.   * Units['ft/min']
+    segment.state.conditions.weights.vehicle_payload_rate = 0.0
+
+    # add to mission
+    mission.append_segment(segment)
 
     # ------------------------------------------------------------------
     #   Mission definition complete    
@@ -939,6 +1000,7 @@ def plot_mission(results,line_style='bo-'):
         Thrust = segment.conditions.frames.body.thrust_force_vector[:,0] / Units.kN
         eta    = segment.conditions.propulsion.throttle[:,0]
 
+
         axes = fig.add_subplot(2,1,1)
         axes.plot( time , Thrust , line_style )
         axes.set_ylabel('Thrust (kN)',axis_font)
@@ -948,6 +1010,12 @@ def plot_mission(results,line_style='bo-'):
         axes.plot( time , eta , line_style )
         axes.set_xlabel('Time (min)',axis_font)
         axes.set_ylabel('Throttle',axis_font)
+        axes.grid(True)	
+        
+        axes = fig.add_subplot(2,1,2)
+        axes.plot( time , eta , line_style )
+        axes.set_xlabel('Time (min)',axis_font)
+        axes.set_ylabel('Power Difference',axis_font)
         axes.grid(True)	
 
         plt.savefig("Ceres_engine.pdf")
@@ -1070,25 +1138,31 @@ def plot_mission(results,line_style='bo-'):
         EAS      = velocity * np.sqrt(density/1.225)
         mach     = segment.conditions.freestream.mach_number[:,0]
 
-        axes = fig.add_subplot(3,1,1)
+        axes = fig.add_subplot(4,1,1)
         axes.plot( time , velocity / Units.knots, line_style )
         axes.set_ylabel('velocity (knots)',axis_font)
         axes.grid(True)
 
-        axes = fig.add_subplot(3,1,2)
+        axes = fig.add_subplot(4,1,2)
         axes.plot( time , EAS / Units.kts, line_style )
         axes.set_xlabel('Time (min)',axis_font)
         axes.set_ylabel('Equivalent Airspeed',axis_font)
         axes.grid(True)    
         
-        axes = fig.add_subplot(3,1,3)
+        axes = fig.add_subplot(4,1,3)
         axes.plot( time , mach , line_style )
         axes.set_xlabel('Time (min)',axis_font)
         axes.set_ylabel('Mach',axis_font)
         axes.grid(True)           
         
+        axes = fig.add_subplot(4,1,4)
+        axes.plot( time , Thrust-Drag , line_style )
+        axes.set_xlabel('Time (min)',axis_font)
+        axes.set_ylabel('Force Excess',axis_font)
+        axes.grid(True)  
+        
     return
 Aircraft=Conv
 if __name__ == '__main__': 
-    main()    
+    results = main()    
     plt.show()

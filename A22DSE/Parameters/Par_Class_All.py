@@ -34,7 +34,7 @@ class ParAnFPLst(object):
         self.c_j = 0.6/3600          #[s^-1]            DUMMY VALUE
         self.SFC = 16*10e-6				#[kg/N/s]          DUMMY VALUE
         self.LD = 16                 #[-]               DUMMY VALUE
-        
+        self.CLMAX = None #1.0326478
         #takeoff parameters
         self.CL_to = 1.03				#[-]                   DUMMY VALUE                                               cruise mach number                          by POPS
         self.CD_to = 0.1					#[-]                   DUMMY VALUE                                               cruise mach number                          by POPS
@@ -88,7 +88,7 @@ class ParStrucLst(object):
         def __init__(self):
             
             self.MTOW = 25000				#[kg]      DUMMMY VALUE
-            self.FW = None #[kg]                #Fuel weight
+            self.FW = None#[kg]                #Fuel weight
             self.N_engines = 2 #[-] 
             self.tail_angle = 15*np.pi/180 #DUMMY VALUE #[rad] angle of empannage wrt ground
             
@@ -108,7 +108,7 @@ class ParPayloadLst(object):
     def __init__(self):
         self.disperRatePerTime = None
         self.airtofuel = 6 #[-]                                                                        air to fuel ratio                           by POPS
-        self.m_payload = 10000. #[kg]                                                                  payload mass per flight                     by POPS           
+        self.m_payload = None #[kg]                                                                  payload mass per flight                     by POPS           
         self.rho_payload = 1121 #[kg/m^3]                                                              density of payload                           by POPS
         self.rho_alu = 2700 #[kg/m^3]                                                                  density of aluminium                        by POPS
         self.t_tank = 0.003 #[m]                                                                          payload tank thickness                      by POPS

@@ -14,7 +14,7 @@ os.chdir(Path(__file__).parents[6])
 import numpy as np
 import A22DSE.Models.AnFP.\
 Current.Class_II.WingDesign.TransPlanFormFuncLst as FormFuncs
-#from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
+from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -33,7 +33,7 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     #tc_w  = np.linspace(0.10, 0.15, 4)
     TSFC = Aircraft.ParProp.SFC_cruise*3600
     CL, sweep = np.meshgrid(CL_i, sweep_i)
-    Aw = 23.
+    Aw = 23.5
     theta2 = FormFuncs.ComputeTheta2(Aircraft, ISA_model)
     theta3 = FormFuncs.ComputeTheta3(Aircraft, ISA_model)
     Fprop = FormFuncs.ComputeFprop(Aircraft, ISA_model, TSFC)
@@ -111,7 +111,7 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
         plt.axvline(np.rad2deg(sweep_opt), color = 'orange', 
                     linestyle = 'dashed',
                     label = r'Partial optimum $\Lambda_w$')
-        plt.axhline(CL_lim, linestyle = 'dashed', col = 'g',
+        plt.axhline(CL_lim, linestyle = 'dashed', color = 'g',
                     label = 'Buffet Limit')
         plt.ylim((CL_i[0], CL_i[-1]))
         plt.xlim((np.rad2deg(sweep_i[0]), np.rad2deg(sweep_i[-1])))
@@ -125,7 +125,7 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     return CL_des, tc_des, FWP_opt
 
 
-def ClassII_Planform(Conv, ISA_model):
+def ClassII_Planform(Conv):
     
     step = 100
     Conv.ParAnFP.C_L_design, Conv.ParAnFP.tc_w, Conv.ParAnFP.FWP = (

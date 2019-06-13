@@ -46,7 +46,7 @@ def Wing_Geo(Aircraft):
                     * (1 - Taper) / (1 + Taper))
     Sweep_LE = atan( tan(Sweep_25_rad) - (4 / AR) * -0.25 \
                     * (1 - Taper) / ( 1 + Taper))
-
+#    print(AR, S)
     b = sqrt(AR * S)
     c_r = (2 * S ) / (b * (1 + Taper) )
     c_t = Taper * c_r
