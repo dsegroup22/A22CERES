@@ -37,19 +37,24 @@ assert isinstance(Conv.ParCntrl, object)
 sc = Conv.ParCntrl
 Payload=Conv.ParPayload
 
-#CLASS I
-ClassIAircraft()
-ClassI_AndAHalf()
-PrelimTail()
-ComputeCD0(Conv)
 
-anfp.TtoW = anfp.TtoW+0.15
 
-#CLASS II
-ClassIISizing(Conv)
-ClassIIWeightIteration(Conv)
-ClassII_Planform(Conv)
+Payload.m_payload = 10000.
+def TotalAC(Conv):
+    #CLASS I
+    ClassIAircraft(Conv)
+    ClassI_AndAHalf(Conv)
+    PrelimTail(Conv)
+    ComputeCD0(Conv)
+    
+    Conv.ParAnFP.TtoW = Conv.ParAnFP.TtoW+0.15
+    
+    #CLASS II
+    
+    ClassIISizing(Conv)
+    ClassIIWeightIteration(Conv)
 
+TotalAC(Conv)
 # =============================================================================
 # #saving object as txt file
 # =============================================================================
