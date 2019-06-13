@@ -12,8 +12,8 @@ def vtail(Aircraft):
     '''
     lvi = Aircraft.ParLayoutConfig.xht
     Sv = Aircraft.ParLayoutConfig.Svt
-    Avi = Aircraft.ParLayoutConfig.Avt
-    trvi = Aircraft.ParLayoutConfig.trvt
+    Avi = 1.3#Aircraft.ParLayoutConfig.Avt
+    trvi = 0.646#Aircraft.ParLayoutConfig.trvt
     swquart = Aircraft.ParLayoutConfig.Sweep25vt
     M = Aircraft.ParAnFP.M_cruise
     betav = sqrt(1-M**2)
@@ -24,12 +24,12 @@ def vtail(Aircraft):
     swhalf = (bv*tan(radians(swquart))+0.25*ctv-0.25*crv)/bv
     CLvbeta= 2*pi*Avi/(2.+ sqrt(4.+Avi*(betav/etha)**2*(1.+(tan(radians(swhalf))/betav)**2)))
     Vv = lvi*Sv/Aircraft.ParAnFP.S/Aircraft.ParAnFP.b
-    tauc = 0.4    #cr/cv 
+    tauc = 0.2    #cr/cv 
     taub = 1      #br/bv
     CLvdeltar = CLvbeta*tauc*taub
     CLv0 = 0   #because of the symmetric airfoil
     beta = radians(5)   
-    deltar = radians(40)
+    deltar = radians(25)
     CLv = CLv0 + CLvbeta*beta+CLvdeltar*deltar 
     rho = 1.225  #takeoff air density
     Vmc = 1.13*Aircraft.ParAnFP.V_stall   #1.13*vstall!!!!!!
@@ -62,7 +62,11 @@ def vtail(Aircraft):
 #    Fw = 0.5*rho*Vw**2*Sside*CDside
 #    cwdif = Lv*lvi-Fw*lac
 #    
-#    
+    bv = sqrt(Svi*Avi)
+    crv = 2*Svi/bv/(1+trvi)
+    ctv = crv*trvi
+
+    
     anfp = Aircraft.ParAnFP
     Vc = anfp.V_cruise
     Vd = 1.4*Vc   #dive speed
@@ -78,9 +82,9 @@ def vtail(Aircraft):
     Aircraft.ParLayoutConfig.trvt = trvi
     Aircraft.ParLayoutConfig.Sweep25vt = swquart
     Aircraft.ParLayoutConfig.Sweep50vt = degrees(swhalf)
-    Aircraft.ParLayoutConfig.cr_v = crv
-    Aircraft.ParLayoutConfig.ct_v = ctv
-    Aircraft.ParLayoutConfig.b_v = bv
+    Aircraft.ParLayoutConfig.c_rvt = crv
+    Aircraft.ParLayoutConfig.c_tvt = ctv
+    Aircraft.ParLayoutConfig.bv = bv
     Aircraft.ParLayoutConfig.Wvt = Wvt
     Aircraft.ParLayoutConfig.mac_v = mac_v
     Aircraft.ParLayoutConfig.sweepLEvt = swle

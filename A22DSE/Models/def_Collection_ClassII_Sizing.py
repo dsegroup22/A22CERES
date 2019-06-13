@@ -84,7 +84,8 @@ def ClassIISizing(Conv):
     
     
     Payload.xcg_tank,Payload.xcg_burner,Payload.x_burner_end,\
-    Payload.xcg_totalpayload_empty=Payloadcg(Conv)
+    Payload.xcg_totalpayload_empty,Payload.xcg_tank_fwd,Payload.xcg_burner_fwd, \
+    Payload.x_burner_end_fwd,Payload.xcg_totalpayload_empty_fwd=Payloadcg(Conv)
     
     anfp.rho_cruise=ISA_model.ISAFunc([anfp.h_cruise])[2]
     anfp.q_dive=0.5*anfp.rho_cruise*(1.4*anfp.V_cruise)**2
@@ -119,7 +120,7 @@ def ClassIISizing(Conv):
     Layout.x_apex_wing = Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
     Layout.x_apex_ht = Layout.x_lemach-Layout.y_MACh*np.tan(Layout.sweepLEht)
     Layout.x_apex_vt = Layout.x_lemacv-Layout.y_MACv*np.tan(Layout.sweepLEvt)
-    
+    Layout.x_begin_emp = Layout.l_nose+Layout.l_cabin
     #engine selection
     EngineChoice(Conv,ISA_model,False)
     
