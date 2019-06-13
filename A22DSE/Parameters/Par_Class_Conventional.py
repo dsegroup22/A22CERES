@@ -48,7 +48,7 @@ anfp.TtoW = anfp.TtoW+0.15
 #CLASS II
 ClassIISizing(Conv)
 ClassIIWeightIteration(Conv)
-ClassII_Planform(Conv, ISA_model)
+ClassII_Planform(Conv)
 
 # =============================================================================
 # #saving object as txt file
