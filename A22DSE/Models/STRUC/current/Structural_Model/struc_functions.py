@@ -11,7 +11,7 @@ import numpy as np
 
 #structural wing model functions
 
-def chord(bi,Aircraft): #fin
+def chord(bi,Aircraft): #verified
     ''' 
     DESCRIPTION: function that calculates the chord at a span position
     INPUT: span position in the aircraft body system (bi)
@@ -24,7 +24,7 @@ def chord(bi,Aircraft): #fin
     chord = c_r - (c_r-c_t)*2/b*bi
     return chord
 
-def arc_length(x, y):  #fin
+def arc_length(x, y):  #verified with circles and parabolas
     ''' 
     DESCRIPTION: function that calculates the length of a curve
     INPUT: arrays of x and y coordinates for a 2D curve (x,y)
@@ -37,7 +37,7 @@ def arc_length(x, y):  #fin
 
     return arc
 
-def skin_eq_upper(chord): #fin
+def skin_eq_upper(chord): #verified with data
     ''' 
     DESCRIPTION: fucntion that makes a 25th order polynomial fit for the airfoil
     INPUT: datafiles of upper airfoil and the chord length
@@ -60,7 +60,7 @@ def skin_eq_upper(chord): #fin
     
     return func1
 
-def skin_eq_lower(chord): #fin
+def skin_eq_lower(chord): #verified with data
     ''' 
     DESCRIPTION: fucntion that makes a 25th order polynomial fit for the airfoil
     INPUT: datafiles of lower airfoil and the chord length
@@ -86,7 +86,7 @@ def skin_eq_lower(chord): #fin
 
 def moi_stringer(t,b,h): #fin
     ''' 
-    DESCRIPTION: fucntion that moment of inetia of a stringer
+    DESCRIPTION: fucntion that moment of inertia of a stringer
     INPUT: stringer dimensions widht (b), height (h), thickness (t)
     OUTPUT: moment of inertia stringer
     ''' 
@@ -108,6 +108,12 @@ def rib_moi(chord,t_rib): #fin
     return moi_ribs
 
 def skin_moi(x,t_skin): #needs to be checked
+    '''
+    DESCRIPTION: function that calculates the moment of inertia of the skin. 
+    INPUT: tickness of the rib (t_rib), 
+        wing skin equations (eq_lowerskin, eq_upperskin)
+    OUTPUT: moment of inertia skin (moi_skin)    
+    '''
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
     steps=len(x)
@@ -125,16 +131,16 @@ def moi_wing(x,t_skin,t_rib):
     
     return moi_wing
 
-def Area(chord): #finished
+def Area(chord): #verified
     x_rib1=0.2*chord
     x_rib2=0.6*chord
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
     int_upper=np.polyint(skin_upper_eq)
     int_lower=np.polyint(skin_lower_eq)
-    A1=int_upper(x_rib1)-int_upper(0)+int_lower(x_rib1)-int_lower(0)
-    A2=int_upper(x_rib2)-int_upper(x_rib1)+int_lower(x_rib2)-int_lower(x_rib1)
-    A3=int_upper(1)-int_upper(x_rib2)+int_lower(1)-int_lower(x_rib2)
+    A1=int_upper(x_rib1)-int_upper(0)  - int_lower(x_rib1) + int_lower(0)
+    A2=int_upper(x_rib2)-int_upper(x_rib1) - int_lower(x_rib2) + int_lower(x_rib1)
+    A3=int_upper(chord)-int_upper(x_rib2) - int_lower(chord) + int_lower(x_rib2)
     
     return A1,A2,A3
 
@@ -147,7 +153,7 @@ def S(chord): #finished
     h_rib2=skin_upper_eq(x_rib2)-skin_lower_eq(x_rib2)
     xI=np.linspace(0.,x_rib1,50)
     xII=np.linspace(x_rib1,x_rib2,50)
-    xIII=np.linspace(x_rib2,1,50)
+    xIII=np.linspace(x_rib2,chord,50)
     S1=arc_length(xI,  skin_upper_eq(xI))+arc_length(xI,  skin_lower_eq(xI))
     S2=arc_length(xII,  skin_upper_eq(xII))+arc_length(xII,  skin_lower_eq(xII))
     S3=arc_length(xIII,  skin_upper_eq(xIII))+arc_length(xIII,  skin_lower_eq(xIII))
@@ -176,7 +182,7 @@ def TorsionalStiffness(chord,t_skin,t_rib):  #finished
     T=1 #unit torque to run the numerical calculation
     dthetadz=TwistSolver(chord,t_skin,t_rib)
     
-    return abs(float(T/dthetadz))
+    return (T/dthetadz)
 
 
 
