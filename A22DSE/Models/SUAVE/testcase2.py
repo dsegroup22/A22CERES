@@ -10,11 +10,12 @@
 # Python Imports
 import numpy as np
 import pylab as plt
-
-# SUAVE Imports
-import SUAVE
 import os
 from pathlib import Path
+# SUAVE Imports
+os.chdir(Path(__file__).parents[0])
+import SUAVE
+
 os.chdir(Path(__file__).parents[3])
 from SUAVE.Core import Data, Units 
 from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
