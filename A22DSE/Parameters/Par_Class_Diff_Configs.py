@@ -86,8 +86,6 @@ def ClassIAircraft(Conv):
     #Conv.ParAnFP.CD0 = 0.008
     Conv.ParProp.Engine_weight = 2484           #[kg] weight per engine
     Conv.ParAnFP.tc = 0.12
-
-    
     
     #parameters from functions
     

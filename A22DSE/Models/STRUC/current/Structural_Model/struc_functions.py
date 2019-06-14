@@ -9,7 +9,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 import os
+import warnings
 sys.path.append('../../../../../../')
+warnings.filterwarnings("ignore")
 #from pathlib import Path
 #os.chdir(Path(__file__).parents[6])
 
@@ -333,6 +335,7 @@ def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
         #skin weight+rib weight
         A_skin_rho=(S1+S3)*t_skin*rho_alu+(S2+h_rib1+h_rib2)*t_rib*rho_comp
         w_skin=w_skin+A_skin_rho*db
+
     #stiffener weight
     MAC=Aircraft.ParAnFP.MAC
     c_r=Aircraft.ParAnFP.c_r
