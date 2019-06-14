@@ -12,7 +12,7 @@ import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[4])
 
-#from A22DSE.Parameters.Par_Class_Conventional import Conv
+from A22DSE.Parameters.Par_Class_Conventional import Conv
 
 anfp = Conv.ParAnFP
 struc = Conv.ParStruc
