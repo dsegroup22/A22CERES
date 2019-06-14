@@ -94,7 +94,7 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
     for i, t_skin in enumerate(t_skinLst):
         for j, t_rib in enumerate(t_ribLst):
             KthetaLst[i][j] = (float(StrucFun.TorsionalStiffness(
-                    airfoil.c, Aircraft,t_skin,t_rib)))
+                    airfoil.c, Aircraft, t_skin, t_rib)))
     
     
     KhLst = StrucFun.moi_wing(airfoil.c, Aircraft)*1e12
@@ -134,7 +134,7 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
         plotV4(SKIN, RIB, Vdiv_sl, Vcr_sl, Vfl_sl[0], V_req_arr)
         #plotV4(SKIN, RIB, Vdiv_cr, Vcr_cr, Vfl_cr[0], V_cr)    
         
-    return V_constr_sl
+    return KthetaLst
     # Compute mass of skin, rib combination
     
         #find thicknesses that satisfy constraints
