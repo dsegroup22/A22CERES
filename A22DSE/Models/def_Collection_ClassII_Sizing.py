@@ -30,6 +30,7 @@ from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 from A22DSE.Models.Layout.Current.Engine_Placements import Engines_placement
 from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
 from A22DSE.Models.SC.ControlSurface.aileron_sizing import aileron
+from A22DSE.Models.SC.LoadingDiagram.Loading_Diagram import loadingdiag
 from A22DSE.Models.Layout.Current.gearlocation_tri import PositionsLG_Tri
 #from A22DSE.Models.DATCOM.Current.datcomrunread import C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,\
 #C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q
@@ -130,11 +131,20 @@ def ClassIISizing(Aircraft):
     
     #engine placement
     Engines_placement(Aircraft)
-#    Aircraft.ParLayoutConfig.lg_l_main,Aircraft.ParLayoutConfig.lg_l_nose,\
-#    Aircraft.ParLayoutConfig.lg_y_main, Aircraft.ParLayoutConfig.lg_x_main,\
-#    Aircraft.ParLayoutConfig.lg_x_nose_min_F_n, Aircraft.ParLayoutConfig.lg_x_nose_max_F_n,\
-#    Aircraft.ParLayoutConfig.lg_x_nose,Aircraft.ParLayoutConfig.lg_y_nose,\
-#    z_cg = PositionsLG_Tri(Aircraft)
+
+    
+    xcg_fwd,xcg_aft = loadingdiag(Aircraft)
+    
+    Layout.x_cg = [xcg_fwd,xcg_aft]
+    
+
+
+    Aircraft.ParLayoutConfig.lg_l_main,Aircraft.ParLayoutConfig.lg_l_nose,\
+    Aircraft.ParLayoutConfig.lg_y_main, Aircraft.ParLayoutConfig.lg_x_main,\
+    Aircraft.ParLayoutConfig.lg_x_nose_min_F_n, Aircraft.ParLayoutConfig.lg_x_nose_max_F_n,\
+    Aircraft.ParLayoutConfig.lg_x_nose,Aircraft.ParLayoutConfig.lg_y_nose,\
+    z_cg = PositionsLG_Tri(Aircraft)
+
     
    
     #Stability derivatives DATCOM [/rad]
