@@ -24,10 +24,10 @@ import A22DSE.Models.STRUC.current.Class_II.Aeroelasticity.SteadyFuncs as AE
 def plotV4(X, Y, Z1, Z2, Z3, Z4):
     plt.figure()
     ax = plt.axes(projection='3d')
-    ax.plot_wireframe(SKIN, RIB, Z1, color='black')
-    ax.plot_wireframe(SKIN, RIB, Z2, color = 'blue')
-    ax.plot_wireframe(SKIN, RIB, Z3, color = 'green')
-    ax.plot_wireframe(SKIN, RIB, Z4, color = 'red')
+    ax.plot_wireframe(X, Y, Z1, color='black')
+    ax.plot_wireframe(X, Y, Z2, color = 'blue')
+    ax.plot_wireframe(X, Y, Z3, color = 'green')
+    ax.plot_wireframe(X, Y, Z4, color = 'red')
     ax.set_title('wireframe');
     
     return
@@ -35,8 +35,8 @@ def plotV4(X, Y, Z1, Z2, Z3, Z4):
 def plotV2(X, Y, Z1, Z2):
     plt.figure()
     ax = plt.axes(projection='3d')
-    ax.plot_wireframe(SKIN, RIB, Z1, color='black')
-    ax.plot_wireframe(SKIN, RIB, Z2, color = 'red')
+    ax.plot_wireframe(X, Y, Z1, color='black')
+    ax.plot_wireframe(X, Y, Z2, color = 'red')
     ax.set_title('wireframe');
     
     return

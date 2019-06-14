@@ -166,8 +166,8 @@ def ClassIISizing(Aircraft):
 #                                   WING BOX
 # =============================================================================
 
-    struc.t_skin, struc.t_rib = AE.ComputeMinWB(Aircraft, 
-    ISA_model, 0, anfp.V_max_TO)
+#    struc.t_skin, struc.t_rib = AE.ComputeMinWB(Aircraft, 
+#    ISA_model, 0, anfp.V_max_TO)
     
 
 
