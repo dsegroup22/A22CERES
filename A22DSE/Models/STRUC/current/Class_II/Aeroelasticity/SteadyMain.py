@@ -94,7 +94,7 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
     for i, t_skin in enumerate(t_skinLst):
         for j, t_rib in enumerate(t_ribLst):
             KthetaLst[i][j] = (float(StrucFun.TorsionalStiffness(
-                    airfoil.c, Aircraft)))
+                    airfoil.c, Aircraft,t_skin,t_rib)))
     
     
     KhLst = StrucFun.moi_wing(airfoil.c, Aircraft)*1e12
