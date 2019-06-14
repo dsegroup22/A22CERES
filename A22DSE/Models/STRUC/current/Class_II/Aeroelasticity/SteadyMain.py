@@ -66,16 +66,17 @@ def Intersect(y,z):
     x = np.average(y[idx] + z[idx])/2
     return x
     
+
 # =============================================================================
 #                                   MAIN
 # =============================================================================
 # Constants
-xtheta = 0.3
-rtheta = 0.2
+xtheta = 0.4
+rtheta = 0.3
 CLdelta = np.deg2rad(1.8)
 CMacdelta = -0.010149
-n = 20                                   # #stiffeners
-A_stiff = 3.6*10**-5                     # Area stiffeners
+n = 40                                   # #stiffeners
+A_stiff = 3.6e-5                         # Area stiffeners
 rho_Al  = 2830
 rho_comp = 1600
 
@@ -128,21 +129,28 @@ dimLst = []
 col_idx = list(idx[1])
 for j, rowi in enumerate(list(idx[0])):
     idy = col_idx[j]
-    dimLst.append(tuple([SKIN[rowi][idy], RIB[rowi][idy]]))
-    
+    dimLst.append(([SKIN[rowi][idy], RIB[rowi][idy]]))
 
-#mass = StrucFun.wing_struc_mass(Conv, SKIN, n, A_stiff, RIB, rho_Al, rho_comp)
+massLst = []
+for i, dimi in enumerate(dimLst):
+    skin = dimi[0]
+    rib  = dimi[1]
+    massLst.append((StrucFun.wing_struc_mass(Conv, skin, n, A_stiff, 
+                                    rib, rho_Al, rho_comp)))
+    
+argdes = np.argmin(massLst)
+
+dim_des = dimLst[argdes]
 
 # =============================================================================
 #                                   PLOTTING
 # =============================================================================
 #plotV2(SKIN, RIB, V_constr_sl, V_TO)
 #plotV2(SKIN, RIB, V_constr_cr, V_cr)
-plotContour(SKIN, RIB, V_constr_sl, Conv.ParAnFP.V_max_TO)
-plotContour(SKIN, RIB, V_constr_cr, Conv.ParAnFP.V_dive)
+#plotContour(SKIN, RIB, V_constr_sl, Conv.ParAnFP.V_max_TO)
+#plotContour(SKIN, RIB, V_constr_cr, Conv.ParAnFP.V_dive)
 #plotV4(SKIN, RIB, Vdiv_sl, Vcr_sl, Vfl_sl[0], V_TO)
 #plotV4(SKIN, RIB, Vdiv_cr, Vcr_cr, Vfl_cr[0], V_cr)
-
 
 
 # =============================================================================

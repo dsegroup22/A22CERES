@@ -9,7 +9,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 import os
+import warnings
 sys.path.append('../../../../../../')
+warnings.filterwarnings("ignore")
 #from pathlib import Path
 #os.chdir(Path(__file__).parents[6])
 

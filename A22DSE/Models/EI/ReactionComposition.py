@@ -99,7 +99,7 @@ def GetReactionProducts(AF, FuelMass):
         
     return None #should not get here
     
-def GetEI(AltitudeProfile, MachProfile, resolution):
+def GetEI(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
     
     '''
     INPUT: Masses of the polluting reaction products
@@ -115,9 +115,11 @@ def GetEI(AltitudeProfile, MachProfile, resolution):
     else:
         raise "Error: length of Altitude Profile list and Mach Profile list\
         different"
-        
+    
     Fuel = GetFuelBurn(EngineProp, resolution)
-    AF = "get inlet area rho*V**L"/np.array(EngineProp)
+#    AF = "get inlet area rho*V**L"/np.array(EngineProp)
+    A_inlet = Aircraft.ParProp.Diameter**2 * np.pi/4
+    T, p, rho = ISA_model.ISAFunc([])
     
     Products = []
     Impact=[]
