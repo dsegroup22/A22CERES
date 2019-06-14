@@ -450,7 +450,7 @@ def vehicle_setup():
     combustor.efficiency                = 0.99 
     combustor.turbine_inlet_temperature = 1650 # K
     combustor.pressure_ratio            = 0.95
-    combustor.fuel_data                 = SUAVE.Attributes.Propellants.Jet_A()    
+    combustor.fuel_data                 = SUAVE.Attributes.Propellants.Jet_A1()    
     
     # add to network
     turbofan.append(combustor)
@@ -504,7 +504,7 @@ def vehicle_setup():
  
     #total design thrust (includes all the engines)
     
-    thrust.total_design             = (Aircraft.ParProp.Thrust_cruise+300) * Units.N
+    thrust.total_design             = (Aircraft.ParProp.T_cruise_available) * Units.N
 
 
     #design sizing conditions
@@ -667,7 +667,7 @@ def mission_setup(analyses):
     segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "climb_1"
 
-    segment.analyses.extend( analyses.takeoff )
+    segment.analyses.extend( analyses.cruise )
 
     segment.altitude_start = 0.0   * Units.km
     segment.altitude_end   = 5000.0   * Units.feet
@@ -681,7 +681,7 @@ def mission_setup(analyses):
     segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "climb_2"
 
-    segment.analyses.extend( analyses.takeoff )
+    segment.analyses.extend( analyses.cruise )
 
     segment.altitude_end   = 10000.0   * Units.feet
     segment.equivalent_air_speed      = 230.0 * Units.knots
