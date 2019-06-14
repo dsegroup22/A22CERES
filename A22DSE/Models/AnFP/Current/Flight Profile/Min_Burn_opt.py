@@ -45,7 +45,7 @@ def getatm(h):
             p[i] = 101.29 * ((T[i]+273.1)/288.08)**5.256
         if h[i] >=11000 and h[i] <= 25000:
             T[i] = -56.46
-            p[i] = 22.65*m.exp(1.73-0.000157*h[i])
+            p[i] = 22.65*np.exp(1.73-0.000157*h[i])
     rho = np.multiply(p ,1/(0.2869*(T+273.1)))
     return T, rho, p
 
@@ -70,7 +70,7 @@ res = 500
 res1 = 100
 z=res*res/res1
 H = np.linspace(0,23000,res)
-V = np.linspace(5,210,res)
+V = np.linspace(5,230,res)
 V, H =  np.meshgrid(V,H)
 shape = H.shape
 MaxT = np.ones(shape)
@@ -88,7 +88,7 @@ H = np.ravel(H)
 MaxT = MaxT.reshape(shape)
 rho = rho.reshape(shape)
 for i in range(len(MaxT[0])):
-    MaxT[i,:] = MThrust * rho[i,0]/rho[0,0] 
+    MaxT[i,:] = MThrust * rho[i,0]/rho[0,0] + 0.2
 #    MaxT[:,i] = Thrust
 
 He = np.ravel(H) + np.power(np.ravel(V),2)/2/9.81
@@ -102,7 +102,7 @@ RCsopt = None
 Fly = None
 
 
-CLmin = 1.0* W /(0.5*np.ravel(rho)*np.ravel(V)**2*S)
+CLmin = 1.1* W /(0.5*np.ravel(rho)*np.ravel(V)**2*S)
 
 CL = np.minimum(1/2/K*((-np.ravel(MaxT)/W)+np.sqrt((np.ravel(MaxT)/W)**2+12\
                         *CD0*K)),CLmin)
