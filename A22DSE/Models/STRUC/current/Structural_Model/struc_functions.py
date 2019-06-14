@@ -318,31 +318,31 @@ def moi_wing(chord,t_skin,t_rib,n,Aircraft,A):
 def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
     b=Aircraft.ParAnFP.b
     bi=np.linspace(-b/2,b/2,100)
-    chordi=chord(bi,Aircraft)
-    skin_upper_eq=skin_eq_upper(chordi)
-    skin_lower_eq=skin_eq_lower(chordi)
-    x_rib1=0.2*chordi
-    x_rib2=0.6*chordi
-    h_rib1=skin_upper_eq(x_rib1)-skin_lower_eq(x_rib1)
-    h_rib2=skin_upper_eq(x_rib2)-skin_lower_eq(x_rib2)
-    S1,S2,S3,h_rib1,h_rib2=S(chordi)
-    #rib weight
-    w_ribs=t_rib*(h_rib1+h_rib2)
-    #skin weight:
-    db=1/100
     w_skin=0
     for i in bi:
-        w_skin_db=(S1+S3)*t_skin*rho_alu+(S2+h_rib1+h_rib2)*t_rib*rho_comp
-        w_skin=w_skin+w_skin_db*db
+        chordi=chord(i,Aircraft)
+#        skin_upper_eq=skin_eq_upper(chordi)
+#        skin_lower_eq=skin_eq_lower(chordi)
+#        x_rib1=0.2*chordi
+#        x_rib2=0.6*chordi
+#        h_rib1=skin_upper_eq(x_rib1)-skin_lower_eq(x_rib1)
+#        h_rib2=skin_upper_eq(x_rib2)-skin_lower_eq(x_rib2)
+        S1,S2,S3,h_rib1,h_rib2=S(chordi)
+
+        #skin weight+rib weight
+        db=1/100
+        A_skin_rho=(S1+S3)*t_skin*rho_alu+(S2+h_rib1+h_rib2)*t_rib*rho_comp
+        w_skin=w_skin+A_skin_rho*db
         
     #stiffener weight
+    MAC=Aircraft.ParAnFP.MAC
     c_r=Aircraft.ParAnFP.c_r
-    factor=chord/c_r
-    n_avg=(n-n*factor)/2
+    factor=MAC/c_r
+    n_avg=factor*n
     V=n_avg*A*b
     w_stiffeners=V*rho_alu
     
     
-    w_total=w_ribs+w_skin+w_stiffeners
+    w_total=w_skin+w_stiffeners
     return w_total
 
