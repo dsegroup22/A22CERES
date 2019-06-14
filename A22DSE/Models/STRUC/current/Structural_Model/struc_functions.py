@@ -177,14 +177,14 @@ def S(chord): #verified
     
     return S1,S2,S3,h_rib1,h_rib2
 
-def TwistSolver(chord, Aircraft): #finished
+def TwistSolver(chord, Aircraft,t_skin,t_rib): #finished
     ''' 
     DESCRIPTION: function that calculates rate of twist of wing
     INPUT: chord length (chord), t_skin(t_skin), rib thickness (t_rib)
     OUTPUT: rate of twist (dthetadz)
     '''   
-    t_skin=0.003
-    t_rib=0.02
+#    t_skin=0.003
+#    t_rib=0.02
     G_alu=1
     G_comp=1
     A1,A2,A3=Area(chord)
@@ -199,14 +199,14 @@ def TwistSolver(chord, Aircraft): #finished
     dthetadz = np.linalg.solve(A, b)[0]
     return dthetadz
 
-def TorsionalStiffness(chord, Aircraft):  #verified
+def TorsionalStiffness(chord, Aircraft,t_skin,t_rib):  #verified
     ''' 
     DESCRIPTION: function that calculates the torsional stiffness of wing section
     INPUT: chord length (chord), t_skin(t_skin), rib thickness (t_rib)
     OUTPUT: torsional stiffnes (Ktheta)
     '''    
     T=1 #unit torque to run the numerical calculation
-    dthetadz=TwistSolver(chord,Aircraft)
+    dthetadz=TwistSolver(chord,Aircraft,t_skin,t_rib)
     K_theta = T/dthetadz
 
     return K_theta
