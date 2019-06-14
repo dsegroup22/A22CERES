@@ -8,6 +8,11 @@ Created on Wed Jun  5 10:26:40 2019
 'Fuselage sizing optimisation'
 import numpy as np
 from math import *
+
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[4])
+
 from A22DSE.Models.STRUC.current.Class_II.FuselageLength import GetTotalFuselageLength
 from A22DSE.Models.Layout.Current.gearlocation_tri import PositionsLG_Tri
 from A22DSE.Models.Layout.Current.Area import FusAreas

@@ -38,5 +38,24 @@ for i in range(len(actualresults)):
         time = np.append(time,actualresults[i].conditions.frames.inertial.time[:,0] )
         V = np.append(V,actualresults[i].conditions.freestream.velocity[:,0])
         rho = np.append(rho,actualresults[i].conditions.freestream.density[:,0])
-fuel = np.trapz(mdot,time)
-AR = rho*Conv.ParProp.Engine_diameter*Conv.ParProp.N_engines/mdot
+
+AF = rho*np.pi*(Conv.ParProp.Engine_diameter)**2/4*Conv.ParProp.N_engines/mdot
+comp = EI.GetEI(AF,mdot,time,Conv,ISA_model)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
