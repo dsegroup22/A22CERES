@@ -503,7 +503,7 @@ def vehicle_setup():
  
     #total design thrust (includes all the engines)
     
-    thrust.total_design             = (Aircraft.ParProp.T_cruise_available-935*4) * Units.N
+    thrust.total_design             = (Aircraft.ParProp.T_cruise_available) * Units.N
 
 
     #design sizing conditions
@@ -666,7 +666,7 @@ def mission_setup(analyses):
     segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "climb_1"
 
-    segment.analyses.extend( analyses.takeoff )
+    segment.analyses.extend( analyses.cruise )
 
     segment.altitude_start = 0.0   * Units.km
     segment.altitude_end   = 5000.0   * Units.feet
@@ -680,7 +680,7 @@ def mission_setup(analyses):
     segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "climb_2"
 
-    segment.analyses.extend( analyses.takeoff )
+    segment.analyses.extend( analyses.cruise )
 
     segment.altitude_end   = 10000.0   * Units.feet
     segment.equivalent_air_speed      = 230.0 * Units.knots
