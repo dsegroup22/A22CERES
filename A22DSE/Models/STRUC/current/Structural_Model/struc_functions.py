@@ -294,11 +294,6 @@ def moi_root_stringers(chord, n, A): #multiple of 10, with min 20
 
 
 def moi_stringer(n,chord,Aircraft,A):  #n in multiples of 5 (min=20)
-    ''' 
-    DESCRIPTION: function that calculates the total moment of inertia of the wing (moi_wing)
-    IN PUT: moi functions of all the structural components
-    OUTPUT: moment of inertia at a certain span position
-    '''         
     c_r=Aircraft.ParAnFP.c_r
     factor=chord/c_r
     
@@ -316,6 +311,7 @@ def moi_wing(chord,t_skin,t_rib,n,Aircraft,A):
     OUTPUT: moment of inertia at a certain span position
     '''     
     moi_wing=skin_moi(chord,t_skin)+rib_moi(chord,t_rib) #+moi_stringer(n,chord,Aircraft,A)
+
     return moi_wing
 
 def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
@@ -346,6 +342,6 @@ def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
     w_stiffeners=V*rho_alu
     
     
-    w_total=w_ribs+w_skin+w_stiffers
-    
-    
+    w_total=w_ribs+w_skin+w_stiffeners
+    return w_total
+
