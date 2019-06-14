@@ -32,7 +32,7 @@ OUTPUTS: float e Oswald efficiency is added to the Conv object
     b = anfp.b
     M_cruise = anfp.M_cruise
     CD0 = anfp.CD0
-    dihedral = anfp.dihedral
+    dihedral = anfp.dhwing
     
     #determine coefficients specific for this code
     a_e = -0.001521 #from statistics, see p10

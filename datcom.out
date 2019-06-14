@@ -20,17 +20,17 @@
   $FLTCON NMACH=2.0,MACH(1)=0.2,0.6$                                             
   $FLTCON NALT=2.0,ALT(1)=0.0,65617.0$                                           
   $FLTCON NALPHA=6.0,ALSCHD=-4.0,-2.0,0.0,2.0,4.0,6.0,                           
-   GAMMA=0.0,WT=80156.1,LOOP=1.0$                                                
-  $OPTINS SREF=1947.5,CBARR=11.6,BLREF=176.6$                                    
-  $SYNTHS XCG=63.1,ZCG=1.6,XW=53.5,ZW=4.0,ALIW=0.0,XH=125.9,                     
-   ZH=19.3,ALIH=0.0,XV=117.5,ZV=0.0,VERTUP=.TRUE.$                               
+   GAMMA=0.0,WT=101867.8,LOOP=1.0$                                               
+  $OPTINS SREF=2475.0,CBARR=13.1,BLREF=199.0$                                    
+  $SYNTHS XCG=72.9,ZCG=1.8,XW=62.4,ZW=4.6,ALIW=0.0,XH=146.4,                     
+   ZH=16.9,ALIH=0.0,XV=140.2,ZV=0.0,VERTUP=.TRUE.$                               
   $BODY NX=4.0,ITYPE=1.0,                                                        
-   X=0.,13.3,120.,141.3,                                                         
-   ZU=0.,4.,4.,4.,                                                               
-   ZL=0.,-4.,-4.,3.7,                                                            
-   S=0.,89.3,89.3,0.3,                                                           
-   P=0.,44.3,44.3,2.1,                                                           
-   R=0.,7.1,7.1,0.3$                                                             
+   X=0.,15.2,137.1,161.5,                                                        
+   ZU=0.,4.6,4.6,4.6,                                                            
+   ZL=0.,-4.6,-4.6,4.3,                                                          
+   S=0.,116.7,116.7,0.3,                                                         
+   P=0.,50.6,50.6,2.1,                                                           
+   R=0.,8.1,8.1,0.3$                                                             
   $WGSCHR TYPEIN=1.0, NPTS=31.0,                                                 
   XCORD= 0.0, 0.002, 0.005, 0.01, 0.02, 0.03, 0.04,                              
   0.08, 0.12, 0.16, 0.2, 0.24, 0.28,                                             
@@ -53,13 +53,13 @@
   -0.0382, -0.0315, -0.0244, -0.0174,                                            
   -0.011, -0.0059, -0.0035, -0.0041,                                             
   -0.0087, -0.0177$                                                              
-  $WGPLNF CHRDR=15.3,CHRDTP=6.8,SSPN=88.3,SSPNE=79.47,                           
+  $WGPLNF CHRDR=17.2,CHRDTP=7.6,SSPN=99.5,SSPNE=89.55,                           
    SAVSI=28.2,CHSTAT=0.0,TWISTA=0.0,DHDADI=0.0,TYPE=1.0$                         
  NACA-H-4-0010                                                                   
-  $HTPLNF CHRDR=12.0,CHRDTP=4.2,SSPN=61.1,SSPNE=54.99,                           
+  $HTPLNF CHRDR=10.2,CHRDTP=3.6,SSPN=68.9,SSPNE=62.010000000000005,              
    SAVSI=0.5,CHSTAT=0.25,TWISTA=0.0,DHDADI=0.0,TYPE=1.0$                         
  NACA-V-4-0009                                                                   
-  $VTPLNF CHRDR=18.1,CHRDTP=11.7,SSPN=19.3,SSPNE=17.37,                          
+  $VTPLNF CHRDR=15.8,CHRDTP=10.2,SSPN=16.9,SSPNE=15.209999999999999,             
    SAVSI=39.0,CHSTAT=0.25,TYPE=1.0$                                              
  DAMP                                                                            
  NEXT CASE                                                                       
@@ -69,17 +69,17 @@
   $FLTCON NMACH=2.0,MACH(1)=0.2,0.6$                                             
   $FLTCON NALT=2.0,ALT(1)=0.0,65617.0$                                           
   $FLTCON NALPHA=6.0,ALSCHD=-4.0,-2.0,0.0,2.0,4.0,6.0,                           
-   GAMMA=0.0,WT=80156.1,LOOP=1.0$                                                
-  $OPTINS SREF=1947.5,CBARR=11.6,BLREF=176.6$                                    
-  $SYNTHS XCG=63.1,ZCG=1.6,XW=53.5,ZW=4.0,ALIW=0.0,XH=125.9,                     
-   ZH=19.3,ALIH=0.0,XV=117.5,ZV=0.0,VERTUP=.TRUE.$                               
+   GAMMA=0.0,WT=101867.8,LOOP=1.0$                                               
+  $OPTINS SREF=2475.0,CBARR=13.1,BLREF=199.0$                                    
+  $SYNTHS XCG=72.9,ZCG=1.8,XW=62.4,ZW=4.6,ALIW=0.0,XH=146.4,                     
+   ZH=16.9,ALIH=0.0,XV=140.2,ZV=0.0,VERTUP=.TRUE.$                               
   $BODY NX=4.0,ITYPE=1.0,                                                        
-   X=0.,13.3,120.,141.3,                                                         
-   ZU=0.,4.,4.,4.,                                                               
-   ZL=0.,-4.,-4.,3.7,                                                            
-   S=0.,89.3,89.3,0.3,                                                           
-   P=0.,44.3,44.3,2.1,                                                           
-   R=0.,7.1,7.1,0.3$                                                             
+   X=0.,15.2,137.1,161.5,                                                        
+   ZU=0.,4.6,4.6,4.6,                                                            
+   ZL=0.,-4.6,-4.6,4.3,                                                          
+   S=0.,116.7,116.7,0.3,                                                         
+   P=0.,50.6,50.6,2.1,                                                           
+   R=0.,8.1,8.1,0.3$                                                             
   $WGSCHR TYPEIN=1.0, NPTS=31.0,                                                 
   XCORD= 0.0, 0.002, 0.005, 0.01, 0.02, 0.03, 0.04,                              
   0.08, 0.12, 0.16, 0.2, 0.24, 0.28,                                             
@@ -102,13 +102,13 @@
   -0.0382, -0.0315, -0.0244, -0.0174,                                            
   -0.011, -0.0059, -0.0035, -0.0041,                                             
   -0.0087, -0.0177$                                                              
-  $WGPLNF CHRDR=15.3,CHRDTP=6.8,SSPN=88.3,SSPNE=79.47,                           
+  $WGPLNF CHRDR=17.2,CHRDTP=7.6,SSPN=99.5,SSPNE=89.55,                           
    SAVSI=28.2,CHSTAT=0.0,TWISTA=0.0,DHDADI=0.0,TYPE=1.0$                         
  NACA-H-4-0010                                                                   
-  $HTPLNF CHRDR=12.0,CHRDTP=4.2,SSPN=61.1,SSPNE=54.99,                           
+  $HTPLNF CHRDR=10.2,CHRDTP=3.6,SSPN=68.9,SSPNE=62.010000000000005,              
    SAVSI=0.5,CHSTAT=0.25,TWISTA=0.0,DHDADI=0.0,TYPE=1.0$                         
  NACA-V-4-0009                                                                   
-  $VTPLNF CHRDR=18.1,CHRDTP=11.7,SSPN=19.3,SSPNE=17.37,                          
+  $VTPLNF CHRDR=15.8,CHRDTP=10.2,SSPN=16.9,SSPNE=15.209999999999999,             
    SAVSI=39.0,CHSTAT=0.25,TYPE=1.0$                                              
  DAMP                                                                            
  NEXT CASE                                                                       
@@ -220,17 +220,18 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.200       0.00     223.27   2.1162E+03     518.670     1.4136E+06          1947.500     11.600   176.600    63.100     1.600
+0 0.200       0.00     223.27   2.1162E+03     518.670     1.4136E+06          2475.000     13.100   199.000    72.900     1.800
 0                                                               -------------------DERIVATIVE (PER DEGREE)-------------------
 0 ALPHA     CD       CL       CM       CN       CA       XCP        CLA          CMA          CYB          CNB          CLB
 0
-   -4.0    0.028   -0.840    1.9091  -0.840   -0.030   -2.274    2.058E-01   -4.158E-01   -9.708E-03    2.274E-03    1.627E-03
-   -2.0    0.019   -0.445    1.0614  -0.446    0.003   -2.382    1.846E-01   -4.051E-01                              5.950E-04
-    0.0    0.015   -0.101    0.2887  -0.101    0.015   -2.856    1.575E-01   -3.688E-01                             -2.705E-04
-    2.0    0.016    0.185   -0.4137   0.185    0.009   -2.232    1.588E-01   -3.781E-01                             -9.277E-04
-    4.0    0.020    0.534   -1.2238   0.534   -0.017   -2.290    1.860E-01   -4.247E-01                             -1.802E-03
-    6.0    0.030    0.929   -2.1126   0.927   -0.067   -2.279    2.087E-01   -4.641E-01                             -2.832E-03
+   -4.0    0.027   -0.814    1.7448  -0.814   -0.030   -2.145    2.012E-01   -3.796E-01   -7.067E-03    1.276E-03    1.898E-03
+   -2.0    0.018   -0.431    0.9813  -0.432    0.003   -2.273    1.780E-01   -3.624E-01                              7.990E-04
+    0.0    0.014   -0.102    0.2953  -0.102    0.014   -2.909    1.496E-01   -3.233E-01                             -1.220E-04
+    2.0    0.014    0.167   -0.3120   0.167    0.009   -1.867    1.507E-01   -3.303E-01                             -8.217E-04
+    4.0    0.018    0.501   -1.0260   0.501   -0.017   -2.046    1.792E-01   -3.836E-01                             -1.752E-03
+    6.0    0.028    0.884     NA      0.882   -0.065    NA       2.030E-01      NA                                  -2.851E-03
 0NOTE - CANARD CONFIGURATION EFFECTIVE EPSOLN AND D(EPSOLN)/D(ALPHA) ARE AVAILABLE AS PARTIAL OUTPUT AND IN THE FACT ARRAY
+0*** NA PRINTED WHEN METHOD NOT APPLICABLE
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                                          DYNAMIC DERIVATIVES
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -240,20 +241,20 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.200       0.00     223.27   2.1162E+03     518.670     1.4136E+06          1947.500     11.600   176.600    63.100     1.600
+0 0.200       0.00     223.27   2.1162E+03     518.670     1.4136E+06          2475.000     13.100   199.000    72.900     1.800
                                                     DYNAMIC DERIVATIVES (PER DEGREE)
 0           -------PITCHING-------    -----ACCELERATION------    --------------ROLLING--------------    --------YAWING--------
 0   ALPHA       CLQ          CMQ           CLAD         CMAD         CLP          CYP          CNP          CNR          CLR
 0
-    -4.00    7.881E-01   -3.139E+00       NDM          NDM       -1.576E-02   -2.104E-03    1.621E-03   -7.260E-04   -3.100E-03
-    -2.00                                 NDM          NDM       -1.373E-02   -1.123E-03    8.771E-04   -1.456E-03   -1.581E-03
-     0.00                                 NDM          NDM       -1.152E-02   -2.622E-04    2.245E-04   -1.739E-03   -3.021E-04
-     2.00                                 NDM          NDM       -1.161E-02    4.508E-04   -3.091E-04   -1.746E-03    6.774E-04
-     4.00                                 NDM          NDM       -1.383E-02    1.319E-03   -9.679E-04   -1.469E-03    1.967E-03
-     6.00                                 NDM          NDM       -1.573E-02    2.301E-03   -1.714E-03   -7.431E-04    3.482E-03
+    -4.00    6.897E-01   -2.625E+00       NDM          NDM       -1.546E-02   -1.989E-03    1.599E-03    3.255E-05   -3.313E-03
+    -2.00                                 NDM          NDM       -1.335E-02   -1.062E-03    8.633E-04   -7.493E-04   -1.736E-03
+     0.00                                 NDM          NDM       -1.105E-02   -2.618E-04    2.254E-04   -1.043E-03   -4.141E-04
+     2.00                                 NDM          NDM       -1.113E-02    3.820E-04   -2.859E-04   -1.042E-03    5.915E-04
+     4.00                                 NDM          NDM       -1.345E-02    1.190E-03   -9.296E-04   -7.391E-04    1.927E-03
+     6.00                                 NDM          NDM       -1.544E-02    2.117E-03   -1.666E-03    5.349E-05    3.502E-03
 0*** NDM PRINTED WHEN NO DATCOM METHODS EXIST
-0*** VEHICLE WEIGHT =  80156.10 LB.
-0*** LEVEL FLIGHT LIFT COEFFICIENT = 0.69460
+0*** VEHICLE WEIGHT = 101867.80 LB.
+0*** LEVEL FLIGHT LIFT COEFFICIENT = 0.69461
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                          CHARACTERISTICS AT ANGLE OF ATTACK AND IN SIDESLIP
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -263,17 +264,18 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.600   65617.00     580.78   1.1548E+02     389.970     3.3591E+05          1947.500     11.600   176.600    63.100     1.600
+0 0.600   65617.00     580.78   1.1548E+02     389.970     3.3591E+05          2475.000     13.100   199.000    72.900     1.800
 0                                                               -------------------DERIVATIVE (PER DEGREE)-------------------
 0 ALPHA     CD       CL       CM       CN       CA       XCP        CLA          CMA          CYB          CNB          CLB
 0
-   -4.0    0.038   -0.977    2.1676  -0.977   -0.030   -2.218    2.344E-01   -4.793E-01   -1.000E-02    2.387E-03    2.782E-03
-   -2.0    0.026   -0.527    1.2193  -0.528    0.008   -2.309    2.151E-01   -4.635E-01                              1.244E-03
-    0.0    0.021   -0.117    0.3136  -0.117    0.021   -2.686    1.850E-01   -4.276E-01                             -1.173E-04
-    2.0    0.022    0.212   -0.4910   0.213    0.014   -2.304    1.854E-01   -4.318E-01                             -1.112E-03
-    4.0    0.027    0.625   -1.4135   0.625   -0.016   -2.261    2.137E-01   -4.703E-01                             -2.487E-03
-    6.0    0.040    1.067   -2.3721   1.066   -0.072   -2.226    2.289E-01   -4.884E-01                             -4.015E-03
+   -4.0    0.036   -0.952    1.9940  -0.952   -0.030   -2.094    2.296E-01   -4.389E-01   -7.235E-03    1.347E-03    3.103E-03
+   -2.0    0.024   -0.514    1.1329  -0.515    0.007   -2.201    2.086E-01   -4.184E-01                              1.477E-03
+    0.0    0.020   -0.118    0.3204  -0.118    0.020   -2.726    1.767E-01   -3.783E-01                              4.117E-05
+    2.0    0.020    0.193   -0.3805   0.193    0.013   -1.968    1.772E-01   -3.811E-01                             -1.004E-03
+    4.0    0.025    0.591   -1.2041   0.592   -0.016   -2.036    2.074E-01   -4.425E-01                             -2.456E-03
+    6.0    0.037    1.022     NA      1.021   -0.070    NA       2.237E-01      NA                                  -4.073E-03
 0NOTE - CANARD CONFIGURATION EFFECTIVE EPSOLN AND D(EPSOLN)/D(ALPHA) ARE AVAILABLE AS PARTIAL OUTPUT AND IN THE FACT ARRAY
+0*** NA PRINTED WHEN METHOD NOT APPLICABLE
 1                               AUTOMATED STABILITY AND CONTROL METHODS PER APRIL 1976 VERSION OF DATCOM
                                                          DYNAMIC DERIVATIVES
                                         WING-BODY-VERTICAL TAIL-HORIZONTAL TAIL CONFIGURATION
@@ -283,20 +285,20 @@
   MACH    ALTITUDE   VELOCITY    PRESSURE    TEMPERATURE     REYNOLDS             REF.      REFERENCE LENGTH   MOMENT REF. CENTER
  NUMBER                                                       NUMBER              AREA       LONG.     LAT.     HORIZ      VERT
              FT       FT/SEC     LB/FT**2       DEG R         1/FT               FT**2        FT        FT        FT        FT
-0 0.600   65617.00     580.78   1.1548E+02     389.970     3.3591E+05          1947.500     11.600   176.600    63.100     1.600
+0 0.600   65617.00     580.78   1.1548E+02     389.970     3.3591E+05          2475.000     13.100   199.000    72.900     1.800
                                                     DYNAMIC DERIVATIVES (PER DEGREE)
 0           -------PITCHING-------    -----ACCELERATION------    --------------ROLLING--------------    --------YAWING--------
 0   ALPHA       CLQ          CMQ           CLAD         CMAD         CLP          CYP          CNP          CNR          CLR
 0
-    -4.00    9.001E-01   -3.629E+00       NDM          NDM       -1.763E-02   -2.372E-03    1.811E-03   -4.178E-04   -4.329E-03
-    -2.00                                 NDM          NDM       -1.601E-02   -1.286E-03    9.939E-04   -1.423E-03   -2.279E-03
-     0.00                                 NDM          NDM       -1.356E-02   -2.942E-04    2.465E-04   -1.830E-03   -4.617E-04
-     2.00                                 NDM          NDM       -1.361E-02    4.952E-04   -3.375E-04   -1.835E-03    8.733E-04
-     4.00                                 NDM          NDM       -1.599E-02    1.496E-03   -1.093E-03   -1.427E-03    2.708E-03
-     6.00                                 NDM          NDM       -1.736E-02    2.580E-03   -1.910E-03   -4.269E-04    4.743E-03
+    -4.00    7.883E-01   -3.046E+00       NDM          NDM       -1.727E-02   -2.258E-03    1.792E-03    4.139E-04   -4.584E-03
+    -2.00                                 NDM          NDM       -1.556E-02   -1.226E-03    9.825E-04   -6.714E-04   -2.458E-03
+     0.00                                 NDM          NDM       -1.300E-02   -2.943E-04    2.478E-04   -1.100E-03   -5.809E-04
+     2.00                                 NDM          NDM       -1.305E-02    4.238E-04   -3.136E-04   -1.098E-03    7.856E-04
+     4.00                                 NDM          NDM       -1.555E-02    1.364E-03   -1.056E-03   -6.511E-04    2.682E-03
+     6.00                                 NDM          NDM       -1.700E-02    2.393E-03   -1.864E-03    4.456E-04    4.795E-03
 0*** NDM PRINTED WHEN NO DATCOM METHODS EXIST
-0*** VEHICLE WEIGHT =  80156.10 LB.
-0*** LEVEL FLIGHT LIFT COEFFICIENT = 1.41439
+0*** VEHICLE WEIGHT = 101867.80 LB.
+0*** LEVEL FLIGHT LIFT COEFFICIENT = 1.41440
 1          THE FOLLOWING IS A LIST OF ALL INPUT CARDS FOR THIS CASE.
 0
 1 END OF JOB.

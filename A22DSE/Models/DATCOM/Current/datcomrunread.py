@@ -7,15 +7,15 @@ Created on Tue Jun 11 11:58:22 2019
 import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[4])
-from A22DSE.Parameters.Par_Class_Conventional import Conv
+print(os.getcwd())
+#from A22DSE.Parameters.Par_Class_Conventional import Conv
 from A22DSE.Models.DATCOM.Current.datcomconverter import PrintDatcom
 
 
 import os
-from pathlib import Path
+
 import numpy as np
-import pynput
-import autopy
+
 import pyautogui
 import time
 
@@ -40,8 +40,8 @@ def GetDerivatives(speed): #'fast' or 'slow' speed input
     PrintDatcom()
     os.chdir(Path(__file__).parents[0])
     os.startfile("datcom.exe",'open')
-    #time.sleep(0.1)
-    
+    time.sleep(0.1)
+
     #pyautogui.click(500, 500)
     pyautogui.typewrite('ceres.dat\n')
     
@@ -65,23 +65,27 @@ def GetDerivatives(speed): #'fast' or 'slow' speed input
                 C_Ds=np.array([])
                 C_Ls=np.array([])
                 for i in range(6):
-                    C_Ds=np.append(C_Ds,float(my_split(lines[j+8+i].strip())[1]))
-                    C_Ls=np.append(C_Ls,float(my_split(lines[j+8+i].strip())[2]))
+                    if not my_split(lines[j+8+i].strip())[1].isalpha():
+                        if not my_split(lines[j+8+i].strip())[2].isalpha():
+                            C_Ds=np.append(C_Ds,float(my_split(lines[j+8+i].strip())[1]))
+                            C_Ls=np.append(C_Ls,float(my_split(lines[j+8+i].strip())[2]))
 
                 
             
                 C_D_0=np.interp(0,C_Ls,C_Ds)
                 C_L_as=np.array([])
                 for i in range(6):
-                    C_L_as=np.append(C_L_as,float(my_split(lines[j+8+i].strip())[7]))
+                    if not my_split(lines[j+8+i].strip())[7].isalpha():
+                        C_L_as=np.append(C_L_as,float(my_split(lines[j+8+i].strip())[7]))
                 C_L_a=np.average(C_L_as)
                 C_l_bs=np.array([])
                 for i in range(6):
-                    C_l_bs=np.append(C_l_bs,float(my_split(lines[j+8+i].strip())[-1]))
+                    if not my_split(lines[j+8+i].strip())[-1].isalpha():
+                        C_l_bs=np.append(C_l_bs,float(my_split(lines[j+8+i].strip())[-1]))
                 C_l_b=np.average(C_l_bs)
                 C_m_as=np.array([])
                 for i in range(6):
-                    if my_split(lines[j+8+i].strip())[-4]!='NA':
+                    if not my_split(lines[j+8+i].strip())[-4].isalpha():
                         C_m_as=np.append(C_m_as,float(my_split(lines[j+8+i].strip())[-4]))
                 C_m_a=np.average(C_m_as)            
                        
@@ -93,31 +97,38 @@ def GetDerivatives(speed): #'fast' or 'slow' speed input
                 dataline=my_split(lines[j+9].strip(),)
                 C_L_adots=np.array([])
                 for i in range(6):
-                    C_L_adots=np.append(C_L_adots,float(my_split(lines[j+9+i].strip())[3]))
+                    if not my_split(lines[j+9+i].strip())[3].isalpha():
+                        C_L_adots=np.append(C_L_adots,float(my_split(lines[j+9+i].strip())[3]))
                 C_L_adot=np.average(C_L_adots)
                 C_m_adots=np.array([])
                 for i in range(6):
-                    C_m_adots=np.append(C_m_adots,float(my_split(lines[j+9+i].strip())[4]))
+                    if not my_split(lines[j+9+i].strip())[4].isalpha():
+                        C_m_adots=np.append(C_m_adots,float(my_split(lines[j+9+i].strip())[4]))
                 C_m_adot=np.average(C_m_adots)
                 C_l_ps=np.array([])
                 for i in range(6):
-                    C_l_ps=np.append(C_l_ps,float(my_split(lines[j+9+i].strip())[5]))
+                    if not my_split(lines[j+9+i].strip())[5].isalpha():
+                        C_l_ps=np.append(C_l_ps,float(my_split(lines[j+9+i].strip())[5]))
                 C_l_p=np.average(C_l_ps)
                 C_Y_ps=np.array([])
                 for i in range(6):
-                    C_Y_ps=np.append(C_Y_ps,float(my_split(lines[j+9+i].strip())[6]))
+                    if not my_split(lines[j+9+i].strip())[6].isalpha():
+                        C_Y_ps=np.append(C_Y_ps,float(my_split(lines[j+9+i].strip())[6]))
                 C_Y_p=np.average(C_Y_ps)
                 C_n_ps=np.array([])
                 for i in range(6):
-                    C_n_ps=np.append(C_n_ps,float(my_split(lines[j+9+i].strip())[7]))
+                    if not my_split(lines[j+9+i].strip())[7].isalpha():
+                        C_n_ps=np.append(C_n_ps,float(my_split(lines[j+9+i].strip())[7]))
                 C_n_p=np.average(C_n_ps)
                 C_n_rs=np.array([])
                 for i in range(6):
-                    C_n_rs=np.append(C_n_rs,float(my_split(lines[j+9+i].strip())[8]))
+                    if not my_split(lines[j+9+i].strip())[8].isalpha():
+                        C_n_rs=np.append(C_n_rs,float(my_split(lines[j+9+i].strip())[8]))
                 C_n_r=np.average(C_n_rs)
                 C_l_rs=np.array([])
                 for i in range(6):
-                    C_l_rs=np.append(C_l_rs,float(my_split(lines[j+9+i].strip())[9]))
+                    if not my_split(lines[j+9+i].strip())[9].isalpha():
+                        C_l_rs=np.append(C_l_rs,float(my_split(lines[j+9+i].strip())[9]))
                 C_l_r=np.average(C_l_rs)
     
     
