@@ -51,7 +51,9 @@ def ClassIISizing(Aircraft):
     struc.rho_Al = 2830                         #kg/m³
     struc.rho_comp = 1600                       #kg/m³
     struc.A_stiff  = 0.00158                    # m²
-    struc.n_stiff  = 40
+    struc.n_stiff  = 40 
+    struc.G_Al = 26.9e9                         #Pa
+    struc.G_comp = 5e9                          #Pa
     
     #OEW position wrt mac
     Aircraft.ParLayoutConfig.x_oe = xoe(Aircraft)

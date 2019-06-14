@@ -13,7 +13,7 @@ os.chdir(Path(__file__).parents[6])
 import numpy as np
 import scipy.linalg as slin
 import matplotlib.pyplot as plt
-import control.matlab as control
+#import control.matlab as control
 import A22DSE.Models.STRUC.current.Structural_Model.struc_functions as StrucFun
 import A22DSE.Models.STRUC.current.Class_II.Aeroelasticity.SteadyFuncs as AE
 #from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
@@ -97,7 +97,7 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
     for i, t_skin in enumerate(t_skinLst):
         for j, t_rib in enumerate(t_ribLst):
             KthetaLst[i][j] = (float(StrucFun.TorsionalStiffness(
-                    airfoil.c, t_skin, t_rib)))
+                    airfoil.c, Aircraft)))
     
     
     KhLst = StrucFun.moi_wing(airfoil.c, SKIN, RIB, n, Aircraft, A_stiff)*1e12

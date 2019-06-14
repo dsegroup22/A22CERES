@@ -11,7 +11,7 @@ sys.path.append('../../../../../../')
 import numpy as np
 import scipy.linalg as slin
 import matplotlib.pyplot as plt
-import control.matlab as control
+#import control.matlab as control
 import A22DSE.Models.STRUC.current.Structural_Model.struc_functions as StrucFun
 
 class airfoilAE(object):
