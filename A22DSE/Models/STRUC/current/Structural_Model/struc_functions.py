@@ -211,13 +211,13 @@ def TorsionalStiffness(chord,t_skin,t_rib):  #verified
 #moment of intertia calculator
 
 
-def moi_stringer(t,b,h): #fin
-    ''' 
-    DESCRIPTION: fucntion that moment of inertia of a stringer
-    INPUT: stringer dimensions widht (b), height (h), thickness (t)
-    OUTPUT: moment of inertia stringer
-    ''' 
-    return 1/12*b*h**3+(h/2)**2*(b+h)*t
+#def moi_stringer(t,b,h): #fin
+#    ''' 
+#    DESCRIPTION: fucntion that moment of inertia of a stringer
+#    INPUT: stringer dimensions widht (b), height (h), thickness (t)
+#    OUTPUT: moment of inertia stringer
+#    ''' 
+#    return 1/12*b*h**3+(h/2)**2*(b+h)*t
 
 def rib_moi(chord,t_rib): #checked and verified
     ''' 
@@ -236,7 +236,7 @@ def rib_moi(chord,t_rib): #checked and verified
     
     return moi_ribs
 
-def skin_moi(chord,t_skin): #needs to be checked
+def skin_moi(chord,t_skin): #fin
     '''
     DESCRIPTION: function that calculates the moment of inertia of the skin. 
     INPUT: tickness of the skin (t_skin), 
@@ -255,26 +255,6 @@ def skin_moi(chord,t_skin): #needs to be checked
         moi_skin=moi_skin+y_upper**2*t_skin*dx+y_lower**2*t_skin*dx
     return moi_skin
     
-def moi_stiffener(n,chord):  #n in multiples of 5
-    #general parameters
-    c1=0.2*chord
-    c2=0.4*chord
-    c3=0.4*chord
-    n1=1/5*n
-    n2=2/5*n
-    n3=2/5*n
-    
-    #cell 1
-    spacing1=c1/n1
-    
-    
-    
-    return moi_stiffener
-
-
-
-
-
 def moi_root_stringers(chord, n, A): #multiple of 10, with min 20
     #initise
     skin_upper_eq=skin_eq_upper(chord)
@@ -302,7 +282,7 @@ def moi_root_stringers(chord, n, A): #multiple of 10, with min 20
         x=x+ds
         in_stri.append(inertia)    
     #cell 3
-    ds=c2/(n2/2)
+    ds=c3/(n3/2)
     x=0.6*chord
     for k in range(n3):
         inertia=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
@@ -313,27 +293,22 @@ def moi_root_stringers(chord, n, A): #multiple of 10, with min 20
     return in_stri #list of all stringers with inertia
 
 
-def moi_stringers(stringers,in_stri,bi):
-    bool=stringers(stringers>bi)
-    in_stri=bool*in_stri
+def moi_stringer(n,chord,Aircraft,A):  #n in multiples of 5 (min=20)
+    c_r=Aircraft.ParAnFP.c_r
+    factor=chord/c_r
     
-    return sum(in_stri)
-
-
+    in_root=moi_root_stringers(chord, n, A)
+    moi_stringers=factor*float(sum(in_root))
     
-    
-    
+    return moi_stringers
 
 
 
-
-
-
-def moi_wing(chord,t_skin,t_rib):
+def moi_wing(chord,t_skin,t_rib,n,Aircraft,A):
     ''' 
     DESCRIPTION: function that calculates the total moment of inertia of the wing (moi_wing)
     INPUT: moi functions of all the structural components
     OUTPUT: moment of inertia at a certain span position
     '''     
-    moi_wing=skin_moi(chord,t_skin)+rib_moi(chord,t_rib)
+    moi_wing=skin_moi(chord,t_skin)+rib_moi(chord,t_rib) #+moi_stringer(n,chord,Aircraft,A)
     return moi_wing
