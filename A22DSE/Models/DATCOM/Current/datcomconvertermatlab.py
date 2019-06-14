@@ -7,9 +7,7 @@ Created on Thu Jun  6 09:38:38 2019
 
 import numpy as np
 import os
-
-import pyautogui
-import time
+from subprocess import Popen, PIPE
 from pathlib import Path
 os.chdir(Path(__file__).parents[4])
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
@@ -78,7 +76,7 @@ def PrintMatlab(Aircraft):
     CHSTAT_VT = 0.25
     
     ZH=round(float(ZV+SSPN_VT),1)
-    
+    #print(DHDADI_WG,TWISTA_WG,DHDADI_HT,TWISTA_HT)
     for line in lines[50:96]:
         if line[:2]=='XW':
             j= lines.index(line)
@@ -446,23 +444,8 @@ def my_split(s):
 def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
     
     PrintDatcom(Aircraft)
-    #time.sleep(10)
-    #print (os.getcwd())
-    os.startfile("A22DSE\Models\DATCOM\Current\datcom.exe")
-    #ceres.dat
-    time.sleep(0.1)
-
-    #pyautogui.click(500, 500)
-    pyautogui.write('A22DSE\Models\DATCOM\Current\ceres.dat\n')
-    
-    
-    #autopy.key.type_string('ceres.dat\n')
-    #pynput.keyboard.Key.enter
-    #keyboard.write('ceres.dat\n')
-    
-    os.chdir(Path(__file__).parents[4])
-    
-    file=open('A22DSE\Models\DATCOM\Current\datcom.out','r')
+    Popen(['A22DSE\Models\DATCOM\Current\datcom.exe'],stdin=PIPE,stdout=PIPE).communicate(b'C:\Users\menno\Documents\GitHub\A22CERES\A22DSE\Models\DATCOM\Current\ceres.dat')
+    file=open('datcom.out','r')
     
     lines=file.readlines()
     file.close()
