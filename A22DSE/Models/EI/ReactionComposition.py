@@ -153,7 +153,7 @@ def GetEI2(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
             EngineProp[i][j] = GetEngineProp(Alt_i, MACH_i)[0,4]
     
     Fuel = np.shape
-    Fuel = GetFuelBurn(EngineProp
+    Fuel = GetFuelBurn(EngineProp)
     
     return EngineProp
 
