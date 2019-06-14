@@ -127,6 +127,8 @@ def ComputeFlutter(par, Kh, Ktheta, height, ISA_model):
     q2 = q1/q
     
     return np.sqrt(q1), np.sqrt(q2)
-    
+
+
+
 
 

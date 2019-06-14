@@ -58,12 +58,20 @@ def FindDrivingConstraint(V1, V2, V3):
             V_constr[i][j] = np.min([V1[i][j], V2[i][j], V3[i][j]])
     
     return V_constr
+
+def Intersect(y,z):
+    idx = int((np.argwhere(np.diff(np.sign(y 
+            - z))).flatten()))
+    
+    x = np.average(y[idx] + z[idx])/2
+    return x
+    
 # =============================================================================
 #                                   MAIN
 # =============================================================================
 # Constants
-xtheta = 0.4
-rtheta = 0.3
+xtheta = 0.3
+rtheta = 0.2
 CLdelta = np.deg2rad(1.8)
 CMacdelta = -0.010149
 n = 20                                   # #stiffeners
@@ -112,15 +120,26 @@ V_cr    = np.ones(np.shape(SKIN)) * Conv.ParAnFP.V_dive
 
 
 # Compute mass of skin, rib combination
-mass = StrucFun.wing_struc_mass(Conv, SKIN, n, A_stiff, RIB, rho_Al, rho_comp)
+
+    #find thicknesses that satisfy constraints
+idx = np.where(V_constr_sl > V_TO)
+
+dimLst = []
+col_idx = list(idx[1])
+for j, rowi in enumerate(list(idx[0])):
+    idy = col_idx[j]
+    dimLst.append(tuple([SKIN[rowi][idy], RIB[rowi][idy]]))
+    
+
+#mass = StrucFun.wing_struc_mass(Conv, SKIN, n, A_stiff, RIB, rho_Al, rho_comp)
 
 # =============================================================================
 #                                   PLOTTING
 # =============================================================================
 #plotV2(SKIN, RIB, V_constr_sl, V_TO)
 #plotV2(SKIN, RIB, V_constr_cr, V_cr)
-#plotContour(SKIN, RIB, V_constr_sl, Conv.ParAnFP.V_max_TO)
-#plotContour(SKIN, RIB, V_constr_cr, Conv.ParAnFP.V_dive)
+plotContour(SKIN, RIB, V_constr_sl, Conv.ParAnFP.V_max_TO)
+plotContour(SKIN, RIB, V_constr_cr, Conv.ParAnFP.V_dive)
 #plotV4(SKIN, RIB, Vdiv_sl, Vcr_sl, Vfl_sl[0], V_TO)
 #plotV4(SKIN, RIB, Vdiv_cr, Vcr_cr, Vfl_cr[0], V_cr)
 
