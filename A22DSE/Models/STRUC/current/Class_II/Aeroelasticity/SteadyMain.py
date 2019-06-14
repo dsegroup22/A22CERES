@@ -13,10 +13,10 @@ os.chdir(Path(__file__).parents[6])
 import numpy as np
 import scipy.linalg as slin
 import matplotlib.pyplot as plt
-import control.matlab as control
+#import control.matlab as control
 import A22DSE.Models.STRUC.current.Structural_Model.struc_functions as StrucFun
 import A22DSE.Models.STRUC.current.Class_II.Aeroelasticity.SteadyFuncs as AE
-from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
+#from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 # =============================================================================
 #                               FUNCTIONS
@@ -24,10 +24,10 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 def plotV4(X, Y, Z1, Z2, Z3, Z4):
     plt.figure()
     ax = plt.axes(projection='3d')
-    ax.plot_wireframe(SKIN, RIB, Z1, color='black')
-    ax.plot_wireframe(SKIN, RIB, Z2, color = 'blue')
-    ax.plot_wireframe(SKIN, RIB, Z3, color = 'green')
-    ax.plot_wireframe(SKIN, RIB, Z4, color = 'red')
+    ax.plot_wireframe(X, Y, Z1, color='black')
+    ax.plot_wireframe(X, Y, Z2, color = 'blue')
+    ax.plot_wireframe(X, Y, Z3, color = 'green')
+    ax.plot_wireframe(X, Y, Z4, color = 'red')
     ax.set_title('wireframe');
     
     return
@@ -35,8 +35,8 @@ def plotV4(X, Y, Z1, Z2, Z3, Z4):
 def plotV2(X, Y, Z1, Z2):
     plt.figure()
     ax = plt.axes(projection='3d')
-    ax.plot_wireframe(SKIN, RIB, Z1, color='black')
-    ax.plot_wireframe(SKIN, RIB, Z2, color = 'red')
+    ax.plot_wireframe(X, Y, Z1, color='black')
+    ax.plot_wireframe(X, Y, Z2, color = 'red')
     ax.set_title('wireframe');
     
     return
@@ -66,83 +66,113 @@ def Intersect(y,z):
     x = np.average(y[idx] + z[idx])/2
     return x
     
+
 # =============================================================================
 #                                   MAIN
 # =============================================================================
-# Constants
-xtheta = 0.3
-rtheta = 0.2
-CLdelta = np.deg2rad(1.8)
-CMacdelta = -0.010149
-n = 20                                   # #stiffeners
-A_stiff = 3.6*10**-5                     # Area stiffeners
-rho_Al  = 2830
-rho_comp = 1600
+    
+def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
+    
+    # Constants
+    xtheta = 0.4                             # assumed
+    rtheta = 0.3                             # assumed
+    CLdelta = np.deg2rad(1.8)                # procedure from paper
+    CMacdelta = -0.010149
+    n = Aircraft.ParStruc.n_stiff            #stiffeners
+    A_stiff = Aircraft.ParStruc.A_stiff      # Area stiffeners
+    
+    # initialise airfoil object
+    airfoil = AE.airfoilAE(0, 0, xtheta, 
+                           rtheta, CLdelta, CMacdelta, Aircraft)
+    
+    t_skinLst = np.linspace(0.0005,0.005, 10)               #X
+    t_ribLst  = np.linspace(0.0005, 0.01, 10)              #Y
+    
+    SKIN, RIB = np.meshgrid(t_skinLst, t_ribLst)
+    
+    KthetaLst = np.ones(np.shape(SKIN))
+    for i, t_skin in enumerate(t_skinLst):
+        for j, t_rib in enumerate(t_ribLst):
+            KthetaLst[i][j] = (float(StrucFun.TorsionalStiffness(
+                    airfoil.c, Aircraft, t_skin, t_rib)))
+    
+    
+    KhLst = StrucFun.moi_wing(airfoil.c, Aircraft)*1e12
+    
+    # divergence speed
+    Vdiv_sl = AE.ComputeDivSpeed(airfoil, KthetaLst, height, ISA_model)
+#        Vdiv_cr = AE.ComputeDivSpeed(airfoil, KthetaLst, 20000, ISA_model)
+    
+    # reverse control speed
+    Vcr_sl  = AE.ComputeControlReversal(airfoil, KthetaLst, height, 
+                                        ISA_model)
+#        Vcr_cr  = AE.ComputeControlReversal(airfoil, KthetaLst, 20000,
+#                                            ISA_model)
+    
+    # flutter speed
+    Vfl_sl  = AE.ComputeFlutter(airfoil, KhLst, KthetaLst, height,
+                                ISA_model)
+#        Vfl_cr  = AE.ComputeFlutter(airfoil, KhLst, KthetaLst, 
+#                                   20000,ISA_model)
+    
+    # Compute the driving constraint
+    V_constr_sl = FindDrivingConstraint(Vdiv_sl, Vcr_sl, Vfl_sl[0])
+#        V_constr_cr = FindDrivingConstraint(Vdiv_cr, Vcr_cr, Vfl_cr[0])
+    
+    # constraint
+#        V_TO    = np.ones(np.shape(SKIN)) * Conv.ParAnFP.V_max_TO
+#        V_cr    = np.ones(np.shape(SKIN)) * Conv.ParAnFP.V_dive
+    V_req_arr = np.ones(np.shape(SKIN)) * V_req
+    # =====================================================================
+    #                                   PLOTTING
+    # =====================================================================
+    if plot == True:
+        plotV2(SKIN, RIB, V_constr_sl, V_req_arr)
+        #plotV2(SKIN, RIB, V_constr_cr, V_cr)
+        plotContour(SKIN, RIB, V_constr_sl, V_req)
+        #plotContour(SKIN, RIB, V_constr_cr, Conv.ParAnFP.V_dive)
+        plotV4(SKIN, RIB, Vdiv_sl, Vcr_sl, Vfl_sl[0], V_req_arr)
+        #plotV4(SKIN, RIB, Vdiv_cr, Vcr_cr, Vfl_cr[0], V_cr)    
+        
+    return KthetaLst
+    # Compute mass of skin, rib combination
+    
+        #find thicknesses that satisfy constraints
+def ComputeMinWB(Aircraft, ISA_model, height, V_constr):
+    
+    t_skinLst = np.linspace(0.0005,0.005, 10)               #X
+    t_ribLst  = np.linspace(0.0005, 0.005, 10)              #Y
+    rho_Al = Aircraft.ParStruc.rho_Al
+    rho_comp = Aircraft.ParStruc.rho_comp
+    A_stiff = Aircraft.ParStruc.A_stiff
+    n       = Aircraft.ParStruc.n_stiff
+    
+    SKIN, RIB = np.meshgrid(t_skinLst, t_ribLst)
+    
+    V_valid = ComputeElasticity(Aircraft, ISA_model, height, V_constr, False)
+    
+    idx = np.where(V_valid > V_constr)
+    
+    dimLst = []
+    massLst = []
+    col_idx = list(idx[1])
 
-
-# initialise airfoil object
-airfoil = AE.airfoilAE(0, 0, xtheta, 
-                       rtheta, CLdelta, CMacdelta, Conv)
-
-t_skinLst = np.linspace(0.0005,0.005, 10)               #X
-t_ribLst  = np.linspace(0.0005, 0.005, 10)              #Y
-
-SKIN, RIB = np.meshgrid(t_skinLst, t_ribLst)
-
-KthetaLst = np.ones(np.shape(SKIN))
-for i, t_skin in enumerate(t_skinLst):
-    for j, t_rib in enumerate(t_ribLst):
-        KthetaLst[i][j] = (float(StrucFun.TorsionalStiffness(airfoil.c, t_skin,
-                                                 t_rib)))
-
-
-KhLst = StrucFun.moi_wing(airfoil.c, SKIN, RIB, n, Conv, A_stiff) * 1e12
-
-# divergence speed
-Vdiv_sl = AE.ComputeDivSpeed(airfoil, KthetaLst, 0, ISA_model)
-Vdiv_cr = AE.ComputeDivSpeed(airfoil, KthetaLst, 20000, ISA_model)
-
-# reverse control speed
-Vcr_sl  = AE.ComputeControlReversal(airfoil, KthetaLst, 0, ISA_model)
-Vcr_cr  = AE.ComputeControlReversal(airfoil, KthetaLst, 20000, ISA_model)
-
-# flutter speed
-Vfl_sl  = AE.ComputeFlutter(airfoil, KhLst, KthetaLst, 0, ISA_model)
-Vfl_cr  = AE.ComputeFlutter(airfoil, KhLst, KthetaLst, 20000, ISA_model)
-
-# Compute the driving constraint
-V_constr_sl = FindDrivingConstraint(Vdiv_sl, Vcr_sl, Vfl_sl[0])
-V_constr_cr = FindDrivingConstraint(Vdiv_cr, Vcr_cr, Vfl_cr[0])
-
-# constraint
-V_TO    = np.ones(np.shape(SKIN)) * Conv.ParAnFP.V_max_TO
-V_cr    = np.ones(np.shape(SKIN)) * Conv.ParAnFP.V_dive
-
-
-# Compute mass of skin, rib combination
-
-    #find thicknesses that satisfy constraints
-idx = np.where(V_constr_sl > V_TO)
-
-dimLst = []
-col_idx = list(idx[1])
-for j, rowi in enumerate(list(idx[0])):
-    idy = col_idx[j]
-    dimLst.append(tuple([SKIN[rowi][idy], RIB[rowi][idy]]))
+    for j, rowi in enumerate(list(idx[0])):
+        idy = col_idx[j]
+        dimLst.append(([SKIN[rowi][idy], RIB[rowi][idy]]))
     
 
-#mass = StrucFun.wing_struc_mass(Conv, SKIN, n, A_stiff, RIB, rho_Al, rho_comp)
+    for i, dimi in enumerate(dimLst):
+        skin = dimi[0]
+        rib  = dimi[1]
+        massLst.append((StrucFun.wing_struc_mass(Aircraft, skin, n, A_stiff, 
+                                        rib, rho_Al, rho_comp)))
+        
+    argdes = np.argmin(massLst)
+    
+    dim_des = dimLst[argdes]
 
-# =============================================================================
-#                                   PLOTTING
-# =============================================================================
-#plotV2(SKIN, RIB, V_constr_sl, V_TO)
-#plotV2(SKIN, RIB, V_constr_cr, V_cr)
-plotContour(SKIN, RIB, V_constr_sl, Conv.ParAnFP.V_max_TO)
-plotContour(SKIN, RIB, V_constr_cr, Conv.ParAnFP.V_dive)
-#plotV4(SKIN, RIB, Vdiv_sl, Vcr_sl, Vfl_sl[0], V_TO)
-#plotV4(SKIN, RIB, Vdiv_cr, Vcr_cr, Vfl_cr[0], V_cr)
-
+    return dim_des
 
 
 # =============================================================================
