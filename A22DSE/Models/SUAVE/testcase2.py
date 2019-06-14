@@ -25,7 +25,7 @@ from SUAVE.Input_Output.Results import  print_parasite_drag,  \
      print_mission_breakdown, \
      print_weight_breakdown
 from A22DSE.Parameters.Par_Class_Conventional import Conv
-
+os.chdir(Path(__file__).parents[0])
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------
@@ -449,7 +449,7 @@ def vehicle_setup():
     combustor.efficiency                = 0.99 
     combustor.turbine_inlet_temperature = 1650 # K
     combustor.pressure_ratio            = 0.95
-    combustor.fuel_data                 = SUAVE.Attributes.Propellants.Jet_A()    
+    combustor.fuel_data                 = SUAVE.Attributes.Propellants.Jet_A1()    
     
     # add to network
     turbofan.append(combustor)
@@ -503,7 +503,7 @@ def vehicle_setup():
  
     #total design thrust (includes all the engines)
     
-    thrust.total_design             = (Aircraft.ParProp.Thrust_cruise+300) * Units.N
+    thrust.total_design             = (Aircraft.ParProp.T_cruise_available-935*4) * Units.N
 
 
     #design sizing conditions

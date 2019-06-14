@@ -78,15 +78,15 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
     rtheta = 0.3                             # assumed
     CLdelta = np.deg2rad(1.8)                # procedure from paper
     CMacdelta = -0.010149
-    n = 40                                   # #stiffeners
-    A_stiff = 3.6e-5                         # Area stiffeners
+    n = Aircraft.ParStruc.n_stiff            #stiffeners
+    A_stiff = Aircraft.ParStruc.A_stiff      # Area stiffeners
     
     # initialise airfoil object
     airfoil = AE.airfoilAE(0, 0, xtheta, 
                            rtheta, CLdelta, CMacdelta, Aircraft)
     
     t_skinLst = np.linspace(0.0005,0.005, 10)               #X
-    t_ribLst  = np.linspace(0.0005, 0.005, 10)              #Y
+    t_ribLst  = np.linspace(0.0005, 0.01, 10)              #Y
     
     SKIN, RIB = np.meshgrid(t_skinLst, t_ribLst)
     
@@ -94,7 +94,7 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
     for i, t_skin in enumerate(t_skinLst):
         for j, t_rib in enumerate(t_ribLst):
             KthetaLst[i][j] = (float(StrucFun.TorsionalStiffness(
-                    airfoil.c, Aircraft)))
+                    airfoil.c, Aircraft, t_skin, t_rib)))
     
     
     KhLst = StrucFun.moi_wing(airfoil.c, Aircraft)*1e12
@@ -134,7 +134,7 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
         plotV4(SKIN, RIB, Vdiv_sl, Vcr_sl, Vfl_sl[0], V_req_arr)
         #plotV4(SKIN, RIB, Vdiv_cr, Vcr_cr, Vfl_cr[0], V_cr)    
         
-    return V_constr_sl
+    return KthetaLst
     # Compute mass of skin, rib combination
     
         #find thicknesses that satisfy constraints
