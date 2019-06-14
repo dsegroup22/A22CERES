@@ -214,14 +214,6 @@ def TorsionalStiffness(chord, Aircraft,t_skin,t_rib):  #verified
 #moment of intertia calculator
 
 
-#def moi_stringer(t,b,h): #fin
-#    ''' 
-#    DESCRIPTION: fucntion that moment of inertia of a stringer
-#    INPUT: stringer dimensions widht (b), height (h), thickness (t)
-#    OUTPUT: moment of inertia stringer
-#    ''' 
-#    return 1/12*b*h**3+(h/2)**2*(b+h)*t
-
 def rib_moi(chord,Aircraft): #checked and verified
     ''' 
     DESCRIPTION: function that calculates the moment of inertia of the ribs. 
