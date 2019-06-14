@@ -12,7 +12,7 @@ Z_0 = mu_0 * c = impedance_of_free_space = characteristic_impedance_of_vacuum
 
 # 0.000 000 29 e-34
 planck_constant = 6.62606957e-34 J s = h
-hbar = planck_constant / (2 * pi) = h
+hbar = planck_constant / (2 * pi) = ħ
 
 # 0.000 80 e-11
 newtonian_constant_of_gravitation = 6.67384e-11 m^3 kg^-1 s^-2 = G
@@ -33,7 +33,7 @@ avogadro_number = 6.02214129e23 mol^-1 =N_A
 boltzmann_constant = 1.3806488e-23 J K^-1 = k
 
 # 0.000 021 e-8
-stefan_boltzmann_constant = 5.670373e-8 W m^-2 K^-4 = s
+stefan_boltzmann_constant = 5.670373e-8 W m^-2 K^-4 = σ
 
 # 0.000 0053 e10
 wien_frequency_displacement_law_constant = 5.8789254e10 Hz K^-1

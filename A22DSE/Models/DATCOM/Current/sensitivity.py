@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[4])
 from A22DSE.Parameters.Par_Class_Conventional import Conv
-from A22DSE.Models.DATCOM.Current.datcomrunread import GetDerivatives
+from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
 
 
 
@@ -24,8 +24,7 @@ steps=10
  #runtime approx. par_class_conv time (approx 5) + steps^2*0.25 sec
 dihedralrange = np.linspace(-5,1,steps)
 twistrange = np.linspace(-5,1,steps)
-Conv.ParAnFP.dhht=0
-Conv.ParAnFP.twht=0
+
 parameters=np.array(['C_D_0','C_L_a','C_l_b','C_m_a','C_Y_b','C_n_b','C_L_adot',\
           'C_m_adot', 'C_l_p','C_Y_p','C_n_p','C_n_r','C_l_r','C_l_q','C_m_q'])
 def name(**variables):
