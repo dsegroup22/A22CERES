@@ -78,8 +78,8 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
     rtheta = 0.3                             # assumed
     CLdelta = np.deg2rad(1.8)                # procedure from paper
     CMacdelta = -0.010149
-    n = 40                                   # #stiffeners
-    A_stiff = 3.6e-5                         # Area stiffeners
+    n = Aircraft.ParStruc.n_stiff            #stiffeners
+    A_stiff = Aircraft.ParStruc.A_stiff      # Area stiffeners
     
     # initialise airfoil object
     airfoil = AE.airfoilAE(0, 0, xtheta, 
@@ -94,50 +94,32 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
     for i, t_skin in enumerate(t_skinLst):
         for j, t_rib in enumerate(t_ribLst):
             KthetaLst[i][j] = (float(StrucFun.TorsionalStiffness(
-                    airfoil.c, Aircraft)))
+                    airfoil.c, Aircraft, t_skin, t_rib)))
     
     
     KhLst = StrucFun.moi_wing(airfoil.c, Aircraft)*1e12
     
-    # divergence speed
     Vdiv_sl = AE.ComputeDivSpeed(airfoil, KthetaLst, height, ISA_model)
-#        Vdiv_cr = AE.ComputeDivSpeed(airfoil, KthetaLst, 20000, ISA_model)
-    
-    # reverse control speed
     Vcr_sl  = AE.ComputeControlReversal(airfoil, KthetaLst, height, 
                                         ISA_model)
-#        Vcr_cr  = AE.ComputeControlReversal(airfoil, KthetaLst, 20000,
-#                                            ISA_model)
     
-    # flutter speed
     Vfl_sl  = AE.ComputeFlutter(airfoil, KhLst, KthetaLst, height,
                                 ISA_model)
-#        Vfl_cr  = AE.ComputeFlutter(airfoil, KhLst, KthetaLst, 
-#                                   20000,ISA_model)
     
-    # Compute the driving constraint
     V_constr_sl = FindDrivingConstraint(Vdiv_sl, Vcr_sl, Vfl_sl[0])
-#        V_constr_cr = FindDrivingConstraint(Vdiv_cr, Vcr_cr, Vfl_cr[0])
-    
-    # constraint
-#        V_TO    = np.ones(np.shape(SKIN)) * Conv.ParAnFP.V_max_TO
-#        V_cr    = np.ones(np.shape(SKIN)) * Conv.ParAnFP.V_dive
     V_req_arr = np.ones(np.shape(SKIN)) * V_req
     # =====================================================================
     #                                   PLOTTING
     # =====================================================================
     if plot == True:
         plotV2(SKIN, RIB, V_constr_sl, V_req_arr)
-        #plotV2(SKIN, RIB, V_constr_cr, V_cr)
         plotContour(SKIN, RIB, V_constr_sl, V_req)
-        #plotContour(SKIN, RIB, V_constr_cr, Conv.ParAnFP.V_dive)
         plotV4(SKIN, RIB, Vdiv_sl, Vcr_sl, Vfl_sl[0], V_req_arr)
-        #plotV4(SKIN, RIB, Vdiv_cr, Vcr_cr, Vfl_cr[0], V_cr)    
-        
-    return V_constr_sl
+
+    return Vdiv_sl, Vcr_sl, Vfl_sl
     # Compute mass of skin, rib combination
     
-        #find thicknesses that satisfy constraints
+    #find thicknesses that satisfy constraints
 def ComputeMinWB(Aircraft, ISA_model, height, V_constr):
     
     t_skinLst = np.linspace(0.0005,0.005, 10)               #X
@@ -174,6 +156,14 @@ def ComputeMinWB(Aircraft, ISA_model, height, V_constr):
 
     return dim_des
 
+# Constants
+
+
+
+
+
+
+
 
 # =============================================================================
 #                                   LEGACY CODE
@@ -209,3 +199,4 @@ def ComputeMinWB(Aircraft, ISA_model, height, V_constr):
 ##plt.plot(KhLst, Vflut)
 ##
 ##plt.show()
+    

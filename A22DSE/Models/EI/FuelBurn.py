@@ -10,16 +10,15 @@ import sys
 import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[3])
-def GetFuelBurn(mdot, resolution):
+def GetFuelBurn(mdot, time):
     '''
     INPUT: mass fuel flow, resolution of mass fuel flow measurement (time)
     OUTPUT: Fuel Burned
     DESCRIPTION: numerical integration based on the method of the 
     trapezoidal discrete integral
     '''    
-    dt = resolution
-    
-    fuelburn = np.trapz(mdot, x= None, dx =dt)
+      
+    fuelburn = np.trapz(mdot, time)
     
     return fuelburn
 
