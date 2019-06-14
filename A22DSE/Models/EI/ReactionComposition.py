@@ -5,10 +5,12 @@ Created on Mon Jun  3 10:18:58 2019
 @author: hksam
 """
 import sys
-sys.path.append('../../../../')
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[3])
 import numpy as np
-from A22CERES.A22DSE.Models.EI.FuelBurn import GetEngineProp, GetFuelBurn
-from A22CERES.A22DSE.Models.EI.classEILst import pollutantLst
+from A22DSE.Models.EI.FuelBurn import GetEngineProp, GetFuelBurn
+from A22DSE.Models.EI.classEILst import pollutantLst
 
 def GetReactionProducts(AF, FuelMass):
     '''
@@ -116,12 +118,10 @@ def GetEI(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
     else:
         raise "Error: length of Altitude Profile list and Mach Profile list\
         different"
-    
-    print(EngineProp)
+
     Fuel = GetFuelBurn(EngineProp, resolution)
-    print(Fuel)
 #    AF = "get inlet area rho*V**L"/np.array(EngineProp)
-    A_inlet = Aircraft.ParProp.Diameter**2 * np.pi/4
+    A_inlet = Aircraft.ParProp.Engine_diameter**2 * np.pi/4
     T, p, rho = ISA_model.ISAFunc([])
     AF = A_inlet * rho *  Aircraft
     
@@ -140,8 +140,23 @@ def GetEI(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
 
 def GetEI2(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
     
-    EngineProp = []
+    if len(AltitudeProfile) != len(MachProfile):
+        return None
     
+    ALT, MACH = np.meshgrid(AltitudeProfile, MachProfile)
+    
+    
+    EngineProp = np.ones(np.shape(ALT))
+    for i, Alt_i in enumerate(AltitudeProfile):
+        for j, MACH_i in enumerate(MachProfile):
+#            print(Alt_i, MACH_i)
+            EngineProp[i][j] = GetEngineProp(Alt_i, MACH_i)[0,4]
+    
+    Fuel = np.shape
+    Fuel = GetFuelBurn(EngineProp)
+    
+    return EngineProp
+
 
 #
 #def GetFuelBurn(mdot):
