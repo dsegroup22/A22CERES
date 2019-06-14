@@ -24,10 +24,10 @@ import A22DSE.Models.STRUC.current.Class_II.Aeroelasticity.SteadyFuncs as AE
 def plotV4(X, Y, Z1, Z2, Z3, Z4):
     plt.figure()
     ax = plt.axes(projection='3d')
-    ax.plot_wireframe(SKIN, RIB, Z1, color='black')
-    ax.plot_wireframe(SKIN, RIB, Z2, color = 'blue')
-    ax.plot_wireframe(SKIN, RIB, Z3, color = 'green')
-    ax.plot_wireframe(SKIN, RIB, Z4, color = 'red')
+    ax.plot_wireframe(X, Y, Z1, color='black')
+    ax.plot_wireframe(X, Y, Z2, color = 'blue')
+    ax.plot_wireframe(X, Y, Z3, color = 'green')
+    ax.plot_wireframe(X, Y, Z4, color = 'red')
     ax.set_title('wireframe');
     
     return
@@ -35,8 +35,8 @@ def plotV4(X, Y, Z1, Z2, Z3, Z4):
 def plotV2(X, Y, Z1, Z2):
     plt.figure()
     ax = plt.axes(projection='3d')
-    ax.plot_wireframe(SKIN, RIB, Z1, color='black')
-    ax.plot_wireframe(SKIN, RIB, Z2, color = 'red')
+    ax.plot_wireframe(X, Y, Z1, color='black')
+    ax.plot_wireframe(X, Y, Z2, color = 'red')
     ax.set_title('wireframe');
     
     return
@@ -74,15 +74,12 @@ def Intersect(y,z):
 def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
     
     # Constants
-    xtheta = 0.4
-    rtheta = 0.3
-    CLdelta = np.deg2rad(1.8)
+    xtheta = 0.4                             # assumed
+    rtheta = 0.3                             # assumed
+    CLdelta = np.deg2rad(1.8)                # procedure from paper
     CMacdelta = -0.010149
     n = 40                                   # #stiffeners
     A_stiff = 3.6e-5                         # Area stiffeners
-    rho_Al  = 2830
-    rho_comp = 1600
-    
     
     # initialise airfoil object
     airfoil = AE.airfoilAE(0, 0, xtheta, 

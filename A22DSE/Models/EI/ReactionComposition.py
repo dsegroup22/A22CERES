@@ -109,18 +109,21 @@ def GetEI(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
     '''
     EngineProp=[]
     if len(AltitudeProfile)==len(MachProfile):
-        for i in range(len(AltitudeProfile)):            
+        for i in range(len(AltitudeProfile)): 
             EngineProp.append(GetEngineProp(AltitudeProfile[i],\
                                             MachProfile[i])[0,4])
+            
     else:
         raise "Error: length of Altitude Profile list and Mach Profile list\
         different"
     
+    print(EngineProp)
     Fuel = GetFuelBurn(EngineProp, resolution)
+    print(Fuel)
 #    AF = "get inlet area rho*V**L"/np.array(EngineProp)
-#    A_inlet = Aircraft.ParProp.Diameter**2 * np.pi/4
-#    T, p, rho = ISA_model.ISAFunc([])
-    AF = 1.2
+    A_inlet = Aircraft.ParProp.Diameter**2 * np.pi/4
+    T, p, rho = ISA_model.ISAFunc([])
+    AF = A_inlet * rho *  Aircraft
     
     Products = []
     Impact=[]
@@ -133,6 +136,11 @@ def GetEI(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
     EIGWP = resolution * sum(Impact[:,0])
     EIRF = sum(Impact[:,1])/len(Impact[:,1])
     return [Fuel, EIGWP, EIRF]
+
+
+def GetEI2(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
+    
+    EngineProp = []
     
 
 #
