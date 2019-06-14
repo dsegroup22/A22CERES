@@ -4,12 +4,12 @@ Created on Wed Jun  5 15:40:08 2019
 
 @author: kamph
 """
-#import os
+import os
 #import sys
-import numpy as np
-#from pathlib import Path
-##sys.path.append('../../')
-#os.chdir(Path(__file__).parents[4])
+#import numpy as np
+from pathlib import Path
+#sys.path.append('../../')
+os.chdir(Path(__file__).parents[4])
 #print(os.getcwd())
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
@@ -204,7 +204,9 @@ def FuselageWeight_opt(Aircraft, fineness_f, SF):
 #plt.ylabel('some numbers')
     
 def Fuselage(Aircraft):
-    a = Fuselage_iter(Aircraft, 8, 1.5)
+    struc = Aircraft.ParStruc
+    
+    a = Fuselage_iter(Aircraft, struc.fineness_c, struc.SF)
     b = a[0:3]
     c = a[4]
     d = a[3]

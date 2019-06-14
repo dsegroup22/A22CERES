@@ -4,11 +4,12 @@ Created on Thu Jun 13 22:03:23 2019
 
 @author: lujingyi
 """
-from math import radians,pi,sin,cos
+from math import radians,pi,sin,cos,sqrt
 # Parameter abbreviation
 anfp = Conv.ParAnFP
 layout = Conv.ParLayoutConfig
 struc = Conv.ParStruc
+
 # Stationary flight condition
 
 hp0    = 20000        # pressure altitude in the stationary flight condition [m]
@@ -17,7 +18,7 @@ alpha0 = radians(3)   # angle of attack in the stationary flight condition [rad]
 th0    = 0       	  # pitch angle in the stationary flight condition [rad]
 
 # Aircraft mass
-m      = struc.MTOW        	  # mass after climb [kg]
+m      = struc.MTOW*struc.wfratioclimb       	  # mass after climb [kg]
 
 # aerodynamic properties
 e      = anfp.e       # Oswald factor [ ]
@@ -25,7 +26,7 @@ CD0    = anfp.CD0     # Zero lift drag coefficient [ ]
 CLa    = anfp.C_L_alpha_cruise# Slope of CL-alpha curve [ ]
 
 # Longitudinal stability
-Cma    = 1    #anfp.C_m_a   # longitudinal stabilty [ ]
+Cma    = 0.001    #anfp.C_m_a   # longitudinal stabilty [ ]
 Cmde   = 1            # elevator effectiveness [ ]   !!!!!!!!!!!!!
 
 # Aircraft geometry
@@ -56,10 +57,19 @@ W      = m*g			  #	[N]       (aircraft weight)
 
 muc    = m/(rho*S*c)
 mub    = m/(rho*S*b)
-KX2    = 0.019
-KZ2    = 0.042
+I_xx   = m*2.2046*((layout.l_fuselage*3.28)**2)/810*1.35
+I_yy   = m*2.2046*((b*3.28)**2)/1870*1.35
+I_zz   = m*2.2046*((0.5*(layout.l_fuselage+b)*3.28)**2)/770*1.35
+KX2    = I_xx/(m*b*b)
+KZ2    = I_zz/(m*b*b)
+KY2    = I_yy/(m*c*c)
 KXZ    = 0.002
-KY2    = 1.25*1.114
+print(KX2,KZ2,KY2,KXZ)
+
+#KX2    = 0.019
+#KZ2    = 0.042
+#KXZ    = 0.002
+#KY2    = 1.25*1.114
 
 # Aerodynamic constants
 
@@ -72,6 +82,7 @@ depsda = 4/(A+2)           # Downwash gradient [ ]
 
 CL = 2*W/(rho*V0**2*S)               # Lift coefficient [ ]
 CD = CD0 + (CLa*alpha0)**2/(pi*A*e)  # Drag coefficient [ ]
+
 
 # Stabiblity derivatives
 
@@ -112,3 +123,65 @@ Cnp    =  -0.0602
 Cnr    =  -0.2061
 Cnda   =  -0.0120
 Cndr   =  -0.0939
+
+#-----eigenvalues for dynamic motions ----
+
+#short period 
+
+#Eigenvalue
+A1 = 4* muc**2 * KY2
+B1 = -2 * muc *(KY2*CZa + Cmadot+ Cmq )
+C1 = CZa * Cmq  - 2*muc * Cma
+labda_real_c1 = - B1 / (2*A1)
+labda_imag_c1  =  (sqrt(4*A1*C1-B1**2))/(2*A1)
+labda_c1 = complex(labda_real_1,labda_imag_1)
+labda_1 = labda_c1 * (V0/c)
+print(labda_1)
+labda_c2 = complex(labda_real_1, -labda_imag_1)
+print(labda_2)
+labda_2 = labda_c2 * (V0/c)
+
+#Boundary conditions
+ 
+
+
+
+#phugoid 
+
+#Eigenvalue
+A2 = -4 * muc**2 
+B2 = 2 * muc * CXu
+C2 = -CZu  * CZ0 
+labda_real_2 = - B2 / (2*A2)
+labda_imag_2  =  (sqrt(4*A2*C2-B2**2))/(2*A2)
+labda_c3 = complex(labda_real_2,labda_imag_2 )
+labda_3 = labda_c3 *(V0/c)
+labda_c4 = complex(labda_real_2, -labda_imag_2)
+labda_4 = labda_c4*(V0/c) 
+
+
+
+#Aperiodic 
+labda_c5 = Clp / (4 * mub * KX2)
+labda_5 = labda_c5*(V0/c) 
+
+
+#Dutch roll 
+#Eigenvalue
+A3 = 8 * mub**2 * KZ2
+B3 = -2 * mub * (Cnr + 2*KZ2 * CYb)
+C3 = 4 * mub * Cnb + CYb * Cnr 
+labda_real_3 = - B3 / (2*A3)
+labda_imag_3  =  (sqrt(4*A3*C3-B3**2))/(2*A3)
+labda_c6 = complex(labda_real_3,labda_imag_3 )
+labda_6 = labda_c6*(V0/c) 
+labda_c7 = complex(labda_real_3, -labda_imag_3)
+labda_7 = labda_c7*(V0/c) 
+
+
+
+# Spiral 
+
+#Eigenvalue
+labda_c8 = (2 * CL *(Clb* Cnr - Cnb * Clr ))/(Clp *(CYb * Cnr + 4*mub * Cnb) - Cnp *(CYb * Clr + 4 * mub * Clb ))
+labda_8 = labda_c8*(V0/c) 

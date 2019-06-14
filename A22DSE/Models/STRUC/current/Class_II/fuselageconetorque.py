@@ -8,12 +8,12 @@ Created on Tue Jun 11 16:20:28 2019
 import math as m
 import numpy as np
 
-import os
-from pathlib import Path
-os.chdir(Path(__file__).parents[5])
-
-from A22DSE.Parameters.Par_Class_Conventional import Conv
-
+#import os
+#from pathlib import Path
+#os.chdir(Path(__file__).parents[5])
+#
+#from A22DSE.Parameters.Par_Class_Conventional import Conv
+#
 
 
 def GetJ(do,di):
@@ -40,7 +40,7 @@ def Get_t(Aircraft, do):
     layout = Aircraft.ParLayoutConfig
     t  = np.linspace(0.1,50) * 10**-3
     di = do - 2*t
-    T = layout.b_v * 0.5 * 1.225 * 150**2 * 1.2 * layout.Svt  #Nm
+    T = layout.bv*2/3 * 0.5 * 1.225 * 150**2 * 1.2 * layout.Svt  #Nm
     V = 0.5 * 1.225 * 150**2 * 1.2 * layout.Svt  #N
     A = m.pi * (do/2)**2
     sigma = GetSigma(T,do,di) + GetStressShear(t,do,V,A)

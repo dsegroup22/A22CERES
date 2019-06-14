@@ -25,7 +25,7 @@ from SUAVE.Input_Output.Results import  print_parasite_drag,  \
      print_mission_breakdown, \
      print_weight_breakdown
 from A22DSE.Parameters.Par_Class_Conventional import Conv
-
+os.chdir(Path(__file__).parents[0])
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------

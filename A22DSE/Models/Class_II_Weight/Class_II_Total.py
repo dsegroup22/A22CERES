@@ -56,10 +56,10 @@ def ClassIIWeight_MTOW(Aircraft):
     Layout.xcg_fuselagegroup = oecg(Aircraft)
 
     #calculate new OEW and new MTOW
-    struc.OEW = struc.Weight_WingGroup + struc.Weight_FusGroup #[kg]
-    MTOW = struc.OEW + struc.FW + Aircraft.ParPayload.m_payload
+    struc.OEW = (struc.Weight_WingGroup + struc.Weight_FusGroup )*1.1#[kg]
+    MTOW = struc.OEW + struc.FW + Aircraft.ParPayload.m_payload 
     struc.OEWratio = struc.OEW/MTOW
-    return MTOW
+    return MTOW 
 
 
 def ClassIIWeightIteration(Aircraft):
@@ -105,7 +105,7 @@ def ClassIIWeightIteration(Aircraft):
          #print(anfp.b)
          #check if error is small enough, if it is, return MTOW
          error = abs((MTOW_old-struc.MTOW)/MTOW_old)
-         if error<0.005:
+         if error<0.01:
              break
          itcount+=1    
          
