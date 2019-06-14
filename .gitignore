@@ -1,10 +1,10 @@
 *.pyc
 *.pyo
 *.txt
-*.txt
+
 !A22DSE/Models/STRUC/current/Structural_Model/NASASC20712data_1.txt
 !A22DSE/Models/STRUC/current/Structural_Model/NASASC20712data_2.txt
-A22DSE/Parameters/ParametersConv.txt
+!A22DSE/Parameters/ParametersConv.txt
 !constants_en.txt
 !default_en.txt
 !Airfoiltoolsht.txt

@@ -15,6 +15,7 @@ from A22DSE.Models.EI.classEILst import (pollutantLst)
 import A22DSE.Models.EI.ReactionComposition as EI
 from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 from A22DSE.Models.SUAVE.testcase2 import main
+from A22DSE.Parameters.Par_Class_Conventional import Conv
 #ddata = 49
 #AltitudeLst = data[:ddata, 0]
 #MachLst     = data[::ddata, 1]
@@ -38,3 +39,4 @@ for i in range(len(actualresults)):
         V = np.append(V,actualresults[i].conditions.freestream.velocity[:,0])
         rho = np.append(rho,actualresults[i].conditions.freestream.density[:,0])
 fuel = np.trapz(mdot,time)
+AR = rho*Conv.ParProp.Engine_diameter*Conv.ParProp.N_engines/mdot
