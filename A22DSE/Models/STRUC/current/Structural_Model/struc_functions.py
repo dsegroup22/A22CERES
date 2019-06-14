@@ -311,4 +311,38 @@ def moi_wing(chord,t_skin,t_rib,n,Aircraft,A):
     OUTPUT: moment of inertia at a certain span position
     '''     
     moi_wing=skin_moi(chord,t_skin)+rib_moi(chord,t_rib) #+moi_stringer(n,chord,Aircraft,A)
+
+
     return moi_wing
+
+def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
+    b=Aircraft.ParAnFP.b
+    bi=np.linspace(-b/2,b/2,100)
+    w_skin=0
+    for i in bi:
+        chordi=chord(i,Aircraft)
+#        skin_upper_eq=skin_eq_upper(chordi)
+#        skin_lower_eq=skin_eq_lower(chordi)
+#        x_rib1=0.2*chordi
+#        x_rib2=0.6*chordi
+#        h_rib1=skin_upper_eq(x_rib1)-skin_lower_eq(x_rib1)
+#        h_rib2=skin_upper_eq(x_rib2)-skin_lower_eq(x_rib2)
+        S1,S2,S3,h_rib1,h_rib2=S(chordi)
+
+        #skin weight+rib weight
+        db=1/100
+        A_skin_rho=(S1+S3)*t_skin*rho_alu+(S2+h_rib1+h_rib2)*t_rib*rho_comp
+        w_skin=w_skin+A_skin_rho*db
+        
+    #stiffener weight
+    MAC=Aircraft.ParAnFP.MAC
+    c_r=Aircraft.ParAnFP.c_r
+    factor=MAC/c_r
+    n_avg=factor*n
+    V=n_avg*A*b
+    w_stiffeners=V*rho_alu
+    
+    
+    w_total=w_skin+w_stiffeners
+    return w_total
+
