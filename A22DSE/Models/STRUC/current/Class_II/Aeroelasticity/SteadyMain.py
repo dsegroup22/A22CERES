@@ -74,15 +74,12 @@ def Intersect(y,z):
 def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
     
     # Constants
-    xtheta = 0.4
-    rtheta = 0.3
-    CLdelta = np.deg2rad(1.8)
+    xtheta = 0.4                             # assumed
+    rtheta = 0.3                             # assumed
+    CLdelta = np.deg2rad(1.8)                # procedure from paper
     CMacdelta = -0.010149
     n = 40                                   # #stiffeners
     A_stiff = 3.6e-5                         # Area stiffeners
-    rho_Al  = 2830
-    rho_comp = 1600
-    
     
     # initialise airfoil object
     airfoil = AE.airfoilAE(0, 0, xtheta, 
