@@ -333,7 +333,7 @@ def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
         #skin weight+rib weight
         A_skin_rho=(S1+S3)*t_skin*rho_alu+(S2+h_rib1+h_rib2)*t_rib*rho_comp
         w_skin=w_skin+A_skin_rho*db
-    print('a=',w_skin)
+#    print('a=',w_skin)
     #stiffener weight
     MAC=Aircraft.ParAnFP.MAC
     c_r=Aircraft.ParAnFP.c_r
