@@ -345,7 +345,7 @@ def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
     V=n_avg*A*b
     w_stiffeners=V*rho_alu
     
-    
     w_total= w_ribs + w_skin + w_stiffeners
     
     return w_total
+
