@@ -312,6 +312,7 @@ def moi_wing(chord,t_skin,t_rib,n,Aircraft,A):
     '''     
     moi_wing=skin_moi(chord,t_skin)+rib_moi(chord,t_rib) #+moi_stringer(n,chord,Aircraft,A)
 
+
     return moi_wing
 
 def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
