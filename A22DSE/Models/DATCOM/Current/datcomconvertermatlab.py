@@ -367,7 +367,7 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
     
     file.close()
     
-    import numpy as np
+
     
     Xcs=np.array([0,0.002,0.005,0.01,0.02,0.03,0.04])
     for i in range(24):
@@ -389,8 +389,40 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
     c=' YUPPER= 0.0, '+np.array2string(uppers[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+',\n'
     d=' YLOWER= 0.0, '+np.array2string(lowers[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+'$\n'
     liness=[a,b,c,d]
+##########################################3
+    file=open('A22DSE\Models\DATCOM\Current\Airfoiltoolsht.txt','r')
+    
+    alines=file.readlines()
+    
+    file.close()
+    
 
-    linesss=lines[:15]+liness+lines[16:]
+    
+    Xcs=np.array([0,0.002,0.005,0.01,0.02,0.03,0.04])
+    for i in range(24):
+        Xcs=np.append(Xcs,Xcs[-1]+0.04)
+    upper=alines[3:10]+alines[13:106:4]
+    lower=alines[107:114]+alines[117::4]
+    
+    
+    uppers=np.array([])
+    for line in upper:
+        uppers=np.append(uppers,float(line.split(' ')[-1].replace('\n','')))
+    
+    
+    lowers=np.array([])
+    for line in lower:
+        lowers=np.append(lowers,float(line.split(' ')[-1].replace('\n','')))
+    a=' $HTSCHR TYPEIN=1.0, NPTS='+str(float(len(Xcs)))+',\n'
+    b=' XCORD= 0.0, '+np.array2string(Xcs[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+',\n'
+    c=' YUPPER= 0.0, '+np.array2string(uppers[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+',\n'
+    d=' YLOWER= 0.0, '+np.array2string(lowers[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+'$\n'
+    linessht=[a,b,c,d]
+############################
+
+
+
+    linesss=lines[:15]+liness+lines[16:18]+linessht+lines[19:]
     file=open('A22DSE\Models\DATCOM\Current\ceres.dat','w+')
     for line in linesss:
         file.write(line)
