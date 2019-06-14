@@ -8,12 +8,12 @@ Created on Tue Jun 11 16:20:28 2019
 import math as m
 import numpy as np
 
-import os
-from pathlib import Path
-os.chdir(Path(__file__).parents[5])
-
-from A22DSE.Parameters.Par_Class_Conventional import Conv
-
+#import os
+#from pathlib import Path
+#os.chdir(Path(__file__).parents[5])
+#
+#from A22DSE.Parameters.Par_Class_Conventional import Conv
+#
 
 
 def GetJ(do,di):
