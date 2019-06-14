@@ -12,6 +12,7 @@ def loadingdiag(Aircraft):
        INPUT: OEW, x_lemac, 
     """
     rangecg = np.array([1,1.15,0.85])
+    x_lemac = Aircraft.ParLayoutConfig.x_lemac
     xcg_fwd = []
     xcg_aft = []
     y = []
@@ -82,9 +83,11 @@ def loadingdiag(Aircraft):
 #        plt.annotate('OEW',(x_oew_mac,oew))
 #        plt.show()
         
-    plt.plot(xcg_fwd,y)
-    plt.plot(xcg_aft,y)
-    plt.xlim(0,1)
-    plt.show()
+#    plt.plot(xcg_fwd,y)
+#    plt.plot(xcg_aft,y)
+#    plt.xlim(0,1)
+#    plt.show()
     
-    return xcg_fwd, xcg_aft, y
+    xcg_fwd_global = xcg_fwd[1]+x_lemac
+    xcg_aft_global = xcg_aft[1]+x_lemac
+    return xcg_fwd_global, xcg_aft_global
