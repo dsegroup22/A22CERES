@@ -86,8 +86,6 @@ def ClassIAircraft(Conv):
     #Conv.ParAnFP.CD0 = 0.008
     Conv.ParProp.Engine_weight = 2484           #[kg] weight per engine
     Conv.ParAnFP.tc = 0.12
-
-    
     
     #parameters from functions
     
@@ -98,14 +96,14 @@ def ClassIAircraft(Conv):
     Conv.ParAnFP.V_cruise = Conv.ParAnFP.Get_V_cruise()
     Conv.ParPayload.disperRatePerTime = (Conv.ParPayload.m_payload
     /Conv.ParAnFP.t_cruise)
-    Conv.ParAnFP.Extrarange = 500*10**3 #[m]
+    Conv.ParAnFP.Extrarange = 1500*10**3 #[m]
     
     
     Conv.ParStruc.MTOW, Conv.ParStruc.FW, Conv.ParAnFP.S, Conv.ParAnFP.Thrust, Conv.ParAnFP.TtoW, Conv.ParAnFP.WS, \
                         Conv.ParAnFP.dclimbcruise, Conv.ParAnFP.tclimbcruise, Conv.ParAnFP.TWactcruise  = WSandTW(False,Conv,ISA_model)
     
     Conv.ParStruc.wfratio = Conv.ParStruc.FW/Conv.ParStruc.MTOW
-    
+    Conv.ParStruc.OEW = Conv.ParStruc.OEWratio*Conv.ParStruc.MTOW
     
     Conv.ParAnFP.cl_alpha,Conv.ParAnFP.cl_max,Conv.ParAnFP.tc,Conv.ParAnFP.Cd0,\
     Conv.ParAnFP.cm_0 = Airfoil(Conv)

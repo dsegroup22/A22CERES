@@ -1,1 +1,3 @@
 *.txt
+!default_en.txt
+!constants_en.txt
