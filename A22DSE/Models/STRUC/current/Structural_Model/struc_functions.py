@@ -13,20 +13,7 @@ sys.path.append('../../../../../../')
 #from pathlib import Path
 #os.chdir(Path(__file__).parents[6])
 
-#structural wing model functions to calculate the torsional stiffness KTHETA
-
-def chord(bi,Aircraft): #verified
-    ''' 
-    DESCRIPTION: function that calculates the chord at a span position
-    INPUT: span position in the aircraft body system (bi)
-    OUTPUT: chord length at the span position (chord)
-    ''' 
-    bi=abs(bi)
-    c_r = Aircraft.ParAnFP.c_r
-    c_t = Aircraft.ParAnFP.c_t
-    b = Aircraft.ParAnFP.b
-    chord = c_r - (c_r-c_t)*2/b*bi
-    return chord
+#general math functions to run the program
 
 def arc_length(x, y):  #verified with circles and parabolas
     ''' 
@@ -40,6 +27,21 @@ def arc_length(x, y):  #verified with circles and parabolas
         arc = arc + np.sqrt((x[k] - x[k-1])**2 + (y[k] - y[k-1])**2)
 
     return arc
+
+#structural wing model functions to calculate the torsional stiffness KTHETA
+    
+def chord(bi,Aircraft): #verified
+    ''' 
+    DESCRIPTION: function that calculates the chord at a span position
+    INPUT: span position in the aircraft body system (bi)
+    OUTPUT: chord length at the span position (chord)
+    ''' 
+    bi=abs(bi)
+    c_r = Aircraft.ParAnFP.c_r
+    c_t = Aircraft.ParAnFP.c_t
+    b = Aircraft.ParAnFP.b
+    chord = c_r - (c_r-c_t)*2/b*bi
+    return chord
 
 def skin_eq_upper(chord): #verified with data
     ''' 
@@ -152,7 +154,7 @@ def Area(chord): #verified
     
     return A1,A2,A3
 
-def S(chord): #finished
+def S(chord): #verified
     ''' 
     DESCRIPTION: function that calculates the circumferance of the cells of the wing (S1,S2,S3)
     INPUT: chord length (chord)
@@ -176,7 +178,7 @@ def S(chord): #finished
 t_skin=0.003175
 t_rib=0.02
 
-def TwistSolver(chord, t_skin,t_rib): #finished
+def TwistSolver(chord, Aircraft): #finished
     ''' 
     DESCRIPTION: function that calculates rate of twist of wing
     INPUT: chord length (chord), t_skin(t_skin), rib thickness (t_rib)
@@ -331,7 +333,6 @@ def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
         #skin weight+rib weight
         A_skin_rho=(S1+S3)*t_skin*rho_alu+(S2+h_rib1+h_rib2)*t_rib*rho_comp
         w_skin=w_skin+A_skin_rho*db
-    print('a=',w_skin)
     #stiffener weight
     MAC=Aircraft.ParAnFP.MAC
     c_r=Aircraft.ParAnFP.c_r
@@ -340,7 +341,8 @@ def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
     V=n_avg*A*b
     w_stiffeners=V*rho_alu
     
-    
+    #total weight
     w_total=w_skin+w_stiffeners
+    
     return w_total
 
