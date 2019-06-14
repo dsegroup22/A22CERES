@@ -78,15 +78,15 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
     rtheta = 0.3                             # assumed
     CLdelta = np.deg2rad(1.8)                # procedure from paper
     CMacdelta = -0.010149
-    n = 40                                   # #stiffeners
-    A_stiff = 3.6e-5                         # Area stiffeners
+    n = Aircraft.ParStruc.n_stiff            #stiffeners
+    A_stiff = Aircraft.ParStruc.A_stiff      # Area stiffeners
     
     # initialise airfoil object
     airfoil = AE.airfoilAE(0, 0, xtheta, 
                            rtheta, CLdelta, CMacdelta, Aircraft)
     
     t_skinLst = np.linspace(0.0005,0.005, 10)               #X
-    t_ribLst  = np.linspace(0.0005, 0.005, 10)              #Y
+    t_ribLst  = np.linspace(0.0005, 0.01, 10)              #Y
     
     SKIN, RIB = np.meshgrid(t_skinLst, t_ribLst)
     
