@@ -95,9 +95,10 @@ class ParStrucLst(object):
             #ratios
             self.OEWratio = 0.6     #[-]
             self.wfratioclimb = 0.96
-            self.fineness_c = 8
+            self.fineness_c = 10
             self.fineness_n = 1.25
             self.fineness_t = 2.
+            self.SF         = 1.25
             self.Wf         = None
             self.Mw_Mtow= 0.185
             
