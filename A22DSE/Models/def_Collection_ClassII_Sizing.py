@@ -30,6 +30,7 @@ from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 from A22DSE.Models.Layout.Current.Engine_Placements import Engines_placement
 from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
 from A22DSE.Models.SC.ControlSurface.aileron_sizing import aileron
+import A22DSE.Models.STRUC.current.Class_II.Aeroelasticity.SteadyMain as AE
 #from A22DSE.Models.DATCOM.Current.datcomrunread import C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,\
 #C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q
 
@@ -42,6 +43,14 @@ def ClassIISizing(Aircraft):
     Payload=Aircraft.ParPayload
     prop = Aircraft.ParProp
 
+# =============================================================================
+#                           STRUCTURES
+# =============================================================================
+    struc.rho_Al = 2830                         #kg/m³
+    struc.rho_comp = 1600                       #kg/m³
+    struc.A_stiff  = 0.00158                    # m²
+    struc.n_stiff  = 40
+    
     #OEW position wrt mac
     Aircraft.ParLayoutConfig.x_oe = xoe(Aircraft)
 # =============================================================================
@@ -128,12 +137,21 @@ def ClassIISizing(Aircraft):
     aileron(Aircraft)
     
     #engine placement
-    Engines_placement(Aircraft)
-
-    
+    Engines_placement(Aircraft)    
    
     #Stability derivatives DATCOM [/rad]
 #    anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot, anfp.C_l_p,\
 #    anfp.C_Y_p,anfp.C_n_p,anfp.C_n_r,anfp.C_l_r,anfp.C_l_q,anfp.C_m_q=C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,\
 #    C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q
     
+# =============================================================================
+#                                   WING BOX
+# =============================================================================
+
+    struc.t_skin, struc.t_rib = AE.ComputeMinWB(Aircraft, 
+    ISA_model, 0, anfp.V_max_TO)
+    
+
+
+
+

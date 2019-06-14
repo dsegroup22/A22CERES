@@ -118,8 +118,9 @@ def GetEI(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
     
     Fuel = GetFuelBurn(EngineProp, resolution)
 #    AF = "get inlet area rho*V**L"/np.array(EngineProp)
-    A_inlet = Aircraft.ParProp.Diameter**2 * np.pi/4
-    T, p, rho = ISA_model.ISAFunc([])
+#    A_inlet = Aircraft.ParProp.Diameter**2 * np.pi/4
+#    T, p, rho = ISA_model.ISAFunc([])
+    AF = 1.2
     
     Products = []
     Impact=[]
