@@ -58,7 +58,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
 
     engnonaft = [Engine('F118-GE-101',75700,1429,18.63814634*10e-06,999999999999,0.9,3.5,7.7,2.794,1.194,24.7481*1e-06),\
                  Engine('AE3007H',36880,745.7,17.703406*10e-06,4.0,4.85,1.7,13.53,2.705,1.105,20.2551*1e-06),\
-                 Engine('EJ200',60000,1000-150,22.00*10e-06,8.5,0.4,4.2,6.2,3.988,0.85,26.4038*1e-06),\
+                 Engine('EJ200',60000,1000,22.00*10e-06,8.5,0.4,4.2,6.2,3.988,0.85,26.4038*1e-06),\
                  Engine('F110-GE-100',73800,1800,21.10246*10e-06,7.12,0.76,4.,7.6,4.630,1.18,24.0824*1e-06),\
                  Engine('F100-PW-200',65270,1467,20.39432426*10e-06,6.36,0.7,3.06,8,4.855,1.181,25.5240*1e-06)] #Array of engine objects describing each non A/B engine
                  
@@ -80,7 +80,7 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
                 neng = np.append(neng,[np.ceil(T/T_eng)*i.weight]) #Calculate total engine mass
                 t_eng = np.append(t_eng, np.ceil(T/T_eng)*T_eng)
             else: #The rest
-                T_eng = Lowbypassafter(Aircraft, i.thrust, ISA_model)
+                T_eng = Lowbypassafter(Aircraft, i.thrust, ISA_model)-935
                 neng = np.append(neng,[np.ceil(T/T_eng)*i.weight]) #Calculate total engine mass
                 t_eng = np.append(t_eng, np.ceil(T/T_eng)*T_eng)
         engsel = engnonaft[np.concatenate(np.where(neng == np.amin(neng)))[0]] #Select engine with lowest total mass
