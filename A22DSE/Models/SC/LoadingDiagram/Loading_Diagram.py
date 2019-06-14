@@ -20,7 +20,7 @@ def loadingdiag(Aircraft):
         MAC = Aircraft.ParAnFP.MAC
           
         #xpayload = np.array([0.8,0.7,0.6,0.5,0.4,0.3,0.2]*l_fuselage)
-        xcg_totalpayload_empty = Aircraft.ParPayload.xcg_totalpayload_empty
+        xcg_totalpayload_empty = 18 #Aircraft.ParPayload.xcg_totalpayload_empty
         
         fuel_mass = Aircraft.ParStruc.FW
         payload_mass = Aircraft.ParPayload.m_payload #13500 #append value [kg]

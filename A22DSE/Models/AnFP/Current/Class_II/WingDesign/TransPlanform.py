@@ -28,12 +28,12 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
 #    res = 500
     
-    CL_i = np.linspace(0.3, 1.00, res)
-    sweep_i = np.linspace(np.deg2rad(0), np.deg2rad(38), res)
+    CL_i = np.linspace(0.4, .90, res)
+    sweep_i = np.linspace(np.deg2rad(0), np.deg2rad(40), res)
     #tc_w  = np.linspace(0.10, 0.15, 4)
     TSFC = Aircraft.ParProp.SFC_cruise*3600
     CL, sweep = np.meshgrid(CL_i, sweep_i)
-    Aw = 23.5
+    Aw = 16
     theta2 = FormFuncs.ComputeTheta2(Aircraft, ISA_model)
     theta3 = FormFuncs.ComputeTheta3(Aircraft, ISA_model)
     Fprop = FormFuncs.ComputeFprop(Aircraft, ISA_model, TSFC)
