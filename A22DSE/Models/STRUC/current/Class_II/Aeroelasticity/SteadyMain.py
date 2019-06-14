@@ -100,7 +100,7 @@ def ComputeElasticity(Aircraft, ISA_model, height, V_req, plot):
                     airfoil.c, Aircraft)))
     
     
-    KhLst = StrucFun.moi_wing(airfoil.c, SKIN, RIB, n, Aircraft, A_stiff)*1e12
+    KhLst = StrucFun.moi_wing(airfoil.c, Aircraft)*1e12
     
     # divergence speed
     Vdiv_sl = AE.ComputeDivSpeed(airfoil, KthetaLst, height, ISA_model)

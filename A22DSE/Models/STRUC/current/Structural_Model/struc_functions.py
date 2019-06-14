@@ -183,10 +183,10 @@ def TwistSolver(chord, Aircraft): #finished
     INPUT: chord length (chord), t_skin(t_skin), rib thickness (t_rib)
     OUTPUT: rate of twist (dthetadz)
     '''   
-    t_skin=Aircraft.ParStruc.t_skin
-    t_rib=Aircraft.ParStruc.t_rib
-    G_alu=Aircraft.ParStruc.G_al
-    G_comp=Aircraft.ParStruc.G_comp
+    t_skin=0.003
+    t_rib=0.02
+    G_alu=1
+    G_comp=1
     A1,A2,A3=Area(chord)
     S1,S2,S3,h_rib1,h_rib2=S(chord)
     T=1 #unit torque to run the numerical calculation
@@ -229,7 +229,7 @@ def rib_moi(chord,Aircraft): #checked and verified
     wing skin equations (eq_lowerskin, eq_upperskin)
     OUTPUT: moment of inertia ribs (moi_ribs)
     ''' 
-    t_rib=Aircraft.ParStruc.t_rib
+    t_rib=0.02
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
     x_rib1=0.2*chord
@@ -247,7 +247,7 @@ def skin_moi(chord,Aircraft): #fin
         wing skin equations (eq_lowerskin, eq_upperskin)
     OUTPUT: moment of inertia skin (moi_skin)    
     '''
-    t_skin=Aircraft.ParStruc.t_skin
+    t_skin=0.003
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
     steps=100
