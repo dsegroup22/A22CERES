@@ -25,7 +25,7 @@ def GetMaxLiftHorTail(Aircraft):
     clmax_h = -0.8
     rho_SL = anfp.rho_SL
     v_max_to =  anfp.V_max_TO
-    S = anfp.S
+    S = layout.Sht
     
     #calculate forces
     L_max_htail = 0.5*clmax_h*rho_SL*v_max_to**2*S #[N] downforce due to tail
