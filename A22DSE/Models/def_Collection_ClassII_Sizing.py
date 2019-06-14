@@ -133,16 +133,17 @@ def ClassIISizing(Aircraft):
     Engines_placement(Aircraft)
 
     
-    struc.xcg_fwd, struc.xcg_aft = loadingdiag(Aircraft)
+    xcg_fwd,xcg_aft = loadingdiag(Aircraft)
     
+    Layout.x_cg = [xcg_fwd,xcg_aft]
     
 
 
-#    Aircraft.ParLayoutConfig.lg_l_main,Aircraft.ParLayoutConfig.lg_l_nose,\
-#    Aircraft.ParLayoutConfig.lg_y_main, Aircraft.ParLayoutConfig.lg_x_main,\
-#    Aircraft.ParLayoutConfig.lg_x_nose_min_F_n, Aircraft.ParLayoutConfig.lg_x_nose_max_F_n,\
-#    Aircraft.ParLayoutConfig.lg_x_nose,Aircraft.ParLayoutConfig.lg_y_nose,\
-#    z_cg = PositionsLG_Tri(Aircraft)
+    Aircraft.ParLayoutConfig.lg_l_main,Aircraft.ParLayoutConfig.lg_l_nose,\
+    Aircraft.ParLayoutConfig.lg_y_main, Aircraft.ParLayoutConfig.lg_x_main,\
+    Aircraft.ParLayoutConfig.lg_x_nose_min_F_n, Aircraft.ParLayoutConfig.lg_x_nose_max_F_n,\
+    Aircraft.ParLayoutConfig.lg_x_nose,Aircraft.ParLayoutConfig.lg_y_nose,\
+    z_cg = PositionsLG_Tri(Aircraft)
 
     
    

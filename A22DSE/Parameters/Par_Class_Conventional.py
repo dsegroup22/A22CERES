@@ -39,7 +39,7 @@ Payload=Conv.ParPayload
 
 
 
-Payload.m_payload = 9250. * 1.05
+Payload.m_payload = 9250.
 def TotalAC(Conv):
     #CLASS I
     ClassIAircraft(Conv)
