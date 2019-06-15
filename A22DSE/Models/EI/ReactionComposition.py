@@ -133,11 +133,11 @@ def GetEI(AF, mdot, time, Aircraft, ISA_model):
 #        print(Producti)
     Products.append(Producti)
     Producti = np.array(Producti)
-    GWPi = Producti[:,0] * pollutantLst().CO2.GWP[0] #make sum of all Producti and corresponding GWP
-    RFi = 1#Compute normalised proportions of Producti and make proportion*RF
+    GWPi = Producti[:,0] * pollutantLst().CO2.GWP[0] #TODO: change to other chemicals
+    RFi = 1#TODO: include for other chemicals
     Impact.append([GWPi, RFi])
     Impact = np.array(Impact)
-    EIGWP = sum((time[1]-time[0]) * (Impact[:,0]))
+    EIGWP = sum((time[1]-time[0]) * (Impact[:,0])) #TODO: don't think it works
     EIRF = np.sum(Impact[:,1])/len(Impact[:,1])
     return [Fuel, EIGWP, EIRF]
 
