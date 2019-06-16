@@ -83,6 +83,7 @@ def oecg(Aircraft):
     Wwing = Aircraft.ParStruc.Wing_weight #[kg] !!!!!!!!!!!!!Appended!!!!!!!!!
     y_mac = Aircraft.ParAnFP.b/2*(Aircraft.ParAnFP.c_r+2*Aircraft.ParAnFP.c_t)/3/(Aircraft.ParAnFP.c_r+Aircraft.ParAnFP.c_t)
     xengine = (Aircraft.ParAnFP.b*7/40-y_mac)*tan(Aircraft.ParAnFP.Sweep_LE) #MAC ref
+    #print (xengine)
     nengine = Aircraft.ParStruc.N_engines #number of engine
     Aircraft.ParProp.Engine_weight_Total = Aircraft.ParProp.Engine_weight*nengine #[kg]
     Wengine =  Aircraft.ParProp.Engine_weight_Total
@@ -102,7 +103,7 @@ def oecg(Aircraft):
     xmlg = Aircraft.ParLayoutConfig.lg_x_main  #[m]
     Wmlg = Aircraft.ParStruc.LG_weight_main #[kg]
     Wpl = Aircraft.ParPayload.m_tank + Aircraft.ParPayload.m_burner # [kg] payload tank + burner 
-    xpl = 7.35 #18 #Aircraft.ParPayload.xcg_totalpayload_empty #DUMMY VALUE!
+    xpl = 18 #Aircraft.ParPayload.xcg_totalpayload_empty #DUMMY VALUE!
     Wfg = Wf+Wht+Wvt+Wnlg+Wmlg #[kg]
     xfg = (xf*Wf+xht*Wht+xvt*Wvt+xnlg*Wnlg+xmlg*Wmlg+Wpl*xpl)/Wfg  #[m]
     #print (xfg)
