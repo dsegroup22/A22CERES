@@ -26,7 +26,7 @@ CD0    = anfp.CD0     # Zero lift drag coefficient [ ]
 CLa    = anfp.C_L_alpha_cruise# Slope of CL-alpha curve [ ]
 
 # Longitudinal stability
-Cma    = anfp.C_m_a  #0.01 # longitudinal stabilty [ ]
+Cma    = anfp.C_m_a  #0.01 #p143 # longitudinal stabilty [ ]
 Cmde   = 1            # elevator effectiveness [ ]   !!!!!!!!!!!!!
 
 # Aircraft geometry
@@ -87,40 +87,40 @@ CD = CD0 + (CLa*alpha0)**2/(pi*A*e)  # Drag coefficient [ ]
 # Stabiblity derivatives
 
 CX0    = W*sin(th0)/(0.5*rho*V0**2*S)
-CXu    = -0.02792
-CXa    = -0.47966
+CXu    = -0.02792  #Clu,Cdu p136,133
+CXa    = -0.47966  #p139
 CXadot = +0.08330
 CXq    = -0.28170
 CXde   = -0.03728
 
 CZ0    = -W*cos(th0)/(0.5*rho*V0**2*S)
-CZu    = -0.37616
-CZa    = -5.74340
-CZadot = anfp.C_L_adot    #-0.00350
-CZq    = anfp.C_l_q       #-5.66290
+CZu    = -0.37616  #-Clu p134 
+CZa    = -5.74340  #p139
+CZadot = anfp.C_L_adot    #-0.00350 #p141
+CZq    = anfp.C_l_q       #-5.66290 #144
 CZde   = -0.69612
 
-Cmu    = +0.06990
+Cmu    = +0.06990  #p138 table
 Cmadot = anfp.C_m_adot    #+0.17800
-Cmq    = anfp.C_m_q       #-8.79415
+Cmq    = anfp.C_m_q       #-8.79415 #145
 
 CYb    = anfp.C_Y_b       #-0.7500
 CYbdot =  0     
-CYp    = anfp.C_Y_p       #-0.0304
-CYr    = +0.8495
+CYp    = anfp.C_Y_p       #-0.0304 #p150
+CYr    = +0.8495          #p157
 CYda   = -0.0400
 CYdr   = +0.2300
 
 Clb    = anfp.C_l_b       #-0.10260
-Clp    = anfp.C_l_p       #-0.71085
-Clr    = anfp.C_l_r       #+0.23760
+Clp    = anfp.C_l_p       #-0.71085 #p152
+Clr    = anfp.C_l_r       #+0.23760 #p161
 Clda   = -0.23088
 Cldr   = +0.03440
 
 Cnb    =  anfp.C_n_b      #+0.1348
 Cnbdot =   0     
-Cnp    =  anfp.C_n_p      #-0.0602
-Cnr    =  anfp.C_n_r      #-0.2061
+Cnp    =  anfp.C_n_p      #-0.0602  #15
+Cnr    =  anfp.C_n_r      #-0.2061  #p161
 Cnda   =  -0.0120
 Cndr   =  -0.0939
 
