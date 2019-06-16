@@ -21,11 +21,11 @@ class airfoilAE(object):
     
     SUSPECT TO CHANGE SINCE ITHETA, STHETA ARE TBD.
     '''
-    def __init__(self, Kh, Ktheta, xtheta, rtheta, CLdelta, 
+    def __init__(self, b_ac, Kh, Ktheta, xtheta, rtheta, CLdelta, 
                  CMacdelta, Aircraft):
         
-        self.m  = Aircraft.ParStruc.MTOW / Aircraft.ParAnFP.b
-        self.c  = StrucFun.chord(Aircraft.ParAnFP.b/2, Aircraft)
+        self.m  = Aircraft.ParStruc.MTOW / b_ac
+        self.c  = StrucFun.chord(0.75*b_ac/2, Aircraft)
         self.xtheta = xtheta * self.c
         self.b  = self.c/2                              # half-chord
         self.Kh = Kh                                    #

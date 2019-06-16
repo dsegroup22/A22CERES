@@ -30,7 +30,7 @@ from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
 from A22DSE.Models.Layout.Current.Engine_Placements import Engines_placement
 from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
 from A22DSE.Models.SC.ControlSurface.aileron_sizing import aileron
-import A22DSE.Models.STRUC.current.Class_II.Aeroelasticity.SteadyMain as AE
+from A22DSE.Models.STRUC.current.Class_II.Aeroelasticity import SteadyMain
 from A22DSE.Models.SC.LoadingDiagram.Loading_Diagram import loadingdiag
 from A22DSE.Models.Layout.Current.gearlocation_tri import PositionsLG_Tri
 from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
@@ -167,8 +167,8 @@ def ClassIISizing(Aircraft):
 #                                   WING BOX
 # =============================================================================
 
-#    struc.t_skin, struc.t_rib = AE.ComputeMinWB(Aircraft, 
-#    ISA_model, 0, anfp.V_max_TO)
+    struc.t_skin, struc.t_rib = SteadyMain.ComputeMaxAwStruct(Aircraft, 
+        ISA_model, 0, Aircraft.ParAnFP.V_dive, np.arange(10, 15, 1))
     
 
 

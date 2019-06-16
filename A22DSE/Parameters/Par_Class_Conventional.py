@@ -28,7 +28,6 @@ from A22DSE.Models.def_Collection_ClassII_Sizing import ClassIISizing
 from A22DSE.Models.Class_II_Weight.Class_II_Total import ClassIIWeightIteration
 from A22DSE.Models.AnFP.Current.Class_II.\
 WingDesign.TransPlanform import ClassII_Planform
-
 #shortcuts
 Layout = Conv.ParLayoutConfig
 anfp = Conv.ParAnFP
@@ -36,10 +35,8 @@ struc= Conv.ParStruc
 assert isinstance(Conv.ParCntrl, object)
 sc = Conv.ParCntrl
 Payload=Conv.ParPayload
-
-
-
 Payload.m_payload = 9550.
+
 def TotalAC(Conv):
     #CLASS I
     ClassIAircraft(Conv)
@@ -54,6 +51,7 @@ def TotalAC(Conv):
     ClassIISizing(Conv)
     ClassIIWeightIteration(Conv)
     ClassII_Planform(Conv)
+    
     
 TotalAC(Conv)
 # =============================================================================

@@ -14,6 +14,7 @@ os.chdir(Path(__file__).parents[6])
 import numpy as np
 import A22DSE.Models.AnFP.\
 Current.Class_II.WingDesign.TransPlanFormFuncLst as FormFuncs
+from A22DSE.Models.STRUC.current.Class_II.Aeroelasticity import SteadyMain
 from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 import matplotlib.pyplot as plt
@@ -78,6 +79,14 @@ WB = FormFuncs.ComputeSpanLoading(Conv, ISA_model, Fprop, theta2, theta3,
 CL_buffet = 0.91  # NASA paper of airfoil  NASA SC( 2)-0714
 onset_margin = 1.40 # Regulations require 30% margin betw. onset and cruise
 CL_lim    = CL_buffet/onset_margin #+10% higher than certification
+
+    # Climb CL constraint
+CL_climb  = 1.03/1.1
+    
+    # Aw constraint from flutter
+
+Aw_flut = SteadyMain.ComputeMaxAwStruct(Conv, ISA_model, 0,
+        Conv.ParAnFP.V_dive, np.arange(10, 15, 1))[1]
 # =============================================================================
 #                       PLOTTING
 # =============================================================================
@@ -96,9 +105,12 @@ if plot == True:
              label = r'Partial optimum $\hat{C}_L$')
     plt.plot(CL_optLst, Aw_i, color = 'orange', linestyle = 'dashed',
              label = r'Partial optimum $A_w$')
-    plt.plot(CL_i, WB, linestyle = 'dashed', color = 'purple')
+#    plt.plot(CL_i, WB, linestyle = 'dashed', color = 'purple')
     plt.axvline(CL_lim, linestyle = 'dashed', color ='g',
                 label = 'Buffet Limit')
+    plt.axhline(Aw_flut, linestyle = 'dashed', color = 'c',
+                label = 'Aeroelastic constraint')
+    plt.axvline()
     plt.xlim((CL_i[0], CL_i[-1]))
     plt.ylim((Aw_i[0], Aw_i[-1]))
     plt.xlabel(r'$\hat{C}_L$')

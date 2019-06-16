@@ -21,6 +21,12 @@ from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
+'''
+ASSUMPTIONS
+
+- Cl_climb constraint 1.03/1.1
+'''
+
 # =============================================================================
 #                       SELECTION VARIABLES AND CONSTANTS
 # =============================================================================
@@ -33,7 +39,6 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     #tc_w  = np.linspace(0.10, 0.15, 4)
     TSFC = Aircraft.ParProp.SFC_cruise*3600
     CL, sweep = np.meshgrid(CL_i, sweep_i)
-    Aw = 16
     theta2 = FormFuncs.ComputeTheta2(Aircraft, ISA_model)
     theta3 = FormFuncs.ComputeTheta3(Aircraft, ISA_model)
     Fprop = FormFuncs.ComputeFprop(Aircraft, ISA_model, TSFC)
@@ -92,6 +97,7 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     CL_buffet = 0.91  # NASA paper of airfoil  NASA SC( 2)-0714
     onset_margin = 1.40 # Regulations require 30% margin betw. onset and cruise
     CL_lim    = CL_buffet/onset_margin #+10% higher than certification
+    CL_climb  = 1.03/1.1
     # =========================================================================
     #                       PLOTTING
     # =========================================================================
@@ -111,8 +117,12 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
         plt.axvline(np.rad2deg(sweep_opt), color = 'orange', 
                     linestyle = 'dashed',
                     label = r'Partial optimum $\Lambda_w$')
-        plt.axhline(CL_lim, linestyle = 'dashed', color = 'g',
+        plt.axhline(CL_lim, linestyle = 'dashed', color = 'm',
                     label = 'Buffet Limit')
+        plt.axhline(CL_climb, linestyle = 'dashed', color = 'c',
+                    label = r'$C_{L_{climb}}$ constraint')
+        
+        plt.axvline()
         plt.ylim((CL_i[0], CL_i[-1]))
         plt.xlim((np.rad2deg(sweep_i[0]), np.rad2deg(sweep_i[-1])))
         plt.xlabel(r'$\Lambda_w$')
