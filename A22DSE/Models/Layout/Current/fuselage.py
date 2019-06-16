@@ -6,7 +6,7 @@ Created on Wed Jun  5 15:40:08 2019
 """
 import os
 #import sys
-#import numpy as np
+import numpy as np
 from pathlib import Path
 #sys.path.append('../../')
 os.chdir(Path(__file__).parents[4])
@@ -56,12 +56,13 @@ def GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t):
     
     #Calculate cabin using tail arm as a leading factor
     L_c = fuselagereq(Aircraft) - L_n - L_t
-        
-    D_f = L_c/fineness_f
     
-    if D_f<D_eq:
-        D_f = D_eq
-        L_c = D_f * fineness_f
+    D_f = D_eq    
+#    D_f = L_c/fineness_f
+##    
+#    if D_f<D_eq:
+#        D_f = D_eq
+#        L_c = D_f * fineness_f
         
     h = D_f/np.sqrt(ovalrate)
     w = ovalrate*h
@@ -69,13 +70,16 @@ def GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t):
     return L_c, D_f, np.array([h, w])
 
 def Fuselage_iter(Aircraft, fineness_f, SF):
-    L_n = 2.67
-    L_t = 4.27
-    
-    for i in range(1000):
-        D_f = GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t)[1]
-        L_n = GetNoseLength_opt(Aircraft, D_f)
-        L_t = GetTailLength_opt(Aircraft, D_f)
+#    L_n = 2.67
+#    L_t = 4.27
+#    
+#    for i in range(1000):
+#        D_f = GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t)[1]
+#        L_n = GetNoseLength_opt(Aircraft, D_f)
+#        L_t = GetTailLength_opt(Aircraft, D_f)
+    D_f = np.sqrt(0.636*SF/(np.pi/4))
+    L_n = GetNoseLength_opt(Aircraft, D_f)
+    L_t = GetTailLength_opt(Aircraft, D_f)
     
     Q_r = Aircraft.ParPayload.m_payload/Aircraft.ParPayload.rho_payload
     
@@ -85,7 +89,7 @@ def Fuselage_iter(Aircraft, fineness_f, SF):
     if Q_fus < Q_r:
         print('Fuselage too small')
     return L_n, GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t)[0], L_t,\
-    GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t)[2], D_f
+    GetCabinLength_rev(Aircraft, fineness_f, SF, L_n, L_t)[2], D_f, Q_r, Q_fus
 
 ## Important to optimisation ##
 
@@ -184,7 +188,7 @@ def FuselageWeight_opt(Aircraft, fineness_f, SF):
     W_bulkheads=C_shell*d_fuselage**2*l_ref
     
     W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
-    W_f_tor=W_shell+W_bulkheads+W_fl
+    #W_f_tor=W_shell+W_bulkheads+W_fl
     return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N #[N]
 
 

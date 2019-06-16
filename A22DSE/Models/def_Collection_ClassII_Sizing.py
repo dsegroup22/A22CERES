@@ -26,7 +26,7 @@ from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign import TransPlanform 
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign.def_OswaldEfficiency import OswaldEfficiency
-from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
+from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq, fusreq
 from A22DSE.Models.Layout.Current.Engine_Placements import Engines_placement
 from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
 from A22DSE.Models.SC.ControlSurface.aileron_sizing import aileron
@@ -106,7 +106,6 @@ def ClassIISizing(Aircraft):
     #horizontal
     #function gives Surface, weight, Aspect ratio, optimal arm etc
     htail(Aircraft,ISA_model)
-   
     #vertical
     vtail(Aircraft)
     
@@ -120,9 +119,10 @@ def ClassIISizing(Aircraft):
 
     #Struct = Aircraft.ParStruc
     #Layout.l_fuselage = 24 #[m] length of fuselage
-    Layout.l_freq = fuselagereq(Aircraft)
+    Layout.l_freq = fusreq(Aircraft) #fuselagereq(Aircraft)
     Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = Fuselage(Aircraft)
     Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
+    #print (Layout.l_fuselage)
     Layout.l_fuselage = np.sum(Layout.l_fuselage)   
     Layout.h_APU=0.2 #[m] dummy value  
     Layout.h_fuselage = Layout.dim_cabin[0]
@@ -147,6 +147,7 @@ def ClassIISizing(Aircraft):
     xcg_fwd,xcg_aft = loadingdiag(Aircraft)
     
     Layout.x_cg = [xcg_fwd,xcg_aft]
+
 
 
 

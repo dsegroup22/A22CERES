@@ -35,7 +35,7 @@ struc= Conv.ParStruc
 assert isinstance(Conv.ParCntrl, object)
 sc = Conv.ParCntrl
 Payload=Conv.ParPayload
-Payload.m_payload = 9550.
+Payload.m_payload = 9700.
 
 def TotalAC(Conv):
     #CLASS I

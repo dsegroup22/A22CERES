@@ -88,7 +88,7 @@ H = np.ravel(H)
 MaxT = MaxT.reshape(shape)
 rho = rho.reshape(shape)
 for i in range(len(MaxT[0])):
-    MaxT[i,:] = MThrust * rho[i,0]/rho[0,0] + 0.2
+    MaxT[i,:] = MThrust * rho[i,0]/rho[0,0] -0.2
 #    MaxT[:,i] = Thrust
 
 He = np.ravel(H) + np.power(np.ravel(V),2)/2/9.81

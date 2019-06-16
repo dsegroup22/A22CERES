@@ -307,6 +307,7 @@ def moi_wing(chord,Aircraft, t_skin, t_rib):
     INPUT: moi functions of all the structural components
     OUTPUT: moment of inertia at a certain span position
     '''     
+    
     moi_wing=skin_moi(chord,Aircraft, t_skin)+rib_moi(chord,Aircraft, t_rib)\
         +moi_stringer(chord,Aircraft)
 

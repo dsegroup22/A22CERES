@@ -49,28 +49,28 @@ SPANFI_E=0;SPANFO_E=0;CHRDFI_E=0;CHRDFO_E=0;DELTA_E=0;                %%
 %%% INPUT PARAMETERS BELOW %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % SYNTHS parameters
-XW=63.2;
-ZW=4.7;
+XW=49.7;
+ZW=4.2;
 ALIW=0.0;
-XH=150.3;
+XH=135.7;
 ZH=15.1;
 ALIH=0.0;
-XV=145.6;
+XV=131.1;
 ZV=0.0;
 
 % BODY parameters
 NX=4.0;
-X=[0.,15.6,140.4,165.4];
-ZU=[0.,4.7,4.7,4.7];
-ZL=[0.,-4.7,-4.7,4.4];
-R=[0.,8.3,8.3,0.3];
-S=[0.,122.4,122.4,0.3];
+X=[0.,14.,25.2,137.1];
+ZU=[0.,4.2,4.2,4.2];
+ZL=[0.,-4.2,-4.2,3.9];
+R=[0.,7.4,7.4,0.3];
+S=[0.,98.4,98.4,0.3];
 
 % WING parameters
-CHRDTP_WG=7.9;
-SSPNE_WG=92.43;
-SSPN_WG=102.7;
-CHRDR_WG=17.8;
+CHRDTP_WG=7.8;
+SSPNE_WG=91.62;
+SSPN_WG=101.8;
+CHRDR_WG=17.6;
 SAVSI_WG=28.2;
 CHSTAT_WG=0.0;
 TWISTA_WG=0.0;
@@ -79,8 +79,8 @@ TC_WG=0.12;
 
 % HORIZONTAL TAIL parameters
 CHRDTP_HT=3.2;
-SSPNE_HT=63.989999999999995;
-SSPN_HT=71.1;
+SSPNE_HT=63.45;
+SSPN_HT=70.5;
 CHRDR_HT=9.1;
 SAVSI_HT=0.5;
 CHSTAT_HT=0.25;
