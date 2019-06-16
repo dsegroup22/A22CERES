@@ -63,7 +63,7 @@ OUTPUTS: float e Oswald efficiency is added to the Conv object
 
     # variables for final calculation of e for method 1
     Q = 1./(e_theo*K_e_f)
-    #P = K*CD0
+    P = K*CD0
     
     
     

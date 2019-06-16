@@ -70,8 +70,8 @@ def Payload_optimiser_fleety1(payload_lst):
          #get all partial times, to get total time
          tcruiseclimb = TestAC.ParAnFP.tclimbcruise 
          #timeground = tground(TestAC)
-         time = 2*(tcruiseclimb-tcruise)+tcruise + turnaroundtime +0.2*3600. #+0.2 hours for ground time
-         
+         time = (tcruiseclimb)+3600. + turnaroundtime +0.2*3600. #+0.2 hours for ground time
+         #print(time/3600)
          #compute flights per year, based on continuous running, buffer is in
          # operational days, not daily time.
          flightsperyear = OperationalDays*(24*3600/time)
@@ -103,7 +103,7 @@ def Payload_optimiser_Both(X_steps):
     f1 = abs(wf_tot_y1/(min(wf_tot_y1)))
     f2 = abs(fleetsize_lst/(min(fleetsize_lst)))
     #print(f1,f2)
-    plot = False
+    plot = True
     if plot:
         plt.plot(payload_lst,wf_tot_y1)#'-ob',markersize=4)
         plt.xlabel('Payload mass per ac [kg]')
