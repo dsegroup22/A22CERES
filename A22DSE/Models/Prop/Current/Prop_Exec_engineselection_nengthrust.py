@@ -75,8 +75,12 @@ def EngineChoice(Aircraft,ISA_model,afterburner):
                 T_eng = Highbypass(Aircraft, i.thrust, ISA_model)
                 neng = np.append(neng,[np.ceil(T/T_eng)*i.weight]) #Calculate total engine mass
                 t_eng = np.append(t_eng, np.ceil(T/T_eng)*T_eng)
+            elif i.name == 'EJ200':
+                T_eng = Lowbypassafter(Aircraft, i.thrust, ISA_model)-935
+                neng = np.append(neng,[np.ceil(T/T_eng)*i.weight]) #Calculate total engine mass
+                t_eng = np.append(t_eng, np.ceil(T/T_eng)*T_eng)
             else: #The rest
-                T_eng = Lowbypassafter(Aircraft, i.thrust, ISA_model)
+                T_eng = Lowbypassafter(Aircraft, i.thrust, ISA_model)-935
                 neng = np.append(neng,[np.ceil(T/T_eng)*i.weight]) #Calculate total engine mass
                 t_eng = np.append(t_eng, np.ceil(T/T_eng)*T_eng)
         engsel = engnonaft[np.concatenate(np.where(neng == np.amin(neng)))[0]] #Select engine with lowest total mass

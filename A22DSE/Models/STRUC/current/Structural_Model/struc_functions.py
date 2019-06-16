@@ -183,10 +183,9 @@ def TwistSolver(chord, Aircraft,t_skin,t_rib): #finished
     INPUT: chord length (chord), t_skin(t_skin), rib thickness (t_rib)
     OUTPUT: rate of twist (dthetadz)
     '''   
-#    t_skin=0.003
-#    t_rib=0.02
-    G_alu=1
-    G_comp=1
+    G_alu=Aircraft.ParStruc.G_Al
+    G_comp=Aircraft.ParStruc.G_comp
+    
     A1,A2,A3=Area(chord)
     S1,S2,S3,h_rib1,h_rib2=S(chord)
     T=1 #unit torque to run the numerical calculation
@@ -214,14 +213,13 @@ def TorsionalStiffness(chord, Aircraft,t_skin,t_rib):  #verified
 #moment of intertia calculator
 
 
-def rib_moi(chord,Aircraft): #checked and verified
+def rib_moi(chord,Aircraft,t_rib): #checked and verified
     ''' 
     DESCRIPTION: function that calculates the moment of inertia of the ribs. 
     INPUT: locations of the ribs (x_rib1, x_rib2), tickness of the rib (t_rib),
     wing skin equations (eq_lowerskin, eq_upperskin)
     OUTPUT: moment of inertia ribs (moi_ribs)
-    ''' 
-    t_rib=0.02
+    '''
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
     x_rib1=0.2*chord
@@ -232,14 +230,14 @@ def rib_moi(chord,Aircraft): #checked and verified
     
     return moi_ribs
 
-def skin_moi(chord,Aircraft): #fin
+def skin_moi(chord,Aircraft,t_skin): #fin
     '''
     DESCRIPTION: function that calculates the moment of inertia of the skin. 
     INPUT: tickness of the skin (t_skin), 
         wing skin equations (eq_lowerskin, eq_upperskin)
     OUTPUT: moment of inertia skin (moi_skin)    
     '''
-    t_skin=0.003
+
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
     steps=100
@@ -309,18 +307,22 @@ def moi_wing(chord,Aircraft):
     INPUT: moi functions of all the structural components
     OUTPUT: moment of inertia at a certain span position
     '''     
-    moi_wing=skin_moi(chord,Aircraft)+rib_moi(chord,Aircraft) #+moi_stringer(n,chord,Aircraft,A)
+    moi_wing=skin_moi(chord,Aircraft)+rib_moi(chord,Aircraft)+moi_stringer(chord,Aircraft)
 
 
     return moi_wing
 
-def wing_struc_mass(Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp):
+def wing_struc_mass(Aircraft,t_skin,t_rib):
     ''' 
     DESCRIPTION: function that calculates the structural wing mass
     INPUT: Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp
     OUTPUT: wing structural mass, without systems (only material weight)
     '''     
+    n=Aircraft.ParStruc.n_stiff
+    A=Aircraft.ParStruc.A_stiff
     b=Aircraft.ParAnFP.b
+    rho_alu=Aircraft.ParStruc.rho_Al
+    rho_comp=Aircraft.ParStruc.rho_comp
     bi=np.linspace(-b/2,b/2,50)
     w_skin=0
     db=b/50

@@ -20,7 +20,10 @@ class ParAnFPLst(object):
         self.e = None  #[-]                        DUMMY VALUE
         self.CD0 = None #[-]                       DUMMY VALUE
         self.S = None #[m_squared]               DUMMY VALUE
-        self.dihedral = 0. #[rad]
+        self.dhwing = 0. #[rad]
+        self.dhht = 0. #[rad]
+        self.twwing = 0. #[rad]
+        self.twht = 0. #[rad]
         #cruise parameters
         self.TtoW = None #[-]                                                                        air to fuel ratio                           by POPS
         self.Mdd = None #[-]
@@ -95,10 +98,10 @@ class ParStrucLst(object):
             #ratios
             self.OEWratio = 0.6     #[-]
             self.wfratioclimb = 0.96
-            self.fineness_c = 10
+            self.fineness_c = 1.
             self.fineness_n = 1.25
-            self.fineness_t = 2.
-            self.SF         = 1.25
+            self.fineness_t = 10 #2
+            self.SF         = 1.75
             self.Wf         = None
             self.Mw_Mtow= 0.185
             
