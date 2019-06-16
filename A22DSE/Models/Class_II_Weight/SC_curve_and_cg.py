@@ -87,8 +87,8 @@ def oecg(Aircraft):
     Aircraft.ParProp.Engine_weight_Total = Aircraft.ParProp.Engine_weight*nengine #[kg]
     Wengine =  Aircraft.ParProp.Engine_weight_Total
     Wwg = Wwing+Wengine
-    xwg = (xwing*Wwing+xengine*Wengine)/Wwg
-    #print(xengine)
+    xwg = (xwing*Wwing+xengine*Wengine)/Wwg #percentage of MAC so from lemac
+    #print(xwg)
     #fuselage group: fuselage, horizontal tail, vertical tail, nose landing gear, main landing gear
     lf = Aircraft.ParLayoutConfig.l_fuselage #max(Aircraft.ParLayoutConfig.xvt, Aircraft.ParLayoutConfig.xht) + Aircraft.ParLayoutConfig.l_nose  #[m] fuselage length!!!!!! NOT APPENDED YET!!!!!!!
     xf = 0.42*lf  #[m] fuselage cg location
@@ -102,9 +102,10 @@ def oecg(Aircraft):
     xmlg = Aircraft.ParLayoutConfig.lg_x_main  #[m]
     Wmlg = Aircraft.ParStruc.LG_weight_main #[kg]
     Wpl = Aircraft.ParPayload.m_tank + Aircraft.ParPayload.m_burner # [kg] payload tank + burner 
-    xpl = 18 #Aircraft.ParPayload.xcg_totalpayload_empty #DUMMY VALUE!
+    xpl = 7.35 #18 #Aircraft.ParPayload.xcg_totalpayload_empty #DUMMY VALUE!
     Wfg = Wf+Wht+Wvt+Wnlg+Wmlg #[kg]
     xfg = (xf*Wf+xht*Wht+xvt*Wvt+xnlg*Wnlg+xmlg*Wmlg+Wpl*xpl)/Wfg  #[m]
+    #print (xfg)
     #print(Wfg,xfg)
 #    print(xnlg,Wnlg)
 #    xnlg = 5. #Aircraft ref

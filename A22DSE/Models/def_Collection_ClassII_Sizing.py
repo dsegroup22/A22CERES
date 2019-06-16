@@ -106,7 +106,6 @@ def ClassIISizing(Aircraft):
     #horizontal
     #function gives Surface, weight, Aspect ratio, optimal arm etc
     htail(Aircraft,ISA_model)
-   
     #vertical
     vtail(Aircraft)
     
