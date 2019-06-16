@@ -39,7 +39,7 @@ Payload=Conv.ParPayload
 
 
 
-Payload.m_payload = 11850.
+Payload.m_payload = 9700.
 def TotalAC(Conv):
     #CLASS I
     ClassIAircraft(Conv)
@@ -56,6 +56,7 @@ def TotalAC(Conv):
     ClassII_Planform(Conv)
     
 TotalAC(Conv)
+anfp.time = 2*(anfp.tclimbcruise-anfp.t_cruise)+anfp.t_cruise + Payload.turnaroundtime +0.2*3600.
 # =============================================================================
 # #saving object as txt file
 # =============================================================================
