@@ -161,16 +161,6 @@ def ClassIISizing(Aircraft):
     anfp.C_D_0,anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot,\
         anfp.C_l_p,anfp.C_Y_p,anfp.C_n_p,anfp.C_n_r,anfp.C_l_r,anfp.C_l_q,anfp.C_m_q=GetDerivatives(Aircraft,'hihg')
    
-    
-
-    
-# =============================================================================
-#                                   WING BOX
-# =============================================================================
-
-    struc.t_skin, struc.t_rib = SteadyMain.ComputeMaxAwStruct(Aircraft, 
-        ISA_model, 0, Aircraft.ParAnFP.V_dive, np.arange(10, 15, 1))
-    
 
 
 

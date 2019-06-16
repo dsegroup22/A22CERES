@@ -15,6 +15,7 @@ import numpy as np
 import A22DSE.Models.AnFP.\
 Current.Class_II.WingDesign.TransPlanFormFuncLst as FormFuncs
 from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
+from A22DSE.Models.STRUC.current.Class_II.Aeroelasticity import SteadyMain
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -135,11 +136,18 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     return CL_des, tc_des, FWP_opt
 
 
-def ClassII_Planform(Conv):
+def ClassII_Planform(Aircraft):
     
+    struc = Aircraft.ParStruc
     step = 100
-    Conv.ParAnFP.C_L_design, Conv.ParAnFP.tc_w, Conv.ParAnFP.FWP = (
-    ComputePlanform(Conv, ISA_model, step, Conv.ParAnFP.A, False))
+    Aircraft.ParAnFP.C_L_design, Aircraft.ParAnFP.tc_w, Aircraft.ParAnFP.FWP = (
+    ComputePlanform(Aircraft, ISA_model, step, Aircraft.ParAnFP.A, False))
     
-    
+# =============================================================================
+#                                   WING BOX
+# =============================================================================
+
+    struc.t_skin, struc.t_rib = SteadyMain.ComputeMaxAwStruct(Aircraft, 
+        ISA_model, 0, Aircraft.ParAnFP.V_dive, np.arange(10, 15, 1))
+        
     return
