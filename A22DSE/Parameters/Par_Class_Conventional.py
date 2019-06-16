@@ -56,7 +56,6 @@ def TotalAC(Conv):
     ClassII_Planform(Conv)
     
 TotalAC(Conv)
-anfp.time = 2*(anfp.tclimbcruise-anfp.t_cruise)+anfp.t_cruise + Payload.turnaroundtime +0.2*3600.
 # =============================================================================
 # #saving object as txt file
 # =============================================================================
