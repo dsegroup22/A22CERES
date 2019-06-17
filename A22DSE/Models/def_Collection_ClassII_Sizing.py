@@ -34,6 +34,7 @@ from A22DSE.Models.STRUC.current.Class_II.Aeroelasticity import SteadyMain
 from A22DSE.Models.SC.LoadingDiagram.Loading_Diagram import loadingdiag
 from A22DSE.Models.Layout.Current.gearlocation_tri import PositionsLG_Tri
 from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
+from A22DSE.Models.AnFP.Current.InitialSizing.CLh import CLh
 
 def ClassIISizing(Aircraft):
     #get shortcuts
@@ -108,6 +109,7 @@ def ClassIISizing(Aircraft):
     htail(Aircraft,ISA_model)
     #vertical
     vtail(Aircraft)
+    anfp.CLhmax, anfp.CLhalpha = CLh(Aircraft)
     
     #positions lemacs of tails
     Layout.x_lemacv=Aircraft.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xvt-0.25*Layout.mac_v
