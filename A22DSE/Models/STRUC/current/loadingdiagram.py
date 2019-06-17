@@ -6,24 +6,12 @@ Created on Wed May 15 16:51:16 2019
 """
 
 #loading diagrams
-
+import matplotlib.pyplot as plt
+import numpy as np
+import sys
 import os
-from pathlib import Path
-os.chdir(Path(__file__).parents[4])
-
-
-from A22DSE.Parameters.Par_Class_Conventional import Conv
 
 import numpy as np
-g=9.80665
-#eliptical lift distribution
-#def eliptical(L,b):
-#    #function that returns an eliptical lift distribution, where L is the max lift and b the span
-#    anfp=Aircraft.ParAnFP
-#    struc=Aircraft.ParStruc
-#    b=anfp.span
-#    x=np.linspace(-b/2,b/2,1000)
-#    return L**2*(1-(x*2/b)**2)**0.5
 
 def Eliptical(Aircraft,x):
     #function that returns an eliptical lift distribution, where L is the max lift and b the span
@@ -33,14 +21,17 @@ def Eliptical(Aircraft,x):
     b=anfp.b
     return 4*MTOW/(np.pi*b)*np.sqrt(1-4*x**2/b**2)
 
+
 def Loading_Diagrams(Aircraft):
+    #bs
     anfp=Aircraft.ParAnFP
     struc=Aircraft.ParStruc
     layout=Aircraft.ParLayoutConfig
     prop = Aircraft.ParProp
+    #initialise parameters
+    b=anfp.b
     m_engine=prop.Engine_weight
     y_engine=layout.y_engine
-    b=anfp.b
     x=np.linspace(0,b/2,100)
     dx=b/2/len(x)
     MTOW=struc.MTOW
