@@ -3,9 +3,7 @@
 *.txt
 
 
-PlotDatcom3d_CERES.m
-CERES.dat
-datcom.out
+A22DSE\Models\DATCOM\Current\datcom.out
 
 !A22DSE/Models/STRUC/current/Structural_Model/NASASC20712data_1.txt
 !A22DSE/Models/STRUC/current/Structural_Model/NASASC20712data_2.txt
@@ -18,3 +16,6 @@ datcom.out
 !Airfoiltoolsht.txt
 !Airfoiltools.txt
 
+
+A22DSE/Models/DATCOM/Current/PlotDatcom3d_CERES.m
+A22DSE/Models/DATCOM/Current/CERES.dat
