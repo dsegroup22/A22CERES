@@ -109,7 +109,8 @@ Cmadot = -2.2*anfp.CLhalpha*0.95*layout.xht*deda#anfp.C_m_adot    #+0.17800
 Cmq    = -2.2*anfp.CLhalpha*0.95*layout.xht  #anfp.C_m_q       #-8.79415 #145
 
 betav = sqrt(1-M1**2)
-CLvbeta= 2*pi*layout.Avt/(2.+ sqrt(4.+layout.Avt*(betav/0.95)**2*(1.+(tan(radians(layout.Sweep50vt))/betav)**2)))
+CLvbeta= 2*pi*layout.Avt/(2.+ sqrt(4.+layout.Avt*(betav/0.95)**2*\
+         (1.+(tan(radians(layout.Sweep50vt))/betav)**2)))
 CYb    = anfp.C_Y_b       #-0.7500
 CYbdot =  0     
 CYp    = -2*CLvbeta*layout.bv/b*0.95*layout.Svt/S  #anfp.C_Y_p       #-0.0304 #p150
@@ -118,8 +119,10 @@ CYr    = CLvbeta*(2*layout.xvt/b)*0.95*layout.Svt/S   #+0.8495          #p157
 #CYdr   = +0.2300
 
 Clb    = anfp.C_l_b       #-0.10260
-Clp    = -2*CLvbeta*(layout.bv/b)**2*0.95*layout.Svt/S    #anfp.C_l_p       #-0.71085 #p152
-Clr    = CLvbeta*(2*layout.xvt*layout.bv/(b**2))*0.95*layout.Svt/S   #anfp.C_l_r       #+0.23760 #p161
+Clp    = -0.14-0.01*6.393-0.125*0.0181-0.14-0.02*3.92-0.125*0.0181-2*CLvbeta*\
+         (layout.bv/b)**2*0.95*layout.Svt/S    #anfp.C_l_p       #-0.71085 #p152
+print(Clp)
+Clr    = CLvbeta*(2*layout.xvt*layout.bv/(b**2))*0.95*layout.Svt/S   #anfp.C_l_r  #+0.23760 #p161
 #Clda   = -0.23088
 #Cldr   = +0.03440
 
@@ -199,6 +202,7 @@ P3 = 2*pi/omega03/sqrt(1-xi2**2)
 # Spiral 
 
 #Eigenvalue
-labda_c8 = (2 * CL *(Clb* Cnr - Cnb * Clr ))/(Clp *(CYb * Cnr + 4*mub * Cnb) - Cnp *(CYb * Clr + 4 * mub * Clb ))
+labda_c8 = (2 * CL *(Clb* Cnr - Cnb * Clr ))/(Clp *(CYb * Cnr + 4*mub * Cnb) - \
+            Cnp *(CYb * Clr + 4 * mub * Clb ))
 labda_8 = labda_c8*(V0/c) 
 T8 = -0.693/labda_c8*b/V0
