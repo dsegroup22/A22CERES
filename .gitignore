@@ -3,9 +3,9 @@
 *.txt
 
 
-PlotDatcom3d_CERES.m
-CERES.dat
-datcom.out
+C:\Users\menno\Documents\GitHub\A22CERES\A22DSE\Models\DATCOM\Current\PlotDatcom3d_CERES.m
+C:\Users\menno\Documents\GitHub\A22CERES\A22DSE\Models\DATCOM\Current\CERES.dat
+C:\Users\menno\Documents\GitHub\A22CERES\A22DSE\Models\DATCOM\Current\datcom.out
 
 !A22DSE/Models/STRUC/current/Structural_Model/NASASC20712data_1.txt
 !A22DSE/Models/STRUC/current/Structural_Model/NASASC20712data_2.txt
