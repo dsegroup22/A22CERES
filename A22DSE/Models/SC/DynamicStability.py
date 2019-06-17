@@ -28,11 +28,7 @@ CLa    = anfp.C_L_alpha_cruise# Slope of CL-alpha curve [ ]
 # Longitudinal stability
 Cma    = -0.25*anfp.MAC*CLa #anfp.C_m_a  #0.01 #p143 # longitudinal stabilty [ ]
 Cmde   = 1            # elevator effectiveness [ ]   !!!!!!!!!!!!!
-<<<<<<< HEAD
 
-=======
-#print(Cma)
->>>>>>> bbbaec253f12dafbbc1e05ad97f27681f65da80e
 # Aircraft geometry
 
 S      = anfp.S	          # wing area [m^2]
@@ -161,10 +157,6 @@ P1 = 2*pi/omega01/sqrt(1-xi1**2)
  
 
 #phugoid 
-<<<<<<< HEAD
-=======
-#Eigenvalue
->>>>>>> bbbaec253f12dafbbc1e05ad97f27681f65da80e
 A2 = -4 * muc**2 
 B2 = 2 * muc * CXu
 C2 = -CZu  * CZ0 
