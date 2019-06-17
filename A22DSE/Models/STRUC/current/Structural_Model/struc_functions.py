@@ -348,3 +348,13 @@ def wing_struc_mass(Aircraft,t_skin,t_rib):
     
     return w_total
 
+#x=np.linspace(0,1,50)
+#yl=skin_eq_lower(1)
+#yu=skin_eq_upper(1)
+#
+#y1=yl(x)
+#y2=yu(x)
+#
+#plt.plot(x,y1,color='black')
+#plt.plot(x,y2,color='black')
+#plt.show()
