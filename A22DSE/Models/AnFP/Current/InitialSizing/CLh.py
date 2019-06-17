@@ -30,15 +30,15 @@ def CLh(Conv):
         y = fit[0]*alphah[i] + fit[1]
         CLh.append(y)
         
-    plt.plot(alphah,CLh)
-    #plt.plot(alpha_h,CL_h)
-    plt.axhline(y=0, color='k',linewidth=0.5)
-    plt.axvline(x=0,color='k',linewidth=0.5)
-    plt.ylabel('$CL_h$')
-    plt.xlabel(r'$\alpha_h$')
-    plt.title(r'$CL_h$ vs $\alpha_h$ curve')
-    plt.show()
-    
+#    plt.plot(alphah,CLh)
+#    #plt.plot(alpha_h,CL_h)
+#    plt.axhline(y=0, color='k',linewidth=0.5)
+#    plt.axvline(x=0,color='k',linewidth=0.5)
+#    plt.ylabel('$CL_h$')
+#    plt.xlabel(r'$\alpha_h$')
+#    plt.title(r'$CL_h$ vs $\alpha_h$ curve')
+#    plt.show()
+#    
 #    for i in range(len(M)):
 #        beta = sqrt(1-M[i]**2)
 #        CLalpha_h = ((2*pi*AR_h)/(2+sqrt(4+((AR_h**2*beta**2)/(etha**2))*(1+\
@@ -82,7 +82,7 @@ def CLh(Conv):
 #
 #    plt.plot([alphah_0*180/pi,alphah_linstall*180/pi],[0,C_Lh_max])
 #    plt.show()
-    return Clh_max
+    return Clh_max, fit[0]
     
     
         

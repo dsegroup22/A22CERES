@@ -33,8 +33,8 @@ def PrintMatlab(Aircraft):
     
     ALIH=round(float(0),1)
     XV=round(float(Layout.x_apex_vt/Conversion.ft2m),1)
-    ZV=round(float(0),1)
     
+   
     NX=round(float(4),1)
     #X='[0.0,4.0,8.7,64.5,78.7]'
     #ZU='[0.0,2.6,2.6,2.6]'
@@ -49,6 +49,7 @@ def PrintMatlab(Aircraft):
     h=((Layout.w_fuselage-Layout.h_fuselage)/(Layout.w_fuselage-Layout.h_fuselage))**2
     P=np.round(np.array([0.0,np.pi*(Layout.h_fuselage+Layout.w_fuselage)/2*(1+3*h/(10+np.sqrt(4-3*h))),\
                              np.pi*(Layout.h_fuselage+Layout.w_fuselage)/2*(1+3*h/(10+np.sqrt(4-3*h))),Layout.h_APU*np.pi])/Conversion.ft2m,1)
+    ZV=round(float(ZU[-1]),1)
     CHRDTP_WG=round(float(anfp.c_t/Conversion.ft2m),1)
     SSPN_WG = round(float(anfp.b/2/Conversion.ft2m),1)
     SSPNE_WG = 0.9*SSPN_WG
@@ -63,7 +64,7 @@ def PrintMatlab(Aircraft):
     SSPN_HT = round(float(Layout.bh/2/Conversion.ft2m*2),1)
     SSPNE_HT=0.9*SSPN_HT
     CHRDR_HT = round(float(Layout.c_rht/Conversion.ft2m),1)
-    SAVSI_HT = round(float(Layout.sweep25ht),1)
+    SAVSI_HT = round(float(Layout.sweep25ht*180/np.pi),1)
     CHSTAT_HT = 0.25
     TWISTA_HT = round(float(Aircraft.ParAnFP.twht),10)
     DHDADI_HT = round(float(Aircraft.ParAnFP.dhht),10)
@@ -72,10 +73,11 @@ def PrintMatlab(Aircraft):
     SSPN_VT = round(float(Layout.bv/2/Conversion.ft2m*2),1)
     SSPNE_VT=0.9*SSPN_VT
     CHRDR_VT = round(float(Layout.c_rvt/Conversion.ft2m),1)
-    SAVSI_VT = round(float(Layout.Sweep25vt),1)
-    CHSTAT_VT = 0.25
-    
+    SAVSI_VT = round(float(Layout.sweepLEvt*180/np.pi),1)
+    CHSTAT_VT = 0.0
     ZH=round(float(ZV+SSPN_VT),1)
+    
+    
     #print(DHDADI_WG,TWISTA_WG,DHDADI_HT,TWISTA_HT)
     for line in lines[50:96]:
         if line[:2]=='XW':
@@ -526,6 +528,7 @@ def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
     
     
                 C_l_q,C_m_q=np.array(dataline[1:3]).astype(float)
+                
 #                y=np.array(['C_L_adot','C_m_adot', 'C_l_p','C_Y_p','C_n_p','C_n_r','C_l_r','C_l_q','C_m_q'])
 #                z=C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q=np.round(np.array([C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q])*180/np.pi,5)
                 #print(C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q,j)
@@ -533,5 +536,5 @@ def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
             k+=1
             if speed == 'slow' and k==2:
                 break
-    return C_D_0,C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q
+    return np.append(C_D_0,np.array([C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q])*180/np.pi)
 

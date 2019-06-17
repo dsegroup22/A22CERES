@@ -20,8 +20,8 @@ from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
 
 
 parameter='C_D_0'
-steps=10
- #runtime approx. par_class_conv time (approx 5) + steps^2*0.25 sec
+steps=20
+
 dihedralrange = np.linspace(-5,1,steps)
 twistrange = np.linspace(-5,1,steps)
 
@@ -66,7 +66,7 @@ for parameter in parameters:
     data=data[1:]
     
     plt.clf()
-    plt.contourf(dihedralrange,twistrange,data,cmap='Greys',levels=20)
+    plt.contourf(dihedralrange,twistrange,data,cmap='Greys',levels=50)
     plt.colorbar()
     plt.title(title)
     
