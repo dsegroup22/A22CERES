@@ -4,12 +4,11 @@ Created on Wed May  8 16:43:02 2019
 
 @author: Thomas Verduyn
 """
-import sys
-sys.path.append('../../../../../')
-import numpy as np
-from A22DSE.Models.CostModel.Current.RoskamFuncList import (Wampr, MHRManProg, 
-                                                            MHRToolProg, 
-                                                            MHRtoolr, MHRmanr) 
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[4])
+from A22DSE.Models.CostModel.Current.RoskamFuncList import (Wampr,MHRtoolr,\
+                                                            MHRmanr) 
 from A22DSE.Models.CostModel.Current.RoskamFuncList import cmat, eas
 # =============================================================================
 # from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
