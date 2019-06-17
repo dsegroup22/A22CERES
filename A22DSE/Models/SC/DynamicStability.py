@@ -49,7 +49,8 @@ ih     = -2*pi/180        # stabiliser angle of incidence [rad] !!!!!!!!!!!!!!!!
 rho0   = 1.2250           # air density at sea level [kg/m^3] 
 R      = 287.05           # specific gas constant [m^2/sec^2K]
 g      = 9.81             # [m/sec^2] (gravity constant)
-
+gamma  = 1.4
+T_cruise = 273.15-56.5    
 rho    = 0.089            # [kg/m^3]  (air density)
 W      = m*g			  #	[N]       (aircraft weight)
 
@@ -82,24 +83,27 @@ depsda = 4/(A+2)           # Downwash gradient [ ]
 
 CL = 2*W/(rho*V0**2*S)               # Lift coefficient [ ]
 CD = CD0 + (CLa*alpha0)**2/(pi*A*e)  # Drag coefficient [ ]
-
+M1 = anfp.M_cruise
+CLu = M1**2/(1-M1**2)*CL    #??? figure 135
+CDu = M1* (-16*W**2/(rho**2*(gamma*R*T_cruise)**2*M1**5*S**2*pi*A*e))
 
 # Stabiblity derivatives
 
 CX0    = W*sin(th0)/(0.5*rho*V0**2*S)
-CXu    = -0.02792  #Clu,Cdu p136,133
-CXa    = -0.47966  #p139
-CXadot = +0.08330
-CXq    = -0.28170
-CXde   = -0.03728
+CXu    = (CLu*sin(alpha0)-CDu*cos(alpha0))/c    #-0.02792  #Clu,Cdu p136,133
+CXa    = -2*CL/(pi*A*e)*CLa+CL      #-0.47966  #p139
+#CXadot = +0.08330
+#CXq    = -0.28170
+#CXde   = -0.03728
 
 CZ0    = -W*cos(th0)/(0.5*rho*V0**2*S)
-CZu    = -0.37616  #-Clu p134 
-CZa    = -5.74340  #p139
-CZadot = anfp.C_L_adot    #-0.00350 #p141
-CZq    = anfp.C_l_q       #-5.66290 #144
-CZde   = -0.69612
-
+CZu    = -CLu    #-0.37616  #-Clu p134 
+CZa    = -CLu-CD    #-5.74340  #p139
+deda = (2*0.14)/(pi*A)*180/pi
+CZadot = -2*anfp.CLhalpha*0.95*1*deda     #anfp.C_L_adot    #-0.00350 #p141
+CZq    = -2*anfp.CLhalpha*layout.xht/c*0.95*0.18        #anfp.C_l_q       #-5.66290 #144
+#CZde   = -0.69612
+print(CZadot,CZq)
 Cmu    = +0.06990  #p138 table
 Cmadot = anfp.C_m_adot    #+0.17800
 Cmq    = anfp.C_m_q       #-8.79415 #145
@@ -124,63 +128,63 @@ Cnr    =  anfp.C_n_r      #-0.2061  #p161
 Cnda   =  -0.0120
 Cndr   =  -0.0939
 
-#-----eigenvalues for dynamic motions ----
-
-#short period 
-
-#Eigenvalue
-A1 = 4* muc**2 * KY2
-B1 = -2 * muc *(KY2*CZa + Cmadot+ Cmq )
-C1 = CZa * Cmq  - 2*muc * Cma
-labda_real_1 = - B1 / (2*A1)
-labda_imag_1  =  (sqrt(4*A1*C1-B1**2))/(2*A1)
-labda_c1 = complex(labda_real_1,labda_imag_1)
-labda_1 = labda_c1 * (V0/c)
-print(labda_c1)
-labda_c2 = complex(labda_real_1, -labda_imag_1)
-labda_2 = labda_c2 * (V0/c)
-
-#Boundary conditions
- 
-
-
-
-#phugoid 
-
-#Eigenvalue
-A2 = -4 * muc**2 
-B2 = 2 * muc * CXu
-C2 = -CZu  * CZ0 
-labda_real_2 = - B2 / (2*A2)
-labda_imag_2  =  (sqrt(4*A2*C2-B2**2))/(2*A2)
-labda_c3 = complex(labda_real_2,labda_imag_2 )
-labda_3 = labda_c3 *(V0/c)
-labda_c4 = complex(labda_real_2, -labda_imag_2)
-labda_4 = labda_c4*(V0/c) 
-
-
-
-#Aperiodic 
-labda_c5 = Clp / (4 * mub * KX2)
-labda_5 = labda_c5*(V0/c) 
-
-
-#Dutch roll 
-#Eigenvalue
-A3 = 8 * mub**2 * KZ2
-B3 = -2 * mub * (Cnr + 2*KZ2 * CYb)
-C3 = 4 * mub * Cnb + CYb * Cnr 
-labda_real_3 = - B3 / (2*A3)
-labda_imag_3  =  (sqrt(4*A3*C3-B3**2))/(2*A3)
-labda_c6 = complex(labda_real_3,labda_imag_3 )
-labda_6 = labda_c6*(V0/c) 
-labda_c7 = complex(labda_real_3, -labda_imag_3)
-labda_7 = labda_c7*(V0/c) 
-
-
-
-# Spiral 
-
-#Eigenvalue
-labda_c8 = (2 * CL *(Clb* Cnr - Cnb * Clr ))/(Clp *(CYb * Cnr + 4*mub * Cnb) - Cnp *(CYb * Clr + 4 * mub * Clb ))
-labda_8 = labda_c8*(V0/c) 
+##-----eigenvalues for dynamic motions ----
+#
+##short period 
+#
+##Eigenvalue
+#A1 = 4* muc**2 * KY2
+#B1 = -2 * muc *(KY2*CZa + Cmadot+ Cmq )
+#C1 = CZa * Cmq  - 2*muc * Cma
+#labda_real_1 = - B1 / (2*A1)
+#labda_imag_1  =  (sqrt(4*A1*C1-B1**2))/(2*A1)
+#labda_c1 = complex(labda_real_1,labda_imag_1)
+#labda_1 = labda_c1 * (V0/c)
+#print(labda_c1)
+#labda_c2 = complex(labda_real_1, -labda_imag_1)
+#labda_2 = labda_c2 * (V0/c)
+#
+##Boundary conditions
+# 
+#
+#
+#
+##phugoid 
+#
+##Eigenvalue
+#A2 = -4 * muc**2 
+#B2 = 2 * muc * CXu
+#C2 = -CZu  * CZ0 
+#labda_real_2 = - B2 / (2*A2)
+#labda_imag_2  =  (sqrt(4*A2*C2-B2**2))/(2*A2)
+#labda_c3 = complex(labda_real_2,labda_imag_2 )
+#labda_3 = labda_c3 *(V0/c)
+#labda_c4 = complex(labda_real_2, -labda_imag_2)
+#labda_4 = labda_c4*(V0/c) 
+#
+#
+#
+##Aperiodic 
+#labda_c5 = Clp / (4 * mub * KX2)
+#labda_5 = labda_c5*(V0/c) 
+#
+#
+##Dutch roll 
+##Eigenvalue
+#A3 = 8 * mub**2 * KZ2
+#B3 = -2 * mub * (Cnr + 2*KZ2 * CYb)
+#C3 = 4 * mub * Cnb + CYb * Cnr 
+#labda_real_3 = - B3 / (2*A3)
+#labda_imag_3  =  (sqrt(4*A3*C3-B3**2))/(2*A3)
+#labda_c6 = complex(labda_real_3,labda_imag_3 )
+#labda_6 = labda_c6*(V0/c) 
+#labda_c7 = complex(labda_real_3, -labda_imag_3)
+#labda_7 = labda_c7*(V0/c) 
+#
+#
+#
+## Spiral 
+#
+##Eigenvalue
+#labda_c8 = (2 * CL *(Clb* Cnr - Cnb * Clr ))/(Clp *(CYb * Cnr + 4*mub * Cnb) - Cnp *(CYb * Clr + 4 * mub * Clb ))
+#labda_8 = labda_c8*(V0/c) 
