@@ -165,9 +165,9 @@ def ClassIISizing(Aircraft):
         
     #fleetsize calculations
     anfp.cycletime = (anfp.tclimbcruise) + Payload.turnaroundtime +0.2*3600
-    Payload.fleetsize_y1 =np.ceil(Payload.TotalPayloadYear1/Payload.m_payload/\
+    Payload.fleetsize_y1 =np.ceil(Payload.TotalPayloadYear1/(Payload.m_payload/1.05)/\
     (Payload.OperationalDays*(24*3600/anfp.cycletime))*1.1)
-    Payload.fleetsize_y15=np.ceil(Payload.TotalPayloadYear15/Payload.m_payload/\
+    Payload.fleetsize_y15=np.ceil(Payload.TotalPayloadYear15/(Payload.m_payload/1.05)/\
                             (Payload.OperationalDays*(24*3600/anfp.cycletime))*1.1)
     
 
