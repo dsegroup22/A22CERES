@@ -26,11 +26,11 @@ from A22DSE.Models.SC.TailSizing.verticaltail import vtail
 from A22DSE.Models.AnFP.Current.flightenvelope import flightenvelope
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign import TransPlanform 
 from A22DSE.Models.AnFP.Current.Class_II.WingDesign.def_OswaldEfficiency import OswaldEfficiency
-from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq
+from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq, fusreq
 from A22DSE.Models.Layout.Current.Engine_Placements import Engines_placement
 from A22DSE.Models.Prop.Current.Prop_Exec_engineselection_nengthrust import EngineChoice
 from A22DSE.Models.SC.ControlSurface.aileron_sizing import aileron
-import A22DSE.Models.STRUC.current.Class_II.Aeroelasticity.SteadyMain as AE
+from A22DSE.Models.STRUC.current.Class_II.Aeroelasticity import SteadyMain
 from A22DSE.Models.SC.LoadingDiagram.Loading_Diagram import loadingdiag
 from A22DSE.Models.Layout.Current.gearlocation_tri import PositionsLG_Tri
 from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
@@ -106,7 +106,6 @@ def ClassIISizing(Aircraft):
     #horizontal
     #function gives Surface, weight, Aspect ratio, optimal arm etc
     htail(Aircraft,ISA_model)
-   
     #vertical
     vtail(Aircraft)
     
@@ -120,9 +119,10 @@ def ClassIISizing(Aircraft):
 
     #Struct = Aircraft.ParStruc
     #Layout.l_fuselage = 24 #[m] length of fuselage
-    Layout.l_freq = fuselagereq(Aircraft)
+    Layout.l_freq = fusreq(Aircraft) #fuselagereq(Aircraft)
     Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = Fuselage(Aircraft)
     Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
+    #print (Layout.l_fuselage)
     Layout.l_fuselage = np.sum(Layout.l_fuselage)   
     Layout.h_APU=0.2 #[m] dummy value  
     Layout.h_fuselage = Layout.dim_cabin[0]
@@ -150,6 +150,7 @@ def ClassIISizing(Aircraft):
 
 
 
+
     Aircraft.ParLayoutConfig.lg_l_main,Aircraft.ParLayoutConfig.lg_l_nose,\
     Aircraft.ParLayoutConfig.lg_y_main, Aircraft.ParLayoutConfig.lg_x_main,\
     Aircraft.ParLayoutConfig.lg_x_nose_min_F_n, Aircraft.ParLayoutConfig.lg_x_nose_max_F_n,\
@@ -160,16 +161,6 @@ def ClassIISizing(Aircraft):
     anfp.C_D_0,anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot,\
         anfp.C_l_p,anfp.C_Y_p,anfp.C_n_p,anfp.C_n_r,anfp.C_l_r,anfp.C_l_q,anfp.C_m_q=GetDerivatives(Aircraft,'hihg')
    
-    
-
-    
-# =============================================================================
-#                                   WING BOX
-# =============================================================================
-
-#    struc.t_skin, struc.t_rib = AE.ComputeMinWB(Aircraft, 
-#    ISA_model, 0, anfp.V_max_TO)
-    
 
 
 

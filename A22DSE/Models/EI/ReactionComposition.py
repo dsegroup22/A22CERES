@@ -36,72 +36,73 @@ def GetReactionProducts(AF, FuelMass):
     
     #Convert kerosene to molar mass
     molar_ker = FuelMass/MM_ker
+    out = []
+    for i in range(len(R)):
+        if 0.90 < R[i] <= 1.00:
+            
+            #Mole per mole kerosene
+            f_CO2 = 10
+            f_H2O = 11
+            f_N   = 58.28
+            f_O   = 15.5       
+            
+            #Convert to kg
+            CO2 = f_CO2 * molar_ker * MM_CO2
+            H2O = f_H2O *  molar_ker * MM_H2O
+            N2  = f_N * molar_ker * MM_N2
+            CO  = 0
+            H2  = 0
+            O2  = 0
+            
+            ## convert in kg
+            
+            out.append([CO2, CO, H2O, H2, N2, O2])
+            
+        elif 0 < R[i] <= .90:
+            
+            #Product Factors Constants       
+            f_CO2 = 10
+            f_H2O = 11
+            f_N   = 3.76 * f_O/R
+            f_O   = f_O/R -15.5
+            
+            #Convert to kg
+            CO2 = f_CO2 * molar_ker * MM_CO2
+            H2O = f_H2O *  molar_ker * MM_H2O
+            N2  = f_N * molar_ker * MM_N2
+            CO  = 0
+            H2  = 0
+            O2  = f_O * molar_ker * MM_O2
+            out.append([CO2, CO, H2O, H2, N2, O2])
+        
+        elif R[i] > 1.00:
+            
+            ## case when CO == 0
+            
+            #Mole per mole kerosene
+            
+            f_CO2 = 10
+    #        f_CO  = 20 - 31/R
+            f_N   = 58.28/R
+            f_H   = 31 - 31/R
+            f_O   = 31/R - 20
+            
+            #Convert to kg
+            CO2 = f_CO2 * molar_ker * MM_CO2
+            H2O = f_O * molar_ker * MM_H2O
+            N2  = f_N * molar_ker * MM_N2
+            CO  = 0
+            H2  = f_H * molar_ker * MM_H2
+            O2  = 0
+            
+            out.append([CO2, CO, H2O, H2, N2, O2])
+        
+        else:
+            return ValueError("Negative Air-to-Fuel ratio!")
+    return out            
+#        return None #should not get here
     
-    if 0.90 < R <= 1.00:
-        
-        #Mole per mole kerosene
-        f_CO2 = 10
-        f_H2O = 11
-        f_N   = 58.28
-        f_O   = 15.5       
-        
-        #Convert to kg
-        CO2 = f_CO2 * molar_ker * MM_CO2
-        H2O = f_H2O *  molar_ker * MM_H2O
-        N2  = f_N * molar_ker * MM_N2
-        CO  = 0
-        H2  = 0
-        O2  = 0
-        
-        ## convert in kg
-        
-        return [CO2, CO, H2O, H2, N2, O2]
-        
-    elif 0 < R <= .90:
-        
-        #Product Factors Constants       
-        f_CO2 = 10
-        f_H2O = 11
-        f_N   = 3.76 * f_O/R
-        f_O   = f_O/R -15.5
-        
-        #Convert to kg
-        CO2 = f_CO2 * molar_ker * MM_CO2
-        H2O = f_H2O *  molar_ker * MM_H2O
-        N2  = f_N * molar_ker * MM_N2
-        CO  = 0
-        H2  = 0
-        O2  = f_O * molar_ker * MM_O2
-        return [CO2, CO, H2O, H2, N2, O2]
-    
-    elif R > 1.00:
-        
-        ## case when CO == 0
-        
-        #Mole per mole kerosene
-        
-        f_CO2 = 10
-#        f_CO  = 20 - 31/R
-        f_N   = 58.28/R
-        f_H   = 31 - 31/R
-        f_O   = 31/R - 20
-        
-        #Convert to kg
-        CO2 = f_CO2 * molar_ker * MM_CO2
-        H2O = f_O * molar_ker * MM_H2O
-        N2  = f_N * molar_ker * MM_N2
-        CO  = 0
-        H2  = f_H * molar_ker * MM_H2
-        O2  = 0
-        
-        return [CO2, CO, H2O, H2, N2, O2]
-    
-    else:
-        return ValueError("Negative Air-to-Fuel ratio!")
-        
-    return None #should not get here
-    
-def GetEI(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
+def GetEI(AF, mdot, time, Aircraft, ISA_model):
     
     '''
     INPUT: Masses of the polluting reaction products
@@ -109,32 +110,35 @@ def GetEI(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
     the radiative forcing of the fuel burn [W/m2]
     DESCRIPTION:
     '''
-    EngineProp=[]
-    if len(AltitudeProfile)==len(MachProfile):
-        for i in range(len(AltitudeProfile)): 
-            EngineProp.append(GetEngineProp(AltitudeProfile[i],\
-                                            MachProfile[i])[0,4])
+#    EngineProp=[]
+#    if len(AltitudeProfile)==len(MachProfile):
+#        for i in range(len(AltitudeProfile)): 
+#            EngineProp.append(GetEngineProp(AltitudeProfile[i],\
+#                                            MachProfile[i])[0,4])
             
-    else:
-        raise "Error: length of Altitude Profile list and Mach Profile list\
-        different"
+#    else:
+#        raise "Error: length of Altitude Profile list and Mach Profile list\
+#        different"
 
-    Fuel = GetFuelBurn(EngineProp, resolution)
+    Fuel = GetFuelBurn(mdot, time)
 #    AF = "get inlet area rho*V**L"/np.array(EngineProp)
-    A_inlet = Aircraft.ParProp.Engine_diameter**2 * np.pi/4
+#    A_inlet = Aircraft.ParProp.Engine_diameter**2 * np.pi/4
     T, p, rho = ISA_model.ISAFunc([])
-    AF = A_inlet * rho *  Aircraft
+#    AF = A_inlet * rho *  Aircraft
     
     Products = []
     Impact=[]
-    for i in range(len(AF)):
-        Producti = GetReactionProducts(AF, EngineProp)
-        Products.append(Producti)
-        GWPi = Producti[0] * pollutantLst().CO2.GWP #make sum of all Producti and corresponding GWP
-        RFi = 0#Compute normalised proportions of Producti and make proportion*RF
-        Impact.append([GWPi, RFi])
-    EIGWP = resolution * sum(Impact[:,0])
-    EIRF = sum(Impact[:,1])/len(Impact[:,1])
+#    for i in range(len(AF)):
+    Producti = GetReactionProducts(AF, mdot)
+#        print(Producti)
+    Products.append(Producti)
+    Producti = np.array(Producti)
+    GWPi = Producti[:,0] * pollutantLst().CO2.GWP[0] #TODO: change to other chemicals
+    RFi = 1#TODO: include for other chemicals
+    Impact.append([GWPi, RFi])
+    Impact = np.array(Impact)
+    EIGWP = sum((time[1]-time[0]) * (Impact[:,0])) #TODO: don't think it works
+    EIRF = np.sum(Impact[:,1])/len(Impact[:,1])
     return [Fuel, EIGWP, EIRF]
 
 

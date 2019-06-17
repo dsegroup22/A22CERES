@@ -5,6 +5,11 @@ Created on Fri Jun  7 13:44:57 2019
 @author: Nout
 """
 import numpy as np
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[6])
+#from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
+import matplotlib.pyplot as plt
 
 def OswaldEfficiency(Conv):
     """
@@ -72,11 +77,32 @@ OUTPUTS: float e Oswald efficiency is added to the Conv object
 
 # =============================================================================
 # #test function here
-# test = True
-# if test:
-#     import os
-#     from pathlib import Path
-#     os.chdir(Path(__file__).parents[6])
-#     from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
+# def Test_e():
+#     
+#     test = True
+#     if test:
 # 
+#         #os.chdir(Path(__file__).parents[6])
+#         #from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
+#         
+#         Layout = Conv.ParLayoutConfig
+#         anfp = Conv.ParAnFP
+#         mlst = np.linspace(0.3,0.83,30)
+#         elst = []
+#         for i in mlst:
+#             #get relevant parameters from Conv
+#             anfp.taper = 0.262
+#             anfp.Sweep_25 = 17*np.pi/180
+#             anfp.A = 7.27
+#             Layout.d_fuselage = 3.1
+#             anfp.b = 23.58
+#             anfp.M_cruise = i
+#             anfp.dihedral = 0.
+#             e= OswaldEfficiency(Conv)
+#             elst.append(e)
+#         print(mlst)
+#         plt.plot(mlst,elst)
+#         plt.ylabel('Cruise Mach Number [-]')
+#         plt.xlabel('Oswald Efficiency [-]')
 # =============================================================================
+        

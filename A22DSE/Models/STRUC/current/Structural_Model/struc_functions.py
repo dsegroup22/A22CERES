@@ -252,8 +252,8 @@ def skin_moi(chord,Aircraft,t_skin): #fin
     
 def moi_root_stringers(chord, Aircraft): #multiple of 10, with min 20
     #initise
-    n=Aircraft.ParStruc.n
-    A=Aircraft.ParStruc.A
+    n=Aircraft.ParStruc.n_stiff
+    A=Aircraft.ParStruc.A_stiff
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
     c1=0.2*chord
@@ -301,13 +301,15 @@ def moi_stringer(chord,Aircraft):  #n in multiples of 5 (min=20)
 
 
 
-def moi_wing(chord,Aircraft):
+def moi_wing(chord,Aircraft, t_skin, t_rib):
     ''' 
     DESCRIPTION: function that calculates the total moment of inertia of the wing (moi_wing)
     INPUT: moi functions of all the structural components
     OUTPUT: moment of inertia at a certain span position
     '''     
-    moi_wing=skin_moi(chord,Aircraft)+rib_moi(chord,Aircraft)+moi_stringer(chord,Aircraft)
+    
+    moi_wing=skin_moi(chord,Aircraft, t_skin)+rib_moi(chord,Aircraft, t_rib)\
+        +moi_stringer(chord,Aircraft)
 
 
     return moi_wing

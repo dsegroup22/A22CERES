@@ -15,11 +15,18 @@ import numpy as np
 import A22DSE.Models.AnFP.\
 Current.Class_II.WingDesign.TransPlanFormFuncLst as FormFuncs
 from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
+from A22DSE.Models.STRUC.current.Class_II.Aeroelasticity import SteadyMain
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+
+'''
+ASSUMPTIONS
+
+- Cl_climb constraint 1.03/1.1
+'''
 
 # =============================================================================
 #                       SELECTION VARIABLES AND CONSTANTS
@@ -33,7 +40,6 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     #tc_w  = np.linspace(0.10, 0.15, 4)
     TSFC = Aircraft.ParProp.SFC_cruise*3600
     CL, sweep = np.meshgrid(CL_i, sweep_i)
-    Aw = 16
     theta2 = FormFuncs.ComputeTheta2(Aircraft, ISA_model)
     theta3 = FormFuncs.ComputeTheta3(Aircraft, ISA_model)
     Fprop = FormFuncs.ComputeFprop(Aircraft, ISA_model, TSFC)
@@ -92,6 +98,7 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     CL_buffet = 0.91  # NASA paper of airfoil  NASA SC( 2)-0714
     onset_margin = 1.40 # Regulations require 30% margin betw. onset and cruise
     CL_lim    = CL_buffet/onset_margin #+10% higher than certification
+    CL_climb  = 1.03/1.1
     # =========================================================================
     #                       PLOTTING
     # =========================================================================
@@ -111,8 +118,12 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
         plt.axvline(np.rad2deg(sweep_opt), color = 'orange', 
                     linestyle = 'dashed',
                     label = r'Partial optimum $\Lambda_w$')
-        plt.axhline(CL_lim, linestyle = 'dashed', color = 'g',
+        plt.axhline(CL_lim, linestyle = 'dashed', color = 'm',
                     label = 'Buffet Limit')
+        plt.axhline(CL_climb, linestyle = 'dashed', color = 'c',
+                    label = r'$C_{L_{climb}}$ constraint')
+        
+        plt.axvline()
         plt.ylim((CL_i[0], CL_i[-1]))
         plt.xlim((np.rad2deg(sweep_i[0]), np.rad2deg(sweep_i[-1])))
         plt.xlabel(r'$\Lambda_w$')
@@ -125,11 +136,18 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     return CL_des, tc_des, FWP_opt
 
 
-def ClassII_Planform(Conv):
+def ClassII_Planform(Aircraft):
     
+    struc = Aircraft.ParStruc
     step = 100
-    Conv.ParAnFP.C_L_design, Conv.ParAnFP.tc_w, Conv.ParAnFP.FWP = (
-    ComputePlanform(Conv, ISA_model, step, Conv.ParAnFP.A, False))
+    Aircraft.ParAnFP.C_L_design, Aircraft.ParAnFP.tc_w, Aircraft.ParAnFP.FWP = (
+    ComputePlanform(Aircraft, ISA_model, step, Aircraft.ParAnFP.A, False))
     
-    
+# =============================================================================
+#                                   WING BOX
+# =============================================================================
+
+    struc.t_skin, struc.t_rib = SteadyMain.ComputeMaxAwStruct(Aircraft, 
+        ISA_model, 0, Aircraft.ParAnFP.V_dive, np.arange(10, 15, 1))
+        
     return

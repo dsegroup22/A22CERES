@@ -62,7 +62,7 @@ def Payload_optimiser_fleety1(payload_lst):
          
          TestAC.ParAnFP.s_cruise = CruiseRange(TestAC)
          
-         tcruise = CruiseTime(TestAC, ISA_model)
+         #tcruise = CruiseTime(TestAC, ISA_model)
          
          Wfratio_flighttime_flightrange(TestAC)
          
@@ -70,8 +70,8 @@ def Payload_optimiser_fleety1(payload_lst):
          #get all partial times, to get total time
          tcruiseclimb = TestAC.ParAnFP.tclimbcruise 
          #timeground = tground(TestAC)
-         time = 2*(tcruiseclimb-tcruise)+tcruise + turnaroundtime +0.2*3600. #+0.2 hours for ground time
-         
+         time = (tcruiseclimb) + turnaroundtime +0.2*3600. #+0.2 hours for ground time
+         #print(time/3600)
          #compute flights per year, based on continuous running, buffer is in
          # operational days, not daily time.
          flightsperyear = OperationalDays*(24*3600/time)
@@ -94,19 +94,20 @@ def Payload_optimiser_Both(X_steps):
 #            f1 and f2 are normalised functions of fuel weight and fleet size
 #            respectively.
     
-    payload_lst = np.linspace(4000.,11000.,X_steps)
+    payload_lst = np.linspace(4000.,12000.,X_steps)
     wf_lst = Payload_optimiser_wf(payload_lst)
     fleetsize_lst, flightsperyear = Payload_optimiser_fleety1(payload_lst)
     
     wf_tot_y1 = wf_lst*fleetsize_lst*flightsperyear
-    
-    f1 = abs(wf_tot_y1/(wf_tot_y1[-1]-wf_tot_y1[0]))
-    f2 = abs(fleetsize_lst/(fleetsize_lst[-1]-fleetsize_lst[0]))  
-    plot = False
+    #print (wf_tot_y1)
+    f1 = abs(wf_tot_y1/(min(wf_tot_y1)))
+    f2 = abs(fleetsize_lst/(min(fleetsize_lst)))
+    #print(f1,f2)
+    plot = True
     if plot:
-        plt.step(payload_lst,fleetsize_lst)#'-ob',markersize=4)
+        plt.plot(payload_lst,wf_tot_y1)#'-ob',markersize=4)
         plt.xlabel('Payload mass per ac [kg]')
-        plt.ylabel('Fleet size in year 1')
+        plt.ylabel('Total fuel burn in year 1 [kg]')
     return payload_lst, f1,f2
 
 def OptimiserPlotter(Which_one, X_steps, w1, w2):
@@ -128,6 +129,7 @@ def OptimiserPlotter(Which_one, X_steps, w1, w2):
         plt.plot(payload_lst,f3)
         plt.plot(payload_lst,f1)
         plt.step(payload_lst,f2)
+    print('line is done')
         
         
 def Sens_Opt_Payload(Which_one,X_steps, sens_steps):

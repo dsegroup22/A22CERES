@@ -83,7 +83,7 @@ def ClassIIWeightIteration(Aircraft):
 #                          ITERATE HERE FOR NEW MTOW
 # =============================================================================
     itcount = 0
-    while(itcount<12):
+    while(itcount<17):
          #update values for CD0, wfratio, S, Thrust, tail size, etc.
          ComputeCD0(Aircraft)
          Wfratio_flighttime_flightrange(Aircraft)

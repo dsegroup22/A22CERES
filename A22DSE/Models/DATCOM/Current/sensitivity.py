@@ -59,6 +59,7 @@ for parameter in parameters:
             Conv.ParAnFP.twwing=tw
             C_D_0,C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot,\
         C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q=GetDerivatives(Conv,'hihg')
+            
             subdata=np.append(subdata,vars()[parameter])
     
         data=np.vstack((data,subdata))
@@ -69,9 +70,9 @@ for parameter in parameters:
     plt.colorbar()
     plt.title(title)
     
-    plt.xlabel(r'$\Gamma$ [$^{\circ}$]')
-    plt.ylabel('Twist [$^{\circ}$]')
-    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Wing\''[:-1]+parameter+  ".png")
+    plt.xlabel(r'$\Gamma_{Wing}$ [$^{\circ}$]')
+    plt.ylabel('Wing Twist [$^{\circ}$]')
+    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Wing\''[:-1]+parameter+  "wing.png")
 
     print(parameter)
 
