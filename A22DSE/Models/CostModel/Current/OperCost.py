@@ -4,13 +4,13 @@ Created on Wed May 15 09:28:55 2019
 
 @author: Thomas Verduyn
 """
-import sys
-sys.path.append('../../../../')
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[4])
 import numpy as np
 from A22DSE.Models.CostModel.Current.ProdCost import CmanFunc
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
+from A22DSE.Parameters.Par_Class_Conventional import Conv
 from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
-from A22DSE.Parameters.Par_Class_All import Aircraft
 
 def Uannbl(tbl):
     #Annual utilization in block hours
@@ -27,9 +27,9 @@ def Coper(Aircraft,doc):
     Convers=Aircraft.ConversTool
     FlightOp=Aircraft.ParAnFP
     
-    Rbl=FlightOp.blockdist*Convers.km2nm
+    Rbl=FlightOp.Rangeclimbcruise/1000.*Convers.km2nm
 #    print (Rbl)
-    tflt=FlightOp.flighttime
+    tflt=FlightOp.tclimbcruise/3600.
     tbl=tgm+tflt
 #    print (tbl)
     Vbl=Rbl/tbl
@@ -55,7 +55,7 @@ def Coper(Aircraft,doc):
     
 def DOC(docflt,docmaint,docdepr,doclnr,frt):
     #COSTS IS PER NM!!!!
-    #Convert to 2019 USD
+    #Converted to 2019 USD in other functions
     doc=sum([docflt,docmaint,docdepr,doclnr])/(1-0.07-frt)
     return doc
 
@@ -69,10 +69,13 @@ def DOCflt(Aircraft, Cman):
     Convers=Aircraft.ConversTool
     Struct=Aircraft.ParStruc
     FlightOp=Aircraft.ParAnFP
+    Prop=Aircraft.ParProp
+    Payload=Aircraft.ParPayload
     
-    Ne=Struct.N_engines
-    Rbl=FlightOp.blockdist*Convers.km2nm
-    tflt=FlightOp.flighttime
+    Ne=Prop.N_engines
+    Nprogram=Payload.fleetsize_y15
+    Rbl=FlightOp.Rangeclimbcruise/1000*Convers.km2nm
+    tflt=FlightOp.tclimbcruise/3600.
     tbl=tgm+tflt
     Vbl=Rbl/tbl
     #print (tbl)
@@ -95,11 +98,10 @@ def DOCflt(Aircraft, Cman):
     #print (Cpol)
     
     #Insurance costs
-    ManPerACCost  = Cman/Aircraft.ParCostLst.Nprogram/par.CEF8919
+    ManPerACCost  = Cman/Nprogram/par.CEF8919
     Cins=ManPerACCost*(1+par.Fpror)*0.030/(Uannbl(tbl)*Vbl)
     #Can use below if above is wrong
     #Cins=0.02*DOC  
-    
     return sum([Ccrew,Cpol,Cins])*par.CEF8919
 
 def DOCmaint(Aircraft,Cman):
@@ -108,19 +110,21 @@ def DOCmaint(Aircraft,Cman):
     #Description:Costs for operational maintenance
     par=Aircraft.ParCostLst
     Convers=Aircraft.ConversTool
-    Struct=Aircraft.ParStruc
     FlightOp=Aircraft.ParAnFP
+    Prop=Aircraft.ParProp
+    Payload=Aircraft.ParPayload
     
     tgm=tground(Aircraft)
-    Rbl=FlightOp.blockdist*Convers.km2nm
-    tflt=FlightOp.flighttime
+    Rbl=FlightOp.Rangeclimbcruise/1000*Convers.km2nm
+    tflt=FlightOp.tclimbcruise/3600.
     tbl=tgm+tflt
     Vbl=Rbl/tbl
     Rlap=par.Rlap
-    Ne=Struct.N_engines
-    ManPerACCost  = Cman/Aircraft.ParCostLst.Nprogram/par.CEF8919
+    Ne=Prop.N_engines
+    Nprogram=Payload.fleetsize_y15
+    ManPerACCost  = Cman/Nprogram/par.CEF8919
     AEP=ManPerACCost*(1+par.Fpror)
-    EP=par.Cengine/par.CEF8919
+    EP=Prop.Engine_cost*1e6/par.CEF8919
     Hem=5000        
       
     #Labour costs of airframe and systems maintenance
@@ -144,27 +148,28 @@ def DOCmaint(Aircraft,Cman):
     fmat=0.3
     Camb=1.03*(flab*(MHRmapbl*Rlap+Ne*par.MHRmengbl*Rlap)+\
                fmat*(Cmatapblhr+Ne*Cmatengblhr))/Vbl
-
     return sum([Clabop,Clabeng,Cmatap,Cmateng,Camb])*par.CEF8919
 
 def DOCdepr(Aircraft,Cman):
     #Cost due to depriciation of the aircraft
     par=Aircraft.ParCostLst
     Convers=Aircraft.ConversTool
-    Struct=Aircraft.ParStruc
     FlightOp=Aircraft.ParAnFP
+    Prop=Aircraft.ParProp
+    Payload=Aircraft.ParPayload
     
     tgm=tground(Aircraft)
-    Rbl=FlightOp.blockdist*Convers.km2nm
-    tflt=FlightOp.flighttime
+    Rbl=FlightOp.Rangeclimbcruise/1000.*Convers.km2nm
+    tflt=FlightOp.tclimbcruise/3600.
     tbl=tgm+tflt
     Vbl=Rbl/tbl
     ASP=par.ASP/par.CEF8919
-    EP=par.Cengine/par.CEF8919
-    Ne=Struct.N_engines
+    EP=Prop.Engine_cost*1e6/par.CEF8919
+    Ne=Prop.N_engines
+    Nprogram=Payload.fleetsize_y15
     
     #Costs of aircraft depriciation
-    ManPerACCost  = Cman/Aircraft.ParCostLst.Nprogram/par.CEF8919 #AC cost
+    ManPerACCost  = Cman/Nprogram/par.CEF8919 #AC cost
     AEP=ManPerACCost*(1+par.Fpror)
     Cdap=0.85*(AEP-Ne*EP-ASP)/(10*Uannbl(tbl)*Vbl)
     
@@ -190,8 +195,8 @@ def DOClnr(Aircraft):
      FlightOp=Aircraft.ParAnFP
      MTOW=Struct.MTOW/Convers.lbs2kg
      tgm=tground(Aircraft)
-     Rbl=FlightOp.blockdist*Convers.km2nm
-     tflt=FlightOp.flighttime
+     Rbl=FlightOp.Rangeclimbcruise/1000.*Convers.km2nm
+     tflt=FlightOp.tclimbcruise/3600.
      tbl=tgm+tflt
      Vbl=Rbl/tbl    
 
@@ -207,7 +212,7 @@ def DOClnr(Aircraft):
      return sum([Clf,Cnf])*par.CEF8919,frt
  
 
-Cer  = 1.5e7 # USD19
+Cer  = 8.5e6 # USD19
 Cman=CmanFunc(Conv, ISA_model, Cer)
 docflt=DOCflt(Conv,Cman)
 docmaint=DOCmaint(Conv,Cman)

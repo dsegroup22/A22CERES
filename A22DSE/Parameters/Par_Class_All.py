@@ -129,7 +129,7 @@ class ParCostLst(object):
     
     def __init__(self):
         #Cost parameters
-        self.Cengine = 15000000 #[USD]  DUMMY VALUE
+#        self.Cengine = 15000000 #[USD]  DUMMY VALUE
         self.Cairframe = 35000000 #[USD] DUMMY VALUE
         self.Cavionics = 30000000 #CHECK VALUE
         self.acmanuy = 10 #[1/y] operational AC made per year
@@ -144,7 +144,7 @@ class ParCostLst(object):
         self.rtr = 43 #[USD/hr] CEF00/CEF89
         self.spil = 60000 #[USD/y] CEF19/CEF89
         self.scpil = 45000 #[USD/y] CEF19/CEF89
-        self.Cfuel = 2 #[USD/gallon] (2019)
+        self.Cfuel = 4 #[USD/gallon] (2019)
         self.FD = 6.74 #[lbs/gallon]
         self.Fdiff = 1.5 #[-]
         self.Fcad = 0.8 #[-]
