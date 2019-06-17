@@ -64,7 +64,7 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     # Optimum sweep
     
     sweep_opt = (FormFuncs.ComputePartialSweepOpt(Aircraft))
-    print(sweep_opt)
+#    print(sweep_opt)
     # Optimum CL for minimum FWP
     CL_optLst = []
     for i, sweepi in enumerate(sweep_i):
