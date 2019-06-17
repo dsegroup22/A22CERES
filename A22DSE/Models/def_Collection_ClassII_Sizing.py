@@ -160,8 +160,12 @@ def ClassIISizing(Aircraft):
     #Stability derivatives DATCOM [/rad]    
     anfp.C_D_0,anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot,\
         anfp.C_l_p,anfp.C_Y_p,anfp.C_n_p,anfp.C_n_r,anfp.C_l_r,anfp.C_l_q,anfp.C_m_q=GetDerivatives(Aircraft,'hihg')
-   
-
-
-
+        
+    #fleetsize calculations
+    anfp.cycletime = (anfp.tclimbcruise) + Payload.turnaroundtime +0.2*3600
+    Payload.fleetsize_y1 =np.ceil(Payload.TotalPayloadYear1/Payload.m_payload/\
+    (Payload.OperationalDays*(24*3600/anfp.cycletime))*1.1)
+    Payload.fleetsize_y15=np.ceil(Payload.TotalPayloadYear15/Payload.m_payload/\
+                            (Payload.OperationalDays*(24*3600/anfp.cycletime))*1.1)
+    
 

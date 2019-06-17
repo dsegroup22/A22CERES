@@ -96,6 +96,7 @@ class ParStrucLst(object):
             self.tail_angle = 15*np.pi/180 #DUMMY VALUE #[rad] angle of empannage wrt ground
             
             #ratios
+            self.FoS_OEW = 1.1 #[-]
             self.OEWratio = 0.6     #[-]
             self.wfratioclimb = 0.96
             self.fineness_c = 1.
@@ -120,6 +121,7 @@ class ParPayloadLst(object):
         
         
         self.TotalPayloadYear1 = 0.1e9 #kg
+        self.TotalPayloadYear15 = 1.5e9 #kg
         self.OperationalDays = 250 #days
         self.turnaroundtime = 3600 #s  
         
@@ -237,6 +239,7 @@ class ParLayoutConfig(object):
 class ParProp(object):
     
     def __init__(self):
+        self.SafetyMarginEngine = 935
         self.Engine_weight = None
         self.psi = 0.45 # from adsee slides
         self.xf_c = -0.2 #from adsee slides
