@@ -1,5 +1,7 @@
-import sys
-sys.path.append('../../../../../')
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[4])
+from A22DSE.Parameters.Par_Class_Conventional import Conv
 #from A22DSEf
 from A22DSE.Models.CostModel.Current.Raskom import crdte
 from A22DSE.Models.CostModel.Current.ProdCost import (CmanFunc, 
@@ -9,6 +11,8 @@ from A22DSE.Models.CostModel.Current.OperCost import (tground, DOC,
                                                              DOCdepr, DOCflt,
                                                              DOClnr, DOCmaint,
                                                              Coper)
+from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
+
 import numpy as np
 
 #from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
@@ -17,8 +21,7 @@ import numpy as np
 
 
 def TotalC(Aircraft, ISA_model):
-    par=Aircraft.ParCostLst
-    Cer=par.Cengine
+    Cer=Aircraft.ParProp.Engine_cost
     RnDCost = crdte(Aircraft, ISA_model, Cer)
     Cman=CmanFunc(Aircraft, ISA_model, Cer)
     docflt=DOCflt(Aircraft,Cman)
@@ -33,4 +36,4 @@ def TotalC(Aircraft, ISA_model):
     #print ("Operating costs=",Cop*1e-9)
     return (sum([RnDCost+Cman+Cop])*1e-9,Cop*1e-9),Copsy1
 
-#print (TotalC(Can))
+print (TotalC(Conv,ISA_model))

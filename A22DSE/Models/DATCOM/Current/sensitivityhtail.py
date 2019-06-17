@@ -19,13 +19,12 @@ from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
 
 parameter='C_D_0'
 
-steps=10
- #runtime approx. par_class_conv time (approx 5) + steps^2*0.25 sec
+steps=20
 
 
 dihedralrange = np.linspace(-3,3,steps)
 twistrange = np.linspace(-5,1,steps)
-parameters=np.array(['C_D_0','C_L_a','C_l_b','C_m_a','C_Y_b','C_n_b','C_L_adot',\
+parameters=np.array(['C_D_0','C_D_cruise','C_L_a','C_l_b','C_m_a','C_Y_b','C_n_b','C_L_adot',\
           'C_m_adot', 'C_l_p','C_Y_p','C_n_p','C_n_r','C_l_r','C_l_q','C_m_q'])
 
 
@@ -61,7 +60,7 @@ for parameter in parameters:
         for dh in dihedralrange:
             Conv.ParAnFP.dhht=dh
             Conv.ParAnFP.twht=tw
-            C_D_0,C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot,\
+            C_D_0,C_D_cruise,C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot,\
         C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q=GetDerivatives(Conv,'hihg')
             subdata=np.append(subdata,vars()[parameter])
     

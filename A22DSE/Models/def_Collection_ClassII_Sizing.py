@@ -34,6 +34,7 @@ from A22DSE.Models.STRUC.current.Class_II.Aeroelasticity import SteadyMain
 from A22DSE.Models.SC.LoadingDiagram.Loading_Diagram import loadingdiag
 from A22DSE.Models.Layout.Current.gearlocation_tri import PositionsLG_Tri
 from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
+from A22DSE.Models.AnFP.Current.InitialSizing.CLh import CLh
 
 def ClassIISizing(Aircraft):
     #get shortcuts
@@ -108,6 +109,7 @@ def ClassIISizing(Aircraft):
     htail(Aircraft,ISA_model)
     #vertical
     vtail(Aircraft)
+    anfp.CLhmax, anfp.CLhalpha = CLh(Aircraft)
     
     #positions lemacs of tails
     Layout.x_lemacv=Aircraft.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xvt-0.25*Layout.mac_v
@@ -130,9 +132,11 @@ def ClassIISizing(Aircraft):
     
     
     Layout.x_apex_wing = Layout.x_lemac-anfp.y_MAC*np.tan(anfp.Sweep_LE)
-    Layout.x_apex_ht = Layout.x_lemach-Layout.y_MACh*np.tan(Layout.sweepLEht)
+    
     Layout.x_apex_vt = Layout.x_lemacv-Layout.y_MACv*np.tan(Layout.sweepLEvt)
+    Layout.x_apex_ht = Layout.x_apex_vt+Layout.bv*np.tan(Layout.sweepLEvt)
     Layout.x_begin_emp = Layout.l_nose+Layout.l_cabin
+    Layout.l_fuselage=Layout.x_apex_vt+Layout.c_rvt
     #engine selection
     EngineChoice(Aircraft,ISA_model,False)
     
@@ -158,10 +162,14 @@ def ClassIISizing(Aircraft):
     z_cg = PositionsLG_Tri(Aircraft)
     
     #Stability derivatives DATCOM [/rad]    
-    anfp.C_D_0,anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot,\
+    anfp.C_D_0,anfp.C_D_cruise,anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot,\
         anfp.C_l_p,anfp.C_Y_p,anfp.C_n_p,anfp.C_n_r,anfp.C_l_r,anfp.C_l_q,anfp.C_m_q=GetDerivatives(Aircraft,'hihg')
-   
-
-
-
+        
+    #fleetsize calculations
+    anfp.cycletime = (278.*60.) + Payload.turnaroundtime +0.2*3600
+    Payload.fleetsize_y1 =np.ceil(Payload.TotalPayloadYear1/(Payload.m_payload/1.05)/\
+    (Payload.OperationalDays*(24*3600/anfp.cycletime))*1.1)
+    Payload.fleetsize_y15= 15*Payload.fleetsize_y1 #np.ceil(Payload.TotalPayloadYear15/(Payload.m_payload/1.05)/\
+                            #(Payload.OperationalDays*(24*3600/anfp.cycletime))*1.1)+6.
+    
 
