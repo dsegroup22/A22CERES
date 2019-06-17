@@ -10,7 +10,39 @@ from pathlib import Path
 os.chdir(Path(__file__).parents[3])
 import numpy as np
 from A22DSE.Models.EI.FuelBurn import GetEngineProp, GetFuelBurn
-from A22DSE.Models.EI.classEILst import pollutantLst
+from A22DSE.Models.EI.classEILst import pollutantLst, pollutant
+
+def PollutantArrLow():
+    
+    # array is defined as [GWP20, GWP100, GWP500]
+    CO2 = np.array([np.array([1,1,1]), np.array([1.985])])
+    CO  = np.array([np.array([2.8,4.4,0]), np.array([0])])
+    H2O = np.array([np.array([0,-0.003,0]), np.array([0.034])])      
+#    CH4 = pollutant('CH4', np.array([63,21,9]), 0.507)
+#    N2O = pollutant('N2O', np.array([270,290, 190]), 0.983)
+    H2 = np.array([np.array([0,0,0]), np.array([0])])
+    N2 = np.array([np.array([0,0,0]), np.array([0])])
+    O2 = np.array([np.array([0,0,0]), np.array([0])])
+
+#    
+    return np.array([CO2, CO, H2O, H2, N2, O2])
+
+
+def PollutantArrHigh():
+    
+    # array is defined as [GWP20, GWP100, GWP500]
+    CO2 = np.array([np.array([1,1,1]), np.array([1.985])])
+    CO  = np.array([np.array([14, 4.4, 0]), np.array([0])])
+    H2O = np.array([np.array([0,0.0005,0]), np.array([0.14])])      
+#    CH4 = pollutant('CH4', np.array([63,21,9]), 0.507)
+#    N2O = pollutant('N2O', np.array([270,290, 190]), 0.983)
+    H2 = np.array([np.array([0,0,0]), np.array([0])])
+    N2 = np.array([np.array([0,0,0]), np.array([0])])
+    O2 = np.array([np.array([0,0,0]), np.array([0])])
+
+#    
+    return np.array([CO2, CO, H2O, H2, N2, O2])
+
 
 def GetReactionProducts(AF, FuelMass):
     '''
@@ -37,9 +69,10 @@ def GetReactionProducts(AF, FuelMass):
     #Convert kerosene to molar mass
     molar_ker = FuelMass/MM_ker
     out = []
-    for i in range(len(R)):
-        if 0.90 < R[i] <= 1.00:
-            
+    for i, Ri in enumerate(R):
+        f_O = 15.5
+        if 0.90 < Ri <= 1.00:
+            print('In 0.90 < Ri < 1.00', Ri)             
             #Mole per mole kerosene
             f_CO2 = 10
             f_H2O = 11
@@ -47,9 +80,9 @@ def GetReactionProducts(AF, FuelMass):
             f_O   = 15.5       
             
             #Convert to kg
-            CO2 = f_CO2 * molar_ker * MM_CO2
-            H2O = f_H2O *  molar_ker * MM_H2O
-            N2  = f_N * molar_ker * MM_N2
+            CO2 = f_CO2 * molar_ker[i] * MM_CO2
+            H2O = f_H2O *  molar_ker[i] * MM_H2O
+            N2  = f_N * molar_ker[i] * MM_N2
             CO  = 0
             H2  = 0
             O2  = 0
@@ -58,51 +91,66 @@ def GetReactionProducts(AF, FuelMass):
             
             out.append([CO2, CO, H2O, H2, N2, O2])
             
-        elif 0 < R[i] <= .90:
-            
+        elif 0 < Ri <= .90:
+            print('In 0.<Ri < .90', Ri)            
             #Product Factors Constants       
             f_CO2 = 10
             f_H2O = 11
-            f_N   = 3.76 * f_O/R
-            f_O   = f_O/R -15.5
+            f_N   = 3.76 * f_O/Ri
+            f_O   = f_O/Ri - 15.5
             
             #Convert to kg
-            CO2 = f_CO2 * molar_ker * MM_CO2
-            H2O = f_H2O *  molar_ker * MM_H2O
-            N2  = f_N * molar_ker * MM_N2
+            CO2 = f_CO2 * molar_ker[i] * MM_CO2
+            H2O = f_H2O *  molar_ker[i] * MM_H2O
+            N2  = f_N * molar_ker[i] * MM_N2
             CO  = 0
             H2  = 0
-            O2  = f_O * molar_ker * MM_O2
+            O2  = f_O * molar_ker[i] * MM_O2
             out.append([CO2, CO, H2O, H2, N2, O2])
         
-        elif R[i] > 1.00:
-            
+        elif 1.00 < Ri <= 1.55:
+            print('In Ri > 1.00', Ri)
             ## case when CO == 0
             
             #Mole per mole kerosene
             
             f_CO2 = 10
-    #        f_CO  = 20 - 31/R
-            f_N   = 58.28/R
-            f_H   = 31 - 31/R
-            f_O   = 31/R - 20
+    #        f_CO  = 20 - 31/Ri
+            f_N   = 58.28/Ri
+            f_H   = 31 - 31/Ri
+            f_O   = 31/Ri - 20
             
             #Convert to kg
-            CO2 = f_CO2 * molar_ker * MM_CO2
-            H2O = f_O * molar_ker * MM_H2O
-            N2  = f_N * molar_ker * MM_N2
+            CO2 = f_CO2 * molar_ker[i] * MM_CO2
+            H2O = f_O * molar_ker[i] * MM_H2O
+            N2  = f_N * molar_ker[i] * MM_N2
             CO  = 0
-            H2  = f_H * molar_ker * MM_H2
+            H2  = f_H * molar_ker[i] * MM_H2
             O2  = 0
             
             out.append([CO2, CO, H2O, H2, N2, O2])
         
+        elif Ri > 1.55:
+            '''
+            Not considered
+            '''
+            print('In Ri > 1.55', Ri)
+            CO2 = 0
+            H2O = 0
+            N2  = 0
+            CO  = 0
+            H2  = 0
+            O2  = 0
+            out.append([CO2, CO, H2O, H2, N2, O2])
+        
         else:
+            print(Ri)
             return ValueError("Negative Air-to-Fuel ratio!")
+        
     return out            
 #        return None #should not get here
     
-def GetEI(AF, mdot, time, Aircraft, ISA_model):
+def GetEI(AF, mdot, time, Aircraft, ISA_model, Pollutants):
     
     '''
     INPUT: Masses of the polluting reaction products
@@ -121,25 +169,25 @@ def GetEI(AF, mdot, time, Aircraft, ISA_model):
 #        different"
 
     Fuel = GetFuelBurn(mdot, time)
-#    AF = "get inlet area rho*V**L"/np.array(EngineProp)
-#    A_inlet = Aircraft.ParProp.Engine_diameter**2 * np.pi/4
     T, p, rho = ISA_model.ISAFunc([])
-#    AF = A_inlet * rho *  Aircraft
-    
-    Products = []
-    Impact=[]
-#    for i in range(len(AF)):
-    Producti = GetReactionProducts(AF, mdot)
+
+    Products = np.array(GetReactionProducts(AF, mdot))
 #        print(Producti)
-    Products.append(Producti)
-    Producti = np.array(Producti)
-    GWPi = Producti[:,0] * pollutantLst().CO2.GWP[0] #TODO: change to other chemicals
-    RFi = 1#TODO: include for other chemicals
-    Impact.append([GWPi, RFi])
-    Impact = np.array(Impact)
-    EIGWP = sum((time[1]-time[0]) * (Impact[:,0])) #TODO: don't think it works
-    EIRF = np.sum(Impact[:,1])/len(Impact[:,1])
-    return [Fuel, EIGWP, EIRF]
+#    Products.append(Producti)
+#    Producti = np.array(Producti) #pollutantLst().CO2.GWP
+    GWP = []
+    RF = []
+    for j, Product in enumerate(Products):
+        for i, producti in enumerate(Product):
+            GWPi = producti * Pollutants[i][0]
+            RFi  = producti * Pollutants[i][1]                    #TODO: include for other chemicals
+            GWP.append(GWPi)
+            RF.append(RFi)
+
+    EIGWP = np.sum(np.array(time[1]-time[0]) * GWP) #TODO: don't think it works
+    EIRF = np.sum(RF)/len(RF)
+
+    return EIGWP, EIRF
 
 
 def GetEI2(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):

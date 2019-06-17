@@ -55,7 +55,7 @@ def Coper(Aircraft,doc):
     
 def DOC(docflt,docmaint,docdepr,doclnr,frt):
     #COSTS IS PER NM!!!!
-    #Convert to 2019 USD
+    #Converted to 2019 USD in other functions
     doc=sum([docflt,docmaint,docdepr,doclnr])/(1-0.07-frt)
     return doc
 
@@ -70,8 +70,10 @@ def DOCflt(Aircraft, Cman):
     Struct=Aircraft.ParStruc
     FlightOp=Aircraft.ParAnFP
     Prop=Aircraft.ParProp
+    Payload=Aircraft.ParPayload
     
     Ne=Prop.N_engines
+    Nprogram=Payload.fleetsize_y15
     Rbl=FlightOp.Rangeclimbcruise/1000*Convers.km2nm
     tflt=FlightOp.tclimbcruise/3600
     tbl=tgm+tflt
@@ -96,7 +98,7 @@ def DOCflt(Aircraft, Cman):
     #print (Cpol)
     
     #Insurance costs
-    ManPerACCost  = Cman/Aircraft.ParCostLst.Nprogram/par.CEF8919
+    ManPerACCost  = Cman/Nprogram/par.CEF8919
     Cins=ManPerACCost*(1+par.Fpror)*0.030/(Uannbl(tbl)*Vbl)
     #Can use below if above is wrong
     #Cins=0.02*DOC  
@@ -112,6 +114,7 @@ def DOCmaint(Aircraft,Cman):
     Struct=Aircraft.ParStruc
     FlightOp=Aircraft.ParAnFP
     Prop=Aircraft.ParProp
+    Payload=Aircraft.ParPayload
     
     tgm=tground(Aircraft)
     Rbl=FlightOp.Rangeclimbcruise/1000*Convers.km2nm
@@ -120,7 +123,8 @@ def DOCmaint(Aircraft,Cman):
     Vbl=Rbl/tbl
     Rlap=par.Rlap
     Ne=Prop.N_engines
-    ManPerACCost  = Cman/Aircraft.ParCostLst.Nprogram/par.CEF8919
+    Nprogram=Payload.fleetsize_y15
+    ManPerACCost  = Cman/Nprogram/par.CEF8919
     AEP=ManPerACCost*(1+par.Fpror)
     EP=Prop.Engine_cost*1e6/par.CEF8919
     Hem=5000        
@@ -156,6 +160,7 @@ def DOCdepr(Aircraft,Cman):
     Struct=Aircraft.ParStruc
     FlightOp=Aircraft.ParAnFP
     Prop=Aircraft.ParProp
+    Payload=Aircraft.ParPayload
     
     tgm=tground(Aircraft)
     Rbl=FlightOp.Rangeclimbcruise/1000.*Convers.km2nm
@@ -165,9 +170,10 @@ def DOCdepr(Aircraft,Cman):
     ASP=par.ASP/par.CEF8919
     EP=Prop.Engine_cost*1e6/par.CEF8919
     Ne=Prop.N_engines
+    Nprogram=Payload.fleetsize_y15
     
     #Costs of aircraft depriciation
-    ManPerACCost  = Cman/Aircraft.ParCostLst.Nprogram/par.CEF8919 #AC cost
+    ManPerACCost  = Cman/Nprogram/par.CEF8919 #AC cost
     AEP=ManPerACCost*(1+par.Fpror)
     Cdap=0.85*(AEP-Ne*EP-ASP)/(10*Uannbl(tbl)*Vbl)
     
