@@ -4,12 +4,13 @@ Created on Thu May  9 08:55:35 2019
 
 @author: hksam
 """
-import numpy as np
-import sys
-sys.path.append('../../../../')
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[4])
 #from All_dic_Parameters import Parameters as par
 from A22DSE.Models.CostModel.Current.RoskamFuncList import (
         Wampr, MHRManProg, MHRToolProg, MHRmanr, cmat,MHRtoolr, eas)
+import numpy as np
 
 #def CapcMFunc(MTOW, Vmax, Nprogram, CostEngine, 
 #         N_Engine, N_m):
@@ -30,7 +31,7 @@ def CapcMFunc(Aircraft, ISA_model, CostEngine):
     par = Aircraft.ParCostLst
     MTOW = Aircraft.ParStruc.MTOW
     ConversTool = Aircraft.ConversTool
-    Struct = Aircraft.ParStruc
+    Prop = Aircraft.ParProp
     
     Nrdte = par.Nrdte                # Number of test ac, is between 2-8
     Fdiff = par.Fdiff                # Difficulty level of design 1 to 2
@@ -40,7 +41,7 @@ def CapcMFunc(Aircraft, ISA_model, CostEngine):
     Nrr = par.Nrr                    # RDTE production rate
     Nprogram = par.Nprogram          # Total amount of aircraft produced during
                                      # program
-    N_Engine = Struct.N_engines
+    N_Engine = Prop.N_engines
     N_m = Nprogram
     Nrm = par.Nrm                    # Airplane manu. rate to prod. std
     Rtm = Rtr                               # Tooling labor rate for manufact.
