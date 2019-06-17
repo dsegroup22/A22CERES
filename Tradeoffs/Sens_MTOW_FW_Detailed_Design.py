@@ -27,7 +27,7 @@ def Sensitivity_New_MTOW_FW(Which_Plot, X_steps,Y_steps):
     prop = TestAC.ParProp
     TestAC.ParPayload.m_payload = 9700.
     #lists of varaying input parameters
-    OEWmargin_lst = np.linspace(1,1.15,X_steps)    
+    OEWmargin_lst = np.linspace(1.05,1.13,X_steps)    
     Thrustmargin_lst = np.linspace(345.,1845.,X_steps)
     altitude_lst = np.linspace(18000.,21000.,Y_steps)
     
@@ -59,11 +59,11 @@ def Sensitivity_New_MTOW_FW(Which_Plot, X_steps,Y_steps):
     Y = altitude_lst
     ax.set_ylabel('cruise altitude [m]')            
     #contour lines        
-    CS = ax.contour(X,Y,FW_lst,8, colors =['#FFFFFF', '#FFFFFF',\
+    CS = ax.contour(X,Y,FW_lst,16, colors =['#FFFFFF', '#FFFFFF',\
         '#FFFFFF', '#FFFFFF','#000000','#000000','#000000','#000000'] )
     ax.clabel(CS, inline=1, fontsize=10)
     #contour colours
-    firstplot = ax.contourf(X, Y, MTOW_lst,8, cmap='Greys_r')
+    firstplot = ax.contourf(X, Y, MTOW_lst,16, cmap='Greys_r')
     
     #labels and axes and stuff
     labels = ['Fuel weight [kg]']
