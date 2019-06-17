@@ -28,7 +28,7 @@ CLa    = anfp.C_L_alpha_cruise# Slope of CL-alpha curve [ ]
 # Longitudinal stability
 Cma    = -0.25*anfp.MAC*CLa #anfp.C_m_a  #0.01 #p143 # longitudinal stabilty [ ]
 Cmde   = 1            # elevator effectiveness [ ]   !!!!!!!!!!!!!
-print(Cma)
+
 # Aircraft geometry
 
 S      = anfp.S	          # wing area [m^2]
@@ -90,7 +90,7 @@ CDu = M1* (-16*W**2/(rho**2*(gamma*R*T_cruise)**2*M1**5*S**2*pi*A*e))
 # Stabiblity derivatives
 
 CX0    = W*sin(th0)/(0.5*rho*V0**2*S)
-CXu    = (CLu*sin(alpha0)-CDu*cos(alpha0))/c    #-0.02792  #Clu,Cdu p136,133
+CXu    = -CDu #-0.2792  #(CLu*sin(alpha0)-CDu*cos(alpha0))/c #-0.02792  #Clu,Cdu p136,133
 CXa    = -2*CL/(pi*A*e)*CLa+CL      #-0.47966  #p139
 #CXadot = +0.08330
 #CXq    = -0.28170
@@ -104,7 +104,7 @@ CZadot = -2*anfp.CLhalpha*0.95*1*deda     #anfp.C_L_adot    #-0.00350 #p141
 CZq    = -2*anfp.CLhalpha*layout.xht/c*0.95*0.18        #anfp.C_l_q       #-5.66290 #144
 #CZde   = -0.69612
 
-Cmu    = +0.06990  #p138 table
+#Cmu    = +0.06990  #p138 table
 Cmadot = -2.2*anfp.CLhalpha*0.95*layout.xht*deda#anfp.C_m_adot    #+0.17800
 Cmq    = -2.2*anfp.CLhalpha*0.95*layout.xht  #anfp.C_m_q       #-8.79415 #145
 
@@ -130,11 +130,12 @@ Cnr    =  -CLvbeta*(2*layout.xvt/b)**2*0.95*layout.Svt/S    #anfp.C_n_r      #-0
 #Cnda   =  -0.0120
 #Cndr   =  -0.0939
 
-#-----eigenvalues for dynamic motions ----
+
+#--------------------------------------------------------------------------
+#-------------eigenvalues for dynamic motions---------------------
+#--------------------------------------------------------------------------
 
 #short period 
-
-#Eigenvalue
 A1 = 4* muc**2 * KY2
 B1 = -2 * muc *(KY2*CZa + Cmadot+ Cmq )
 C1 = CZa * Cmq  - 2*muc * Cma
@@ -142,18 +143,19 @@ labda_real_1 = - B1 / (2*A1)
 labda_imag_1  =  (sqrt(4*A1*C1-B1**2))/(2*A1)
 labda_c1 = complex(labda_real_1,labda_imag_1)
 labda_1 = labda_c1 * (V0/c)
-print(labda_c1)
+#print(labda_c1)
 labda_c2 = complex(labda_real_1, -labda_imag_1)
 labda_2 = labda_c2 * (V0/c)
 
-#Boundary conditions
+T1 = -0.693/labda_real_1*c/V0
+omega01 = sqrt(labda_real_1**2+labda_imag_1**2)*V0/c
+xi1 = -labda_imag_1/sqrt(labda_real_1**2+labda_imag_1**2)
+P1 = 2*pi/omega01/sqrt(1-xi1**2) 
  
 
 
 
 #phugoid 
-
-#Eigenvalue
 A2 = -4 * muc**2 
 B2 = 2 * muc * CXu
 C2 = -CZu  * CZ0 
@@ -164,11 +166,15 @@ labda_3 = labda_c3 *(V0/c)
 labda_c4 = complex(labda_real_2, -labda_imag_2)
 labda_4 = labda_c4*(V0/c) 
 
-
+T2 = -0.693/labda_real_2*c/V0
+omega02 = sqrt(labda_real_2**2+labda_imag_2**2)*V0/c
+xi2 = -labda_imag_2/sqrt(labda_real_2**2+labda_imag_2**2)
+P2 = 2*pi/omega02/sqrt(1-xi2**2) 
 
 #Aperiodic 
 labda_c5 = Clp / (4 * mub * KX2)
 labda_5 = labda_c5*(V0/c) 
+
 
 
 #Dutch roll 
@@ -183,6 +189,10 @@ labda_6 = labda_c6*(V0/c)
 labda_c7 = complex(labda_real_3, -labda_imag_3)
 labda_7 = labda_c7*(V0/c) 
 
+T3 = -0.693/labda_real_3*c/V0
+omega03 = sqrt(labda_real_3**2+labda_imag_3**2)*V0/c
+xi3 = -labda_imag_3/sqrt(labda_real_3**2+labda_imag_3**2)
+P3 = 2*pi/omega02/sqrt(1-xi2**2) 
 
 
 # Spiral 
