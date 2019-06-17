@@ -62,7 +62,7 @@ def Payload_optimiser_fleety1(payload_lst):
          
          TestAC.ParAnFP.s_cruise = CruiseRange(TestAC)
          
-         tcruise = CruiseTime(TestAC, ISA_model)
+         #tcruise = CruiseTime(TestAC, ISA_model)
          
          Wfratio_flighttime_flightrange(TestAC)
          
@@ -70,7 +70,7 @@ def Payload_optimiser_fleety1(payload_lst):
          #get all partial times, to get total time
          tcruiseclimb = TestAC.ParAnFP.tclimbcruise 
          #timeground = tground(TestAC)
-         time = (tcruiseclimb)+3600. + turnaroundtime +0.2*3600. #+0.2 hours for ground time
+         time = (tcruiseclimb) + turnaroundtime +0.2*3600. #+0.2 hours for ground time
          #print(time/3600)
          #compute flights per year, based on continuous running, buffer is in
          # operational days, not daily time.
@@ -107,7 +107,7 @@ def Payload_optimiser_Both(X_steps):
     if plot:
         plt.plot(payload_lst,wf_tot_y1)#'-ob',markersize=4)
         plt.xlabel('Payload mass per ac [kg]')
-        plt.ylabel('Fleet size in year 1')
+        plt.ylabel('Total fuel burn in year 1 [kg]')
     return payload_lst, f1,f2
 
 def OptimiserPlotter(Which_one, X_steps, w1, w2):
@@ -129,6 +129,7 @@ def OptimiserPlotter(Which_one, X_steps, w1, w2):
         plt.plot(payload_lst,f3)
         plt.plot(payload_lst,f1)
         plt.step(payload_lst,f2)
+    print('line is done')
         
         
 def Sens_Opt_Payload(Which_one,X_steps, sens_steps):
