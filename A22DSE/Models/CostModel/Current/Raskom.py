@@ -29,6 +29,7 @@ def crdte(Aircraft, ISA_module, Cer):
     par = Aircraft.ParCostLst
     Convers = Aircraft.ConversTool      # for ease of re-engineering code
     Struct = Aircraft.ParStruc
+    Prop = Aircraft.ParProp
     
 #    CEF=par.get('CEF19')            #Inflation between 2019-1985
     rer=par.rer*par.CEF8919   #Engineering dollar rate         
@@ -47,7 +48,7 @@ def crdte(Aircraft, ISA_module, Cer):
     Fmat=par.Fmat            #Correction factor for type of material
     cavionics= par.Cavionics #costs of ac?
     cer = Cer                  #Costs per engine at 2019
-    ne = Struct.N_engines                      #number of engines
+    ne = Prop.N_engines                      #number of engines
     Nrr= par.Nrr              #RDTE production rate
     Vmax=eas(Aircraft, ISA_module)              #keas
     kg2lbs = 1/Convers.lbs2kg

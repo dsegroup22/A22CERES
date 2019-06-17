@@ -32,6 +32,7 @@ def CapcMFunc(Aircraft, ISA_model, CostEngine):
     MTOW = Aircraft.ParStruc.MTOW
     ConversTool = Aircraft.ConversTool
     Prop = Aircraft.ParProp
+    Payload = Aircraft.ParPayload
     
     Nrdte = par.Nrdte                # Number of test ac, is between 2-8
     Fdiff = par.Fdiff                # Difficulty level of design 1 to 2
@@ -39,7 +40,7 @@ def CapcMFunc(Aircraft, ISA_model, CostEngine):
     Fmat = par.Fmat                  #Correction factor type of material
     Rtr = par.rtr                    # Tooling labor rate in $/manhr
     Nrr = par.Nrr                    # RDTE production rate
-    Nprogram = par.Nprogram          # Total amount of aircraft produced during
+    Nprogram = Payload.fleetsize_y15 # Total amount of aircraft produced during
                                      # program
     N_Engine = Prop.N_engines
     N_m = Nprogram
@@ -103,12 +104,12 @@ def CaedMFunc(Aircraft, ISA_model):
     par = Aircraft.ParCostLst
     MTOW = Aircraft.ParStruc.MTOW
     ConversTool = Aircraft.ConversTool
-#    Struct = Aircraft.ParStruc
+    Payload = Aircraft.ParPayload
     
     Nrdte = par.Nrdte                # Number of test ac, is between 2-8
     Fdiff = par.Fdiff                # Difficulty level of design 1 to 2
     rer = par.rer                      # Engineering manhour rate
-    Nprogram = par.Nprogram          # Total amount of aircraft produced during
+    Nprogram = Payload.TotalPayloadYear15 # Total amount of aircraft produced during
     rem = rer                               # Engineering manhour rate
     Fcad = par.Fcad                    # CAD model factor
     kg2lbs = 1/ConversTool.lbs2kg
