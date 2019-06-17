@@ -111,9 +111,14 @@ def ClassIISizing(Aircraft):
     vtail(Aircraft)
     anfp.CLhmax, anfp.CLhalpha = CLh(Aircraft)
     
+        
+    xcg_fwd,xcg_aft = loadingdiag(Aircraft)
+    
+    Layout.x_cg = [xcg_fwd,xcg_aft]
+    
     #positions lemacs of tails
-    Layout.x_lemacv=Aircraft.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xvt-0.25*Layout.mac_v
-    Layout.x_lemach=Aircraft.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xht-0.25*Layout.mac_h
+    Layout.x_lemacv= Layout.x_cg[1]+Layout.xvt-0.25*Layout.mac_v#Aircraft.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xvt-0.25*Layout.mac_v
+    Layout.x_lemach= Layout.x_cg[1]+Layout.xht-0.25*Layout.mac_h#Aircraft.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xht-0.25*Layout.mac_h
     
 
     
@@ -147,10 +152,7 @@ def ClassIISizing(Aircraft):
     Engines_placement(Aircraft)    
 
 
-    
-    xcg_fwd,xcg_aft = loadingdiag(Aircraft)
-    
-    Layout.x_cg = [xcg_fwd,xcg_aft]
+
 
 
 
