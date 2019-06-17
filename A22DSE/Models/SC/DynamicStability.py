@@ -121,7 +121,7 @@ CYr    = CLvbeta*(2*layout.xvt/b)*0.95*layout.Svt/S   #+0.8495          #p157
 #CYdr   = +0.2300
 
 Clb    = anfp.C_l_b       #-0.10260
-Clp    = -2*CLvbeta*(layout.bv/b)**2*0.95*layout.Svt/S    #anfp.C_l_p       #-0.71085 #p152
+Clp    = anfp.C_l_p# -2*CLvbeta*(layout.bv/b)**2*0.95*layout.Svt/S    #anfp.C_l_p       #-0.71085 #p152
 Clr    = CLvbeta*(2*layout.xvt*layout.bv/(b**2))*0.95*layout.Svt/S   #anfp.C_l_r       #+0.23760 #p161
 #Clda   = -0.23088
 #Cldr   = +0.03440
