@@ -165,7 +165,7 @@ def ComputeCDpCurl(Aircraft, CL, sweep):
         '''
         Computes the experienced Re of the chord
         '''
-        if np.abs((Aircraft.ParAnFP.h_cruise-20000)/20000) < 0.05:
+        if np.abs((Aircraft.ParAnFP.h_cruise-20000)/20000) < 0.20:
             v = 0.0000143226
         else:
             ValueError("Not programmed yet\n")

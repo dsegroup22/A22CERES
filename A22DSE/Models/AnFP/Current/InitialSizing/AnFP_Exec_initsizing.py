@@ -480,7 +480,9 @@ def WSandTW(Plots, Aircraft, ISA_model):
                                                   #Estimate for MTOW
         
         index = np.where(ws == ws.flat[np.abs(ws - wsmin).argmin()])
-        TW = float(max(TWtakeoff[index],TWceiling[index],TWclimb,TWcruisemax[index])) #Choose max TW values
+        
+        #print(TWtakeoff[index],TWceiling[index],TWcruisemax[index])
+        TW = float(max(TWtakeoff[index],TWceiling[index],TWcruisemax[index])) #Choose max TW values
 
         atmos = ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])
         TWactcruise = float(max(TWcruisemax[index],TWceiling[index]))*atmos[2]/1.225

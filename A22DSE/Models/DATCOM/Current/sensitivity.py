@@ -20,8 +20,8 @@ from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
 
 
 parameter='C_D_0'
-steps=3
- #runtime approx. par_class_conv time (approx 5) + steps^2*0.25 sec
+steps=20
+
 dihedralrange = np.linspace(-5,1,steps)
 twistrange = np.linspace(-5,1,steps)
 
@@ -59,20 +59,20 @@ for parameter in parameters:
             Conv.ParAnFP.twwing=tw
             C_D_0,C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot,\
         C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q=GetDerivatives(Conv,'hihg')
-            print(dh,tw,GetDerivatives(Conv,'hihg'))
+            
             subdata=np.append(subdata,vars()[parameter])
     
         data=np.vstack((data,subdata))
     data=data[1:]
     
     plt.clf()
-    plt.contourf(dihedralrange,twistrange,data,cmap='Greys',levels=20)
+    plt.contourf(dihedralrange,twistrange,data,cmap='Greys',levels=50)
     plt.colorbar()
     plt.title(title)
     
-    plt.xlabel(r'$\Gamma$ [$^{\circ}$]')
-    plt.ylabel('Twist [$^{\circ}$]')
-    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Wing\''[:-1]+parameter+  ".png")
+    plt.xlabel(r'$\Gamma_{Wing}$ [$^{\circ}$]')
+    plt.ylabel('Wing Twist [$^{\circ}$]')
+    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Wing\''[:-1]+parameter+  "wing.png")
 
     print(parameter)
 

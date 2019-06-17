@@ -19,8 +19,7 @@ from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
 
 parameter='C_D_0'
 
-steps=10
- #runtime approx. par_class_conv time (approx 5) + steps^2*0.25 sec
+steps=20
 
 
 dihedralrange = np.linspace(-3,3,steps)
@@ -73,7 +72,7 @@ for parameter in parameters:
     plt.colorbar()
     plt.title(title)
     
-    plt.xlabel(r'$\Gamma$ [$^{\circ}$]')
-    plt.ylabel('Twist [$^{\circ}$]')
-    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Tail\''[:-1]+parameter+  ".png")
+    plt.xlabel(r'$\Gamma_{Tail}$ [$^{\circ}$]')
+    plt.ylabel('Tail Twist [$^{\circ}$]')
+    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Tail\''[:-1]+parameter+  "tail.png")
     print(parameter)
