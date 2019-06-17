@@ -85,7 +85,7 @@ CL = 2*W/(rho*V0**2*S)               # Lift coefficient [ ]
 CD = CD0 + (CLa*alpha0)**2/(pi*A*e)  # Drag coefficient [ ]
 M1 = anfp.M_cruise
 CLu = M1**2/(1-M1**2)*CL    #??? figure 135
-CDu = M1* (-16*W**2/(rho**2*(gamma*R*T_cruise)**2*M1**5*S**2*pi*A*e))
+CDu = (2*CL**2)/(pi*A*e) * M1**2/(1-M1**2) #M1* (-16*W**2/(rho**2*(gamma*R*T_cruise)**2*M1**5*S**2*pi*A*e))
 
 # Stabiblity derivatives
 
