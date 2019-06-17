@@ -73,7 +73,7 @@ for parameter in parameters:
     plt.colorbar()
     plt.title(title)
     
-    plt.xlabel(r'$\Gamma$ [$^{\circ}$]')
-    plt.ylabel('Twist [$^{\circ}$]')
-    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Tail\''[:-1]+parameter+  ".png")
+    plt.xlabel(r'$\Gamma_{Tail}$ [$^{\circ}$]')
+    plt.ylabel('Tail Twist [$^{\circ}$]')
+    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Tail\''[:-1]+parameter+  "tail.png")
     print(parameter)
