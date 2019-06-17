@@ -75,7 +75,7 @@ def DOCflt(Aircraft, Cman):
     Ne=Prop.N_engines
     Nprogram=Payload.fleetsize_y15
     Rbl=FlightOp.Rangeclimbcruise/1000*Convers.km2nm
-    tflt=FlightOp.tclimbcruise/3600
+    tflt=FlightOp.tclimbcruise/3600.
     tbl=tgm+tflt
     Vbl=Rbl/tbl
     #print (tbl)
@@ -102,7 +102,6 @@ def DOCflt(Aircraft, Cman):
     Cins=ManPerACCost*(1+par.Fpror)*0.030/(Uannbl(tbl)*Vbl)
     #Can use below if above is wrong
     #Cins=0.02*DOC  
-    
     return sum([Ccrew,Cpol,Cins])*par.CEF8919
 
 def DOCmaint(Aircraft,Cman):
@@ -111,7 +110,6 @@ def DOCmaint(Aircraft,Cman):
     #Description:Costs for operational maintenance
     par=Aircraft.ParCostLst
     Convers=Aircraft.ConversTool
-    Struct=Aircraft.ParStruc
     FlightOp=Aircraft.ParAnFP
     Prop=Aircraft.ParProp
     Payload=Aircraft.ParPayload
@@ -150,14 +148,12 @@ def DOCmaint(Aircraft,Cman):
     fmat=0.3
     Camb=1.03*(flab*(MHRmapbl*Rlap+Ne*par.MHRmengbl*Rlap)+\
                fmat*(Cmatapblhr+Ne*Cmatengblhr))/Vbl
-
     return sum([Clabop,Clabeng,Cmatap,Cmateng,Camb])*par.CEF8919
 
 def DOCdepr(Aircraft,Cman):
     #Cost due to depriciation of the aircraft
     par=Aircraft.ParCostLst
     Convers=Aircraft.ConversTool
-    Struct=Aircraft.ParStruc
     FlightOp=Aircraft.ParAnFP
     Prop=Aircraft.ParProp
     Payload=Aircraft.ParPayload
@@ -216,7 +212,7 @@ def DOClnr(Aircraft):
      return sum([Clf,Cnf])*par.CEF8919,frt
  
 
-Cer  = 1.5e7 # USD19
+Cer  = 8.5e6 # USD19
 Cman=CmanFunc(Conv, ISA_model, Cer)
 docflt=DOCflt(Conv,Cman)
 docmaint=DOCmaint(Conv,Cman)
