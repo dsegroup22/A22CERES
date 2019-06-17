@@ -5,12 +5,12 @@ Created on Thu May  9 11:52:35 2019
 @author: hksam
 """
 
-import numpy as np
-import sys
-
-sys.path.append('../')
-
 #!!!NOTE: MTOW is lbs
+import numpy as np
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[4])
+
 
 def Wampr(MTOW):
     return 10**(0.1936+0.8645*np.log10(MTOW)) #AMPR weight

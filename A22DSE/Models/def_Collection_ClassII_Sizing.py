@@ -166,10 +166,10 @@ def ClassIISizing(Aircraft):
         anfp.C_l_p,anfp.C_Y_p,anfp.C_n_p,anfp.C_n_r,anfp.C_l_r,anfp.C_l_q,anfp.C_m_q=GetDerivatives(Aircraft,'hihg')
         
     #fleetsize calculations
-    anfp.cycletime = (anfp.tclimbcruise) + Payload.turnaroundtime +0.2*3600
+    anfp.cycletime = (278.*60.) + Payload.turnaroundtime +0.2*3600
     Payload.fleetsize_y1 =np.ceil(Payload.TotalPayloadYear1/(Payload.m_payload/1.05)/\
     (Payload.OperationalDays*(24*3600/anfp.cycletime))*1.1)
-    Payload.fleetsize_y15=np.ceil(Payload.TotalPayloadYear15/(Payload.m_payload/1.05)/\
-                            (Payload.OperationalDays*(24*3600/anfp.cycletime))*1.1)
+    Payload.fleetsize_y15= 15*Payload.fleetsize_y1 #np.ceil(Payload.TotalPayloadYear15/(Payload.m_payload/1.05)/\
+                            #(Payload.OperationalDays*(24*3600/anfp.cycletime))*1.1)+6.
     
 

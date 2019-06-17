@@ -28,7 +28,11 @@ CLa    = anfp.C_L_alpha_cruise# Slope of CL-alpha curve [ ]
 # Longitudinal stability
 Cma    = -0.25*anfp.MAC*CLa #anfp.C_m_a  #0.01 #p143 # longitudinal stabilty [ ]
 Cmde   = 1            # elevator effectiveness [ ]   !!!!!!!!!!!!!
+<<<<<<< HEAD
 
+=======
+#print(Cma)
+>>>>>>> bbbaec253f12dafbbc1e05ad97f27681f65da80e
 # Aircraft geometry
 
 S      = anfp.S	          # wing area [m^2]
@@ -109,8 +113,11 @@ Cmadot = -2.2*anfp.CLhalpha*0.95*layout.xht*deda#anfp.C_m_adot    #+0.17800
 Cmq    = -2.2*anfp.CLhalpha*0.95*layout.xht  #anfp.C_m_q       #-8.79415 #145
 
 betav = sqrt(1-M1**2)
-CLvbeta= 2*pi*layout.Avt/(2.+ sqrt(4.+layout.Avt*(betav/0.95)**2*(1.+(tan(radians(layout.Sweep50vt))/betav)**2)))
-CYb    = anfp.C_Y_b       #-0.7500
+CLvbeta= 2*pi*layout.Avt/(2.+ sqrt(4.+layout.Avt*(betav/0.95)**2*(1.+(tan\
+         (radians(layout.Sweep50vt))/betav)**2)))
+CYb    = anfp.C_Y_b #-0.00573*0 -2*1.5*1 - 1.1*CLvbeta*(0.724+3.06*((Layout.Svt/anfp.S)/(1+cos(anfp.Sweep_25)))*0.4*0.5+0.009*anfp.A)*(Layout.Svt/anfp.S)  #value is f up 
+#0 for wing dihedral in degrees#anfp.C_Y_b       #-0.7500
+
 CYbdot =  0     
 CYp    = -2*CLvbeta*layout.bv/b*0.95*layout.Svt/S  #anfp.C_Y_p       #-0.0304 #p150
 CYr    = CLvbeta*(2*layout.xvt/b)*0.95*layout.Svt/S   #+0.8495          #p157
@@ -118,7 +125,7 @@ CYr    = CLvbeta*(2*layout.xvt/b)*0.95*layout.Svt/S   #+0.8495          #p157
 #CYdr   = +0.2300
 
 Clb    = anfp.C_l_b       #-0.10260
-Clp    = -2*CLvbeta*(layout.bv/b)**2*0.95*layout.Svt/S    #anfp.C_l_p       #-0.71085 #p152
+Clp    = anfp.C_l_p# -2*CLvbeta*(layout.bv/b)**2*0.95*layout.Svt/S    #anfp.C_l_p       #-0.71085 #p152
 Clr    = CLvbeta*(2*layout.xvt*layout.bv/(b**2))*0.95*layout.Svt/S   #anfp.C_l_r       #+0.23760 #p161
 #Clda   = -0.23088
 #Cldr   = +0.03440
@@ -153,9 +160,11 @@ xi1 = -labda_imag_1/sqrt(labda_real_1**2+labda_imag_1**2)
 P1 = 2*pi/omega01/sqrt(1-xi1**2) 
  
 
-
-
 #phugoid 
+<<<<<<< HEAD
+=======
+#Eigenvalue
+>>>>>>> bbbaec253f12dafbbc1e05ad97f27681f65da80e
 A2 = -4 * muc**2 
 B2 = 2 * muc * CXu
 C2 = -CZu  * CZ0 
@@ -174,6 +183,7 @@ P2 = 2*pi/omega02/sqrt(1-xi2**2)
 #Aperiodic 
 labda_c5 = Clp / (4 * mub * KX2)
 labda_5 = labda_c5*(V0/c) 
+print (labda_c5)
 
 
 
@@ -188,6 +198,7 @@ labda_c6 = complex(labda_real_3,labda_imag_3 )
 labda_6 = labda_c6*(V0/c) 
 labda_c7 = complex(labda_real_3, -labda_imag_3)
 labda_7 = labda_c7*(V0/c) 
+print (labda_c6, labda_c7)
 
 T3 = -0.693/labda_real_3*c/V0
 omega03 = sqrt(labda_real_3**2+labda_imag_3**2)*V0/c
@@ -196,7 +207,7 @@ P3 = 2*pi/omega02/sqrt(1-xi2**2)
 
 
 # Spiral 
-
 #Eigenvalue
 labda_c8 = (2 * CL *(Clb* Cnr - Cnb * Clr ))/(Clp *(CYb * Cnr + 4*mub * Cnb) - Cnp *(CYb * Clr + 4 * mub * Clb ))
 labda_8 = labda_c8*(V0/c) 
+print (labda_c8)
