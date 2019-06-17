@@ -28,7 +28,7 @@ CLa    = anfp.C_L_alpha_cruise# Slope of CL-alpha curve [ ]
 # Longitudinal stability
 Cma    = -0.25*anfp.MAC*CLa #anfp.C_m_a  #0.01 #p143 # longitudinal stabilty [ ]
 Cmde   = 1            # elevator effectiveness [ ]   !!!!!!!!!!!!!
-print(Cma)
+#print(Cma)
 # Aircraft geometry
 
 S      = anfp.S	          # wing area [m^2]
@@ -109,8 +109,11 @@ Cmadot = -2.2*anfp.CLhalpha*0.95*layout.xht*deda#anfp.C_m_adot    #+0.17800
 Cmq    = -2.2*anfp.CLhalpha*0.95*layout.xht  #anfp.C_m_q       #-8.79415 #145
 
 betav = sqrt(1-M1**2)
-CLvbeta= 2*pi*layout.Avt/(2.+ sqrt(4.+layout.Avt*(betav/0.95)**2*(1.+(tan(radians(layout.Sweep50vt))/betav)**2)))
-CYb    = anfp.C_Y_b       #-0.7500
+CLvbeta= 2*pi*layout.Avt/(2.+ sqrt(4.+layout.Avt*(betav/0.95)**2*(1.+(tan\
+         (radians(layout.Sweep50vt))/betav)**2)))
+CYb    = anfp.C_Y_b #-0.00573*0 -2*1.5*1 - 1.1*CLvbeta*(0.724+3.06*((Layout.Svt/anfp.S)/(1+cos(anfp.Sweep_25)))*0.4*0.5+0.009*anfp.A)*(Layout.Svt/anfp.S)  #value is f up 
+#0 for wing dihedral in degrees#anfp.C_Y_b       #-0.7500
+
 CYbdot =  0     
 CYp    = -2*CLvbeta*layout.bv/b*0.95*layout.Svt/S  #anfp.C_Y_p       #-0.0304 #p150
 CYr    = CLvbeta*(2*layout.xvt/b)*0.95*layout.Svt/S   #+0.8495          #p157
@@ -149,10 +152,7 @@ labda_2 = labda_c2 * (V0/c)
 #Boundary conditions
  
 
-
-
 #phugoid 
-
 #Eigenvalue
 A2 = -4 * muc**2 
 B2 = 2 * muc * CXu
@@ -169,6 +169,7 @@ labda_4 = labda_c4*(V0/c)
 #Aperiodic 
 labda_c5 = Clp / (4 * mub * KX2)
 labda_5 = labda_c5*(V0/c) 
+print (labda_c5)
 
 
 #Dutch roll 
@@ -182,11 +183,12 @@ labda_c6 = complex(labda_real_3,labda_imag_3 )
 labda_6 = labda_c6*(V0/c) 
 labda_c7 = complex(labda_real_3, -labda_imag_3)
 labda_7 = labda_c7*(V0/c) 
+print (labda_c6, labda_c7)
 
 
 
 # Spiral 
-
 #Eigenvalue
 labda_c8 = (2 * CL *(Clb* Cnr - Cnb * Clr ))/(Clp *(CYb * Cnr + 4*mub * Cnb) - Cnp *(CYb * Clr + 4 * mub * Clb ))
 labda_8 = labda_c8*(V0/c) 
+print (labda_c8)
