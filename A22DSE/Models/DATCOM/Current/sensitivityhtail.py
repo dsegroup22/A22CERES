@@ -20,7 +20,6 @@ from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
 parameter='C_D_0'
 
 steps=20
- #runtime approx. par_class_conv time (approx 5) + steps^2*0.25 sec
 
 
 dihedralrange = np.linspace(-3,3,steps)
