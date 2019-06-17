@@ -81,15 +81,10 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
         x = np.average(y[idx] + z[idx])/2
         return x
     
-    CL_des = Intersect(CL_optLst, CL_i)
-    tc_des = (FormFuncs.Compute_tc_limit(Aircraft, CL_des, sweep_opt)/
-              np.cos(sweep_opt)**2)
-    FWP_opt = FormFuncs.ComputeFWP(Aircraft, Fprop, theta2, theta3, Aw, 
-                                   CL_des, sweep_opt)
     # Optimum CL/CD
-    # =========================================================================
-    #                       CONSTRAINTS
-    # =========================================================================
+# =============================================================================
+#                       CONSTRAINTS
+# =============================================================================
         
         # Span-loading / Take-off field length
     WB = FormFuncs.ComputeSpanLoadingCL(Aircraft, ISA_model, Fprop, theta2, 
@@ -99,9 +94,20 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     onset_margin = 1.40 # Regulations require 30% margin betw. onset and cruise
     CL_lim    = CL_buffet/onset_margin #+10% higher than certification
     CL_climb  = 1.03/1.1
-    # =========================================================================
-    #                       PLOTTING
-    # =========================================================================
+    
+# =============================================================================
+#                           Design Parameters
+# =============================================================================
+    
+#    CL_des = Intersect(CL_optLst, CL_i)
+    CL_des = CL_lim
+    tc_des = (FormFuncs.Compute_tc_limit(Aircraft, CL_des, sweep_opt)/
+              np.cos(sweep_opt)**2)
+    FWP_opt = FormFuncs.ComputeFWP(Aircraft, Fprop, theta2, theta3, Aw, 
+                                   CL_des, sweep_opt)
+# =============================================================================
+#                       PLOTTING
+# =============================================================================
     
     if plot == True:
         plt.clf()
