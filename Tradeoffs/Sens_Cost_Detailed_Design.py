@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jun 17 11:20:05 2019
+Created on Mon Jun 17 14:50:02 2019
 
 @author: Nout
 """
+
 import time
 
 
@@ -12,10 +13,11 @@ from pathlib import Path
 os.chdir(Path(__file__).parents[1])
 from A22DSE.Parameters.Par_Class_All import Aircraft
 from A22DSE.Parameters.Par_Class_Conventional import TotalAC
+from A22DSE.Models.CostModel.Current.TotalCost import TotalC
 import numpy as np
 import matplotlib.pyplot as plt
 
-def Sensitivity_New_MTOW_FW(Which_Plot, X_steps,Y_steps):
+def Sens_Cost_Detailed(Which_Plot,X_steps,Y_steps):
     start_time = time.time()
     #define plot tools
     fig, ax = plt.subplots()
@@ -25,18 +27,19 @@ def Sensitivity_New_MTOW_FW(Which_Plot, X_steps,Y_steps):
     anfp = TestAC.ParAnFP
     struc = TestAC.ParStruc
     prop = TestAC.ParProp
-    TestAC.ParPayload.m_payload = 9700.
+    payload = TestAC.ParPayload
+    
     #lists of varaying input parameters
     OEWmargin_lst = np.linspace(1,1.15,X_steps)    
     Thrustmargin_lst = np.linspace(345.,1845.,X_steps)
-    altitude_lst = np.linspace(18000.,21000.,Y_steps)
+    payload_lst = np.linspace(7000.,11500.,Y_steps)
     
     #lists for output parameters
-    MTOW_lst = np.zeros((X_steps,Y_steps)) 
-    FW_lst = np.zeros((X_steps,Y_steps))
+    TotalC_lst = np.zeros((X_steps,Y_steps)) 
+    OperC_lst = np.zeros((X_steps,Y_steps))
     
     for i in range(Y_steps):
-        anfp.h_cruise = altitude_lst[i]
+        payload.m_payload = payload_lst[i]
         for j in range(X_steps):
             if Which_Plot ==1:
                 struc.FoS_OEW = OEWmargin_lst[j]
@@ -45,8 +48,8 @@ def Sensitivity_New_MTOW_FW(Which_Plot, X_steps,Y_steps):
             
             TotalAC(TestAC)
             
-            MTOW_lst[j,i] = struc.MTOW
-            FW_lst[j,i] = struc.FW
+            TotalC_lst[j,i] = TotalC(SensTestAc,ISA_model)[1]
+            OperC_lst[j,i] = TotalC(SensTestAc,ISA_model)[0]
     
     #for plotting
     if Which_Plot == 1:    
@@ -55,15 +58,15 @@ def Sensitivity_New_MTOW_FW(Which_Plot, X_steps,Y_steps):
             
     elif Which_Plot == 2:
         X = Thrustmargin_lst
-    
-    Y = altitude_lst
-    ax.set_ylabel('cruise altitude [m]')            
+        ax.set_xlabel('Correction for Thrust level[N]')
+    Y = payload_lst
+    ax.set_ylabel('payload mass [kg]')            
     #contour lines        
-    CS = ax.contour(X,Y,FW_lst,8, colors =['#FFFFFF', '#FFFFFF',\
+    CS = ax.contour(X,Y,OperC_lst,8, colors =['#FFFFFF', '#FFFFFF',\
         '#FFFFFF', '#FFFFFF','#000000','#000000','#000000','#000000'] )
     ax.clabel(CS, inline=1, fontsize=10)
     #contour colours
-    firstplot = ax.contourf(X, Y, MTOW_lst,8, cmap='Greys_r')
+    firstplot = ax.contourf(X, Y, TotalC_lst,8, cmap='Greys_r')
     
     #labels and axes and stuff
     labels = ['Fuel weight [kg]']
