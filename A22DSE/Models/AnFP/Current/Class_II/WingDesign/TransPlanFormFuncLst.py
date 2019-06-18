@@ -84,7 +84,7 @@ def ComputemuT(Aircraft):
     #todo: change np.min to np.MAX
     
     #ASSUMPTIONS AND CONSTANTS
-    T_TO = Aircraft.ParAnFP.T_to
+    T_TO = Aircraft.ParProp.T_cruise_available
     N_engine = Aircraft.ParProp.N_engines
     NacelleFrac = 1.02
     
