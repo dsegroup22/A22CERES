@@ -30,7 +30,7 @@ def Sens_Cost_Detailed(Which_Plot,X_steps,Y_steps):
     payload = TestAC.ParPayload
     
     #lists of varaying input parameters
-    OEWmargin_lst = np.linspace(1,1.15,X_steps)    
+    OEWmargin_lst = np.linspace(1.05,1.13,X_steps)    
     Thrustmargin_lst = np.linspace(345.,1845.,X_steps)
     payload_lst = np.linspace(7000.,11500.,Y_steps)
     
@@ -62,11 +62,12 @@ def Sens_Cost_Detailed(Which_Plot,X_steps,Y_steps):
     Y = payload_lst
     ax.set_ylabel('payload mass [kg]')            
     #contour lines        
-    CS = ax.contour(X,Y,OperC_lst,8, colors =['#FFFFFF', '#FFFFFF',\
-        '#FFFFFF', '#FFFFFF','#000000','#000000','#000000','#000000'] )
+    CS = ax.contour(X,Y,OperC_lst,10, colors =['#FFFFFF', '#FFFFFF',\
+        '#FFFFFF', '#FFFFFF''#FFFFFF','#000000','#000000','#000000','#000000',\
+        '#000000'] )
     ax.clabel(CS, inline=1, fontsize=10)
     #contour colours
-    firstplot = ax.contourf(X, Y, TotalC_lst,8, cmap='Greys_r')
+    firstplot = ax.contourf(X, Y, TotalC_lst,16, cmap='Greys_r')
     
     #labels and axes and stuff
     labels = ['Fuel weight [kg]']

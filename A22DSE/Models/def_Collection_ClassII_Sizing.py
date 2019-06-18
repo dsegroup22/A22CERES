@@ -16,7 +16,7 @@ os.chdir(Path(__file__).parents[2])
 
 from A22DSE.Models.POPS.Current.payloadcalculations import InletArea,\
 BurnerMass,PayloadtankVolume,PayloadtankLength,PayloadtankMass,Payloadcg
-
+from A22DSE.Models.Class_II_Weight.Class_II_Wing import Wing_Geo_Additional
 from A22DSE.Models.Layout.Current.Area import FusAreas
 from A22DSE.Models.Class_II_Weight.SC_curve_and_cg import xoe
 from A22DSE.Parameters.Par_Class_Diff_Configs import (ISA_model)
@@ -54,6 +54,8 @@ def ClassIISizing(Aircraft):
     struc.n_stiff  = 40 
     struc.G_Al = 26.9e9                         #Pa
     struc.G_comp = 5e9                          #Pa
+    struc.E_Al =   71.7e9                       #Pa
+    struc.E_comp =   30e9                       #Pa
     
     #OEW position wrt mac
     Aircraft.ParLayoutConfig.x_oe = xoe(Aircraft)
@@ -71,7 +73,7 @@ def ClassIISizing(Aircraft):
     #engine weight
     Aircraft.ParProp.Engine_weight_Total = Aircraft.ParProp.Engine_weight*Aircraft.ParStruc.N_engines
     
-    
+    Layout.x_LE_root = Wing_Geo_Additional(Aircraft)
     
     #fuel tank layout
     Aircraft.ParLayoutConfig.b_fueltank = 0.60 * Aircraft.ParAnFP.b #Estimated from figure from Torenbeek p337 
@@ -129,10 +131,12 @@ def ClassIISizing(Aircraft):
     #Struct = Aircraft.ParStruc
     #Layout.l_fuselage = 24 #[m] length of fuselage
     Layout.l_freq = fusreq(Aircraft) #fuselagereq(Aircraft)
+    #print (Layout.l_freq,'required fuselage length')
     Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = Fuselage(Aircraft)
     Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
     #print (Layout.l_fuselage)
-    Layout.l_fuselage = np.sum(Layout.l_fuselage)   
+    Layout.l_fuselage = np.sum(Layout.l_fuselage) 
+    #print (Layout.l_fuselage,'total length of fuselage')
     Layout.h_APU=0.2 #[m] dummy value  
     Layout.h_fuselage = Layout.dim_cabin[0]
     Layout.w_fuselage = Layout.dim_cabin[1]

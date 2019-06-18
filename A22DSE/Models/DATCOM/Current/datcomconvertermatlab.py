@@ -12,7 +12,7 @@ from pathlib import Path
 os.chdir(Path(__file__).parents[4])
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 
-
+sf=1
 def PrintMatlab(Aircraft):
     
     
@@ -56,18 +56,18 @@ def PrintMatlab(Aircraft):
     CHRDR_WG = round(float(anfp.c_r/Conversion.ft2m),1)
     SAVSI_WG = round(float(anfp.Sweep_LE*180/np.pi),1)
     CHSTAT_WG = 0.0
-    TWISTA_WG = round(float(Aircraft.ParAnFP.twwing),10)
-    DHDADI_WG = round(float(Aircraft.ParAnFP.dhwing),10)
+    TWISTA_WG = round(float(Aircraft.ParAnFP.twwing*180/np.pi),10)
+    DHDADI_WG = round(float(Aircraft.ParAnFP.dhwing*180/np.pi),10)
     TC_WG=0.12
     
     CHRDTP_HT = round(float(Layout.c_tht/Conversion.ft2m),1)
-    SSPN_HT = round(float(Layout.bh/2/Conversion.ft2m*2),1)
+    SSPN_HT = round(float(Layout.bh/2/Conversion.ft2m),1)
     SSPNE_HT=0.9*SSPN_HT
     CHRDR_HT = round(float(Layout.c_rht/Conversion.ft2m),1)
     SAVSI_HT = round(float(Layout.sweep25ht*180/np.pi),1)
     CHSTAT_HT = 0.25
-    TWISTA_HT = round(float(Aircraft.ParAnFP.twht),10)
-    DHDADI_HT = round(float(Aircraft.ParAnFP.dhht),10)
+    TWISTA_HT = round(float(Aircraft.ParAnFP.twht*180/np.pi),10)
+    DHDADI_HT = round(float(Aircraft.ParAnFP.dhht*180/np.pi),10)
     
     CHRDTP_VT = round(float(Layout.c_tvt/Conversion.ft2m),1)
     SSPN_VT = round(float(Layout.bv/2/Conversion.ft2m*2),1)
@@ -77,6 +77,17 @@ def PrintMatlab(Aircraft):
     CHSTAT_VT = 0.0
     ZH=round(float(ZV+SSPN_VT),1)
     
+    
+    XW,ZW,XH,XV,ZV,CHRDTP_WG,SSPN_WG,SSPNE_WG,\
+CHRDR_WG,CHRDTP_HT,SSPN_HT,SSPNE_HT,CHRDR_HT,CHRDTP_VT,SSPN_VT,SSPNE_VT,CHRDR_VT,ZH=np.around(np.array([XW,ZW,XH,XV,ZV,CHRDTP_WG,SSPN_WG,SSPNE_WG,\
+CHRDR_WG,CHRDTP_HT,SSPN_HT,SSPNE_HT,CHRDR_HT,CHRDTP_VT,SSPN_VT,SSPNE_VT,CHRDR_VT,ZH])/sf,1)
+
+    X=np.round(X/sf,1)
+    ZU=np.round(ZU/sf,1)
+    ZL=np.round(ZL/sf,1)
+    R=np.round(R/sf,1)
+    S=np.round(S/sf**2,1)
+    P=np.round(P/sf,1)
     
     #print(DHDADI_WG,TWISTA_WG,DHDADI_HT,TWISTA_HT)
     for line in lines[50:96]:
@@ -231,14 +242,14 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
     
     #printer(4)
     a=lines[4].split(',')[0]+','
-    b=lines[4].split(',')[1].split('=')[0]+'='+str(round(float(Struc.MTOW/Conversion.lbs2kg),1))+','
+    b=lines[4].split(',')[1].split('=')[0]+'='+str(round(float(Struc.MTOW/Conversion.lbs2kg/sf),1))+','
     c=lines[4].split(',')[2]
     lines[4]=a+b+c
     #printer(4)
     
     
     #printer(5)
-    a=lines[5].split(',')[0].split('=')[0]+'='+str(round(float(anfp.S/Conversion.ft2m**2),1))+','
+    a=lines[5].split(',')[0].split('=')[0]+'='+str(round(float(anfp.S/Conversion.ft2m**2/sf**2),1))+','
     b=lines[5].split(',')[1].split('=')[0]+'='+str(round(float(anfp.MAC/Conversion.ft2m),1))+','
     c=lines[5].split(',')[2].split('=')[0]+'='+str(2*SSPN_WG)+'$ \n'
     lines[5]=a+b+c
@@ -246,8 +257,8 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
     
     
     #printer(6)
-    a=lines[6].split(',')[0].split('=')[0]+'='+str(round(float(np.average(Layout.x_cg)/Conversion.ft2m),1))+','
-    b=lines[6].split(',')[1].split('=')[0]+'='+str(round(float((Layout.z_cg_over_h_fus-0.5)*Layout.h_fuselage/Conversion.ft2m*2),1))+','
+    a=lines[6].split(',')[0].split('=')[0]+'='+str(round(float(np.average(Layout.x_cg)/Conversion.ft2m/sf),1))+','
+    b=lines[6].split(',')[1].split('=')[0]+'='+str(round(float((Layout.z_cg_over_h_fus-0.5)*Layout.h_fuselage/Conversion.ft2m*2/sf**2),1))+','
     c=lines[6].split(',')[2].split('=')[0]+'='+str(XW)+','
     d=lines[6].split(',')[3].split('=')[0]+'='+str(ZW)+','
     e=lines[6].split(',')[4]+','
@@ -452,6 +463,7 @@ def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
     lines=file.readlines()
     file.close()
     k=0
+    lenalpha=9
     for j in range(len(lines)):
         line=lines[j]
         if 'CONDITIONS' in line:
@@ -459,10 +471,12 @@ def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
                 dataline=my_split(lines[j+8].strip(),)
                 C_Ds=np.array([])
                 C_Ls=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+8+i].strip())[1].isalpha():
                         if not my_split(lines[j+8+i].strip())[2].isalpha():
+
                             C_Ds=np.append(C_Ds,float(my_split(lines[j+8+i].strip())[1]))
+                            
                             C_Ls=np.append(C_Ls,float(my_split(lines[j+8+i].strip())[2]))
 
                 
@@ -470,17 +484,17 @@ def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
                 C_D_0=np.interp(0,C_Ls,C_Ds)
                 C_D_cruise=np.interp(0.7,C_Ls,C_Ds)
                 C_L_as=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+8+i].strip())[7].isalpha():
                         C_L_as=np.append(C_L_as,float(my_split(lines[j+8+i].strip())[7]))
                 C_L_a=np.average(C_L_as)
                 C_l_bs=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+8+i].strip())[-1].isalpha():
                         C_l_bs=np.append(C_l_bs,float(my_split(lines[j+8+i].strip())[-1]))
                 C_l_b=np.average(C_l_bs)
                 C_m_as=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+8+i].strip())[-4].isalpha():
                         C_m_as=np.append(C_m_as,float(my_split(lines[j+8+i].strip())[-4]))
                 C_m_a=np.average(C_m_as)            
@@ -492,37 +506,37 @@ def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
             if k==1 or k==3:
                 dataline=my_split(lines[j+9].strip(),)
                 C_L_adots=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+9+i].strip())[3].isalpha():
                         C_L_adots=np.append(C_L_adots,float(my_split(lines[j+9+i].strip())[3]))
                 C_L_adot=np.average(C_L_adots)
                 C_m_adots=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+9+i].strip())[4].isalpha():
                         C_m_adots=np.append(C_m_adots,float(my_split(lines[j+9+i].strip())[4]))
                 C_m_adot=np.average(C_m_adots)
                 C_l_ps=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+9+i].strip())[5].isalpha():
                         C_l_ps=np.append(C_l_ps,float(my_split(lines[j+9+i].strip())[5]))
                 C_l_p=np.average(C_l_ps)
                 C_Y_ps=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+9+i].strip())[6].isalpha():
                         C_Y_ps=np.append(C_Y_ps,float(my_split(lines[j+9+i].strip())[6]))
                 C_Y_p=np.average(C_Y_ps)
                 C_n_ps=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+9+i].strip())[7].isalpha():
                         C_n_ps=np.append(C_n_ps,float(my_split(lines[j+9+i].strip())[7]))
                 C_n_p=np.average(C_n_ps)
                 C_n_rs=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+9+i].strip())[8].isalpha():
                         C_n_rs=np.append(C_n_rs,float(my_split(lines[j+9+i].strip())[8]))
                 C_n_r=np.average(C_n_rs)
                 C_l_rs=np.array([])
-                for i in range(6):
+                for i in range(lenalpha):
                     if not my_split(lines[j+9+i].strip())[9].isalpha():
                         C_l_rs=np.append(C_l_rs,float(my_split(lines[j+9+i].strip())[9]))
                 C_l_r=np.average(C_l_rs)

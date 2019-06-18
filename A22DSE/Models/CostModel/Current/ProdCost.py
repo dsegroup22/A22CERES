@@ -11,6 +11,7 @@ os.chdir(Path(__file__).parents[4])
 from A22DSE.Models.CostModel.Current.RoskamFuncList import (
         Wampr, MHRManProg, MHRToolProg, MHRmanr, cmat,MHRtoolr, eas)
 import numpy as np
+from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 
 #def CapcMFunc(MTOW, Vmax, Nprogram, CostEngine, 
 #         N_Engine, N_m):
@@ -60,6 +61,7 @@ def CapcMFunc(Aircraft, ISA_model, CostEngine):
     def CmanMFunc():
         CMHRManProg = MHRManProg(MTOW, Vmax, Nprogram, Fdiff)*rmr # rmm == rmr
         CMHRManr = MHRmanr(MTOW,Vmax,Nrdte,Fdiff)*rmr
+#        print (np.array([CMHRManProg,CMHRManr])/(CMHRManProg+CMHRManr))
         return np.sum([CMHRManProg, CMHRManr])*CEFLabor
     
 
@@ -86,12 +88,12 @@ def CapcMFunc(Aircraft, ISA_model, CostEngine):
     
     SumCost_excl_av = CmanMFunc() + CmatMFunc() + CtoolM() + CqcM() + \
     CeaMFunc(0)
+#    print (np.array([CmanMFunc(),CmatMFunc(),CtoolM(),CqcM(),CeaMFunc(0)])/SumCost_excl_av)
     C_Avionics = Ca(SumCost_excl_av) # in 2019 USD
 #    print(C_Avionics/Nprogram)
     
     # Perc. for profit of production
 #    Profit = 0.10
-    
     return np.sum(C_Avionics+SumCost_excl_av)
 
 

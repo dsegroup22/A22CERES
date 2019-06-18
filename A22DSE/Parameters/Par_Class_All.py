@@ -133,18 +133,18 @@ class ParCostLst(object):
         self.Cairframe = 35000000 #[USD] DUMMY VALUE
         self.Cavionics = 30000000 #CHECK VALUE
         self.acmanuy = 10 #[1/y] operational AC made per year
-        self.MHRmapflt = 14 #[-] Can be anywhere from 4-14 (Roskam 2731/3020)
-        self.MHRmengbl = 6
+        self.MHRmapflt = 10 #[-] Can be anywhere from 4-14 (Roskam 2731/3020)
+        self.MHRmengbl = 1
         self.CEF8919 = 284.5/112.5 #[USD/hr]
         self.CEF7019 = 284.5/112.5+3.02 #[USD/hr]
         self.Fmat= 2.25
-        self.ASP=2.5e7    #DUMMY VALUE
+        self.ASP=0.5e7    #Airframe costs
         self.rer = 62 #[USD/hr] CEF00/CEF89
         self.rmr = 34 #[USD/hr] CEF00/CEF89
         self.rtr = 43 #[USD/hr] CEF00/CEF89
         self.spil = 60000 #[USD/y] CEF19/CEF89
         self.scpil = 45000 #[USD/y] CEF19/CEF89
-        self.Cfuel = 4 #[USD/gallon] (2019)
+        self.Cfuel = 3 #[USD/gallon] (2019)
         self.FD = 6.74 #[lbs/gallon]
         self.Fdiff = 1.5 #[-]
         self.Fcad = 0.8 #[-]
@@ -175,6 +175,7 @@ class ParConvLst(object):
         self.km2nm = 0.539956803 #[-]
         self.lbf2N = 4.44822162 #[1 lbf = 4.448 N]
         self.psf2Pa = 47.88 #[1 psf = 47.88 Pa]
+        self.m22ft2 = 10.7639104 #[1 m2 = 10.764 ft2]
         
 class ParClassII_CS(object):
     def __init__(self):

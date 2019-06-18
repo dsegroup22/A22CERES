@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed May 15 09:28:55 2019
+Created on Mon Jun 17 23:44:40 2019
 
 @author: Thomas Verduyn
 """
+
 import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[4])
@@ -14,7 +15,7 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 
 def Uannbl(tbl):
     #Annual utilization in block hours
-    return 1e3*(6.053*tbl+5.7-np.sqrt(37.771*tbl**2+13.494*tbl+32.490))
+    return 5.65*4*250
 
 def tground(Aircraft):
     Struc = Aircraft.ParStruc
@@ -227,7 +228,7 @@ def DOClnr(Aircraft):
      return sum([Clf,Cnf])*par.CEF8919,frt
  
 
-Cer  = 4.5e6 # USD19
+Cer  = 4e6 # USD19
 Cman=CmanFunc(Conv, ISA_model, Cer)
 docflt=DOCflt(Conv,Cman)
 docmaint=DOCmaint(Conv,Cman)
