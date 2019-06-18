@@ -53,15 +53,15 @@ for parameter in parameters:
     if hasNumbers(parameter):
         title=r'$'+parameter[0].split('_')[0]+\
     '_{'+parameter.split('_')[1]+'_{'+greek(parameter.split('_')[2])+'}}$ [-]'
-    title=title+r'Wing Twist='+str(Conv.ParAnFP.twwing) + r'$[^{\circ}]$'
-    title=title+r'$\Gamma_{Wing}=$'+str(Conv.ParAnFP.dhwing) + r'$[^{\circ}]$'
+    title=title+r' for Wing Twist='+str(round(Conv.ParAnFP.twwing*180/np.pi,1)) + r'$^{\circ}$'
+    title=title+r' and $\Gamma_{wing}=$'+str(round(Conv.ParAnFP.dhwing*180/np.pi,1)) + r'$^{\circ}$'
     
     
     for tw in twistrange:
         subdata=np.array([])
         for dh in dihedralrange:
-            Conv.ParAnFP.dhwing=dh/180*np.pi
-            Conv.ParAnFP.twwing=tw/180*np.pi
+            Conv.ParAnFP.dhht=dh/180*np.pi
+            Conv.ParAnFP.twht=tw/180*np.pi
             C_D_0,C_D_cruise,C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot,\
         C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q=GetDerivatives(Conv,'hihg')
             subdata=np.append(subdata,vars()[parameter])
@@ -74,7 +74,7 @@ for parameter in parameters:
     plt.colorbar()
     plt.title(title)
     
-    plt.xlabel(r'$\Gamma_{Tail}$ [$^{\circ}$]')
+    plt.xlabel(r'$\Gamma_{tail}$ [$^{\circ}$]')
     plt.ylabel('Tail Twist [$^{\circ}$]')
     plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Tail\''[:-1]+parameter+  "tail.png")
     print(parameter)
