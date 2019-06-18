@@ -35,7 +35,7 @@ ASSUMPTIONS
 def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
 #    res = 500
     
-    CL_i = np.linspace(0.4, .90, res)
+    CL_i = np.linspace(0.4, 1.1, res)
     sweep_i = np.linspace(np.deg2rad(0), np.deg2rad(40), res)
     #tc_w  = np.linspace(0.10, 0.15, 4)
     TSFC = Aircraft.ParProp.SFC_cruise*3600
@@ -148,12 +148,14 @@ def ClassII_Planform(Aircraft):
     step = 100
     Aircraft.ParAnFP.C_L_design, Aircraft.ParAnFP.tc_w, Aircraft.ParAnFP.FWP = (
     ComputePlanform(Aircraft, ISA_model, step, Aircraft.ParAnFP.A, False))
-    
+#    Aircraft.ParAnFP.S = Aircraft.ParStruc.MTOW / \
+#    (ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])[-1]*0.5*\
+#    Aircraft.ParAnFP.V_cruise**2 * Aircraft.ParAnFP.C_L_design*1.025)*9.81
 # =============================================================================
 #                                   WING BOX
 # =============================================================================
 
     struc.t_skin, struc.t_rib = SteadyMain.ComputeMaxAwStruct(Aircraft, 
         ISA_model, 0, Aircraft.ParAnFP.V_dive, np.arange(10, 15, 1))
-        
+    
     return

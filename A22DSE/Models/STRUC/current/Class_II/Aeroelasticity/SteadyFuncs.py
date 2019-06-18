@@ -34,7 +34,7 @@ class airfoilAE(object):
         self.rtheta = rtheta * self.c                   #
         self.Itheta = self.m*(self.rtheta*self.b)**2    #
         self.e      = 0.3                               # [-]
-        self.S      = Aircraft.ParAnFP.S / self.c            # [m²]
+        self.S      = Aircraft.ParAnFP.S/  self.c       # [m²]
         self.CLa    = Aircraft.ParAnFP.C_L_alpha_cruise #[rad^(-1)]
         self.CLdelta = CLdelta                          # -1.8 / rad
         self.CMacdelta = CMacdelta                      #
@@ -43,7 +43,6 @@ def Init2DOFSS(par, Aircraft, ISA_model):
     
     # Constants
     RegFact = 1.15
-    
     
     M = np.matrix([[par.m, par.Stheta],
                [par.Stheta, par.Itheta]])
