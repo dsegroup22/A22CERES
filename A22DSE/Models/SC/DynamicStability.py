@@ -98,7 +98,7 @@ CXa    = -2*CL/(pi*A*e)*CLa+CL      #-0.47966  #p139
 
 CZ0    = -W*cos(th0)/(0.5*rho*V0**2*S)
 CZu    = -CLu    #-0.37616  #-Clu p134 
-CZa    = -CLu-CD    #-5.74340  #p139
+CZa    = -CLa-CD    #-5.74340  #p139
 deda = (2*0.14)/(pi*A)*180/pi
 CZadot = -2*anfp.CLhalpha*0.95*1*deda     #anfp.C_L_adot    #-0.00350 #p141
 CZq    = -2*anfp.CLhalpha*layout.xht/c*0.95*0.18        #anfp.C_l_q       #-5.66290 #144
@@ -121,7 +121,7 @@ CYr    = CLvbeta*(2*layout.xvt/b)*0.95*layout.Svt/S   #+0.8495          #p157
 Clb    = anfp.C_l_b       #-0.10260
 Clp    = -0.14-0.01*6.393-0.125*0.0181-0.14-0.02*3.92-0.125*0.0181-2*CLvbeta*\
          (layout.bv/b)**2*0.95*layout.Svt/S    #anfp.C_l_p       #-0.71085 #p152
-print(Clp)
+
 Clr    = CLvbeta*(2*layout.xvt*layout.bv/(b**2))*0.95*layout.Svt/S   #anfp.C_l_r  #+0.23760 #p161
 #Clda   = -0.23088
 #Cldr   = +0.03440
@@ -140,21 +140,22 @@ Cnr    =  -CLvbeta*(2*layout.xvt/b)**2*0.95*layout.Svt/S    #anfp.C_n_r      #-0
 
 #short period 
 A1 = 4* muc**2 * KY2
-B1 = -2 * muc *(KY2*CZa + Cmadot+ Cmq )
+B1 = -2 * muc *(KY2*CZa + Cmadot+ Cmq)
 C1 = CZa * Cmq  - 2*muc * Cma
 labda_real_1 = - B1 / (2*A1)
 labda_imag_1  =  (sqrt(4*A1*C1-B1**2))/(2*A1)
 labda_c1 = complex(labda_real_1,labda_imag_1)
 labda_1 = labda_c1 * (V0/c)
-#print(labda_c1)
+
 labda_c2 = complex(labda_real_1, -labda_imag_1)
 labda_2 = labda_c2 * (V0/c)
 
 T1 = -0.693/labda_real_1*c/V0
 omega01 = sqrt(labda_real_1**2+labda_imag_1**2)*V0/c
-xi1 = -labda_imag_1/sqrt(labda_real_1**2+labda_imag_1**2)
+xi1 = -labda_real_1/sqrt(labda_real_1**2+labda_imag_1**2)
 P1 = 2*pi/omega01/sqrt(1-xi1**2) 
- 
+#print(B1,A1,CZa,Cmadot,Cmq,KY2)
+print(labda_c1,labda_c2,T1,P1,xi1) 
 
 
 
@@ -171,8 +172,10 @@ labda_4 = labda_c4*(V0/c)
 
 T2 = -0.693/labda_real_2*c/V0
 omega02 = sqrt(labda_real_2**2+labda_imag_2**2)*V0/c
-xi2 = -labda_imag_2/sqrt(labda_real_2**2+labda_imag_2**2)
+xi2 = -labda_real_2/sqrt(labda_real_2**2+labda_imag_2**2)
 P2 = 2*pi/omega02/sqrt(1-xi2**2) 
+
+print(labda_c3,labda_c4,T2,P2,xi2)
 
 #Aperiodic 
 labda_c5 = Clp / (4 * mub * KX2)
