@@ -4,12 +4,11 @@ Created on Wed May  8 16:43:02 2019
 
 @author: Thomas Verduyn
 """
-import sys
-sys.path.append('../../../../../')
-import numpy as np
-from A22DSE.Models.CostModel.Current.RoskamFuncList import (Wampr, MHRManProg, 
-                                                            MHRToolProg, 
-                                                            MHRtoolr, MHRmanr) 
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[4])
+from A22DSE.Models.CostModel.Current.RoskamFuncList import (Wampr,MHRtoolr,\
+                                                            MHRmanr) 
 from A22DSE.Models.CostModel.Current.RoskamFuncList import cmat, eas
 # =============================================================================
 # from A22DSE.Parameters.Par_Class_Diff_Configs import Conv
@@ -30,6 +29,7 @@ def crdte(Aircraft, ISA_module, Cer):
     par = Aircraft.ParCostLst
     Convers = Aircraft.ConversTool      # for ease of re-engineering code
     Struct = Aircraft.ParStruc
+    Prop = Aircraft.ParProp
     
 #    CEF=par.get('CEF19')            #Inflation between 2019-1985
     rer=par.rer*par.CEF8919   #Engineering dollar rate         
@@ -48,7 +48,7 @@ def crdte(Aircraft, ISA_module, Cer):
     Fmat=par.Fmat            #Correction factor for type of material
     cavionics= par.Cavionics #costs of ac?
     cer = Cer                  #Costs per engine at 2019
-    ne = Struct.N_engines                      #number of engines
+    ne = Prop.N_engines                      #number of engines
     Nrr= par.Nrr              #RDTE production rate
     Vmax=eas(Aircraft, ISA_module)              #keas
     kg2lbs = 1/Convers.lbs2kg

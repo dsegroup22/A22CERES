@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed May 15 09:28:55 2019
+Created on Mon Jun 17 23:44:40 2019
 
 @author: Thomas Verduyn
 """
+
 import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[4])
@@ -14,7 +15,7 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 
 def Uannbl(tbl):
     #Annual utilization in block hours
-    return 1e3*(6.053*tbl+5.7-np.sqrt(37.771*tbl**2+13.494*tbl+32.490))
+    return 5.65*4*250
 
 def tground(Aircraft):
     Struc = Aircraft.ParStruc
@@ -199,7 +200,7 @@ def DOCdepr(Aircraft,Cman):
     #Costs of depriciation of engine spare parts depriciation
     Cdengsp=(0.85*0.5*Ne*EP*1.50)/(7*Uannbl(tbl)*Vbl)
     
-    print (np.array([Cdap,Cdeng,Cdav,Cdapsp,Cdengsp])/sum([Cdap,Cdeng,Cdav,Cdapsp,Cdengsp]))
+#    print (np.array([Cdap,Cdeng,Cdav,Cdapsp,Cdengsp])/sum([Cdap,Cdeng,Cdav,Cdapsp,Cdengsp]))
     return sum([Cdap,Cdeng,Cdav,Cdapsp,Cdengsp])*par.CEF8919
 
 def DOClnr(Aircraft):
