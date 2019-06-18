@@ -53,6 +53,8 @@ def ClassIISizing(Aircraft):
     struc.n_stiff  = 40 
     struc.G_Al = 26.9e9                         #Pa
     struc.G_comp = 5e9                          #Pa
+    struc.E_Al =   71.7e9                       #Pa
+    struc.E_comp =   30e9                       #Pa
     
     #OEW position wrt mac
     Aircraft.ParLayoutConfig.x_oe = xoe(Aircraft)
