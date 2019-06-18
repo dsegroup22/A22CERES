@@ -55,8 +55,8 @@ for parameter in parameters:
     for tw in twistrange:
         subdata=np.array([])
         for dh in dihedralrange:
-            Conv.ParAnFP.dhwing=dh
-            Conv.ParAnFP.twwing=tw
+            Conv.ParAnFP.dhwing=dh/180*np.pi
+            Conv.ParAnFP.twwing=tw/180*np.pi
             C_D_0,C_D_cruise,C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot,\
         C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q=GetDerivatives(Conv,'hihg')
             
