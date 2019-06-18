@@ -12,18 +12,18 @@ struc = Conv.ParStruc
 
 # Stationary flight condition
 
-hp0    = 20000        # pressure altitude in the stationary flight condition [m]
-V0     = anfp.V_cruise# true airspeed in the stationary flight condition [m/sec]
+hp0    = 0       # pressure altitude in the stationary flight condition [m] **************************
+V0     = 1.3*anfp.V_stall# true airspeed in the stationary flight condition [m/sec] **************************
 alpha0 = radians(3)   # angle of attack in the stationary flight condition [rad]
 th0    = 0       	  # pitch angle in the stationary flight condition [rad]
 
 # Aircraft mass
-m      = struc.MTOW*struc.wfratioclimb       	  # mass after climb [kg]
+m      = struc.MTOW      	  # mass after climb [kg]
 
 # aerodynamic properties
 e      = anfp.e       # Oswald factor [ ]
 CD0    = anfp.CD0     # Zero lift drag coefficient [ ]
-CLa    = anfp.C_L_alpha_cruise# Slope of CL-alpha curve [ ]
+CLa    = anfp.C_L_alpha_slow# Slope of CL-alpha curve [ ]
 
 # Longitudinal stability
 Cma    = -0.25*anfp.MAC*CLa #anfp.C_m_a  #0.01 #p143 # longitudinal stabilty [ ]
@@ -49,9 +49,9 @@ ih     = -2*pi/180        # stabiliser angle of incidence [rad] !!!!!!!!!!!!!!!!
 rho0   = 1.2250           # air density at sea level [kg/m^3] 
 R      = 287.05           # specific gas constant [m^2/sec^2K]
 g      = 9.81             # [m/sec^2] (gravity constant)
-gamma  = 1.4
-T_cruise = 273.15-56.5    
-rho    = 0.089            # [kg/m^3]  (air density)
+#gamma  = 1.4
+#T_cruise = 273.15-56.5    
+rho    = 1.225            # [kg/m^3]  (air density)   **************************
 W      = m*g			  #	[N]       (aircraft weight)
 
 # Constant values concerning aircraft inertia

@@ -54,6 +54,8 @@ def ClassIISizing(Aircraft):
     struc.n_stiff  = 40 
     struc.G_Al = 26.9e9                         #Pa
     struc.G_comp = 5e9                          #Pa
+    struc.E_Al =   71.7e9                       #Pa
+    struc.E_comp =   30e9                       #Pa
     
     #OEW position wrt mac
     Aircraft.ParLayoutConfig.x_oe = xoe(Aircraft)
@@ -129,10 +131,12 @@ def ClassIISizing(Aircraft):
     #Struct = Aircraft.ParStruc
     #Layout.l_fuselage = 24 #[m] length of fuselage
     Layout.l_freq = fusreq(Aircraft) #fuselagereq(Aircraft)
+    #print (Layout.l_freq,'required fuselage length')
     Layout.l_fuselage, Layout.d_fuselage, Layout.dim_cabin, Layout.d_cockpit = Fuselage(Aircraft)
     Layout.l_nose,Layout.l_cabin,Layout.l_tail=Layout.l_fuselage
     #print (Layout.l_fuselage)
-    Layout.l_fuselage = np.sum(Layout.l_fuselage)   
+    Layout.l_fuselage = np.sum(Layout.l_fuselage) 
+    #print (Layout.l_fuselage,'total length of fuselage')
     Layout.h_APU=0.2 #[m] dummy value  
     Layout.h_fuselage = Layout.dim_cabin[0]
     Layout.w_fuselage = Layout.dim_cabin[1]
