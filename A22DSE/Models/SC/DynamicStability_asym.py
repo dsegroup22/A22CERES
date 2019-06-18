@@ -199,7 +199,7 @@ labda_7 = labda_c7*(V0/c)
 
 T3 = -0.693/labda_real_3*b/V0
 omega03 = sqrt(labda_real_3**2+labda_imag_3**2)*V0/b
-xi3 = -labda_imag_3/sqrt(labda_real_3**2+labda_imag_3**2)
+xi3 = -labda_real_3/sqrt(labda_real_3**2+labda_imag_3**2)
 P3 = 2*pi/labda_imag_3 * anfp.b/V0#2*pi/omega03/sqrt(1-xi2**2) 
 
 

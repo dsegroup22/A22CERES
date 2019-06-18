@@ -127,7 +127,18 @@ RCs_tmin = np.zeros(res1)
 V_tmin = np.zeros(res1)
 H_tmin = np.zeros(res1)
 thrust_tmin = np.zeros(res1)
+
+mass=0
 for i in range(len(He_ar)):
+    W = W - mass*9.81
+    CLmin = 1.1* W /(0.5*np.ravel(rho)*np.ravel(V)**2*S)
+
+    CL = np.minimum(1/2/K*((-np.ravel(MaxT)/W)+np.sqrt((np.ravel(MaxT)/W)**2+12\
+                        *CD0*K)),CLmin)
+    
+    RCs = (np.ravel(MaxT)*n_engines-0.5*np.ravel(rho)*np.power(np.ravel(V),2)*S*\
+       (CD0+np.ravel(CL)**2/m.pi/A/e))*np.ravel(V)/W
+       
     RCs_tmin[i] = np.amax(RCs[np.where(np.logical_and(He_ar[i]> He-z/res \
                           , He_ar[i] < He+z/res))])
     index=(int(np.where(RCs == np.amax(RCs[np.where(\
@@ -138,6 +149,7 @@ for i in range(len(He_ar)):
     thrust_tmin[i] = MaxT[index]
     V_tmin[i] = V[index]
     H_tmin[i] = H[index]
+    mass=thrust_tmin[i]*SFC*0.001
 #    if V_tmin[i] >  
 #compute mdot/RCs
 
@@ -169,7 +181,8 @@ a = plt.contour(np.power(V,2)/2/9.81,H,He,5,colors='k', linewidths = 0.5)
 b = plt.contour(np.power(V,2)/2/9.81,H,RCs,20,colors='k')
 plt.plot(np.power(Vopt,2)/2/9.81,Hopt)
 plt.plot(anfp.V_cruise**2/2/9.81,20000,'k o')
-plt.plot(np.ones(res)*129**2/2/9.81,H[:,0])
+#plt.plot(np.ones(res)*129**2/2/9.81,H[:,0])
+plt.plot(np.ones(res)*62.85**2/2/9.81,H[:,0])
 plt.clabel(b, inline=1, fontsize=10)
 plt.show()
 #

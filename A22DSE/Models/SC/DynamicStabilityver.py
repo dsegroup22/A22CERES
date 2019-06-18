@@ -17,6 +17,8 @@ Rho = [0.089,1.125]
 hp = [20000,0]
 M = [anfp.M_cruise,1.3*anfp.V_stall/sqrt(1.4*287.05*273.15)]
 alpha = [radians(3),radians(10)]
+Clu = [0.6,0.01]
+Cdu = [0.04,0.001]
 label = ['cruise','TO']
 # Stationary flight condition
 for i in range(len(v)):
@@ -31,7 +33,7 @@ for i in range(len(v)):
     # aerodynamic properties
     e      = anfp.e       # Oswald factor [ ]
     CD0    = anfp.CD0     # Zero lift drag coefficient [ ]
-    CLa    = CL_a[i]# Slope of CL-alpha curve [ ]
+    CLa    = anfp.C_L_a#CL_a[i]# Slope of CL-alpha curve [ ]
     
     # Longitudinal stability
     Cma    = -0.25*anfp.MAC*CLa #anfp.C_m_a  #0.01 #p143 # longitudinal stabilty [ ]
@@ -89,11 +91,11 @@ for i in range(len(v)):
     
     # Lift and drag coefficient
     
-    CL = 2*W/(rho*V0**2*S*cos(alpha0))             # Lift coefficient [ ]
+    CL = 2*W/(rho*V0**2*S*cos(alpha0))               # Lift coefficient [ ]
     CD = CD0 + (CLa*alpha0)**2/(pi*A*e)  # Drag coefficient [ ]
     M1 = M[i]
-    CLu = M1**2/(1-M1**2)*CL    #??? figure 135
-    CDu = (2*CL**2)/(pi*A*e) * M1**2/(1-M1**2) #M1* (-16*W**2/(rho**2*(gamma*R*T_cruise)**2*M1**5*S**2*pi*A*e))
+    CLu = Clu[i]#0.04 #M1**2/(1-M1**2)*CL    #??? figure 135
+    CDu = Cdu[i]#0.01#(2*CL**2)/(pi*A*e) * M1**2/(1-M1**2) #M1* (-16*W**2/(rho**2*(gamma*R*T_cruise)**2*M1**5*S**2*pi*A*e))
     
     # Stabiblity derivatives
     
@@ -106,10 +108,10 @@ for i in range(len(v)):
     
     CZ0    = -W*cos(th0)/(0.5*rho*V0**2*S)
     CZu    = -CLu    #-0.37616  #-Clu p134 
-    CZa    = -CLa-(2*CL/(pi*A*e))*alpha0 -CD# -CLa-CD    #-5.74340  #p139
+    CZa    = -CLa-(2*CL/(pi*A*e))*alpha0 -CD    #-5.74340  #p139
     deda = (2*0.14)/(pi*A)*180/pi
-    CZadot = -2*anfp.CLhalpha*0.95*1*deda     #anfp.C_L_adot    #-0.00350 #p141
-    CZq    = -2*anfp.CLhalpha*layout.xht/c*0.95*0.18        #anfp.C_l_q       #-5.66290 #144
+    CZadot = anfp.C_L_adot#-2*anfp.CLhalpha*0.95*1*deda     #anfp.C_L_adot    #-0.00350 #p141
+    CZq    = anfp.C_l_q   #-2*anfp.CLhalpha*layout.xht/c*0.95*0.18        #anfp.C_l_q       #-5.66290 #144
     #CZde   = -0.69612
     
     #Cmu    = +0.06990  #p138 table
@@ -119,27 +121,27 @@ for i in range(len(v)):
     betav = sqrt(1-M1**2)
     CLvbeta= 2*pi*layout.Avt/(2.+ sqrt(4.+layout.Avt*(betav/0.95)**2*\
              (1.+(tan(radians(layout.Sweep50vt))/betav)**2)))
-    CYb    = CYb    = -2*1.85*(3/4*pi/4*layout.d_fuselage**2)/(anfp.S)\
-         -0.75*CLvbeta*(0.724+3.06*((layout.Svt/anfp.S)/(1+cos(anfp.Sweep_25)))+\
-            0.4*0.5+0.009*anfp.A)*(layout.Svt/anfp.S)        #-0.7500
+    CYb =anfp.C_Y_b#    = -2*1.85*(3/4*pi/4*layout.d_fuselage**2)/(anfp.S)\
+        # -0.75*CLvbeta*(0.724+3.06*((layout.Svt/anfp.S)/(1+cos(anfp.Sweep_25)))+\
+         #   0.4*0.5+0.009*anfp.A)*(layout.Svt/anfp.S)        #-0.7500
     CYbdot =  0     
-    CYp    = -2*CLvbeta*layout.bv/b*0.95*layout.Svt/S  #anfp.C_Y_p       #-0.0304 #p150
+    CYp    = anfp.C_Y_p  #-2*CLvbeta*layout.bv/b*0.95*layout.Svt/S  #anfp.C_Y_p       #-0.0304 #p150
     CYr    = CLvbeta*(2*layout.xvt/b)*0.95*layout.Svt/S   #+0.8495          #p157
     #CYda   = -0.0400
     #CYdr   = +0.2300
     
     Clb    = anfp.C_l_b       #-0.10260
-    Clp    = -0.14-0.01*6.393-0.125*0.0181-0.14-0.02*3.92-0.125*0.0181-2*CLvbeta*\
-             (layout.bv/b)**2*0.95*layout.Svt/S    #anfp.C_l_p       #-0.71085 #p152
+    Clp    = anfp.C_l_p# -0.14-0.01*6.393-0.125*0.0181-0.14-0.02*3.92-0.125*0.0181-2*CLvbeta*\
+             #(layout.bv/b)**2*0.95*layout.Svt/S    #anfp.C_l_p       #-0.71085 #p152
     
-    Clr    = CLvbeta*(2*layout.xvt*layout.bv/(b**2))*0.95*layout.Svt/S   #anfp.C_l_r  #+0.23760 #p161
+    Clr    = anfp.C_l_r #CLvbeta*(2*layout.xvt*layout.bv/(b**2))*0.95*layout.Svt/S   #anfp.C_l_r  #+0.23760 #p161
     #Clda   = -0.23088
     #Cldr   = +0.03440
     
     Cnb    =  anfp.C_n_b      #+0.1348
     Cnbdot =   0     
-    Cnp    =  2*CLvbeta*(layout.bv/b)*(layout.xvt/b)*0.95*layout.Svt/S #anfp.C_n_p      #-0.0602  #154
-    Cnr    =  -CLvbeta*(2*layout.xvt/b)**2*0.95*layout.Svt/S    #anfp.C_n_r      #-0.2061  #p161
+    Cnp    = anfp.C_n_p# 2*CLvbeta*(layout.bv/b)*(layout.xvt/b)*0.95*layout.Svt/S #anfp.C_n_p      #-0.0602  #154
+    Cnr    =  anfp.C_n_r #-CLvbeta*(2*layout.xvt/b)**2*0.95*layout.Svt/S    #anfp.C_n_r      #-0.2061  #p161
     #Cnda   =  -0.0120
     #Cndr   =  -0.0939
     
@@ -182,8 +184,8 @@ for i in range(len(v)):
     T2 = -0.693/labda_real_2*c/V0
     omega02 = sqrt(labda_real_2**2+labda_imag_2**2)*V0/c
     xi2 = -labda_real_2/sqrt(labda_real_2**2+labda_imag_2**2)
-    P2 = 2*pi/omega02/sqrt(1-xi2**2) 
-  
+    P2 = 2*pi/omega02/sqrt(1-xi2**2)
+#    print(CZu,CZ0)
     print ('Phugoid',label[i],'Eigenvalue=',labda_c3, 'Damping=',xi2, 'Period=',\
            P2, 'T_half=', T2)
 

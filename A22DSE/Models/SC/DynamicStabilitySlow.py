@@ -13,7 +13,7 @@ struc = Conv.ParStruc
 # Stationary flight condition
 
 hp0    = 0       # pressure altitude in the stationary flight condition [m] **************************
-V0     = 1.3*anfp.V_stall# true airspeed in the stationary flight condition [m/sec] **************************
+V0     = 1.3*anfp.V_stall # true airspeed in the stationary flight condition [m/sec] **************************
 alpha0 = radians(3)   # angle of attack in the stationary flight condition [rad]
 th0    = 0       	  # pitch angle in the stationary flight condition [rad]
 
@@ -51,7 +51,7 @@ R      = 287.05           # specific gas constant [m^2/sec^2K]
 g      = 9.81             # [m/sec^2] (gravity constant)
 #gamma  = 1.4
 #T_cruise = 273.15-56.5    
-rho    = 1.225            # [kg/m^3]  (air density)   **************************
+rho    = 1.225           # [kg/m^3]  (air density)   **************************
 W      = m*g			  #	[N]       (aircraft weight)
 
 # Constant values concerning aircraft inertia
@@ -83,7 +83,7 @@ depsda = 4/(A+2)           # Downwash gradient [ ]
 
 CL = 2*W/(rho*V0**2*S)               # Lift coefficient [ ]
 CD = CD0 + (CLa*alpha0)**2/(pi*A*e)  # Drag coefficient [ ]
-M1 = anfp.M_cruise
+M1 = V0/sqrt(gamma*R*273.15)#anfp.M_cruise
 CLu = M1**2/(1-M1**2)*CL    #??? figure 135
 CDu = (2*CL**2)/(pi*A*e) * M1**2/(1-M1**2) #M1* (-16*W**2/(rho**2*(gamma*R*T_cruise)**2*M1**5*S**2*pi*A*e))
 
@@ -155,7 +155,7 @@ omega01 = sqrt(labda_real_1**2+labda_imag_1**2)*V0/c
 xi1 = -labda_real_1/sqrt(labda_real_1**2+labda_imag_1**2)
 P1 = 2*pi/omega01/sqrt(1-xi1**2) 
 #print(B1,A1,CZa,Cmadot,Cmq,KY2)
-print(labda_c1,labda_c2,T1,P1,xi1) 
+#print(labda_c1,labda_c2,T1,P1,xi1) 
 
 
 
@@ -174,8 +174,8 @@ T2 = -0.693/labda_real_2*c/V0
 omega02 = sqrt(labda_real_2**2+labda_imag_2**2)*V0/c
 xi2 = -labda_real_2/sqrt(labda_real_2**2+labda_imag_2**2)
 P2 = 2*pi/omega02/sqrt(1-xi2**2) 
-
 print(labda_c3,labda_c4,T2,P2,xi2)
+
 
 #Aperiodic 
 labda_c5 = Clp / (4 * mub * KX2)

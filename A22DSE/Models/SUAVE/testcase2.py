@@ -664,7 +664,7 @@ def mission_setup(analyses):
     #   First Climb Segment: Constant Throttle, Constant Speed
     # ------------------------------------------------------------------
 
-    segment = Segments.Climb.Constant_Throttle_Constant_EAS(base_segment)
+    segment = Segments.Climb.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "climb_1"
 
     segment.analyses.extend( analyses.cruise )
@@ -672,7 +672,7 @@ def mission_setup(analyses):
     segment.altitude_start = 0.0   * Units.km
     segment.altitude_end   = 5000.0   * Units.feet
     segment.throttle = 1
-    segment.eas      = 225.0 * Units.knots
+    segment.equivalent_air_speed      = 225.0 * Units.knots
     segment.climb_rate       = 45 * Units['m/s']  
     segment.state.conditions.weights.vehicle_payload_rate = 0.0
 
@@ -921,7 +921,7 @@ def mission_setup(analyses):
     segment.state.numerics.number_control_points = 60
     segment.altitude   = 20.0 * Units.km
     segment.air_speed  = Aircraft.ParAnFP.V_cruise * Units['m/s']
-    segment.time       = (Aircraft.ParAnFP.t_cruise-1800) * Units.seconds
+    segment.time       = (Aircraft.ParAnFP.t_cruise-1800) * Units.seconds #
     segment.state.conditions.weights.vehicle_payload_rate = Aircraft.ParPayload.disperRatePerTime
 
     # add to mission
