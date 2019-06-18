@@ -11,6 +11,7 @@ os.chdir(Path(__file__).parents[4])
 from A22DSE.Models.CostModel.Current.RoskamFuncList import (
         Wampr, MHRManProg, MHRToolProg, MHRmanr, cmat,MHRtoolr, eas)
 import numpy as np
+from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 
 #def CapcMFunc(MTOW, Vmax, Nprogram, CostEngine, 
 #         N_Engine, N_m):
@@ -91,7 +92,6 @@ def CapcMFunc(Aircraft, ISA_model, CostEngine):
     
     # Perc. for profit of production
 #    Profit = 0.10
-    
     return np.sum(C_Avionics+SumCost_excl_av)
 
 
