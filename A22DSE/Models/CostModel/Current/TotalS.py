@@ -14,7 +14,6 @@ Created on Thu May  9 15:37:22 2019
 import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[4])
-from A22DSE.Parameters.Par_Class_Conventional import Conv
 #from A22DSEf
 from A22DSE.Models.CostModel.Current.ProdCost import (CapcMFunc, CaedMFunc, CftoMFunc, CfinMFunc,
                       CmanFunc, CproMFunc)
@@ -23,6 +22,7 @@ import numpy as np
 from A22DSE.Models.CostModel.Current.Raskom import crdte
 from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 from A22DSE.Parameters.Par_Class_All import Aircraft
+from A22DSE.Parameters.Par_Class_Conventional import Conv
 
 
 
@@ -57,7 +57,8 @@ def SummaryCost(Aircraft, Cer):
     OpsLst = np.array([docflt, docmaint, docdepr, doclnr, frt, x, OpsCost])    
     #Final Breakdown
     TotalCost = OpsCost + Cacq + RnDC
-    UnitCost = (Cacq+RnDC)/Aircraft.ParCostLst.Nprogram
+    UnitCost = (Cacq+RnDC)/Aircraft.ParPayload.fleetsize_y15*1000
+    ManuCost = Cacq/Aircraft.ParPayload.fleetsize_y15*1000
     
     
     print("\nManufacturing Cost Breakdown:\n", "Airplane Production Cost: ",
@@ -69,9 +70,9 @@ def SummaryCost(Aircraft, Cer):
     
     print("\n================================in B$==========================\n"
           + "Total Acquisition Cost: ", Cacq, "\nTotal RnD cost: ", RnDC, 
-          "\nEstimated Unit Cost: ", UnitCost, "\nCost per AC per year: ",x,
-          "\nTotal Operational Cost: ",
-          OpsCost
+          "\nEstimated Unit Cost: ", UnitCost, "\nCost per AC per year: ",\
+          Coper(Conv,x)[1],"\nManufacturing Cost per AC per year :",ManuCost,\
+          "\nTotal Operational Cost: ",OpsCost
           ," ---------------------------------------------------------------\n"
           , "Total Program Cost: ", TotalCost)
     return ManAcqLst, OpsLst
