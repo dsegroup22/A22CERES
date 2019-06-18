@@ -111,9 +111,16 @@ def ClassIISizing(Aircraft):
     vtail(Aircraft)
     anfp.CLhmax, anfp.CLhalpha = CLh(Aircraft)
     
+        
+    xcg_fwd,xcg_aft = loadingdiag(Aircraft)
+    
+    Layout.x_cg = [xcg_fwd,xcg_aft]
+    
     #positions lemacs of tails
-    Layout.x_lemacv=Aircraft.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xvt-0.25*Layout.mac_v
-    Layout.x_lemach=Aircraft.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xht-0.25*Layout.mac_h
+    Layout.x_lemacv= Layout.x_cg[1]+Layout.xvt-0.25*Layout.mac_v
+    #Aircraft.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xvt-0.25*Layout.mac_v
+    Layout.x_lemach= Layout.x_cg[1]+Layout.xht-0.25*Layout.mac_h
+    #Aircraft.ParAnFP.MAC*Layout.x_oe+Layout.x_lemac+Layout.xht-0.25*Layout.mac_h
     
 
     
@@ -147,10 +154,7 @@ def ClassIISizing(Aircraft):
     Engines_placement(Aircraft)    
 
 
-    
-    xcg_fwd,xcg_aft = loadingdiag(Aircraft)
-    
-    Layout.x_cg = [xcg_fwd,xcg_aft]
+
 
 
 
@@ -162,7 +166,7 @@ def ClassIISizing(Aircraft):
     z_cg = PositionsLG_Tri(Aircraft)
     
     #Stability derivatives DATCOM [/rad]    
-    anfp.C_D_0,anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot,\
+    anfp.C_D_0,anfp.C_D_cruise,anfp.C_L_a,anfp.C_l_b,anfp.C_m_a,anfp.C_Y_b,anfp.C_n_b,anfp.C_L_adot,anfp.C_m_adot,\
         anfp.C_l_p,anfp.C_Y_p,anfp.C_n_p,anfp.C_n_r,anfp.C_l_r,anfp.C_l_q,anfp.C_m_q=GetDerivatives(Aircraft,'hihg')
         
     #fleetsize calculations

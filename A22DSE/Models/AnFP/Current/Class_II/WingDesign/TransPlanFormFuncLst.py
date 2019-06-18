@@ -186,6 +186,11 @@ def ComputeCDpCurl(Aircraft, CL, sweep):
 
 
 def Computetau(Aircraft, ISA_model):
+    '''
+    INPUT: Aircraft object, ISA calculator
+    OUTPUT: dimless float thrust lapse rate (tau)
+    DESCRIPTION: Corrected thrust lapse rate
+    '''
     # Compute rel. pressure
     T, p, rho = ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])
     delta     = p/ISA_model.p0
@@ -199,7 +204,11 @@ def Computetau(Aircraft, ISA_model):
     return tau
 
 def ComputeFprop(Aircraft, ISA_model, TSFC):
-    
+    '''
+    INPUT
+    OUTPUT
+    DESCRIPTION
+    '''    
     # Compute rel. pressure
     T, p, rho = ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])
     delta     = p/ISA_model.p0
@@ -215,7 +224,11 @@ def ComputeFprop(Aircraft, ISA_model, TSFC):
     return Req/eta_0/Hg + muT / tau / delta
 
 def ComputeFWP(Aircraft, Fprop, theta2, theta3, Aw, CL, sweep):
-    
+    '''
+    INPUT
+    OUTPUT
+    DESCRIPTION
+    '''    
     # Constants
     CDc = 0.0010
     eCurl = 0.85
@@ -236,13 +249,21 @@ def ComputeFWP(Aircraft, Fprop, theta2, theta3, Aw, CL, sweep):
     return FWP
 
 def ComputePartialSweepOpt(Aircraft):
-    
+    '''
+    INPUT
+    OUTPUT
+    DESCRIPTION
+    '''    
     return np.arccos(0.75*0.935/Aircraft.ParAnFP.Mdd)
 
 
 def ComputePartialCLopt(Aircraft, ISA_model, theta2, theta3, 
                         Fprop, TSFC, Aw, sweep, CL):
-    
+    '''
+    INPUT
+    OUTPUT
+    DESCRIPTION
+    '''    
     from scipy.optimize import minimize_scalar
     
     def CL_trans(CLi):
@@ -271,6 +292,9 @@ def ComputePartialCLopt(Aircraft, ISA_model, theta2, theta3,
 
 def ComputePartialAwOpt(Aircraft, ISA_model,
                         theta2, theta3, Fprop, TSFC, sweep, CL):
+    '''
+    
+    '''
     
     # Constants
     eCurl = 0.80
@@ -287,7 +311,11 @@ def ComputePartialAwOpt(Aircraft, ISA_model,
 
 def ComputeSpanLoading(Aircraft, ISA_model, Fprop, theta2, theta3, TSFC,
                        sweep, CL):
-    
+    '''
+    INPUT
+    OUTPUT
+    DESCRIPTION
+    '''    
     # Constants
     Fprop = ComputeFprop(Aircraft, ISA_model, TSFC)
     tc_limit = Compute_tc_limit(Aircraft, CL, sweep)
@@ -299,7 +327,11 @@ def ComputeSpanLoading(Aircraft, ISA_model, Fprop, theta2, theta3, TSFC,
 
 def ComputeSpanLoadingCL(Aircraft, ISA_model, Fprop, theta2, theta3, TSFC,
                        sweep, Aw, CL):
-    
+    '''
+    INPUT
+    OUTPUT
+    DESCRIPTION
+    '''   
     # Constants
     Fprop = ComputeFprop(Aircraft, ISA_model, TSFC)
     tc_limit = Compute_tc_limit(Aircraft, CL, sweep)

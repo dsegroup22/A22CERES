@@ -468,6 +468,7 @@ def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
                 
             
                 C_D_0=np.interp(0,C_Ls,C_Ds)
+                C_D_cruise=np.interp(0.7,C_Ls,C_Ds)
                 C_L_as=np.array([])
                 for i in range(6):
                     if not my_split(lines[j+8+i].strip())[7].isalpha():
@@ -536,5 +537,5 @@ def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
             k+=1
             if speed == 'slow' and k==2:
                 break
-    return np.append(C_D_0,np.array([C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q])*180/np.pi)
+    return np.append([C_D_0,C_D_cruise],np.array([C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q])*180/np.pi)
 
