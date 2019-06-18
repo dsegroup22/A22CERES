@@ -356,7 +356,7 @@ def EI(Aircraft,chord):
     '''   
     t_skin = Aircraft.ParStruc.t_skin
     t_rib = Aircraft.ParStruc.t_rib
-    E_alu = Aircraft.ParStruc.E_Alu
+    E_alu = Aircraft.ParStruc.E_Al
     E_comp = Aircraft.ParStruc.E_comp
     moi_stringer = moi_root_stringers(chord, Aircraft)
     moi_skin = skin_moi(chord,Aircraft,t_skin)
@@ -364,13 +364,76 @@ def EI(Aircraft,chord):
     EI = moi_stringer*E_alu + moi_skin*0.5*(E_alu+E_comp)+moi_ribs*E_alu
     return EI
 
-#x=np.linspace(0,1,50)
-#yl=skin_eq_lower(1)
-#yu=skin_eq_upper(1)
-#
-#y1=yl(x)
-#y2=yu(x)
-#
-#plt.plot(x,y1,color='black')
-#plt.plot(x,y2,color='black')
-#plt.show()
+
+def Eliptical(Aircraft,steps):
+    #function that returns an eliptical lift distribution, where L is the max lift and b the span
+    b=Aircraft.ParAnFP.b
+    MTOW=Aircraft.ParStruc.MTOW
+    x=np.linspace(-b/2,b/2,steps)
+
+    return 4*MTOW/(np.pi*b)*np.sqrt(1-4*x**2/b**2)
+
+
+def Loading_Diagrams(Aircraft,steps):
+    #bs
+    anfp=Aircraft.ParAnFP
+    struc=Aircraft.ParStruc
+    layout=Aircraft.ParLayoutConfig
+    prop = Aircraft.ParProp
+    #initialise parameters
+    b=anfp.b
+    m_engine=prop.Engine_weight
+    y_engine1=layout.y_engine
+    y_engine2=10 #dummy
+    y_engine3=15 #dummy
+    x=np.linspace(0,b/2,steps)
+    dx=b/steps
+    MTOW=struc.MTOW
+    m_fuel=struc.FW
+    g=9.81
+    #engines
+    V_e1=np.heaviside((x-y_engine1),1)*m_engine
+    V_e2=np.heaviside((x-y_engine2),1)*m_engine
+    V_e3=np.heaviside((x-y_engine3),1)*m_engine
+#    V_e4=-np.heaviside((x+y_engine1),1)*m_engine
+#    V_e5=-np.heaviside((x+y_engine2),1)*m_engine
+#    V_e6=-np.heaviside((x+y_engine3),1)*m_engine
+    V_e=V_e1+V_e2+V_e3 #+V_e4+V_e5+V_e6
+    #lift
+    liftdistr=4*MTOW/(np.pi*b)*np.sqrt(1-4*x**2/b**2)
+    V_l=[]
+    V_l_i=0
+    for i in liftdistr:
+        i=i+1
+        V_l_i=V_l_i+i*dx
+        V_l.append(V_l_i)
+    #fuselage
+    w_fuselage=V_l[-1]-6*m_engine
+    V_f=-np.heaviside(x,1)*w_fuselage
+    #total shear
+    V=V_e+V_f+V_e+V_l
+    #moment
+    M_initial=[]
+    M=[]
+    M_l_i=0
+    for j in V:
+        M_l_i=M_l_i+j*dx
+        M_initial.append(M_l_i)
+    M0=M_initial[int(steps/2)]
+    for k in M_initial:
+        ab=k-M0
+        M.append(ab)
+        
+        
+    return x, V, M
+
+def defl(Aircraft, steps):
+    x=Loading_Diagrams(Aircraft,steps)[0]
+    M=Loading_Diagrams(Aircraft,steps)[2]
+    chordi = chord(x, Aircraft)
+    EI_i = EI(Aircraft, chord)
+    
+    return x, M, chord, EI
+    
+    
+       
