@@ -59,15 +59,18 @@ def Sensitivity_New_MTOW_FW(Which_Plot, X_steps,Y_steps):
     Y = altitude_lst
     ax.set_ylabel('cruise altitude [m]')            
     #contour lines        
-    CS = ax.contour(X,Y,FW_lst,16, colors =['#FFFFFF', '#FFFFFF',\
-        '#FFFFFF', '#FFFFFF','#000000','#000000','#000000','#000000'] )
-    ax.clabel(CS, inline=1, fontsize=10)
+    CS = ax.contour(X,Y,FW_lst,10, colors =['#FFFFFF', '#FFFFFF','#FFFFFF',\
+        '#FFFFFF', '#FFFFFF','#000000','#000000','#000000','#000000','#000000'] )
+    labels = ['Fuel weight [kg]']
+    CS.collections[0].set_label(labels[0])
+    CS.collections[6].set_label(labels[0])
+    
+    
     #contour colours
     firstplot = ax.contourf(X, Y, MTOW_lst,16, cmap='Greys_r')
     
     #labels and axes and stuff
-    labels = ['Fuel weight [kg]']
-    CS.collections[0].set_label(labels[0])
+    ax.clabel(CS, inline=1, fontsize=10)
     cbar = fig.colorbar(firstplot, orientation="vertical", pad=0.2)
     cbar.ax.invert_yaxis()
     cbar.set_label('MTOW [kg]', labelpad=-40, y=1.05, rotation=0)
@@ -76,3 +79,9 @@ def Sensitivity_New_MTOW_FW(Which_Plot, X_steps,Y_steps):
     
     #check total time needed
     print("--- %s seconds ---" % (time.time() - start_time))
+
+
+# =============================================================================
+# for i in range(1,3):
+#     Sensitivity_New_MTOW_FW(i,20,20)
+# =============================================================================
