@@ -69,7 +69,8 @@ def SummaryCost(Aircraft, Cer):
     
     print("\n================================in B$==========================\n"
           + "Total Acquisition Cost: ", Cacq, "\nTotal RnD cost: ", RnDC, 
-          "\nEstimated Unit Cost: ", UnitCost, "\nTotal Operational Cost: ",
+          "\nEstimated Unit Cost: ", UnitCost, "\nCost per AC per year: ",x,
+          "\nTotal Operational Cost: ",
           OpsCost
           ," ---------------------------------------------------------------\n"
           , "Total Program Cost: ", TotalCost)

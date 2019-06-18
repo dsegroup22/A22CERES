@@ -133,12 +133,12 @@ class ParCostLst(object):
         self.Cairframe = 35000000 #[USD] DUMMY VALUE
         self.Cavionics = 30000000 #CHECK VALUE
         self.acmanuy = 10 #[1/y] operational AC made per year
-        self.MHRmapflt = 14 #[-] Can be anywhere from 4-14 (Roskam 2731/3020)
-        self.MHRmengbl = 6
+        self.MHRmapflt = 10 #[-] Can be anywhere from 4-14 (Roskam 2731/3020)
+        self.MHRmengbl = 1
         self.CEF8919 = 284.5/112.5 #[USD/hr]
         self.CEF7019 = 284.5/112.5+3.02 #[USD/hr]
         self.Fmat= 2.25
-        self.ASP=2.5e7    #DUMMY VALUE
+        self.ASP=0.5e7    #Airframe costs
         self.rer = 62 #[USD/hr] CEF00/CEF89
         self.rmr = 34 #[USD/hr] CEF00/CEF89
         self.rtr = 43 #[USD/hr] CEF00/CEF89
