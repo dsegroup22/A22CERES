@@ -20,9 +20,9 @@ class ParAnFPLst(object):
         self.e = None  #[-]                        DUMMY VALUE
         self.CD0 = None #[-]                       DUMMY VALUE
         self.S = None #[m_squared]               DUMMY VALUE
-        self.dhwing = 0. #[rad]
+        self.dhwing = -3./180*np.pi #[rad]
         self.dhht = 0. #[rad]
-        self.twwing = 0. #[rad]
+        self.twwing = -3./180*np.pi #[rad]
         self.twht = 0. #[rad]
         #cruise parameters
         self.TtoW = None #[-]                                                                        air to fuel ratio                           by POPS
@@ -96,11 +96,12 @@ class ParStrucLst(object):
             self.tail_angle = 15*np.pi/180 #DUMMY VALUE #[rad] angle of empannage wrt ground
             
             #ratios
+            self.FoS_OEW = 1.1 #[-]
             self.OEWratio = 0.6     #[-]
             self.wfratioclimb = 0.96
-            self.fineness_c = 1.
+            self.fineness_c = 2.
             self.fineness_n = 1.25
-            self.fineness_t = 10 #2
+            self.fineness_t = 8 #2
             self.SF         = 1.75
             self.Wf         = None
             self.Mw_Mtow= 0.185
@@ -120,6 +121,7 @@ class ParPayloadLst(object):
         
         
         self.TotalPayloadYear1 = 0.1e9 #kg
+        self.TotalPayloadYear15 = 1.5e9 #kg
         self.OperationalDays = 250 #days
         self.turnaroundtime = 3600 #s  
         
@@ -127,22 +129,22 @@ class ParCostLst(object):
     
     def __init__(self):
         #Cost parameters
-        self.Cengine = 15000000 #[USD]  DUMMY VALUE
+#        self.Cengine = 15000000 #[USD]  DUMMY VALUE
         self.Cairframe = 35000000 #[USD] DUMMY VALUE
         self.Cavionics = 30000000 #CHECK VALUE
         self.acmanuy = 10 #[1/y] operational AC made per year
-        self.MHRmapflt = 14 #[-] Can be anywhere from 4-14 (Roskam 2731/3020)
-        self.MHRmengbl = 6
+        self.MHRmapflt = 10 #[-] Can be anywhere from 4-14 (Roskam 2731/3020)
+        self.MHRmengbl = 1
         self.CEF8919 = 284.5/112.5 #[USD/hr]
         self.CEF7019 = 284.5/112.5+3.02 #[USD/hr]
         self.Fmat= 2.25
-        self.ASP=2.5e7    #DUMMY VALUE
+        self.ASP=0.5e7    #Airframe costs
         self.rer = 62 #[USD/hr] CEF00/CEF89
         self.rmr = 34 #[USD/hr] CEF00/CEF89
         self.rtr = 43 #[USD/hr] CEF00/CEF89
         self.spil = 60000 #[USD/y] CEF19/CEF89
         self.scpil = 45000 #[USD/y] CEF19/CEF89
-        self.Cfuel = 2 #[USD/gallon] (2019)
+        self.Cfuel = 4 #[USD/gallon] (2019)
         self.FD = 6.74 #[lbs/gallon]
         self.Fdiff = 1.5 #[-]
         self.Fcad = 0.8 #[-]
@@ -237,6 +239,7 @@ class ParLayoutConfig(object):
 class ParProp(object):
     
     def __init__(self):
+        self.SafetyMarginEngine = 935
         self.Engine_weight = None
         self.psi = 0.45 # from adsee slides
         self.xf_c = -0.2 #from adsee slides

@@ -53,4 +53,19 @@ def test_InitSizingUncoupled():
     WingSurface_Thrust_FuelWeight(TestAC)
     new = [anfp.S,anfp.Thrust, struc.FW]
     assert (np.allclose(old,new,rtol = 0.05))
+
+def test_WingPlanform():
+    
+    a = 0.05
+    b = 0.05
+    
+    
+    
+    assert(a == b)
+    
+    
+    
+    
+    
+    
     

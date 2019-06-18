@@ -4,7 +4,7 @@ Created on Thu Jun 13 22:03:23 2019
 
 @author: lujingyi
 """
-from math import radians,pi,sin,cos,sqrt
+from math import radians,pi,sin,cos,sqrt,tan
 # Parameter abbreviation
 anfp = Conv.ParAnFP
 layout = Conv.ParLayoutConfig
@@ -26,7 +26,7 @@ CD0    = anfp.CD0     # Zero lift drag coefficient [ ]
 CLa    = anfp.C_L_alpha_cruise# Slope of CL-alpha curve [ ]
 
 # Longitudinal stability
-Cma    = anfp.C_m_a  #0.01 #p143 # longitudinal stabilty [ ]
+Cma    = -0.25*anfp.MAC*CLa #anfp.C_m_a  #0.01 #p143 # longitudinal stabilty [ ]
 Cmde   = 1            # elevator effectiveness [ ]   !!!!!!!!!!!!!
 
 # Aircraft geometry
@@ -49,7 +49,8 @@ ih     = -2*pi/180        # stabiliser angle of incidence [rad] !!!!!!!!!!!!!!!!
 rho0   = 1.2250           # air density at sea level [kg/m^3] 
 R      = 287.05           # specific gas constant [m^2/sec^2K]
 g      = 9.81             # [m/sec^2] (gravity constant)
-
+gamma  = 1.4
+T_cruise = 273.15-56.5    
 rho    = 0.089            # [kg/m^3]  (air density)
 W      = m*g			  #	[N]       (aircraft weight)
 
@@ -82,53 +83,62 @@ depsda = 4/(A+2)           # Downwash gradient [ ]
 
 CL = 2*W/(rho*V0**2*S)               # Lift coefficient [ ]
 CD = CD0 + (CLa*alpha0)**2/(pi*A*e)  # Drag coefficient [ ]
-
+M1 = anfp.M_cruise
+CLu = M1**2/(1-M1**2)*CL    #??? figure 135
+CDu = (2*CL**2)/(pi*A*e) * M1**2/(1-M1**2) #M1* (-16*W**2/(rho**2*(gamma*R*T_cruise)**2*M1**5*S**2*pi*A*e))
 
 # Stabiblity derivatives
 
 CX0    = W*sin(th0)/(0.5*rho*V0**2*S)
-CXu    = -0.02792  #Clu,Cdu p136,133
-CXa    = -0.47966  #p139
-CXadot = +0.08330
-CXq    = -0.28170
-CXde   = -0.03728
+CXu    = -CDu #-0.2792  #(CLu*sin(alpha0)-CDu*cos(alpha0))/c #-0.02792  #Clu,Cdu p136,133
+CXa    = -2*CL/(pi*A*e)*CLa+CL      #-0.47966  #p139
+#CXadot = +0.08330
+#CXq    = -0.28170
+#CXde   = -0.03728
 
 CZ0    = -W*cos(th0)/(0.5*rho*V0**2*S)
-CZu    = -0.37616  #-Clu p134 
-CZa    = -5.74340  #p139
-CZadot = anfp.C_L_adot    #-0.00350 #p141
-CZq    = anfp.C_l_q       #-5.66290 #144
-CZde   = -0.69612
+CZu    = -CLu    #-0.37616  #-Clu p134 
+CZa    = -CLu-CD    #-5.74340  #p139
+deda = (2*0.14)/(pi*A)*180/pi
+CZadot = -2*anfp.CLhalpha*0.95*1*deda     #anfp.C_L_adot    #-0.00350 #p141
+CZq    = -2*anfp.CLhalpha*layout.xht/c*0.95*0.18        #anfp.C_l_q       #-5.66290 #144
+#CZde   = -0.69612
 
-Cmu    = +0.06990  #p138 table
-Cmadot = anfp.C_m_adot    #+0.17800
-Cmq    = anfp.C_m_q       #-8.79415 #145
+#Cmu    = +0.06990  #p138 table
+Cmadot = -2.2*anfp.CLhalpha*0.95*layout.xht*deda#anfp.C_m_adot    #+0.17800
+Cmq    = -2.2*anfp.CLhalpha*0.95*layout.xht  #anfp.C_m_q       #-8.79415 #145
 
+betav = sqrt(1-M1**2)
+CLvbeta= 2*pi*layout.Avt/(2.+ sqrt(4.+layout.Avt*(betav/0.95)**2*\
+         (1.+(tan(radians(layout.Sweep50vt))/betav)**2)))
 CYb    = anfp.C_Y_b       #-0.7500
 CYbdot =  0     
-CYp    = anfp.C_Y_p       #-0.0304 #p150
-CYr    = +0.8495          #p157
-CYda   = -0.0400
-CYdr   = +0.2300
+CYp    = -2*CLvbeta*layout.bv/b*0.95*layout.Svt/S  #anfp.C_Y_p       #-0.0304 #p150
+CYr    = CLvbeta*(2*layout.xvt/b)*0.95*layout.Svt/S   #+0.8495          #p157
+#CYda   = -0.0400
+#CYdr   = +0.2300
 
 Clb    = anfp.C_l_b       #-0.10260
-Clp    = anfp.C_l_p       #-0.71085 #p152
-Clr    = anfp.C_l_r       #+0.23760 #p161
-Clda   = -0.23088
-Cldr   = +0.03440
+Clp    = -0.14-0.01*6.393-0.125*0.0181-0.14-0.02*3.92-0.125*0.0181-2*CLvbeta*\
+         (layout.bv/b)**2*0.95*layout.Svt/S    #anfp.C_l_p       #-0.71085 #p152
+print(Clp)
+Clr    = CLvbeta*(2*layout.xvt*layout.bv/(b**2))*0.95*layout.Svt/S   #anfp.C_l_r  #+0.23760 #p161
+#Clda   = -0.23088
+#Cldr   = +0.03440
 
 Cnb    =  anfp.C_n_b      #+0.1348
 Cnbdot =   0     
-Cnp    =  anfp.C_n_p      #-0.0602  #15
-Cnr    =  anfp.C_n_r      #-0.2061  #p161
-Cnda   =  -0.0120
-Cndr   =  -0.0939
+Cnp    =  2*CLvbeta*(layout.bv/b)*(layout.xvt/b)*0.95*layout.Svt/S #anfp.C_n_p      #-0.0602  #154
+Cnr    =  -CLvbeta*(2*layout.xvt/b)**2*0.95*layout.Svt/S    #anfp.C_n_r      #-0.2061  #p161
+#Cnda   =  -0.0120
+#Cndr   =  -0.0939
 
-#-----eigenvalues for dynamic motions ----
+
+#--------------------------------------------------------------------------
+#-------------eigenvalues for dynamic motions---------------------
+#--------------------------------------------------------------------------
 
 #short period 
-
-#Eigenvalue
 A1 = 4* muc**2 * KY2
 B1 = -2 * muc *(KY2*CZa + Cmadot+ Cmq )
 C1 = CZa * Cmq  - 2*muc * Cma
@@ -136,18 +146,19 @@ labda_real_1 = - B1 / (2*A1)
 labda_imag_1  =  (sqrt(4*A1*C1-B1**2))/(2*A1)
 labda_c1 = complex(labda_real_1,labda_imag_1)
 labda_1 = labda_c1 * (V0/c)
-print(labda_c1)
+#print(labda_c1)
 labda_c2 = complex(labda_real_1, -labda_imag_1)
 labda_2 = labda_c2 * (V0/c)
 
-#Boundary conditions
+T1 = -0.693/labda_real_1*c/V0
+omega01 = sqrt(labda_real_1**2+labda_imag_1**2)*V0/c
+xi1 = -labda_imag_1/sqrt(labda_real_1**2+labda_imag_1**2)
+P1 = 2*pi/omega01/sqrt(1-xi1**2) 
  
 
 
 
 #phugoid 
-
-#Eigenvalue
 A2 = -4 * muc**2 
 B2 = 2 * muc * CXu
 C2 = -CZu  * CZ0 
@@ -158,11 +169,16 @@ labda_3 = labda_c3 *(V0/c)
 labda_c4 = complex(labda_real_2, -labda_imag_2)
 labda_4 = labda_c4*(V0/c) 
 
-
+T2 = -0.693/labda_real_2*c/V0
+omega02 = sqrt(labda_real_2**2+labda_imag_2**2)*V0/c
+xi2 = -labda_imag_2/sqrt(labda_real_2**2+labda_imag_2**2)
+P2 = 2*pi/omega02/sqrt(1-xi2**2) 
 
 #Aperiodic 
 labda_c5 = Clp / (4 * mub * KX2)
 labda_5 = labda_c5*(V0/c) 
+
+T5 = -0.693/labda_c5*b/V0
 
 
 #Dutch roll 
@@ -177,10 +193,16 @@ labda_6 = labda_c6*(V0/c)
 labda_c7 = complex(labda_real_3, -labda_imag_3)
 labda_7 = labda_c7*(V0/c) 
 
+T3 = -0.693/labda_real_3*b/V0
+omega03 = sqrt(labda_real_3**2+labda_imag_3**2)*V0/b
+xi3 = -labda_imag_3/sqrt(labda_real_3**2+labda_imag_3**2)
+P3 = 2*pi/omega03/sqrt(1-xi2**2) 
 
 
 # Spiral 
 
 #Eigenvalue
-labda_c8 = (2 * CL *(Clb* Cnr - Cnb * Clr ))/(Clp *(CYb * Cnr + 4*mub * Cnb) - Cnp *(CYb * Clr + 4 * mub * Clb ))
+labda_c8 = (2 * CL *(Clb* Cnr - Cnb * Clr ))/(Clp *(CYb * Cnr + 4*mub * Cnb) - \
+            Cnp *(CYb * Clr + 4 * mub * Clb ))
 labda_8 = labda_c8*(V0/c) 
+T8 = -0.693/labda_c8*b/V0

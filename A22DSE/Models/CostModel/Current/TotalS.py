@@ -11,16 +11,17 @@ Created on Thu May  9 15:37:22 2019
 
 @author: hksam
 """
-import sys
-sys.path.append('../../../../../')
+import os
+from pathlib import Path
+os.chdir(Path(__file__).parents[4])
+from A22DSE.Parameters.Par_Class_Conventional import Conv
 #from A22DSEf
-from ProdCost import (CapcMFunc, CaedMFunc, CftoMFunc, CfinMFunc,
+from A22DSE.Models.CostModel.Current.ProdCost import (CapcMFunc, CaedMFunc, CftoMFunc, CfinMFunc,
                       CmanFunc, CproMFunc)
-from OperCost import tground, DOC, DOCdepr, DOCflt, DOClnr, DOCmaint, Coper
+from A22DSE.Models.CostModel.Current.OperCost import tground, DOC, DOCdepr, DOCflt, DOClnr, DOCmaint, Coper
 import numpy as np
 from A22DSE.Models.CostModel.Current.Raskom import crdte
 from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
-from A22DSE.Parameters.Par_Class_Diff_Configs import Conv, Can
 from A22DSE.Parameters.Par_Class_All import Aircraft
 
 
@@ -68,7 +69,8 @@ def SummaryCost(Aircraft, Cer):
     
     print("\n================================in B$==========================\n"
           + "Total Acquisition Cost: ", Cacq, "\nTotal RnD cost: ", RnDC, 
-          "\nEstimated Unit Cost: ", UnitCost, "\nTotal Operational Cost: ",
+          "\nEstimated Unit Cost: ", UnitCost, "\nCost per AC per year: ",x,
+          "\nTotal Operational Cost: ",
           OpsCost
           ," ---------------------------------------------------------------\n"
           , "Total Program Cost: ", TotalCost)

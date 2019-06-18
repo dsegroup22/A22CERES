@@ -8,6 +8,7 @@ Created on Mon May 20 10:53:40 2019
 import sys
 sys.path.append('../../../../../')
 import numpy as np
+from A22DSE.Models.SC.TailSizing.fuselagelreq import fuselagereq, fusreq
 
 
 # =============================================================================
@@ -187,6 +188,6 @@ def eas(Aircraft, ISA_model):
     
     
 def Fuselage(Conv):
-    a = GetTotalFuselageLength(Conv, Conv.ParLayoutConfig.l_freq, 2, 0.01)
+    a = GetTotalFuselageLength(Conv, fusreq(Conv), 1.25, 0.01)
     return a
     
