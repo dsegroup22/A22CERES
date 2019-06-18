@@ -16,12 +16,13 @@ CL_a = [anfp.C_L_alpha_cruise,anfp.C_L_alpha_slow]
 Rho = [0.089,1.125]
 hp = [20000,0]
 M = [anfp.M_cruise,1.3*anfp.V_stall/sqrt(1.4*287.05*273.15)]
+alpha = [radians(3),radians(10)]
 label = ['cruise','TO']
 # Stationary flight condition
 for i in range(len(v)):
     hp0    = hp[i]       # pressure altitude in the stationary flight condition [m]
     V0     = v[i]# true airspeed in the stationary flight condition [m/sec]
-    alpha0 = radians(3)   # angle of attack in the stationary flight condition [rad]
+    alpha0 = alpha[i]   # angle of attack in the stationary flight condition [rad]
     th0    = 0       	  # pitch angle in the stationary flight condition [rad]
     
     # Aircraft mass
@@ -88,7 +89,7 @@ for i in range(len(v)):
     
     # Lift and drag coefficient
     
-    CL = 2*W/(rho*V0**2*S)               # Lift coefficient [ ]
+    CL = 2*W/(rho*V0**2*S*cos(alpha0))             # Lift coefficient [ ]
     CD = CD0 + (CLa*alpha0)**2/(pi*A*e)  # Drag coefficient [ ]
     M1 = M[i]
     CLu = M1**2/(1-M1**2)*CL    #??? figure 135
@@ -105,7 +106,7 @@ for i in range(len(v)):
     
     CZ0    = -W*cos(th0)/(0.5*rho*V0**2*S)
     CZu    = -CLu    #-0.37616  #-Clu p134 
-    CZa    = -CLa-CD    #-5.74340  #p139
+    CZa    = -CLa-(2*CL/(pi*A*e))*alpha0 -CD# -CLa-CD    #-5.74340  #p139
     deda = (2*0.14)/(pi*A)*180/pi
     CZadot = -2*anfp.CLhalpha*0.95*1*deda     #anfp.C_L_adot    #-0.00350 #p141
     CZq    = -2*anfp.CLhalpha*layout.xht/c*0.95*0.18        #anfp.C_l_q       #-5.66290 #144

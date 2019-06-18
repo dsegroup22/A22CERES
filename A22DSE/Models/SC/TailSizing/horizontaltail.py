@@ -173,7 +173,7 @@ def htail(Aircraft,ISA):
     cech = 0.3
     
     #---------------- iterative process 
-    Vmc = 1.13*V_cruise #m/s
+    Vmc = 1.13*Aircraft.ParAnFP.V_stall #m/s
     Vr = 1.05*Vmc
     
     T = 325000 #N 

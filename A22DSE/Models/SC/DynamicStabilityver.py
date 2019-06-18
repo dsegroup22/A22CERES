@@ -17,6 +17,8 @@ Rho = [0.089,1.125]
 hp = [20000,0]
 M = [anfp.M_cruise,1.3*anfp.V_stall/sqrt(1.4*287.05*273.15)]
 alpha = [radians(3),radians(10)]
+Clu = [0.04,0.01]
+Cdu = [0.01,0.001]
 label = ['cruise','TO']
 # Stationary flight condition
 for i in range(len(v)):
@@ -31,7 +33,7 @@ for i in range(len(v)):
     # aerodynamic properties
     e      = anfp.e       # Oswald factor [ ]
     CD0    = anfp.CD0     # Zero lift drag coefficient [ ]
-    CLa    = CL_a[i]# Slope of CL-alpha curve [ ]
+    CLa    = anfp.C_L_a#CL_a[i]# Slope of CL-alpha curve [ ]
     
     # Longitudinal stability
     Cma    = -0.25*anfp.MAC*CLa #anfp.C_m_a  #0.01 #p143 # longitudinal stabilty [ ]
@@ -89,11 +91,11 @@ for i in range(len(v)):
     
     # Lift and drag coefficient
     
-    CL = 2*W/(rho*V0**2*S)               # Lift coefficient [ ]
+    CL = 2*W/(rho*V0**2*S*cos(alpha0))               # Lift coefficient [ ]
     CD = CD0 + (CLa*alpha0)**2/(pi*A*e)  # Drag coefficient [ ]
     M1 = M[i]
-    CLu = M1**2/(1-M1**2)*CL    #??? figure 135
-    CDu = (2*CL**2)/(pi*A*e) * M1**2/(1-M1**2) #M1* (-16*W**2/(rho**2*(gamma*R*T_cruise)**2*M1**5*S**2*pi*A*e))
+    CLu = Clu[i]#0.04 #M1**2/(1-M1**2)*CL    #??? figure 135
+    CDu = Cdu[i]#0.01#(2*CL**2)/(pi*A*e) * M1**2/(1-M1**2) #M1* (-16*W**2/(rho**2*(gamma*R*T_cruise)**2*M1**5*S**2*pi*A*e))
     
     # Stabiblity derivatives
     
@@ -106,7 +108,7 @@ for i in range(len(v)):
     
     CZ0    = -W*cos(th0)/(0.5*rho*V0**2*S)
     CZu    = -CLu    #-0.37616  #-Clu p134 
-    CZa    = -CLa-CD    #-5.74340  #p139
+    CZa    = -CLa-(2*CL/(pi*A*e))*alpha0 -CD    #-5.74340  #p139
     deda = (2*0.14)/(pi*A)*180/pi
     CZadot = anfp.C_L_adot#-2*anfp.CLhalpha*0.95*1*deda     #anfp.C_L_adot    #-0.00350 #p141
     CZq    = anfp.C_l_q   #-2*anfp.CLhalpha*layout.xht/c*0.95*0.18        #anfp.C_l_q       #-5.66290 #144
