@@ -70,7 +70,7 @@ for parameter in parameters:
     plt.colorbar()
     plt.title(title)
     
-    plt.xlabel(r'$\Gamma_{Wing}$ [$^{\circ}$]')
+    plt.xlabel(r'$\Gamma_{wing}$ [$^{\circ}$]')
     plt.ylabel('Wing Twist [$^{\circ}$]')
     plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Wing\''[:-1]+parameter+  "wing.png")
 

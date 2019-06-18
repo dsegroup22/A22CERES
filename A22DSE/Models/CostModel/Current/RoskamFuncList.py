@@ -43,10 +43,14 @@ def eas(Aircraft, ISA_model):
     AtmosCruise = ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])
     ConversTool = Aircraft.ConversTool
     Vkeas=Vc*np.sqrt(AtmosCruise[2]/ISA_model.rho0)/ConversTool.kts2ms
-    return Vkeas
+    Vk = 33*((Aircraft.ParStruc.MTOW/Aircraft.ConversTool.lbs2kg)/\
+    (Aircraft.ParAnFP.S*Aircraft.ConversTool.m22ft2))**0.5
+    return max(Vkeas,Vk)
 
 def veas(Vmax,ISA_model,Aircraft):
     AtmosCruise = ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])
     ConversTool = Aircraft.ConversTool
     Vkeas=Vmax*np.sqrt(AtmosCruise[2]/ISA_model.rho0)/ConversTool.kts2ms
-    return Vkeas
+    Vk = 33*((Aircraft.ParStruc.MTOW/Aircraft.ConversTool.lbs2kg)/\
+    (Aircraft.ParAnFP.S*Aircraft.ConversTool.m22ft2))**0.5
+    return max(Vkeas,Vk)

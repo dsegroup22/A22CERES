@@ -144,7 +144,7 @@ class ParCostLst(object):
         self.rtr = 43 #[USD/hr] CEF00/CEF89
         self.spil = 60000 #[USD/y] CEF19/CEF89
         self.scpil = 45000 #[USD/y] CEF19/CEF89
-        self.Cfuel = 4 #[USD/gallon] (2019)
+        self.Cfuel = 3 #[USD/gallon] (2019)
         self.FD = 6.74 #[lbs/gallon]
         self.Fdiff = 1.5 #[-]
         self.Fcad = 0.8 #[-]
@@ -175,6 +175,7 @@ class ParConvLst(object):
         self.km2nm = 0.539956803 #[-]
         self.lbf2N = 4.44822162 #[1 lbf = 4.448 N]
         self.psf2Pa = 47.88 #[1 psf = 47.88 Pa]
+        self.m22ft2 = 10.7639104 #[1 m2 = 10.764 ft2]
         
 class ParClassII_CS(object):
     def __init__(self):

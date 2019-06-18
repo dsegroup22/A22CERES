@@ -61,6 +61,7 @@ def CapcMFunc(Aircraft, ISA_model, CostEngine):
     def CmanMFunc():
         CMHRManProg = MHRManProg(MTOW, Vmax, Nprogram, Fdiff)*rmr # rmm == rmr
         CMHRManr = MHRmanr(MTOW,Vmax,Nrdte,Fdiff)*rmr
+#        print (np.array([CMHRManProg,CMHRManr])/(CMHRManProg+CMHRManr))
         return np.sum([CMHRManProg, CMHRManr])*CEFLabor
     
 
@@ -87,6 +88,7 @@ def CapcMFunc(Aircraft, ISA_model, CostEngine):
     
     SumCost_excl_av = CmanMFunc() + CmatMFunc() + CtoolM() + CqcM() + \
     CeaMFunc(0)
+#    print (np.array([CmanMFunc(),CmatMFunc(),CtoolM(),CqcM(),CeaMFunc(0)])/SumCost_excl_av)
     C_Avionics = Ca(SumCost_excl_av) # in 2019 USD
 #    print(C_Avionics/Nprogram)
     
