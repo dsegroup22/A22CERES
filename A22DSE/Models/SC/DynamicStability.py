@@ -164,8 +164,8 @@ for i in range(len(v)):
     omega01 = sqrt(labda_real_1**2+labda_imag_1**2)*V0/c
     xi1 = -labda_real_1/sqrt(labda_real_1**2+labda_imag_1**2)
     P1 = 2*pi/omega01/sqrt(1-xi1**2) 
-    print ('Short Period',label[i],'Eigenvalue=',labda_c1, 'Damping=',xi1, 'Period=',\
-           P1, 'T_half=', T1)
+#    print ('Short Period',label[i],'Eigenvalue=',labda_c1, 'Damping=',xi1, 'Period=',\
+#           P1, 'T_half=', T1)
 
         
     #phugoid 
@@ -183,6 +183,7 @@ for i in range(len(v)):
     omega02 = sqrt(labda_real_2**2+labda_imag_2**2)*V0/c
     xi2 = -labda_real_2/sqrt(labda_real_2**2+labda_imag_2**2)
     P2 = 2*pi/omega02/sqrt(1-xi2**2) 
+  
     print ('Phugoid',label[i],'Eigenvalue=',labda_c3, 'Damping=',xi2, 'Period=',\
            P2, 'T_half=', T2)
 
@@ -192,7 +193,7 @@ for i in range(len(v)):
     labda_5 = labda_c5*(V0/c) 
     
     T5 = -0.693/labda_c5*b/V0
-    print ('Aperiodic',label[i],'Eigenvalue=',labda_c5, 'T_half=', T5)
+#    print ('Aperiodic',label[i],'Eigenvalue=',labda_c5, 'T_half=', T5)
 
     
     
@@ -212,8 +213,8 @@ for i in range(len(v)):
     omega03 = sqrt(labda_real_3**2+labda_imag_3**2)*V0/b
     xi3 = -labda_real_3/sqrt(labda_real_3**2+labda_imag_3**2)
     P3 = 2*pi/omega03/sqrt(1-xi2**2) 
-    print ('Dutch roll',label[i],'Eigenvalue=',labda_c6, 'Damping=',xi3, 'Period=',\
-           P3, 'T_half=', T3)
+#    print ('Dutch roll',label[i],'Eigenvalue=',labda_c6, 'Damping=',xi3, 'Period=',\
+#           P3, 'T_half=', T3)
     
     
     # Spiral 
@@ -223,4 +224,4 @@ for i in range(len(v)):
                 Cnp *(CYb * Clr + 4 * mub * Clb ))
     labda_8 = labda_c8*(V0/c) 
     T8 = -0.693/labda_c8*b/V0
-    print ('Spiral',label[i],'Eigenvalue=',labda_c8, 'T_half=', T8)
+#    print ('Spiral',label[i],'Eigenvalue=',labda_c8, 'T_half=', T8)
