@@ -7,8 +7,7 @@ Created on Mon Jun  3 09:30:41 2019
 import numpy as np
 import os
 from pathlib import Path
-os.chdir(Path(__file__).parents[1])
-from A22DSE.Models.AnFP.Current.InitialSizing.AnFP_Exec_CD0 import S_wet_fuselage
+os.chdir(Path(__file__).parents[3])
 
 #exports in Newtons
 
@@ -51,20 +50,7 @@ def FuselageWeight(Aircraft):
     W_f_tor=W_shell+W_bulkheads+W_fl
     return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N,W_f_tor #[N]
 
-def Torenbeek_verify(Aircraft):
-    K_f = 1.10 * 1.07 #cargo and main gear
-    Swet = S_wet_fuselage(Aircraft) * (1./0.3048)**2
-    V_D = 1.4 * Aircraft.ParAnFP.V_cruise * 1.94384449
-    l_h = (Aircraft.ParLayoutConfig.x_lemach -  \
-           Aircraft.ParLayoutConfig.x_lemac) * (1./0.3048)**2
-    wf = Aircraft.ParLayoutConfig.w_fuselage
-    hf = Aircraft.ParLayoutConfig.h_fuselage
-    
-    Weight = 0.021 * K_f * ( V_D * l_h / (wf + hf) )**0.5 * Swet**1.2
-    return Weight
 
-    
-    
     
     
 
