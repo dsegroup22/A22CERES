@@ -13,8 +13,8 @@ import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[5])
 
-from A22DSE.Parameters.Par_Class_Conventional import Conv
-from A22DSE.Parameters.Par_Class_Atmos import Atmos
+#from A22DSE.Parameters.Par_Class_Conventional import Conv
+#from A22DSE.Parameters.Par_Class_Atmos import Atmos
 
 anfp = Conv.ParAnFP
 struc = Conv.ParStruc
@@ -136,7 +136,7 @@ time = 0
 CL_tmin =np.zeros(1)
 #for i in range(len(He_ar)):
 #He = 22162.895
-while He_ar[-1] > Energy[-1] and i < 600:
+while 19000 > H_tmin[-1] and i < 600:
 #    print(i)
     W = W - mass*9.81
     CLmin = 1.1* W /(0.5*np.ravel(rho)*np.ravel(V)**2*S)
@@ -224,7 +224,6 @@ if fuel < fuelopt:
 #fuel = fuel + np.trapz(massi, dx = 1)
 
 
-#
 rho = rho.reshape(shape)
 plt.figure(1)
 a = plt.contour(np.power(V,2)/2/9.81,H,He,5,colors='k', linewidths = 0.5)
