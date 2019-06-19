@@ -5,9 +5,6 @@ Created on Mon Jun  3 09:30:41 2019
 @author: menno
 """
 import numpy as np
-import os
-from pathlib import Path
-os.chdir(Path(__file__).parents[3])
 
 #exports in Newtons
 
@@ -16,10 +13,10 @@ def FuselageWeight(Aircraft):
     struc = Aircraft.ParStruc
     config = Aircraft.ParLayoutConfig
     
-    h_fuselage=config.h_fuselage    #[m]
-    w_fuselage=config.w_fuselage    #[m]
+    h_fuselage= config.h_fuselage    #[m]
+    w_fuselage= config.w_fuselage    #[m]
 
-    l_fuselage=config.l_fuselage    #[m]
+    l_fuselage= config.l_fuselage    #[m]
     K_inl=1.                      #roskam page 77 part V
     MTOMlbs = struc.MTOW/Aircraft.ConversTool.lbs2kg
     q_Dpsf = anfp.q_dive/Aircraft.ConversTool.psf2Pa
@@ -48,7 +45,7 @@ def FuselageWeight(Aircraft):
     
     W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
     W_f_tor=W_shell+W_bulkheads+W_fl
-    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N,W_f_tor #[N]
+    return W_f*Aircraft.ConversTool.lbf2N,W_f_mil*Aircraft.ConversTool.lbf2N, W_f_tor #[N]
 
 
     
