@@ -54,8 +54,8 @@ def Sensitivity_New_MTOW_FW(Which_Plot, X_steps,Y_steps):
         ax.set_xlabel('Safety margin in OEW[-]')
             
     elif Which_Plot == 2:
-        X = Thrustmargin_lst
-    
+        X = Thrustmargin_lst-935
+        ax.set_xlabel('Difference in thrust per engine[N]')
     Y = altitude_lst
     ax.set_ylabel('cruise altitude [m]')            
     #contour lines        

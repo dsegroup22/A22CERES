@@ -16,7 +16,7 @@ def PollutantArrLow():
     
     # array is defined as [GWP20, GWP100, GWP500]
     CO2 = np.array([np.array([1,1,1]), np.array([1.985])])
-    CO  = np.array([np.array([2.8,4.4,0]), np.array([0])])
+    CO  = np.array([np.array([2.8,4.4,0]), np.array([0.024])])
     H2O = np.array([np.array([0,-0.003,0]), np.array([0.034])])      
 #    CH4 = pollutant('CH4', np.array([63,21,9]), 0.507)
 #    N2O = pollutant('N2O', np.array([270,290, 190]), 0.983)
@@ -32,7 +32,7 @@ def PollutantArrHigh():
     
     # array is defined as [GWP20, GWP100, GWP500]
     CO2 = np.array([np.array([1,1,1]), np.array([1.985])])
-    CO  = np.array([np.array([14, 4.4, 0]), np.array([0])])
+    CO  = np.array([np.array([14, 4.4, 0]), np.array([0.024])])
     H2O = np.array([np.array([0,0.0005,0]), np.array([0.14])])      
 #    CH4 = pollutant('CH4', np.array([63,21,9]), 0.507)
 #    N2O = pollutant('N2O', np.array([270,290, 190]), 0.983)
@@ -92,7 +92,7 @@ def GetReactionProducts(AF, FuelMass):
             out.append([CO2, CO, H2O, H2, N2, O2])
             
         elif 0 < Ri <= .90:
-            print('In 0.<Ri < .90', Ri)            
+            print('In 0.< Ri < .90', Ri)            
             #Product Factors Constants       
             f_CO2 = 10
             f_H2O = 11
@@ -150,7 +150,7 @@ def GetReactionProducts(AF, FuelMass):
     return out            
 #        return None #should not get here
     
-def GetEI(AF, mdot, time, Aircraft, ISA_model, Pollutants):
+def GetEI(AF, mdot, time, Aircraft, ISA_model, Pollutants, Mair):
     
     '''
     INPUT: Masses of the polluting reaction products
@@ -168,8 +168,8 @@ def GetEI(AF, mdot, time, Aircraft, ISA_model, Pollutants):
 #        raise "Error: length of Altitude Profile list and Mach Profile list\
 #        different"
 
-    Fuel = GetFuelBurn(mdot, time)
-    T, p, rho = ISA_model.ISAFunc([])
+#    Fuel = GetFuelBurn(mdot, time)
+#    T, p, rho = ISA_model.ISAFunc([])
 
     Products = np.array(GetReactionProducts(AF, mdot))
 #        print(Producti)
@@ -177,38 +177,20 @@ def GetEI(AF, mdot, time, Aircraft, ISA_model, Pollutants):
 #    Producti = np.array(Producti) #pollutantLst().CO2.GWP
     GWP = []
     RF = []
+    M_atmos = 5.5e18
+    ppmArr = np.zeros(np.shape(Products))
     for j, Product in enumerate(Products):
         for i, producti in enumerate(Product):
+
             GWPi = producti * Pollutants[i][0]
-            RFi  = producti * Pollutants[i][1]                    #TODO: include for other chemicals
+            RFi  = producti*1e6/M_atmos * Pollutants[i][1]
             GWP.append(GWPi)
             RF.append(RFi)
-
+        
     EIGWP = np.sum(np.array(time[1]-time[0]) * GWP) #TODO: don't think it works
     EIRF = np.sum(RF)/len(RF)
 
     return EIGWP, EIRF
-
-
-def GetEI2(AltitudeProfile, MachProfile, resolution, Aircraft, ISA_model):
-    
-    if len(AltitudeProfile) != len(MachProfile):
-        return None
-    
-    ALT, MACH = np.meshgrid(AltitudeProfile, MachProfile)
-    
-    
-    EngineProp = np.ones(np.shape(ALT))
-    for i, Alt_i in enumerate(AltitudeProfile):
-        for j, MACH_i in enumerate(MachProfile):
-#            print(Alt_i, MACH_i)
-            EngineProp[i][j] = GetEngineProp(Alt_i, MACH_i)[0,4]
-    
-    Fuel = np.shape
-    Fuel = GetFuelBurn(EngineProp)
-    
-    return EngineProp
-
 
 #
 #def GetFuelBurn(mdot):

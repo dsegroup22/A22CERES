@@ -119,7 +119,7 @@ def ComputeElasticity(Aircraft, par, ISA_model, height, V_req, t_skinLst,
     
     Vfl_sl  = AE.ComputeFlutter(par, KhLst, KthetaLst, height,
                                 ISA_model)
-    
+#    print(Vdiv_sl, Vcr_sl, Vfl_sl[1])
     V_constr_sl = FindDrivingConstraint(Vdiv_sl, Vcr_sl, Vfl_sl[0])
     V_req_arr = np.ones(np.shape(SKIN)) * V_req
     # =====================================================================
@@ -148,7 +148,6 @@ def ComputeMinWB(Aircraft, par, ISA_model, height, V_constr, t_skinLst,
     
     V_AE = ComputeElasticity(Aircraft, par, ISA_model,
                                 height, V_constr, t_skinLst, t_ribLst, False)
-#    print(V_AE)
 #    print(V_valid, V_constr)
     idx = np.where(V_AE > V_constr)
 
@@ -161,7 +160,6 @@ def ComputeMinWB(Aircraft, par, ISA_model, height, V_constr, t_skinLst,
     for j, rowi in enumerate(list(idx[0])):
         idy = col_idx[j]
         dimLst.append(([SKIN[rowi][idy], RIB[rowi][idy]]))
-    
 
     for i, dimi in enumerate(dimLst):
         skin = dimi[0]
@@ -172,9 +170,9 @@ def ComputeMinWB(Aircraft, par, ISA_model, height, V_constr, t_skinLst,
     
     dim_des = dimLst[argdes]
     
-    if massLst[argdes] > Aircraft.ParStruc.Weight_WingGroup * (1-uncert):
+#    if massLst[argdes] > Aircraft.ParStruc.Weight_WingGroup * (1-uncert):
 #        print(massLst[argdes])
-        return [-1, -1]
+#        return [-1, -1]
     
     return dim_des
 
@@ -213,7 +211,7 @@ def ComputeMaxAwStruct(Aircraft, ISA_model, height, V_constr,
     return dim_des[idmax], Aw[idmax]
 
 
-
+#ComputeMaxAwStruct(Conv, ISA_model, 0, Conv.ParAnFP.V_cruise*1.15, np.arange(10, 16, 1))
 
 
 

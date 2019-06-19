@@ -199,7 +199,7 @@ def DOCdepr(Aircraft,Cman):
     #Costs of depriciation of engine spare parts depriciation
     Cdengsp=(0.85*0.5*Ne*EP*1.50)/(7*Uannbl(tbl)*Vbl)
     
-    print (np.array([Cdap,Cdeng,Cdav,Cdapsp,Cdengsp])/sum([Cdap,Cdeng,Cdav,Cdapsp,Cdengsp]))
+#    print (np.array([Cdap,Cdeng,Cdav,Cdapsp,Cdengsp])/sum([Cdap,Cdeng,Cdav,Cdapsp,Cdengsp]))
     return sum([Cdap,Cdeng,Cdav,Cdapsp,Cdengsp])*par.CEF8919
 
 def DOClnr(Aircraft):
@@ -227,7 +227,7 @@ def DOClnr(Aircraft):
      return sum([Clf,Cnf])*par.CEF8919,frt
  
 
-Cer  = 4e6 # USD19
+Cer  = 4.5e6 # USD19
 Cman=CmanFunc(Conv, ISA_model, Cer)
 docflt=DOCflt(Conv,Cman)
 docmaint=DOCmaint(Conv,Cman)

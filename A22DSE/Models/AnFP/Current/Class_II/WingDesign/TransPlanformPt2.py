@@ -28,7 +28,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 res = 100
 plot = True
 
-CL_i = np.linspace(0.3, 1.0, res)
+CL_i = np.linspace(0.4, 1.1, res)
 sweep_opt = (FormFuncs.ComputePartialSweepOpt(Conv))
 #tc_w  = np.linspace(0.10, 0.15, 4)
 Aw_i = np.linspace(4, 25, res)
@@ -76,8 +76,8 @@ for i, Awi in enumerate(Aw_i):
 WB = FormFuncs.ComputeSpanLoading(Conv, ISA_model, Fprop, theta2, theta3,
                                   TSFC, sweep_opt, CL_i)
     # Buffeting Limit
-CL_buffet = 0.91  # NASA paper of airfoil  NASA SC( 2)-0714
-onset_margin = 1.40 # Regulations require 30% margin betw. onset and cruise
+CL_buffet = 0.92  # NASA paper of airfoil  NASA SC( 2)-0714
+onset_margin = 1.35 # Regulations require 30% margin betw. onset and cruise
 CL_lim    = CL_buffet/onset_margin #+10% higher than certification
 
     # Climb CL constraint
@@ -85,8 +85,9 @@ CL_climb  = 1.03/1.1
     
     # Aw constraint from flutter
 
-Aw_flut = SteadyMain.ComputeMaxAwStruct(Conv, ISA_model, 0,
-        Conv.ParAnFP.V_dive, np.arange(10, 15, 1))[1]
+#Aw_flut = SteadyMain.ComputeMaxAwStruct(Conv, ISA_model, 0,
+#        Conv.ParAnFP.V_dive, np.arange(10, 15, 1))[1]
+Aw_flut = 13
 # =============================================================================
 #                       PLOTTING
 # =============================================================================
