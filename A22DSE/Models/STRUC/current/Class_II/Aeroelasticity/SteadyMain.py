@@ -148,7 +148,6 @@ def ComputeMinWB(Aircraft, par, ISA_model, height, V_constr, t_skinLst,
     
     V_AE = ComputeElasticity(Aircraft, par, ISA_model,
                                 height, V_constr, t_skinLst, t_ribLst, False)
-#    print(V_AE)
 #    print(V_valid, V_constr)
     idx = np.where(V_AE > V_constr)
 
@@ -161,7 +160,6 @@ def ComputeMinWB(Aircraft, par, ISA_model, height, V_constr, t_skinLst,
     for j, rowi in enumerate(list(idx[0])):
         idy = col_idx[j]
         dimLst.append(([SKIN[rowi][idy], RIB[rowi][idy]]))
-    
 
     for i, dimi in enumerate(dimLst):
         skin = dimi[0]

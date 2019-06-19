@@ -76,8 +76,8 @@ for i, Awi in enumerate(Aw_i):
 WB = FormFuncs.ComputeSpanLoading(Conv, ISA_model, Fprop, theta2, theta3,
                                   TSFC, sweep_opt, CL_i)
     # Buffeting Limit
-CL_buffet = 0.91  # NASA paper of airfoil  NASA SC( 2)-0714
-onset_margin = 1.40 # Regulations require 30% margin betw. onset and cruise
+CL_buffet = 0.92  # NASA paper of airfoil  NASA SC( 2)-0714
+onset_margin = 1.35 # Regulations require 30% margin betw. onset and cruise
 CL_lim    = CL_buffet/onset_margin #+10% higher than certification
 
     # Climb CL constraint

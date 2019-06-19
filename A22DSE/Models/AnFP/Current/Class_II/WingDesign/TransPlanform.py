@@ -90,8 +90,8 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     WB = FormFuncs.ComputeSpanLoadingCL(Aircraft, ISA_model, Fprop, theta2, 
                                       theta3, TSFC, sweep_opt, Aw, CL_i)
         
-    CL_buffet = 0.91  # NASA paper of airfoil  NASA SC( 2)-0714
-    onset_margin = 1.40 # Regulations require 30% margin betw. onset and cruise
+    CL_buffet = 0.92  # NASA paper of airfoil  NASA SC( 2)-0714
+    onset_margin = 1.35 # Regulations require 30% margin betw. onset and cruise
     CL_lim    = CL_buffet/onset_margin #+10% higher than certification
     CL_climb  = 1.03/1.1
     
