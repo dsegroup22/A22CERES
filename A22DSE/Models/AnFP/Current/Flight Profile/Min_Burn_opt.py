@@ -174,6 +174,8 @@ while 20000 > H_tmin[-1] and i < 600:
         FinalRCs = np.append(FinalRCs,RCs_tmin[-1])
     CL_tmin = np.append(CL_tmin,CL[index]    )
     mass=thrust_tmin[-1]*SFC*n_engines*t
+    if H_tmin[-1] > 19500:
+        mass+=0.827*t
     time +=t
         
     Energy = np.append(Energy, H_tmin[-1] + V_tmin[-1]**2/2/9.81)
