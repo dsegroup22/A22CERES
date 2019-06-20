@@ -105,7 +105,7 @@ def vtail(Aircraft):
     Vd = 1.4*Vc   #dive speed
     Kv = 1
     Wvt = Kv*(Svi*10.764)*(3.81*((Svi*10.764)**0.2*(Vd/0.5144)/1000/(cos(swhalf))**0.5)-0.287)*0.4536
-    mac_v = ((2./3.) * crv * (1. + ctv + ctv**2.)/(1. + ctv))
+    mac_v = ((2./3.) * crv * (1. + trvi + trvi**2.)/(1. + trvi))
     swle = atan(tan(swhalf)+4/Avi*0.5*(1-trvi)/(1+trvi))
    
     
