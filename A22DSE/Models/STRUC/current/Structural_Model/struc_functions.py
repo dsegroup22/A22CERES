@@ -4,6 +4,13 @@ Created on Mon Jun 10 21:59:07 2019
 
 @author: rickv
 """
+#data to run the file
+
+#upper skin airfoil
+
+
+
+
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -51,17 +58,7 @@ def skin_eq_upper(chord): #verified with data
     INPUT: datafiles of upper airfoil and the chord length
     OUTPUT: polynomal function of the upper airfoil
     ''' 
-#    #read datafile
-#    f=open("NASASC20712data_1.txt", "r")
-#    data_f=f.read()
-#    data_f = data_f.split('\n')
-#    
-#    x1=[]
-#    y1=[]
-#    for row in data_f: 
-#        x1.append(float(row[0:8]))
-#        y1.append(float(row[9:18]))
-        
+       
     x1 = [0.0, 0.002, 0.005, 0.01, 0.02, 0.03, 0.04, 
           0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 
           0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21, 0.22, 0.23, 
@@ -98,10 +95,6 @@ def skin_eq_lower(chord): #verified with data
     INPUT: datafiles of lower airfoil and the chord length
     OUTPUT: polynomal function of the lower airfoil
     ''' 
-#    #read datafile
-#    f=open("NASASC20712data_2.txt", "r")
-#    data_f=f.read()
-#    data_f = data_f.split('\n')
 
     x2=[0.0, 0.002, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 
          0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2,
@@ -126,10 +119,6 @@ def skin_eq_lower(chord): #verified with data
         -0.0043, -0.0038, -0.0035, -0.0033, -0.0034, -0.0036, -0.0041, -0.0049,
         -0.0059, -0.0072, -0.0087, -0.0095, -0.0106, -0.011, -0.0117]
 
-#    for row in data_f: 
-#        x2.append(float(row[0:8]))
-#        y2.append(-1*float(row[11:18]))
-#    print(x2, y2)
     x2 = [i * chord for i in x2]
     y2 = [i * chord for i in y2]
     p = np.polyfit(x2, y2, 25)
@@ -253,42 +242,25 @@ def skin_moi(chord,Aircraft,t_skin): #fin
     
 def moi_root_stringers(chord, Aircraft): #multiple of 10, with min 20
     #initise
-    n=Aircraft.ParStruc.n_stiff
+    n=int(Aircraft.ParStruc.n_stiff)
     A=Aircraft.ParStruc.A_stiff
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
-    c1=0.2*chord
-    c2=0.4*chord
-    c3=0.4*chord    
-    n1=int(1/5*n)
-    n2=int(2/5*n)
-    n3=int(2/5*n)
-    in_stri=[]
-    #calculate moment of inertia list
-    #cell 1
-    ds=c1/(n1/2)
-    x=0.2*chord
-    for i in range(n1):
-        inertia=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
-        x=x-ds
-        in_stri.append(inertia)
-    #cell 2
-    ds=(c2-1)/(n2/2)
-    x=0.2*chord
-    for j in range(n2):
-        inertia=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
-        x=x+ds
-        in_stri.append(inertia)    
-    #cell 3
-    ds=c3/(n3/2)
-    x=0.6*chord
-    for k in range(n3):
-        inertia=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
-        x=x+ds
-        in_stri.append(inertia)   
+#    c1=0.2*chord
+#    c2=0.4*chord
+#    c3=0.4*chord    
+#    n1=int(1/5*n)
+#    n2=int(2/5*n)
+#    n3=int(2/5*n)
+    inertia=0
+    ds=chord/(n-1)
+    for i in range(n):
+        x=ds
+        inertia_i=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
+        inertia = inertia + inertia_i
+
     
-    
-    return in_stri #list of all stringers with inertia
+    return inertia #list of all stringers with inertia
 
 
 def moi_stringer(chord,Aircraft):  #n in multiples of 5 (min=20)
@@ -296,7 +268,7 @@ def moi_stringer(chord,Aircraft):  #n in multiples of 5 (min=20)
     factor=chord/c_r
     
     in_root=moi_root_stringers(chord, Aircraft)
-    moi_stringers=factor*float(sum(in_root))
+    moi_stringers=factor*in_root
     
     return moi_stringers
 
@@ -421,7 +393,7 @@ def Loading_Diagrams(Aircraft,steps):
         M.append(M_l_i)
     chordi=chord(x,Aircraft) 
     
-    p = np.polyfit(x, M, 25)
+    p = np.polyfit(x, M, 50)
     M_po = np.poly1d(p)
     
 #    u2= []
