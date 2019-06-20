@@ -12,7 +12,10 @@ install:
 
 script:
  - coverage run --source=A22DSE -m pytest 
- 
+ - coverage report
+
+after_success:
+  - coveralls
 
 
 notifications:
