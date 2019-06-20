@@ -210,6 +210,33 @@ def TorsionalStiffness(chord, Aircraft,t_skin,t_rib):  #verified
 
     return K_theta
 
+#plotting contour
+    
+x=np.linspace(0.,0.005,10)
+y=np.linspace(0.,0.01,10)
+xv, yv = np.meshgrid(x, y)
+
+z = np.ones(np.shape(xv))
+
+for i, xi in enumerate(x):
+    ylst=[]
+    for j, yi in enumerate(y):
+        t=TorsionalStiffness(1, Conv,i,j)
+        z[i][j] = t
+         
+a=plt.contour(xv,yv, z)
+plt.clabel(a, inline=True, fontsize=12)
+plt.title('Sensitivity of Torsional Stifness to Wing and Rib Thickness')
+plt.xlabel('Wing Thickness [m]')
+plt.ylabel('Rib Thickness [m]')
+
+plt.show()
+
+
+
+
+
+
 #moment of intertia calculator
 
 
@@ -240,7 +267,7 @@ def skin_moi(chord,Aircraft,t_skin): #fin
 
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
-    steps=100
+    steps=100.
     dx=1/steps
     x=np.linspace(0.,chord,steps)
     moi_skin=0
@@ -356,13 +383,13 @@ def EI(Aircraft,chord):
     '''   
     t_skin = Aircraft.ParStruc.t_skin
     t_rib = Aircraft.ParStruc.t_rib
-    E_alu = Aircraft.ParStruc.E_Al
-    E_comp = Aircraft.ParStruc.E_comp
+    E_alu = float(Aircraft.ParStruc.E_Al)
+    E_comp = float(Aircraft.ParStruc.E_comp)
     moi_stringer = moi_root_stringers(chord, Aircraft)
     moi_skin = skin_moi(chord,Aircraft,t_skin)
     moi_ribs = rib_moi(chord,Aircraft,t_rib)
     EI = moi_stringer*E_alu + moi_skin*0.5*(E_alu+E_comp)+moi_ribs*E_alu
-    return EI
+    return t_rib
 
 
 def Eliptical(Aircraft,steps):
@@ -383,22 +410,22 @@ def Loading_Diagrams(Aircraft,steps):
     #initialise parameters
     b=anfp.b
     m_engine=prop.Engine_weight
-    y_engine1=layout.y_engine
-    y_engine2=10 #dummy
-    y_engine3=15 #dummy
-    x=np.linspace(0,b/2,steps)
+    y_engine1=Aircraft.ParLayoutConfig.y_eng_g1
+    y_engine2=Aircraft.ParLayoutConfig.y_eng_g2 #dummy
+    y_engine3=Aircraft.ParLayoutConfig.y_eng_g2+3. #dummy
+    x=np.linspace(-b/2,b/2,steps)
     dx=b/steps
     MTOW=struc.MTOW
     m_fuel=struc.FW
     g=9.81
     #engines
-    V_e1=np.heaviside((x-y_engine1),1)*m_engine
-    V_e2=np.heaviside((x-y_engine2),1)*m_engine
-    V_e3=np.heaviside((x-y_engine3),1)*m_engine
-#    V_e4=-np.heaviside((x+y_engine1),1)*m_engine
-#    V_e5=-np.heaviside((x+y_engine2),1)*m_engine
-#    V_e6=-np.heaviside((x+y_engine3),1)*m_engine
-    V_e=V_e1+V_e2+V_e3 #+V_e4+V_e5+V_e6
+    V_e1=-np.heaviside((x-y_engine1),1)*m_engine*g
+    V_e2=-np.heaviside((x-y_engine2),1)*m_engine*g
+    V_e3=-np.heaviside((x-y_engine3),1)*m_engine*g
+    V_e4=-np.heaviside((x+y_engine1),1)*m_engine*g
+    V_e5=-np.heaviside((x+y_engine2),1)*m_engine*g
+    V_e6=-np.heaviside((x+y_engine3),1)*m_engine*g
+    V_e=V_e1+V_e2+V_e3 +V_e4+V_e5+V_e6
     #lift
     liftdistr=4*MTOW/(np.pi*b)*np.sqrt(1-4*x**2/b**2)
     V_l=[]
@@ -411,29 +438,67 @@ def Loading_Diagrams(Aircraft,steps):
     w_fuselage=V_l[-1]-6*m_engine
     V_f=-np.heaviside(x,1)*w_fuselage
     #total shear
-    V=V_e+V_f+V_e+V_l
+    V=V_e+V_f+V_l
     #moment
-    M_initial=[]
     M=[]
     M_l_i=0
     for j in V:
         M_l_i=M_l_i+j*dx
-        M_initial.append(M_l_i)
-    M0=M_initial[int(steps/2)]
-    for k in M_initial:
-        ab=k-M0
-        M.append(ab)
+        M.append(M_l_i)
+    chordi=chord(x,Aircraft) 
+    u2= []
+    u2_i = 0
+#    for k in range(len(x)):
+#        chord_i=chordi[k]
+#        EI_i=EI(Aircraft,chord_i)
+#        M_i=M[k]
+#        u2_i = u2_i - 1/EI_i *M_i*dx
+#        u2.append(u2_i)
+#        
+#        
         
-        
-    return x, V, M
+    return x, V, M#, u2
 
 def defl(Aircraft, steps):
     x=Loading_Diagrams(Aircraft,steps)[0]
     M=Loading_Diagrams(Aircraft,steps)[2]
     chordi = chord(x, Aircraft)
-    EI_i = EI(Aircraft, chord)
+#    EI_i = EI(Aircraft, chordi)
     
-    return x, M, chord, EI
-    
-    
-       
+    return x, M, chordi#, EI
+
+
+x=np.linspace(0.,0.005,10)
+y=np.linspace(0.,0.010,10)
+xv, yv = np.meshgrid(x, y)
+
+z = np.ones(np.shape(xv))
+
+for i, xi in enumerate(x):
+    ylst=[]
+    for j, yi in enumerate(y):
+        t=wing_struc_mass(Conv,i,j)
+        z[i][j] = t
+         
+#a=plt.contourf(xv,yv, z)
+##plt.clabel(a, inline=True, fontsize=12)
+#plt.title('Structural Wing Weight Sensitivity to Ribs and Skin Thickness')
+#plt.xlabel('Wing Thickness [m]')
+#plt.ylabel('Skin Thickness [m]')
+#
+#plt.show()
+
+
+        
+#a,b,c=Loading_Diagrams(Conv,1000)
+#plt.plot(a,b)
+#plt.title('Vertical Shear Diagram')
+#plt.xlabel('Span Position [m]')
+#plt.ylabel('Shear Force [N]')
+#plt.show()
+  
+#plt.plot(a,c)
+#plt.title('Bending Moment Diagram')
+#plt.xlabel('Span Position [m]')
+#plt.ylabel('Bending  Moment [Nm]')
+#plt.show()
