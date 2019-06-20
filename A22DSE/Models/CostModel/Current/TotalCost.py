@@ -23,7 +23,7 @@ import numpy as np
 def TotalC(Aircraft, ISA_model):
     Cer=Aircraft.ParProp.Engine_cost*1e6
     RnDCost = crdte(Aircraft, ISA_model, Cer)
-    print (RnDCost)
+    #print (RnDCost)
     Cman=CmanFunc(Aircraft, ISA_model, Cer)
     docflt=DOCflt(Aircraft,Cman)
     docmaint=DOCmaint(Aircraft,Cman)
@@ -32,9 +32,10 @@ def TotalC(Aircraft, ISA_model):
     frt=DOClnr(Aircraft)[1]
     Cop=Coper(Aircraft,(DOC(docflt,docmaint,docdepr,doclnr,frt)))[0]
     Copsy1 = Coper(Aircraft,(DOC(docflt,docmaint,docdepr,doclnr,frt)))[2]
-#    print ("RnD costs=",RnDCost*1e-9)
-#    print ("Manufacturing costs=",Cman*1e-9)
-#    print ("Operating costs=",Cop*1e-9)
-    return (sum([RnDCost+Cman+Cop])*1e-9,Cop*1e-9),Copsy1
+    print ("RnD costs=",RnDCost*1e-9)
+    print ("Manufacturing costs=",Cman*1e-9)
+    print ("Operating costs=",Cop*1e-9)
+    print('\n\n\n')
+    return sum([RnDCost+Cman+Cop])*1e-9,Cop*1e-9,Copsy1
 
 #print (TotalC(Conv,ISA_model))
