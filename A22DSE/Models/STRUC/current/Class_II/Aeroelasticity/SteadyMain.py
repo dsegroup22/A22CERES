@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 #import control.matlab as control
 import A22DSE.Models.STRUC.current.Structural_Model.struc_functions as StrucFun
 import A22DSE.Models.STRUC.current.Class_II.Aeroelasticity.SteadyFuncs as AE
-#from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
+from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 
 '''
@@ -113,24 +113,25 @@ def ComputeElasticity(Aircraft, par, ISA_model, height, V_req, t_skinLst,
                     par.c, Aircraft, t_skin, t_rib)))
             KhLst[i][j] = StrucFun.moi_wing(par.c, Aircraft, t_skin, t_rib)
     
-    Vdiv_sl = AE.ComputeDivSpeed(par, KthetaLst, height, ISA_model)
-    Vcr_sl  = AE.ComputeControlReversal(par, KthetaLst, height, 
+    Vdiv = AE.ComputeDivSpeed(par, KthetaLst, height, ISA_model)
+    Vcr  = AE.ComputeControlReversal(par, KthetaLst, height, 
                                         ISA_model)
     
-    Vfl_sl  = AE.ComputeFlutter(par, KhLst, KthetaLst, height,
+    Vfl  = AE.ComputeFlutter(par, KhLst, KthetaLst, height,
                                 ISA_model)
-#    print(Vdiv_sl, Vcr_sl, Vfl_sl[1])
-    V_constr_sl = FindDrivingConstraint(Vdiv_sl, Vcr_sl, Vfl_sl[0])
+#    print(Vdiv, Vcr, Vfl[0])
+#    print(KthetaLst, KhLst)
+    V_constr = FindDrivingConstraint(Vdiv, Vcr, Vfl[0])
     V_req_arr = np.ones(np.shape(SKIN)) * V_req
     # =====================================================================
     #                                   PLOTTING
     # =====================================================================
     if plot == True:
-        plotV2(SKIN, RIB, V_constr_sl, V_req_arr)
-        plotContour(SKIN, RIB, V_constr_sl, V_req)
-        plotV4(SKIN, RIB, Vdiv_sl, Vcr_sl, Vfl_sl[0], V_req_arr)
+        plotV2(SKIN, RIB, V_constr, V_req_arr)
+        plotContour(SKIN, RIB, V_constr, V_req)
+        plotV4(SKIN, RIB, Vdiv, Vcr, Vfl[0], V_req_arr)
 
-    return V_constr_sl
+    return V_constr
     # Compute mass of skin, rib combination
     
     #find thicknesses that satisfy constraints
@@ -148,7 +149,6 @@ def ComputeMinWB(Aircraft, par, ISA_model, height, V_constr, t_skinLst,
     
     V_AE = ComputeElasticity(Aircraft, par, ISA_model,
                                 height, V_constr, t_skinLst, t_ribLst, False)
-#    print(V_AE)
 #    print(V_valid, V_constr)
     idx = np.where(V_AE > V_constr)
 
@@ -157,11 +157,10 @@ def ComputeMinWB(Aircraft, par, ISA_model, height, V_constr, t_skinLst,
     dimLst = []
     massLst = []
     col_idx = list(idx[1])
-
+    
     for j, rowi in enumerate(list(idx[0])):
         idy = col_idx[j]
         dimLst.append(([SKIN[rowi][idy], RIB[rowi][idy]]))
-    
 
     for i, dimi in enumerate(dimLst):
         skin = dimi[0]
@@ -172,9 +171,9 @@ def ComputeMinWB(Aircraft, par, ISA_model, height, V_constr, t_skinLst,
     
     dim_des = dimLst[argdes]
     
-#    if massLst[argdes] > Aircraft.ParStruc.Weight_WingGroup * (1-uncert):
+    if massLst[argdes] > Aircraft.ParStruc.Weight_WingGroup * (1-uncert):
 #        print(massLst[argdes])
-#        return [-1, -1]
+        return [-1, -1]
     
     return dim_des
 
@@ -182,15 +181,15 @@ def ComputeMaxAwStruct(Aircraft, ISA_model, height, V_constr,
                        Aw):
     
     # Constants
-    xtheta = 0.4                             # assumed
+    xtheta = 0.3                             # assumed
     rtheta = 0.4                             # assumed
     CLdelta = np.deg2rad(1.8)                # procedure from paper
     CMacdelta = -0.010
 #    n = Aircraft.ParStruc.n_stiff            #stiffeners
 #    A_stiff = Aircraft.ParStruc.A_stiff      # Area stiffeners
     S_ac = Aircraft.ParAnFP.S
-    t_skinLst = np.arange(0.0005, 0.0045, 0.0005)
-    t_ribLst = np.arange(0.0005, 0.0045, 0.0005)
+    t_skinLst = np.arange(0.0005, 0.0055, 0.0005)
+    t_ribLst = np.arange(0.0005, 0.0055, 0.0005)
 
     dim_des = []
     mass_des = []
