@@ -460,7 +460,7 @@ def my_split(s):
 def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
     
     PrintDatcom(Aircraft)
-    Popen(['A22DSE\Models\DATCOM\Current\datcom.exe'],stdin=PIPE,stdout=PIPE).communicate(b'C:\Users\menno\Documents\GitHub\A22CERES\A22DSE\Models\DATCOM\Current\ceres.dat')
+    Popen(['A22DSE/Models/DATCOM/Current/datcom.exe'],stdin=PIPE,stdout=PIPE).communicate(b'C:\Users\menno\Documents\GitHub\A22CERES\A22DSE\Models\DATCOM\Current\ceres.dat')
     file=open('datcom.out','r')
     
     lines=file.readlines()
