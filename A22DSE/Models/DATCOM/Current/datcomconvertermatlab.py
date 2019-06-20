@@ -20,7 +20,7 @@ def PrintMatlab(Aircraft):
     Layout=Aircraft.ParLayoutConfig
     Conversion=Aircraft.ConversTool
     Struc=Aircraft.ParStruc
-
+    file=open('A22DSE\Models\DATCOM\Current\Airfoiltools.txt','r')
     file=open('A22DSE\Models\DATCOM\Current\PlotDatcom3d_CERESorig.m','r')
     
     lines=file.readlines()
