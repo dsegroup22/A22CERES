@@ -321,21 +321,21 @@ def wing_struc_mass(Aircraft,t_skin,t_rib):
     
     return w_total
 
-def EI(Aircraft,chord):
+def EI(Aircraft,chord,t_skin,t_rib):
     ''' 
     DESCRIPTION: function that calculates the structural wing mass
     INPUT: Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp
     OUTPUT: wing structural mass, without systems (only material weight)
     '''   
-    t_skin = Aircraft.ParStruc.t_skin
-    t_rib = Aircraft.ParStruc.t_rib
+#    t_skin = Aircraft.ParStruc.t_skin
+#    t_rib = Aircraft.ParStruc.t_rib
     E_alu = float(Aircraft.ParStruc.E_Al)
     E_comp = float(Aircraft.ParStruc.E_comp)
     moi_stringer = moi_root_stringers(chord, Aircraft)
     moi_skin = skin_moi(chord,Aircraft,t_skin)
     moi_ribs = rib_moi(chord,Aircraft,t_rib)
     EI = moi_stringer*E_alu + moi_skin*0.5*(E_alu+E_comp)+moi_ribs*E_alu
-    return t_rib
+    return EI
 
 
 def Eliptical(Aircraft,steps):
