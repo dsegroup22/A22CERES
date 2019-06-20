@@ -17,7 +17,7 @@ from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
 
 
 
-parameter='C_D_0'
+
 
 steps=20
 
@@ -53,8 +53,8 @@ for parameter in parameters:
     if hasNumbers(parameter):
         title=r'$'+parameter[0].split('_')[0]+\
     '_{'+parameter.split('_')[1]+'_{'+greek(parameter.split('_')[2])+'}}$ [-]'
-    title=title+r' for Wing Twist='+str(round(Conv.ParAnFP.twwing*180/np.pi,1)) + r'$^{\circ}$'
-    title=title+r' and $\Gamma_{wing}=$'+str(round(Conv.ParAnFP.dhwing*180/np.pi,1)) + r'$^{\circ}$'
+    title=title+r' for Wing Twist = '+str(round(Conv.ParAnFP.twwing*180/np.pi,1)) + r'$^{\circ}$ '
+    title=title+'\n'+r' and $\Gamma_{wing}=$'+str(round(Conv.ParAnFP.dhwing*180/np.pi,1)) + r'$^{\circ}$'
     
     
     for tw in twistrange:
@@ -70,11 +70,15 @@ for parameter in parameters:
     data=data[1:]
     
     plt.clf()
+    plt.figure(figsize=(7,6))
+    contours=plt.contour(dihedralrange,twistrange,data,levels=np.array([-0.0,0.0]))
+    plt.clabel(contours, inline=True, fontsize=14)
     plt.contourf(dihedralrange,twistrange,data,cmap='Greys',levels=20)
     plt.colorbar()
-    plt.title(title)
-    
-    plt.xlabel(r'$\Gamma_{tail}$ [$^{\circ}$]')
-    plt.ylabel('Tail Twist [$^{\circ}$]')
-    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Tail\''[:-1]+parameter+  "tail.png")
+    plt.title(title,fontsize=18,horizontalalignment='center')
+    plt.tick_params(labelsize=14)
+    plt.xlabel(r'$\Gamma_{tail}$ [$^{\circ}$]',fontsize=14)
+    plt.ylabel('Tail Twist [$^{\circ}$]',fontsize=14)
+    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Tail\''[:-1]+parameter+  "tail.png",pad_inches=5)
     print(parameter)
+    

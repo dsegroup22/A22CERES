@@ -13,8 +13,8 @@ import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[5])
 
-from A22DSE.Parameters.Par_Class_Conventional import Conv
-from A22DSE.Parameters.Par_Class_Atmos import Atmos
+#from A22DSE.Parameters.Par_Class_Conventional import Conv
+#from A22DSE.Parameters.Par_Class_Atmos import Atmos
 
 anfp = Conv.ParAnFP
 struc = Conv.ParStruc
@@ -68,9 +68,9 @@ K = 1/m.pi/A/e
 
 res = 500
 res1 = 100
-z=res*res/res1
-H = np.linspace(0,23000,res)
-V = np.linspace(5,230,res)
+z=res*100
+H = np.linspace(10,23000,res)
+V = np.linspace(10,250,res)
 V, H =  np.meshgrid(V,H)
 shape = H.shape
 MaxT = np.ones(shape)
@@ -93,8 +93,8 @@ for i in range(len(MaxT[0])):
 
 He = np.ravel(H) + np.power(np.ravel(V),2)/2/9.81
 
-tminopt = 1000
-fuelopt = 10000
+#tminopt = 1000
+#fuelopt = 15000
 CLopt = 0
 Vopt = None
 Hopt = None
@@ -120,78 +120,131 @@ V = V.reshape(shape)
 
 
 
-tclimb=np.zeros((res))
+#tclimb=np.zeros((res))
 
 He_ar = np.linspace(2000,22162.895,res1)
-RCs_tmin = np.zeros(res1)
-V_tmin = np.zeros(res1)
-H_tmin = np.zeros(res1)
-thrust_tmin = np.zeros(res1)
-
+RCs_tmin = np.zeros(1)
+V_tmin = np.zeros(1)
+H_tmin = np.zeros(1)
+thrust_tmin = np.zeros(1)
+FinalRCs = np.zeros(1)
 mass=0
-for i in range(len(He_ar)):
+Energy=np.zeros(1)
+i=0
+t=30
+time = 0
+CL_tmin =np.zeros(1)
+#for i in range(len(He_ar)):
+#He = 22162.895
+while 20000 > H_tmin[-1] and i < 600:
+#    print(i)
     W = W - mass*9.81
     CLmin = 1.1* W /(0.5*np.ravel(rho)*np.ravel(V)**2*S)
-
-    CL = np.minimum(1/2/K*((-np.ravel(MaxT)/W)+np.sqrt((np.ravel(MaxT)/W)**2+12\
-                        *CD0*K)),CLmin)
+    CLmax = anfp.CLMAX*.9
+    CL1 = np.minimum(1/2/K*((-np.ravel(MaxT)/W)+np.sqrt((np.ravel(MaxT)/W)**2+12\
+                        *CD0*K)),CLmax*np.ones(CLmin.shape))
+    CL = np.maximum(CLmin, CL1)
+    CL = CL.reshape(shape)
+    Vmin  = (1.1*W/(0.5*rho[:,0]*anfp.CLMAX*S))**0.5
+#    V = np.maximum(Vmin,np.ravel(V))
+#    V = np.minimum(np.ones(res**2)*anfp.V_cruise,V)
     
     RCs = (np.ravel(MaxT)*n_engines-0.5*np.ravel(rho)*np.power(np.ravel(V),2)*S*\
        (CD0+np.ravel(CL)**2/m.pi/A/e))*np.ravel(V)/W
-       
-    RCs_tmin[i] = np.amax(RCs[np.where(np.logical_and(He_ar[i]> He-z/res \
-                          , He_ar[i] < He+z/res))])
-    index=(int(np.where(RCs == np.amax(RCs[np.where(\
-        np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))]))[0]),\
-    int(np.where(RCs == np.amax(RCs[np.where(\
-        np.logical_and(He_ar[i]> He-z/res , He_ar[i] < He+z/res))]))[1]))
-    
-    thrust_tmin[i] = MaxT[index]
-    V_tmin[i] = V[index]
-    H_tmin[i] = H[index]
-    mass=thrust_tmin[i]*SFC*0.001
-#    if V_tmin[i] >  
-#compute mdot/RCs
-
-     
-       
-#integrate         
-       
-       
-       
-       
-       
-       
-       
-tmin = float(np.trapz(np.divide(1,RCs_tmin),He_ar))/60
-fuel = float(np.trapz(np.divide(thrust_tmin,RCs_tmin),He_ar))*SFC*n_engines
+    RCs = RCs.reshape(shape)
+    V = V.reshape(shape)
+    RCsi=RCs[np.where(np.logical_and(Energy[-1]> He-z/res \
+                          , Energy[-1] < He+z/res))]
+    RCsapp = RCsi[np.logical_not(np.isnan(RCsi))]
+    RCs_tmin = np.append(RCs_tmin,np.amax(RCsapp))
+#    print(RCs_tmin[-1])
+    index=(int(np.where(RCs == RCs_tmin[-1])[0]),\
+    int(np.where(RCs == RCs_tmin[-1])[1]))
+#    print(V[index] < Vmin[index[0]])
+    if V[index] < Vmin[index[0]]:
+        V_tmin = np.append(V_tmin,Vmin[-1])
+        H_tmin = np.append(H_tmin,H_tmin[-1])
+        thrust_tmin = np.append(thrust_tmin,thrust_tmin[-1])
+        FinalRCs = np.append(FinalRCs,0)
+    else:
+        thrust_tmin = np.append(thrust_tmin,MaxT[index])
+        
+        V_tmin = np.append(V_tmin,V[index])
+        H_tmin = np.append(H_tmin,H_tmin[-1]+RCs_tmin[-1]*t)
+        FinalRCs = np.append(FinalRCs,RCs_tmin[-1])
+    CL_tmin = np.append(CL_tmin,CL[index]    )
+    mass=thrust_tmin[-1]*SFC*n_engines*t
+    time +=t
+        
+    Energy = np.append(Energy, H_tmin[-1] + V_tmin[-1]**2/2/9.81)
+#    print(Energy[-1], RCs_tmin[-1])
+    i +=1
+index = np.where(np.logical_and(V_tmin < 220, np.logical_and(FinalRCs !=None , FinalRCs !=0)))
+tmin = float(np.trapz(np.divide(1,FinalRCs[index]),Energy[index]))/60
+fuelopt = 100000000
+fuel = float(np.trapz(np.divide(thrust_tmin[index],FinalRCs[index]),Energy[index]))*SFC*n_engines
 if fuel < fuelopt:
     fuelopt = fuel
-    CLopt = CL
+    CLopt = CL_tmin[index]
     tminopt = tmin
-    Vopt = V_tmin
-    Hopt = H_tmin
-    RCsopt = RCs_tmin
-    Fly = (anfp.CLMAX*np.ones(shape) > CLopt)
+    Vopt = V_tmin[index]
+    Hopt = H_tmin [index]
+    RCsopt = RCs_tmin[index]
+    EnergyOpt = Energy[index]
+#    Fly = (anfp.CLMAX*np.ones(res**2) > CLopt)
 
-
+#i=0
+#massi = np.zeros(0)
+#while RCs[450,435]<0.1:
+#    
+#    CLmin = 1.1* W /(0.5*np.ravel(rho)*np.ravel(V)**2*S)
 #
+#    CL = CLmin
+#    
+#    RCs = (np.ravel(MaxT)*n_engines-0.5*np.ravel(rho)*np.power(np.ravel(V),2)*S*\
+#       (CD0+np.ravel(CL)**2/m.pi/A/e))*np.ravel(V)/W
+#    RCs = RCs.reshape(shape)
+#    RCs_tmin = np.append(RCs_tmin,0)
+#    V_tmin = np.append(V_tmin,V_tmin[-1])
+#    H_tmin = np.append(H_tmin, H_tmin[-1])
+#    thrust_tmin = np.append(thrust_tmin, thrust_tmin[-1])
+#    mass=thrust_tmin[-1]*SFC*n_engines*100
+#    W = W - mass*9.81   
+##    print(RCs[450,434], W/9.81)
+#    i+=1
+#    massi = np.append(massi,mass)
+#       
+#       
+#       
+#       
+#       
+#       
+#       
+#tmin = tmin + 10*i/60
+#fuel = fuel + np.trapz(massi, dx = 1)
+
+
+rho = rho.reshape(shape)
 plt.figure(1)
 a = plt.contour(np.power(V,2)/2/9.81,H,He,5,colors='k', linewidths = 0.5)
 b = plt.contour(np.power(V,2)/2/9.81,H,RCs,20,colors='k')
 plt.plot(np.power(Vopt,2)/2/9.81,Hopt)
 plt.plot(anfp.V_cruise**2/2/9.81,20000,'k o')
 #plt.plot(np.ones(res)*129**2/2/9.81,H[:,0])
-plt.plot(np.ones(res)*62.85**2/2/9.81,H[:,0])
+plt.plot((1.1*W/(0.5*rho[:,0]*anfp.CLMAX*S))/2/9.81,H[:,0])
 plt.clabel(b, inline=1, fontsize=10)
+plt.xlabel(r'$\frac{V^2}{2g_0}$ [m]')
+plt.ylabel(r'Altitude H [m]')
+#plt
 plt.show()
 #
 #
 plt.figure(2)
-a = plt.plot(He_ar, np.divide(1,RCsopt))
-plt.title('Climb time ='+ str(float(np.trapz(np.divide(1,RCsopt),He_ar))\
+a = plt.plot(EnergyOpt, np.divide(1,RCsopt))
+plt.title('Climb time ='+ str(float(np.trapz(np.divide(1,RCsopt),EnergyOpt))\
                               /60)+'min')
 plt.show()
+#print(RCs[434,450])
 # 
 #
 #W = (struc.MTOW ) * 9.81
