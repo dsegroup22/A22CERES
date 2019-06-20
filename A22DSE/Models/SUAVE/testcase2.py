@@ -223,7 +223,7 @@ def vehicle_setup():
     wing.sweeps.quarter_chord    = Aircraft.ParAnFP.Sweep_25*Units.radians
     wing.thickness_to_chord      = Aircraft.ParAnFP.tc
     wing.taper                   = Aircraft.ParAnFP.taper
-    wing.span_efficiency         = Aircraft.ParAnFP.eta_airfoil
+    wing.span_efficiency         = Aircraft.ParAnFP.e
     wing.spans.projected         = Aircraft.ParAnFP.b*Units.meter
     wing.chords.root             = Aircraft.ParAnFP.c_r*Units.meter
     wing.chords.tip              = Aircraft.ParAnFP.c_t*Units.meter
@@ -234,7 +234,7 @@ def vehicle_setup():
     wing.origin                  = [13.61,0,-1.27] # meters
     wing.vertical                = False
     wing.symmetric               = True
-    wing.high_lift               = True
+    wing.high_lift               = False
     wing.dynamic_pressure_ratio  = 1.0
     
     # ------------------------------------------------------------------
