@@ -33,7 +33,7 @@ class airfoilAE(object):
         self.Stheta = self.m * self.xtheta * self.b     #
         self.rtheta = rtheta * self.c                   #
         self.Itheta = self.m*(self.rtheta*self.b)**2    #
-        self.e      = 0.3                               # [-]
+        self.e      = 0.4                               # [-]
         self.S      = self.c                            # [m²]
         self.CLa    = Aircraft.ParAnFP.C_L_alpha_cruise #[rad^(-1)]
         self.CLdelta = CLdelta                          # -1.8 / rad

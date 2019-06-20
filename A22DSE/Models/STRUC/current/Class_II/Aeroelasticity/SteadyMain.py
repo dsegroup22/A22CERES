@@ -119,7 +119,8 @@ def ComputeElasticity(Aircraft, par, ISA_model, height, V_req, t_skinLst,
     
     Vfl  = AE.ComputeFlutter(par, KhLst, KthetaLst, height,
                                 ISA_model)
-    print(Vdiv, Vcr, Vfl[0])
+#    print(Vdiv, Vcr, Vfl[0])
+#    print(KthetaLst, KhLst)
     V_constr = FindDrivingConstraint(Vdiv, Vcr, Vfl[0])
     V_req_arr = np.ones(np.shape(SKIN)) * V_req
     # =====================================================================
@@ -130,7 +131,7 @@ def ComputeElasticity(Aircraft, par, ISA_model, height, V_req, t_skinLst,
         plotContour(SKIN, RIB, V_constr, V_req)
         plotV4(SKIN, RIB, Vdiv, Vcr, Vfl[0], V_req_arr)
 
-    return V_constr,Vdiv, Vfl, Vcr
+    return V_constr
     # Compute mass of skin, rib combination
     
     #find thicknesses that satisfy constraints

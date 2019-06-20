@@ -23,8 +23,8 @@ def PollutantArrLow():
     H2 = np.array([np.array([0,0,0]), np.array([0])])
     N2 = np.array([np.array([0,0,0]), np.array([0])])
     O2 = np.array([np.array([0,0,0]), np.array([0])])
-
-#    
+    
+#   
     return np.array([CO2, CO, H2O, H2, N2, O2])
 
 
@@ -187,8 +187,8 @@ def GetEI(AF, mdot, time, Aircraft, ISA_model, Pollutants, Mair):
             GWP.append(GWPi)
             RF.append(RFi)
     
-    EIGWP = np.array(GWP) * (time[1]- time[0])
-#    EIGWP = np.sum(np.array(time[1]-time[0]) * GWP) #TODO: don't think it works
+#    EIGWP = np.array(GWP) * (time[1]- time[0])
+    EIGWP = np.sum(np.array(time[1]-time[0]) * GWP) #TODO: don't think it works
     EIRF = np.sum(RF)/len(RF)
 
     return EIGWP, EIRF
