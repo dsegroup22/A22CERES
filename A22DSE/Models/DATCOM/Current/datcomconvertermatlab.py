@@ -12,7 +12,7 @@ from pathlib import Path
 os.chdir(Path(__file__).parents[4])
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 
-sf=0.5
+sf=1
 def PrintMatlab(Aircraft):
     
     
@@ -20,8 +20,11 @@ def PrintMatlab(Aircraft):
     Layout=Aircraft.ParLayoutConfig
     Conversion=Aircraft.ConversTool
     Struc=Aircraft.ParStruc
-    file=open('A22DSE\Models\DATCOM\Current\Airfoiltools.txt','r')
-    file=open('A22DSE\Models\DATCOM\Current\PlotDatcom3d_CERESorig.m','r')
+
+    file=open('A22DSE/Parameters/NASASC20712.csv','r')
+    file.close()
+    file=open('A22DSE/Models/DATCOM/Current/PlotDatcom3d_CERESorig.m','r')
+
     
     lines=file.readlines()
     
@@ -235,7 +238,7 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
 ,CHRDTP_HT,SSPN_HT,SSPNE_HT,CHRDR_HT,SAVSI_HT,CHSTAT_HT\
 ,TWISTA_HT,DHDADI_HT,CHRDTP_VT,SSPN_VT,SSPNE_VT,CHRDR_VT,SAVSI_VT,CHSTAT_VT,ZH=PrintMatlab(Aircraft)
 
-    file=open('A22DSE\Models\DATCOM\Current\CERESorig.dat','r')
+    file=open('A22DSE/Models/DATCOM/Current/CERESorig.dat','r')
     
     lines=file.readlines()
     
@@ -372,7 +375,7 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
     
     file.close()
     
-    file=open('A22DSE\Models\DATCOM\Current\Airfoiltools.txt','r')
+    file=open('A22DSE/Models/DATCOM/Current/Airfoiltools.txt','r')
     
     alines=file.readlines()
     
@@ -401,7 +404,7 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
     d=' YLOWER= 0.0, '+np.array2string(lowers[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+'$\n'
     liness=[a,b,c,d]
 ##########################################3
-    file=open('A22DSE\Models\DATCOM\Current\Airfoiltoolsht.txt','r')
+    file=open('A22DSE/Models/DATCOM/Current/Airfoiltoolsht.txt','r')
     
     alines=file.readlines()
     
@@ -434,7 +437,7 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
 
 
     linesss=lines[:15]+liness+lines[16:18]+linessht+lines[19:]
-    file=open('A22DSE\Models\DATCOM\Current\ceres.dat','w+')
+    file=open('A22DSE/Models/DATCOM/Current/ceres.dat','w+')
     for line in linesss:
         file.write(line)
     file.close()
@@ -457,7 +460,7 @@ def my_split(s):
 def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
     
     PrintDatcom(Aircraft)
-    Popen(['A22DSE\Models\DATCOM\Current\datcom.exe'],stdin=PIPE,stdout=PIPE).communicate(b'C:\Users\menno\Documents\GitHub\A22CERES\A22DSE\Models\DATCOM\Current\ceres.dat')
+    Popen(['A22DSE/Models/DATCOM/Current/datcom.exe'],stdin=PIPE,stdout=PIPE,shell=True).communicate(b'C:\Users\menno\Documents\GitHub\A22CERES\A22DSE\Models\DATCOM\Current\ceres.dat')
     file=open('datcom.out','r')
     
     lines=file.readlines()
