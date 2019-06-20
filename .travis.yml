@@ -8,16 +8,16 @@ install:
 - pip install scipy
 - pip install python-coveralls
 - pip install sklearn
-- pip install coveralls.cli
 - python setup.py install
 
 
+
 script:
+
  - coverage run --source=A22DSE -m pytest 
  - coverage report
 
-after_success:
-  - coveralls
+
 
 
 notifications:
