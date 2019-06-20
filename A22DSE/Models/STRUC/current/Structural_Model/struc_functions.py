@@ -383,22 +383,22 @@ def Loading_Diagrams(Aircraft,steps):
     prop = Aircraft.ParProp
     #initialise parameters
     b=anfp.b
+    g=9.81
     m_engine=prop.Engine_weight
-    y_engine1=Aircraft.ParLayoutConfig.y_eng_g1
-    y_engine2=Aircraft.ParLayoutConfig.y_eng_g2 #dummy
-    y_engine3=Aircraft.ParLayoutConfig.y_eng_g2+3. #dummy
+    y_engine1=Aircraft.ParLayoutConfig.y_eng_g2
+    y_engine2=Aircraft.ParLayoutConfig.y_eng_g3 #dummy
+    y_engine3=Aircraft.ParLayoutConfig.y_eng_g3+5. #dummy
     x=np.linspace(-b/2,b/2,steps)
     dx=b/steps
-    MTOW=struc.MTOW
+    MTOW=struc.MTOW*g
     m_fuel=struc.FW
-    g=9.81
     #engines
-    V_e1=-np.heaviside((x-y_engine1),1)*m_engine*g
-    V_e2=-np.heaviside((x-y_engine2),1)*m_engine*g
-    V_e3=-np.heaviside((x-y_engine3),1)*m_engine*g
-    V_e4=-np.heaviside((x+y_engine1),1)*m_engine*g
-    V_e5=-np.heaviside((x+y_engine2),1)*m_engine*g
-    V_e6=-np.heaviside((x+y_engine3),1)*m_engine*g
+    V_e1=-np.heaviside((x-y_engine1),1)*m_engine*g*4
+    V_e2=-np.heaviside((x-y_engine2),1)*m_engine*g*4
+    V_e3=-np.heaviside((x-y_engine3),1)*m_engine*g*4
+    V_e4=-np.heaviside((x+y_engine1),1)*m_engine*g*4
+    V_e5=-np.heaviside((x+y_engine2),1)*m_engine*g*4
+    V_e6=-np.heaviside((x+y_engine3),1)*m_engine*g*4
     V_e=V_e1+V_e2+V_e3 +V_e4+V_e5+V_e6
     #lift
     liftdistr=4*MTOW/(np.pi*b)*np.sqrt(1-4*x**2/b**2)
@@ -409,7 +409,7 @@ def Loading_Diagrams(Aircraft,steps):
         V_l_i=V_l_i+i*dx
         V_l.append(V_l_i)
     #fuselage
-    w_fuselage=V_l[-1]-6*m_engine
+    w_fuselage=V_l[-1]-6*m_engine*g*4
     V_f=-np.heaviside(x,1)*w_fuselage
     #total shear
     V=V_e+V_f+V_l
@@ -420,18 +420,32 @@ def Loading_Diagrams(Aircraft,steps):
         M_l_i=M_l_i+j*dx
         M.append(M_l_i)
     chordi=chord(x,Aircraft) 
-    u2= []
-    u2_i = 0
+    
+    p = np.polyfit(x, M, 25)
+    M_po = np.poly1d(p)
+    
+#    u2= []
+#    u2_i = 0
 #    for k in range(len(x)):
 #        chord_i=chordi[k]
-#        EI_i=EI(Aircraft,chord_i)
+#        EI_i=12669314 #EI(Aircraft,chord_i)
 #        M_i=M[k]
 #        u2_i = u2_i - 1/EI_i *M_i*dx
 #        u2.append(u2_i)
+#    u1=[]
+#    u2_mid=u2[int(steps/2)]
+#    for m in u2:
+#        m=m+u2_mid
+#        u1.append(m)
+#        
+#    u=[]
+#    u_i=0
+#    for l  in u1:
+#        u_i=u_i-l*dx
+#        u.append(u_i)
 #        
 #        
-        
-    return x, V, M#, u2
+    return x, V, M, M_po
 
 def defl(Aircraft, steps):
     x=Loading_Diagrams(Aircraft,steps)[0]
@@ -442,54 +456,20 @@ def defl(Aircraft, steps):
     return x, M, chordi#, EI
 
 
-x=np.linspace(0.,0.005,10)
-y=np.linspace(0.,0.010,10)
-xv, yv = np.meshgrid(x, y)
-
-z = np.ones(np.shape(xv))
-
-for i, xi in enumerate(x):
-    ylst=[]
-    for j, yi in enumerate(y):
-        t=wing_struc_mass(Conv,i,j)
-        z[i][j] = t
-         
-        
-        
-def wing_struc_mass_percentages(Aircraft,t_skin,t_rib):
-    ''' 
-    DESCRIPTION: function that calculates the structural wing mass
-    INPUT: Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp
-    OUTPUT: wing structural mass, without systems (only material weight)
-    '''     
-    n=Aircraft.ParStruc.n_stiff
-    A=Aircraft.ParStruc.A_stiff
-    b=Aircraft.ParAnFP.b
-    rho_alu=Aircraft.ParStruc.rho_Al
-    rho_comp=Aircraft.ParStruc.rho_comp
-    bi=np.linspace(-b/2,b/2,50)
-    w_skin=0
-    db=b/50
-    for i in bi:
-        chordi=chord(i,Aircraft)
-        S1,S2,S3,h_rib1,h_rib2=S(chordi)
-        #skin weight+rib weight
-        A_skin_rho=(S1+S3)*t_skin*rho_alu+(S2+h_rib1+h_rib2)*t_rib*rho_comp
-        w_skin=w_skin+A_skin_rho*db
-
-    #stiffener weight
-    MAC=Aircraft.ParAnFP.MAC
-    c_r=Aircraft.ParAnFP.c_r
-    factor=MAC/c_r
-    n_avg=factor*n
-    V=n_avg*A*b
-    w_stiffeners=V*rho_alu
-    
-    #total weight
-    w_total=w_skin+w_stiffeners
-    
-    return w_total
-
+#x=np.linspace(0.,0.005,10)
+#y=np.linspace(0.,0.010,10)
+#xv, yv = np.meshgrid(x, y)
+#
+#z = np.ones(np.shape(xv))
+#
+#for i, xi in enumerate(x):
+#    ylst=[]
+#    for j, yi in enumerate(y):
+#        t=wing_struc_mass(Conv,i,j)
+#        z[i][j] = t
+#         
+#        
+#        
 #contour plots
     
 #a=plt.contourf(xv,yv, z)
