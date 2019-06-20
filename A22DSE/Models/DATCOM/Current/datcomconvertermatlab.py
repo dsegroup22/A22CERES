@@ -22,7 +22,7 @@ def PrintMatlab(Aircraft):
     Struc=Aircraft.ParStruc
     file=open('A22DSE/Parameters/NASASC20712.csv','r')
     file.close()
-    file=open('A22DSE\Models\DATCOM\Current\PlotDatcom3d_CERESorig.m','r')
+    file=open('A22DSE/Models/DATCOM/Current/PlotDatcom3d_CERESorig.m','r')
     
     lines=file.readlines()
     
