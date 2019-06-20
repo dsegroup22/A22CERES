@@ -4,6 +4,13 @@ Created on Mon Jun 10 21:59:07 2019
 
 @author: rickv
 """
+#data to run the file
+
+#upper skin airfoil
+
+
+
+
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -51,17 +58,7 @@ def skin_eq_upper(chord): #verified with data
     INPUT: datafiles of upper airfoil and the chord length
     OUTPUT: polynomal function of the upper airfoil
     ''' 
-#    #read datafile
-#    f=open("NASASC20712data_1.txt", "r")
-#    data_f=f.read()
-#    data_f = data_f.split('\n')
-#    
-#    x1=[]
-#    y1=[]
-#    for row in data_f: 
-#        x1.append(float(row[0:8]))
-#        y1.append(float(row[9:18]))
-        
+       
     x1 = [0.0, 0.002, 0.005, 0.01, 0.02, 0.03, 0.04, 
           0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 
           0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21, 0.22, 0.23, 
@@ -98,10 +95,6 @@ def skin_eq_lower(chord): #verified with data
     INPUT: datafiles of lower airfoil and the chord length
     OUTPUT: polynomal function of the lower airfoil
     ''' 
-#    #read datafile
-#    f=open("NASASC20712data_2.txt", "r")
-#    data_f=f.read()
-#    data_f = data_f.split('\n')
 
     x2=[0.0, 0.002, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 
          0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2,
@@ -126,10 +119,6 @@ def skin_eq_lower(chord): #verified with data
         -0.0043, -0.0038, -0.0035, -0.0033, -0.0034, -0.0036, -0.0041, -0.0049,
         -0.0059, -0.0072, -0.0087, -0.0095, -0.0106, -0.011, -0.0117]
 
-#    for row in data_f: 
-#        x2.append(float(row[0:8]))
-#        y2.append(-1*float(row[11:18]))
-#    print(x2, y2)
     x2 = [i * chord for i in x2]
     y2 = [i * chord for i in y2]
     p = np.polyfit(x2, y2, 25)
@@ -253,42 +242,25 @@ def skin_moi(chord,Aircraft,t_skin): #fin
     
 def moi_root_stringers(chord, Aircraft): #multiple of 10, with min 20
     #initise
-    n=Aircraft.ParStruc.n_stiff
+    n=int(Aircraft.ParStruc.n_stiff)
     A=Aircraft.ParStruc.A_stiff
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
-    c1=0.2*chord
-    c2=0.4*chord
-    c3=0.4*chord    
-    n1=int(1/5*n)
-    n2=int(2/5*n)
-    n3=int(2/5*n)
-    in_stri=[]
-    #calculate moment of inertia list
-    #cell 1
-    ds=c1/(n1/2)
-    x=0.2*chord
-    for i in range(n1):
-        inertia=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
-        x=x-ds
-        in_stri.append(inertia)
-    #cell 2
-    ds=(c2-1)/(n2/2)
-    x=0.2*chord
-    for j in range(n2):
-        inertia=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
-        x=x+ds
-        in_stri.append(inertia)    
-    #cell 3
-    ds=c3/(n3/2)
-    x=0.6*chord
-    for k in range(n3):
-        inertia=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
-        x=x+ds
-        in_stri.append(inertia)   
+#    c1=0.2*chord
+#    c2=0.4*chord
+#    c3=0.4*chord    
+#    n1=int(1/5*n)
+#    n2=int(2/5*n)
+#    n3=int(2/5*n)
+    inertia=0
+    ds=chord/(n-1)
+    for i in range(n):
+        x=ds
+        inertia_i=A*(skin_upper_eq(x))**2+A*(skin_lower_eq(x))**2
+        inertia = inertia + inertia_i
+
     
-    
-    return in_stri #list of all stringers with inertia
+    return inertia #list of all stringers with inertia
 
 
 def moi_stringer(chord,Aircraft):  #n in multiples of 5 (min=20)
@@ -296,7 +268,7 @@ def moi_stringer(chord,Aircraft):  #n in multiples of 5 (min=20)
     factor=chord/c_r
     
     in_root=moi_root_stringers(chord, Aircraft)
-    moi_stringers=factor*float(sum(in_root))
+    moi_stringers=factor*in_root
     
     return moi_stringers
 
@@ -349,21 +321,21 @@ def wing_struc_mass(Aircraft,t_skin,t_rib):
     
     return w_total
 
-def EI(Aircraft,chord):
+def EI(Aircraft,chord,t_skin,t_rib):
     ''' 
     DESCRIPTION: function that calculates the structural wing mass
     INPUT: Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp
     OUTPUT: wing structural mass, without systems (only material weight)
     '''   
-    t_skin = Aircraft.ParStruc.t_skin
-    t_rib = Aircraft.ParStruc.t_rib
+#    t_skin = Aircraft.ParStruc.t_skin
+#    t_rib = Aircraft.ParStruc.t_rib
     E_alu = float(Aircraft.ParStruc.E_Al)
     E_comp = float(Aircraft.ParStruc.E_comp)
     moi_stringer = moi_root_stringers(chord, Aircraft)
     moi_skin = skin_moi(chord,Aircraft,t_skin)
     moi_ribs = rib_moi(chord,Aircraft,t_rib)
     EI = moi_stringer*E_alu + moi_skin*0.5*(E_alu+E_comp)+moi_ribs*E_alu
-    return t_rib
+    return EI
 
 
 def Eliptical(Aircraft,steps):
@@ -383,22 +355,22 @@ def Loading_Diagrams(Aircraft,steps):
     prop = Aircraft.ParProp
     #initialise parameters
     b=anfp.b
+    g=9.81
     m_engine=prop.Engine_weight
-    y_engine1=Aircraft.ParLayoutConfig.y_eng_g1
-    y_engine2=Aircraft.ParLayoutConfig.y_eng_g2 #dummy
-    y_engine3=Aircraft.ParLayoutConfig.y_eng_g2+3. #dummy
+    y_engine1=Aircraft.ParLayoutConfig.y_eng_g2
+    y_engine2=Aircraft.ParLayoutConfig.y_eng_g3 #dummy
+    y_engine3=Aircraft.ParLayoutConfig.y_eng_g3+5. #dummy
     x=np.linspace(-b/2,b/2,steps)
     dx=b/steps
-    MTOW=struc.MTOW
+    MTOW=struc.MTOW*g
     m_fuel=struc.FW
-    g=9.81
     #engines
-    V_e1=-np.heaviside((x-y_engine1),1)*m_engine*g
-    V_e2=-np.heaviside((x-y_engine2),1)*m_engine*g
-    V_e3=-np.heaviside((x-y_engine3),1)*m_engine*g
-    V_e4=-np.heaviside((x+y_engine1),1)*m_engine*g
-    V_e5=-np.heaviside((x+y_engine2),1)*m_engine*g
-    V_e6=-np.heaviside((x+y_engine3),1)*m_engine*g
+    V_e1=-np.heaviside((x-y_engine1),1)*m_engine*g*4
+    V_e2=-np.heaviside((x-y_engine2),1)*m_engine*g*4
+    V_e3=-np.heaviside((x-y_engine3),1)*m_engine*g*4
+    V_e4=-np.heaviside((x+y_engine1),1)*m_engine*g*4
+    V_e5=-np.heaviside((x+y_engine2),1)*m_engine*g*4
+    V_e6=-np.heaviside((x+y_engine3),1)*m_engine*g*4
     V_e=V_e1+V_e2+V_e3 +V_e4+V_e5+V_e6
     #lift
     liftdistr=4*MTOW/(np.pi*b)*np.sqrt(1-4*x**2/b**2)
@@ -409,7 +381,7 @@ def Loading_Diagrams(Aircraft,steps):
         V_l_i=V_l_i+i*dx
         V_l.append(V_l_i)
     #fuselage
-    w_fuselage=V_l[-1]-6*m_engine
+    w_fuselage=V_l[-1]-6*m_engine*g*4
     V_f=-np.heaviside(x,1)*w_fuselage
     #total shear
     V=V_e+V_f+V_l
@@ -420,18 +392,32 @@ def Loading_Diagrams(Aircraft,steps):
         M_l_i=M_l_i+j*dx
         M.append(M_l_i)
     chordi=chord(x,Aircraft) 
-    u2= []
-    u2_i = 0
+    
+    p = np.polyfit(x, M, 50)
+    M_po = np.poly1d(p)
+    
+#    u2= []
+#    u2_i = 0
 #    for k in range(len(x)):
 #        chord_i=chordi[k]
-#        EI_i=EI(Aircraft,chord_i)
+#        EI_i=12669314 #EI(Aircraft,chord_i)
 #        M_i=M[k]
 #        u2_i = u2_i - 1/EI_i *M_i*dx
 #        u2.append(u2_i)
+#    u1=[]
+#    u2_mid=u2[int(steps/2)]
+#    for m in u2:
+#        m=m+u2_mid
+#        u1.append(m)
+#        
+#    u=[]
+#    u_i=0
+#    for l  in u1:
+#        u_i=u_i-l*dx
+#        u.append(u_i)
 #        
 #        
-        
-    return x, V, M#, u2
+    return x, V, M, M_po
 
 def defl(Aircraft, steps):
     x=Loading_Diagrams(Aircraft,steps)[0]
@@ -442,54 +428,20 @@ def defl(Aircraft, steps):
     return x, M, chordi#, EI
 
 
-x=np.linspace(0.,0.005,10)
-y=np.linspace(0.,0.010,10)
-xv, yv = np.meshgrid(x, y)
-
-z = np.ones(np.shape(xv))
-
-for i, xi in enumerate(x):
-    ylst=[]
-    for j, yi in enumerate(y):
-        t=wing_struc_mass(Conv,i,j)
-        z[i][j] = t
-         
-        
-        
-def wing_struc_mass_percentages(Aircraft,t_skin,t_rib):
-    ''' 
-    DESCRIPTION: function that calculates the structural wing mass
-    INPUT: Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp
-    OUTPUT: wing structural mass, without systems (only material weight)
-    '''     
-    n=Aircraft.ParStruc.n_stiff
-    A=Aircraft.ParStruc.A_stiff
-    b=Aircraft.ParAnFP.b
-    rho_alu=Aircraft.ParStruc.rho_Al
-    rho_comp=Aircraft.ParStruc.rho_comp
-    bi=np.linspace(-b/2,b/2,50)
-    w_skin=0
-    db=b/50
-    for i in bi:
-        chordi=chord(i,Aircraft)
-        S1,S2,S3,h_rib1,h_rib2=S(chordi)
-        #skin weight+rib weight
-        A_skin_rho=(S1+S3)*t_skin*rho_alu+(S2+h_rib1+h_rib2)*t_rib*rho_comp
-        w_skin=w_skin+A_skin_rho*db
-
-    #stiffener weight
-    MAC=Aircraft.ParAnFP.MAC
-    c_r=Aircraft.ParAnFP.c_r
-    factor=MAC/c_r
-    n_avg=factor*n
-    V=n_avg*A*b
-    w_stiffeners=V*rho_alu
-    
-    #total weight
-    w_total=w_skin+w_stiffeners
-    
-    return w_total
-
+#x=np.linspace(0.,0.005,10)
+#y=np.linspace(0.,0.010,10)
+#xv, yv = np.meshgrid(x, y)
+#
+#z = np.ones(np.shape(xv))
+#
+#for i, xi in enumerate(x):
+#    ylst=[]
+#    for j, yi in enumerate(y):
+#        t=wing_struc_mass(Conv,i,j)
+#        z[i][j] = t
+#         
+#        
+#        
 #contour plots
     
 #a=plt.contourf(xv,yv, z)
