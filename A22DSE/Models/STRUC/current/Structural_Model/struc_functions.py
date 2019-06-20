@@ -442,17 +442,17 @@ def defl(Aircraft, steps):
     return x, M, chordi#, EI
 
 
-x=np.linspace(0.,0.005,10)
-y=np.linspace(0.,0.010,10)
-xv, yv = np.meshgrid(x, y)
-
-z = np.ones(np.shape(xv))
-
-for i, xi in enumerate(x):
-    ylst=[]
-    for j, yi in enumerate(y):
-        t=wing_struc_mass(Conv,i,j)
-        z[i][j] = t
+#x=np.linspace(0.,0.005,10)
+#y=np.linspace(0.,0.010,10)
+#xv, yv = np.meshgrid(x, y)
+#
+#z = np.ones(np.shape(xv))
+#
+#for i, xi in enumerate(x):
+#    ylst=[]
+#    for j, yi in enumerate(y):
+#        t=wing_struc_mass(Conv,i,j)
+#        z[i][j] = t
          
         
         
