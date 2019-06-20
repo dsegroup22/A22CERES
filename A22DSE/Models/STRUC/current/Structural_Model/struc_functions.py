@@ -210,32 +210,6 @@ def TorsionalStiffness(chord, Aircraft,t_skin,t_rib):  #verified
 
     return K_theta
 
-#plotting contour
-    
-x=np.linspace(0.,0.005,10)
-y=np.linspace(0.,0.01,10)
-xv, yv = np.meshgrid(x, y)
-
-z = np.ones(np.shape(xv))
-
-for i, xi in enumerate(x):
-    ylst=[]
-    for j, yi in enumerate(y):
-        t=TorsionalStiffness(1, Conv,i,j)
-        z[i][j] = t
-         
-a=plt.contour(xv,yv, z)
-plt.clabel(a, inline=True, fontsize=12)
-plt.title('Sensitivity of Torsional Stifness to Wing and Rib Thickness')
-plt.xlabel('Wing Thickness [m]')
-plt.ylabel('Rib Thickness [m]')
-
-plt.show()
-
-
-
-
-
 
 #moment of intertia calculator
 
@@ -480,6 +454,44 @@ for i, xi in enumerate(x):
         t=wing_struc_mass(Conv,i,j)
         z[i][j] = t
          
+        
+        
+def wing_struc_mass_percentages(Aircraft,t_skin,t_rib):
+    ''' 
+    DESCRIPTION: function that calculates the structural wing mass
+    INPUT: Aircraft,t_skin,n,A,t_rib,rho_alu,rho_comp
+    OUTPUT: wing structural mass, without systems (only material weight)
+    '''     
+    n=Aircraft.ParStruc.n_stiff
+    A=Aircraft.ParStruc.A_stiff
+    b=Aircraft.ParAnFP.b
+    rho_alu=Aircraft.ParStruc.rho_Al
+    rho_comp=Aircraft.ParStruc.rho_comp
+    bi=np.linspace(-b/2,b/2,50)
+    w_skin=0
+    db=b/50
+    for i in bi:
+        chordi=chord(i,Aircraft)
+        S1,S2,S3,h_rib1,h_rib2=S(chordi)
+        #skin weight+rib weight
+        A_skin_rho=(S1+S3)*t_skin*rho_alu+(S2+h_rib1+h_rib2)*t_rib*rho_comp
+        w_skin=w_skin+A_skin_rho*db
+
+    #stiffener weight
+    MAC=Aircraft.ParAnFP.MAC
+    c_r=Aircraft.ParAnFP.c_r
+    factor=MAC/c_r
+    n_avg=factor*n
+    V=n_avg*A*b
+    w_stiffeners=V*rho_alu
+    
+    #total weight
+    w_total=w_skin+w_stiffeners
+    
+    return w_total
+
+#contour plots
+    
 #a=plt.contourf(xv,yv, z)
 ##plt.clabel(a, inline=True, fontsize=12)
 #plt.title('Structural Wing Weight Sensitivity to Ribs and Skin Thickness')
@@ -502,3 +514,30 @@ for i, xi in enumerate(x):
 #plt.xlabel('Span Position [m]')
 #plt.ylabel('Bending  Moment [Nm]')
 #plt.show()
+    
+#plotting contour
+#    
+#x=np.linspace(0.,0.005,10)
+#y=np.linspace(0.,0.01,10)
+#xv, yv = np.meshgrid(x, y)
+#
+#z = np.ones(np.shape(xv))
+#
+#for i, xi in enumerate(x):
+#    ylst=[]
+#    for j, yi in enumerate(y):
+#        t=TorsionalStiffness(1, Conv,i,j)
+#        z[i][j] = t
+#         
+#a=plt.contour(xv,yv, z)
+#plt.clabel(a, inline=True, fontsize=12)
+#plt.title('Sensitivity of Torsional Stifness to Wing and Rib Thickness')
+#plt.xlabel('Wing Thickness [m]')
+#plt.ylabel('Rib Thickness [m]')
+#
+#plt.show()
+#
+#
+
+
+
