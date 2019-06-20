@@ -12,7 +12,7 @@ from pathlib import Path
 os.chdir(Path(__file__).parents[4])
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 
-sf=0.5
+sf=1
 def PrintMatlab(Aircraft):
     
     
@@ -21,6 +21,7 @@ def PrintMatlab(Aircraft):
     Conversion=Aircraft.ConversTool
     Struc=Aircraft.ParStruc
     file=open('A22DSE\Models\DATCOM\Current\Airfoiltools.txt','r')
+    file.close()
     file=open('A22DSE\Models\DATCOM\Current\PlotDatcom3d_CERESorig.m','r')
     
     lines=file.readlines()
