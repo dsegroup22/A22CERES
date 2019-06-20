@@ -17,7 +17,7 @@ install:
 
 script:
 
- - coverage run --source=A22DSE --omit "*/A22DSE/Models/SUAVE" -m pytest 
+ - coverage run --source=A22DSE --omit "*/A22DSE/Models/SUAVE*" -m pytest 
  - coverage report
 
 
