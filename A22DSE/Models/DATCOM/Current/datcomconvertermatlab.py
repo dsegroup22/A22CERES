@@ -21,73 +21,76 @@ def PrintMatlab(Aircraft):
     Conversion=Aircraft.ConversTool
     Struc=Aircraft.ParStruc
 
-    file=open('A22DSE\Models\DATCOM\Current\PlotDatcom3d_CERESorig.m','r')
+    file=open('A22DSE/Parameters/NASASC20712.csv','r')
+    file.close()
+    file=open('A22DSE/Models/DATCOM/Current/PlotDatcom3d_CERESorig.m','r')
+
     
     lines=file.readlines()
     
     
-    XW=round(float(Layout.x_apex_wing/Conversion.ft2m),1)
-    ZW=round(float(Layout.h_fuselage/2/Conversion.ft2m),1)
-    ALIW=round(float(0),1)
-    XH=round(float(Layout.x_apex_ht/Conversion.ft2m),1)
+    XW=round(float(Layout.x_apex_wing/Conversion.ft2m),2)
+    ZW=round(float(Layout.h_fuselage/2/Conversion.ft2m),2)
+    ALIW=round(float(0),2)
+    XH=round(float(Layout.x_apex_ht/Conversion.ft2m),2)
     
-    ALIH=round(float(0),1)
-    XV=round(float(Layout.x_apex_vt/Conversion.ft2m),1)
+    ALIH=round(float(0),2)
+    XV=round(float(Layout.x_apex_vt/Conversion.ft2m),2)
     
    
-    NX=round(float(4),1)
+    NX=round(float(4),2)
     #X='[0.0,4.0,8.7,64.5,78.7]'
     #ZU='[0.0,2.6,2.6,2.6]'
     #ZL = '[0.0,-2.6,-2.6,-0.66]'
     #R = '[0.0,4.6,4.6,0.33]'
     #S = '[0.0,38.4,38.4,0.34]'
-    X=np.round(np.array([0.0,Layout.l_nose,Layout.l_nose+Layout.l_cabin,Layout.l_fuselage])/Conversion.ft2m,1)
-    ZU=np.round(np.array([0.0,Layout.h_fuselage/2,Layout.h_fuselage/2,Layout.h_fuselage/2])/Conversion.ft2m,1)
-    ZL=np.round(np.array([0.0,-Layout.h_fuselage/2,-Layout.h_fuselage/2,Layout.h_fuselage/2-Layout.h_APU/2,])/Conversion.ft2m,1)
-    R=np.round(np.array([0.0,Layout.w_fuselage/2,Layout.w_fuselage/2,Layout.h_APU/2])/Conversion.ft2m,1)
-    S=np.round(np.array([0.0,Layout.w_fuselage*Layout.h_fuselage*np.pi/4,Layout.w_fuselage*Layout.h_fuselage*np.pi/4,Layout.h_APU**2*np.pi/4,])/Conversion.ft2m**2,1)
+    X=np.round(np.array([0.0,Layout.l_nose,Layout.l_nose+Layout.l_cabin,Layout.l_fuselage])/Conversion.ft2m,2)
+    ZU=np.round(np.array([0.0,Layout.h_fuselage/2,Layout.h_fuselage/2,Layout.h_fuselage/2])/Conversion.ft2m,2)
+    ZL=np.round(np.array([0.0,-Layout.h_fuselage/2,-Layout.h_fuselage/2,Layout.h_fuselage/2-Layout.h_APU/2,])/Conversion.ft2m,2)
+    R=np.round(np.array([0.0,Layout.w_fuselage/2,Layout.w_fuselage/2,Layout.h_APU/2])/Conversion.ft2m,2)
+    S=np.round(np.array([0.0,Layout.w_fuselage*Layout.h_fuselage*np.pi/4,Layout.w_fuselage*Layout.h_fuselage*np.pi/4,Layout.h_APU**2*np.pi/4,])/Conversion.ft2m**2,2)
     h=((Layout.w_fuselage-Layout.h_fuselage)/(Layout.w_fuselage-Layout.h_fuselage))**2
     P=np.round(np.array([0.0,np.pi*(Layout.h_fuselage+Layout.w_fuselage)/2*(1+3*h/(10+np.sqrt(4-3*h))),\
-                             np.pi*(Layout.h_fuselage+Layout.w_fuselage)/2*(1+3*h/(10+np.sqrt(4-3*h))),Layout.h_APU*np.pi])/Conversion.ft2m,1)
-    ZV=round(float(ZU[-1]),1)
-    CHRDTP_WG=round(float(anfp.c_t/Conversion.ft2m),1)
-    SSPN_WG = round(float(anfp.b/2/Conversion.ft2m),1)
+                             np.pi*(Layout.h_fuselage+Layout.w_fuselage)/2*(1+3*h/(10+np.sqrt(4-3*h))),Layout.h_APU*np.pi])/Conversion.ft2m,2)
+    ZV=round(float(ZU[-1]),2)
+    CHRDTP_WG=round(float(anfp.c_t/Conversion.ft2m),2)
+    SSPN_WG = round(float(anfp.b/2/Conversion.ft2m),2)
     SSPNE_WG = 0.9*SSPN_WG
-    CHRDR_WG = round(float(anfp.c_r/Conversion.ft2m),1)
-    SAVSI_WG = round(float(anfp.Sweep_LE*180/np.pi),1)
+    CHRDR_WG = round(float(anfp.c_r/Conversion.ft2m),2)
+    SAVSI_WG = round(float(anfp.Sweep_LE*180/np.pi),2)
     CHSTAT_WG = 0.0
-    TWISTA_WG = round(float(Aircraft.ParAnFP.twwing*180/np.pi),10)
-    DHDADI_WG = round(float(Aircraft.ParAnFP.dhwing*180/np.pi),10)
+    TWISTA_WG = round(float(Aircraft.ParAnFP.twwing*180/np.pi),2)
+    DHDADI_WG = round(float(Aircraft.ParAnFP.dhwing*180/np.pi),2)
     TC_WG=0.12
     
-    CHRDTP_HT = round(float(Layout.c_tht/Conversion.ft2m),1)
-    SSPN_HT = round(float(Layout.bh/2/Conversion.ft2m),1)
+    CHRDTP_HT = round(float(Layout.c_tht/Conversion.ft2m),2)
+    SSPN_HT = round(float(Layout.bh/2/Conversion.ft2m),2)
     SSPNE_HT=0.9*SSPN_HT
-    CHRDR_HT = round(float(Layout.c_rht/Conversion.ft2m),1)
-    SAVSI_HT = round(float(Layout.sweep25ht*180/np.pi),1)
+    CHRDR_HT = round(float(Layout.c_rht/Conversion.ft2m),2)
+    SAVSI_HT = round(float(Layout.sweep25ht*180/np.pi),2)
     CHSTAT_HT = 0.25
-    TWISTA_HT = round(float(Aircraft.ParAnFP.twht*180/np.pi),10)
-    DHDADI_HT = round(float(Aircraft.ParAnFP.dhht*180/np.pi),10)
+    TWISTA_HT = round(float(Aircraft.ParAnFP.twht*180/np.pi),2)
+    DHDADI_HT = round(float(Aircraft.ParAnFP.dhht*180/np.pi),2)
     
-    CHRDTP_VT = round(float(Layout.c_tvt/Conversion.ft2m),1)
-    SSPN_VT = round(float(Layout.bv/2/Conversion.ft2m*2),1)
+    CHRDTP_VT = round(float(Layout.c_tvt/Conversion.ft2m),2)
+    SSPN_VT = round(float(Layout.bv/2/Conversion.ft2m*2),2)
     SSPNE_VT=0.9*SSPN_VT
-    CHRDR_VT = round(float(Layout.c_rvt/Conversion.ft2m),1)
-    SAVSI_VT = round(float(Layout.sweepLEvt*180/np.pi),1)
+    CHRDR_VT = round(float(Layout.c_rvt/Conversion.ft2m),2)
+    SAVSI_VT = round(float(Layout.sweepLEvt*180/np.pi),2)
     CHSTAT_VT = 0.0
-    ZH=round(float(ZV+SSPN_VT),1)
+    ZH=round(float(ZV+SSPN_VT),2)
     
     
     XW,ZW,XH,XV,ZV,CHRDTP_WG,SSPN_WG,SSPNE_WG,\
 CHRDR_WG,CHRDTP_HT,SSPN_HT,SSPNE_HT,CHRDR_HT,CHRDTP_VT,SSPN_VT,SSPNE_VT,CHRDR_VT,ZH=np.around(np.array([XW,ZW,XH,XV,ZV,CHRDTP_WG,SSPN_WG,SSPNE_WG,\
-CHRDR_WG,CHRDTP_HT,SSPN_HT,SSPNE_HT,CHRDR_HT,CHRDTP_VT,SSPN_VT,SSPNE_VT,CHRDR_VT,ZH])/sf,1)
+CHRDR_WG,CHRDTP_HT,SSPN_HT,SSPNE_HT,CHRDR_HT,CHRDTP_VT,SSPN_VT,SSPNE_VT,CHRDR_VT,ZH])/sf,2)
 
-    X=np.round(X/sf,1)
-    ZU=np.round(ZU/sf,1)
-    ZL=np.round(ZL/sf,1)
-    R=np.round(R/sf,1)
-    S=np.round(S/sf**2,1)
-    P=np.round(P/sf,1)
+    X=np.round(X/sf,2)
+    ZU=np.round(ZU/sf,2)
+    ZL=np.round(ZL/sf,2)
+    R=np.round(R/sf,2)
+    S=np.round(S/sf**2,2)
+    P=np.round(P/sf,2)
     
     #print(DHDADI_WG,TWISTA_WG,DHDADI_HT,TWISTA_HT)
     for line in lines[50:96]:
@@ -235,30 +238,30 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
 ,CHRDTP_HT,SSPN_HT,SSPNE_HT,CHRDR_HT,SAVSI_HT,CHSTAT_HT\
 ,TWISTA_HT,DHDADI_HT,CHRDTP_VT,SSPN_VT,SSPNE_VT,CHRDR_VT,SAVSI_VT,CHSTAT_VT,ZH=PrintMatlab(Aircraft)
 
-    file=open('A22DSE\Models\DATCOM\Current\CERESorig.dat','r')
+    file=open('A22DSE/Models/DATCOM/Current/CERESorig.dat','r')
     
     lines=file.readlines()
     
     
     #printer(4)
     a=lines[4].split(',')[0]+','
-    b=lines[4].split(',')[1].split('=')[0]+'='+str(round(float(Struc.MTOW/Conversion.lbs2kg/sf),1))+','
+    b=lines[4].split(',')[1].split('=')[0]+'='+str(round(float(Struc.MTOW/Conversion.lbs2kg/sf),2))+','
     c=lines[4].split(',')[2]
     lines[4]=a+b+c
     #printer(4)
     
     
     #printer(5)
-    a=lines[5].split(',')[0].split('=')[0]+'='+str(round(float(anfp.S/Conversion.ft2m**2/sf**2),1))+','
-    b=lines[5].split(',')[1].split('=')[0]+'='+str(round(float(anfp.MAC/Conversion.ft2m),1))+','
+    a=lines[5].split(',')[0].split('=')[0]+'='+str(round(float(anfp.S/Conversion.ft2m**2/sf**2),2))+','
+    b=lines[5].split(',')[1].split('=')[0]+'='+str(round(float(anfp.MAC/Conversion.ft2m/sf),2))+','
     c=lines[5].split(',')[2].split('=')[0]+'='+str(2*SSPN_WG)+'$ \n'
     lines[5]=a+b+c
     #printer(5)
     
     
     #printer(6)
-    a=lines[6].split(',')[0].split('=')[0]+'='+str(round(float(np.average(Layout.x_cg)/Conversion.ft2m/sf),1))+','
-    b=lines[6].split(',')[1].split('=')[0]+'='+str(round(float((Layout.z_cg_over_h_fus-0.5)*Layout.h_fuselage/Conversion.ft2m*2/sf**2),1))+','
+    a=lines[6].split(',')[0].split('=')[0]+'='+str(round(float(np.average(Layout.x_cg)/Conversion.ft2m/sf),2))+','
+    b=lines[6].split(',')[1].split('=')[0]+'='+str(round(float((Layout.z_cg_over_h_fus-0.5)*Layout.h_fuselage/Conversion.ft2m*2/sf**2),2))+','
     c=lines[6].split(',')[2].split('=')[0]+'='+str(XW)+','
     d=lines[6].split(',')[3].split('=')[0]+'='+str(ZW)+','
     e=lines[6].split(',')[4]+','
@@ -372,7 +375,7 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
     
     file.close()
     
-    file=open('A22DSE\Models\DATCOM\Current\Airfoiltools.txt','r')
+    file=open('A22DSE/Models/DATCOM/Current/Airfoiltools.txt','r')
     
     alines=file.readlines()
     
@@ -401,7 +404,7 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
     d=' YLOWER= 0.0, '+np.array2string(lowers[1:],separator=',',max_line_width=40).replace(' ','').replace(',',', ').replace(' \n','\n ').replace('[','').replace(']','')+'$\n'
     liness=[a,b,c,d]
 ##########################################3
-    file=open('A22DSE\Models\DATCOM\Current\Airfoiltoolsht.txt','r')
+    file=open('A22DSE/Models/DATCOM/Current/Airfoiltoolsht.txt','r')
     
     alines=file.readlines()
     
@@ -434,7 +437,7 @@ CHRDR_WG,SAVSI_WG,CHSTAT_WG,TWISTA_WG,DHDADI_WG,TC_WG\
 
 
     linesss=lines[:15]+liness+lines[16:18]+linessht+lines[19:]
-    file=open('A22DSE\Models\DATCOM\Current\ceres.dat','w+')
+    file=open('A22DSE/Models/DATCOM/Current/ceres.dat','w+')
     for line in linesss:
         file.write(line)
     file.close()
@@ -457,7 +460,7 @@ def my_split(s):
 def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
     
     PrintDatcom(Aircraft)
-    Popen(['A22DSE\Models\DATCOM\Current\datcom.exe'],stdin=PIPE,stdout=PIPE).communicate(b'C:\Users\menno\Documents\GitHub\A22CERES\A22DSE\Models\DATCOM\Current\ceres.dat')
+    Popen(['A22DSE/Models/DATCOM/Current/datcom.exe'],stdin=PIPE,stdout=PIPE,shell=True).communicate(b'C:\Users\menno\Documents\GitHub\A22CERES\A22DSE\Models\DATCOM\Current\ceres.dat')
     file=open('datcom.out','r')
     
     lines=file.readlines()
@@ -551,5 +554,7 @@ def GetDerivatives(Aircraft,speed): #'fast' or 'slow' speed input
             k+=1
             if speed == 'slow' and k==2:
                 break
+    if speed=='polar':
+        return np.array([C_Ls,C_Ds])
     return np.append([C_D_0,C_D_cruise],np.array([C_L_a,C_l_b,C_m_a,C_Y_b,C_n_b,C_L_adot,C_m_adot, C_l_p,C_Y_p,C_n_p,C_n_r,C_l_r,C_l_q,C_m_q])*180/np.pi)
 

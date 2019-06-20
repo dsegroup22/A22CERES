@@ -19,10 +19,10 @@ from A22DSE.Models.DATCOM.Current.datcomconvertermatlab import GetDerivatives
 
 
 
-parameter='C_D_0'
+
 steps=20
 
-dihedralrange = np.linspace(-10,-1,steps)
+dihedralrange = np.linspace(-10,2,steps)
 twistrange = np.linspace(-7,-1,steps)
 
 parameters=np.array(['C_D_0','C_D_cruise','C_L_a','C_l_b','C_m_a','C_Y_b','C_n_b','C_L_adot',\
@@ -66,13 +66,16 @@ for parameter in parameters:
     data=data[1:]
     
     plt.clf()
+    plt.figure(figsize=(7,6))
+    contours=plt.contour(dihedralrange,twistrange,data,levels=[0,100000])
+    plt.clabel(contours, inline=True, fontsize=14)
     plt.contourf(dihedralrange,twistrange,data,cmap='Greys',levels=50)
     plt.colorbar()
-    plt.title(title)
-    
-    plt.xlabel(r'$\Gamma_{wing}$ [$^{\circ}$]')
-    plt.ylabel('Wing Twist [$^{\circ}$]')
-    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Wing\''[:-1]+parameter+  "wing.png")
+    plt.title(title,fontsize=18,horizontalalignment='center')
+    plt.tick_params(labelsize=14)
+    plt.xlabel(r'$\Gamma_{wing}$ [$^{\circ}$]',fontsize=14)
+    plt.ylabel('Wing Twist [$^{\circ}$]',fontsize=14)
+    plt.savefig(r'A22DSE\Models\DATCOM\Current\Plots\Wing\''[:-1]+parameter+  "wing.png",pad_inches=0.5)
 
     print(parameter)
 
