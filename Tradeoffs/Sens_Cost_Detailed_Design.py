@@ -13,17 +13,20 @@ from pathlib import Path
 os.chdir(Path(__file__).parents[1])
 from A22DSE.Parameters.Par_Class_All import Aircraft
 from A22DSE.Parameters.Par_Class_Conventional import TotalAC
+from A22DSE.Parameters.Par_Class_Atmos import Atmos
 from A22DSE.Models.CostModel.Current.TotalCost import TotalC
 import numpy as np
 import matplotlib.pyplot as plt
 
 def Sens_Cost_Detailed(Which_Plot,X_steps,Y_steps):
     start_time = time.time()
+    
     #define plot tools
     fig, ax = plt.subplots()
     
     #initialise aircraft
     TestAC = Aircraft()
+    ISA_model = Atmos()
     anfp = TestAC.ParAnFP
     struc = TestAC.ParStruc
     prop = TestAC.ParProp
@@ -48,8 +51,8 @@ def Sens_Cost_Detailed(Which_Plot,X_steps,Y_steps):
             
             TotalAC(TestAC)
             
-            TotalC_lst[j,i] = TotalC(SensTestAc,ISA_model)[1]
-            OperC_lst[j,i] = TotalC(SensTestAc,ISA_model)[0]
+            TotalC_lst[j,i] = TotalC(TestAC,ISA_model)[0]
+            OperC_lst[j,i] = TotalC(TestAC,ISA_model)[1]
     
     #for plotting
     if Which_Plot == 1:    
@@ -57,24 +60,23 @@ def Sens_Cost_Detailed(Which_Plot,X_steps,Y_steps):
         ax.set_xlabel('Safety margin in OEW[-]')
             
     elif Which_Plot == 2:
-        X = Thrustmargin_lst
+        X = Thrustmargin_lst-935
         ax.set_xlabel('Correction for Thrust level[N]')
     Y = payload_lst
     ax.set_ylabel('payload mass [kg]')            
     #contour lines        
-    CS = ax.contour(X,Y,OperC_lst,10, colors =['#FFFFFF', '#FFFFFF',\
-        '#FFFFFF', '#FFFFFF''#FFFFFF','#000000','#000000','#000000','#000000',\
-        '#000000'] )
+    CS = ax.contour(X,Y,OperC_lst,10, colors =['#FFFFFF', '#FFFFFF','#FFFFFF',\
+        '#FFFFFF', '#FFFFFF','#000000','#000000','#000000','#000000','#000000'] )
     ax.clabel(CS, inline=1, fontsize=10)
     #contour colours
     firstplot = ax.contourf(X, Y, TotalC_lst,16, cmap='Greys_r')
     
     #labels and axes and stuff
-    labels = ['Fuel weight [kg]']
+    labels = ['Operational Costs [Billion $ 2019]']
     CS.collections[0].set_label(labels[0])
     cbar = fig.colorbar(firstplot, orientation="vertical", pad=0.2)
     cbar.ax.invert_yaxis()
-    cbar.set_label('MTOW [kg]', labelpad=-40, y=1.05, rotation=0)
+    cbar.set_label('Total Costs [Billion $ 2019]', labelpad=-40, y=1.05, rotation=0)
     plt.legend(loc='upper left')
     plt.show() 
     
