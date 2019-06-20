@@ -23,8 +23,8 @@ def PollutantArrLow():
     H2 = np.array([np.array([0,0,0]), np.array([0])])
     N2 = np.array([np.array([0,0,0]), np.array([0])])
     O2 = np.array([np.array([0,0,0]), np.array([0])])
-    
-#   
+
+#
     return np.array([CO2, CO, H2O, H2, N2, O2])
 
 
@@ -91,7 +91,7 @@ def GetReactionProducts(AF, FuelMass):
             
             out.append([CO2, CO, H2O, H2, N2, O2])
             
-        elif 0. < Ri <= .90:
+        elif 0.0 < Ri <= .90:
             print('In 0.< Ri < .90', Ri)            
             #Product Factors Constants       
             f_CO2 = 10
@@ -178,17 +178,18 @@ def GetEI(AF, mdot, time, Aircraft, ISA_model, Pollutants, Mair):
     GWP = []
     RF = []
     M_atmos = 5.5e18
-    ppmArr = np.zeros(np.shape(Products))
-    for j, Product in enumerate(Products):
+    dt = time[1:] - time[:-1]
+    print(len(Products))
+    for j, Product in enumerate(Products[1:]):
         for i, producti in enumerate(Product):
-
-            GWPi = producti * Pollutants[i][0]
+            print(dt[j])
+            GWPi = producti * Pollutants[i][0] * dt[j]
             RFi  = producti*1e6/M_atmos * Pollutants[i][1]
             GWP.append(GWPi)
             RF.append(RFi)
     
-#    EIGWP = np.array(GWP) * (time[1]- time[0])
-    EIGWP = np.sum(np.array(time[1]-time[0]) * GWP) #TODO: don't think it works
+    EIGWP = np.array(GWP) * (time[1]- time[0])
+#    EIGWP = np.sum(np.array(time[1]-time[0]) * GWP) #TODO: don't think it works
     EIRF = np.sum(RF)/len(RF)
 
     return EIGWP, EIRF
