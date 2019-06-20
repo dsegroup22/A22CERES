@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 #import control.matlab as control
 import A22DSE.Models.STRUC.current.Structural_Model.struc_functions as StrucFun
 import A22DSE.Models.STRUC.current.Class_II.Aeroelasticity.SteadyFuncs as AE
-#from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
+from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
 
 '''
@@ -181,7 +181,7 @@ def ComputeMaxAwStruct(Aircraft, ISA_model, height, V_constr,
                        Aw):
     
     # Constants
-    xtheta = 0.4                             # assumed
+    xtheta = 0.3                             # assumed
     rtheta = 0.4                             # assumed
     CLdelta = np.deg2rad(1.8)                # procedure from paper
     CMacdelta = -0.010

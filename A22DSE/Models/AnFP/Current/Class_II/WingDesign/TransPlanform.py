@@ -107,7 +107,7 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
     FWP_opt = FormFuncs.ComputeFWP(Aircraft, Fprop, theta2, theta3, Aw, 
                                    CL_des, sweep_opt)
 # =============================================================================
-#                       PLOTTING
+#                           PLOTTING
 # =============================================================================
     lwdth = 2
     if plot == True:
@@ -162,6 +162,6 @@ def ClassII_Planform(Aircraft):
 # =============================================================================
 
     struc.t_skin, struc.t_rib = SteadyMain.ComputeMaxAwStruct(Aircraft, 
-        ISA_model, 0, Aircraft.ParAnFP.V_dive, np.arange(10, 15, 1))
+        ISA_model, 0, Aircraft.ParAnFP.V_dive, np.arange(10, 15, 1))[0]
     
     return

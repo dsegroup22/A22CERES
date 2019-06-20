@@ -63,7 +63,7 @@ def GetReactionProducts(AF, FuelMass):
     MM_ker = 142.18/1000
     
     #Get R value
-    AFstoic = 15.6
+    AFstoic = 1
     R = AF/AFstoic
     
     #Convert kerosene to molar mass
@@ -91,7 +91,7 @@ def GetReactionProducts(AF, FuelMass):
             
             out.append([CO2, CO, H2O, H2, N2, O2])
             
-        elif 0.0 < Ri <= .90:
+        elif 0.5 < Ri <= .90:
             print('In 0.< Ri < .90', Ri)            
             #Product Factors Constants       
             f_CO2 = 10
@@ -130,7 +130,7 @@ def GetReactionProducts(AF, FuelMass):
             
             out.append([CO2, CO, H2O, H2, N2, O2])
         
-        elif Ri > 1.55:
+        elif Ri > 1.55 or Ri < 0.5:
             '''
             Not considered
             '''
