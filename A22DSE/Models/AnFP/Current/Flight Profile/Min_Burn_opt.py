@@ -131,12 +131,12 @@ FinalRCs = np.zeros(1)
 mass=0
 Energy=np.zeros(1)
 i=0
-t=10
+t=30
 time = 0
 CL_tmin =np.zeros(1)
 #for i in range(len(He_ar)):
 #He = 22162.895
-while 19000 > H_tmin[-1] and i < 600:
+while 20000 > H_tmin[-1] and i < 600:
 #    print(i)
     W = W - mass*9.81
     CLmin = 1.1* W /(0.5*np.ravel(rho)*np.ravel(V)**2*S)
