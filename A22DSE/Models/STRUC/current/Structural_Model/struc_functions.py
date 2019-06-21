@@ -346,8 +346,22 @@ def Eliptical(Aircraft,steps):
 
     return 4*MTOW/(np.pi*b)*np.sqrt(1-4*x**2/b**2)
 
+def EI_pol(Aircraft,steps,t_skin,t_rib):
+    b=Aircraft.ParAnFP.b
+    x=np.linspace(-b/2,b/2,steps)
+    chordi=chord(x,Aircraft)
+    EI_list=[]
+    for i in chordi:
+        EI_i=EI(Aircraft,i,t_skin,t_rib)
+        EI_list.append(EI_i)
+    p = np.polyfit(x, EI_list, 50)
+    EI_pol = np.poly1d(p)
+    
+    return EI_pol
+        
+    
 
-def Loading_Diagrams(Aircraft,steps):
+def Loading_Diagrams(Aircraft,steps,t_skin,t_rib):
     #bs
     anfp=Aircraft.ParAnFP
     struc=Aircraft.ParStruc
@@ -395,6 +409,9 @@ def Loading_Diagrams(Aircraft,steps):
     
     p = np.polyfit(x, M, 50)
     M_po = np.poly1d(p)
+    EI_po = EI_pol(Aircraft, steps, t_skin, t_rib)
+    u_slope=1/EI_po*np.polyint(M_po)
+    u=np.polyint(u_slope)
     
 #    u2= []
 #    u2_i = 0
@@ -417,7 +434,7 @@ def Loading_Diagrams(Aircraft,steps):
 #        u.append(u_i)
 #        
 #        
-    return x, V, M, M_po
+    return x, V, M, u
 
 def defl(Aircraft, steps):
     x=Loading_Diagrams(Aircraft,steps)[0]
