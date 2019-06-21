@@ -12,6 +12,7 @@ def loadingdiag(Aircraft):
        INPUT: OEW, x_lemac, 
     """
     rangecg = np.array([1,1.15,0.85])#,1.15,0.85])
+    Layout = Aircraft.ParLayoutConfig
     x_lemac = Aircraft.ParLayoutConfig.x_lemac
     xcg_fwd = []
     xcg_aft = []
