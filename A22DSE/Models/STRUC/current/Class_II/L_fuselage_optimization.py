@@ -6,12 +6,12 @@ Created on Sun Jun  9 21:04:59 2019
 """
 
 from math import cos,tan,sqrt,radians,pi,degrees
-from FuselageLength import GetTotalFuselageLength
+#from FuselageLength import GetTotalFuselageLength
 import numpy as np
 import matplotlib 
 import matplotlib.pyplot as plt
 
-def fuselageopt(Aircraft,xht):
+def fuselageopt(Aircraft,xht,deltarin):
     anfp = Aircraft.ParAnFP
     struc = Aircraft.ParStruc
     config = Aircraft.ParLayoutConfig
@@ -24,8 +24,8 @@ def fuselageopt(Aircraft,xht):
 #    l_freq = Conv.ParLayoutConfig.x_lemac+Conv.ParLayoutConfig.x_oe*Conv.ParAnFP.MAC+tailarm
     h_fuselage=config.h_fuselage    #[m]
     w_fuselage=config.w_fuselage    #[m]
-    a=GetTotalFuselageLength(Conv, l_freq, 2, 0.01)   #[m]
-    l_fuselage = sum(a[0])
+#    a=GetTotalFuselageLength(Conv, l_freq, 2, 0.01)   #[m]
+#    l_fuselage = sum(a[0])
     
     
 #    torenbeek method  (Chapter 8.3.3)  
@@ -36,10 +36,10 @@ def fuselageopt(Aircraft,xht):
     C_shell=60          #[N/m^3]
     Omega_fl=160        #[N/m^2]
     
-    W_shell=C_shell*d_fuselage**2*l_fuselage
+    W_shell=C_shell*d_fuselage**2*l_freq
     W_bulkheads=C_shell*d_fuselage**2*l_ref
     
-    W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_fuselage
+    W_fl=Omega_fl*n_ult**0.5*d_fuselage*l_freq
     W_f_tor=W_shell+W_bulkheads+W_fl
     
     
@@ -72,7 +72,7 @@ def fuselageopt(Aircraft,xht):
     CLvdeltar = CLvbeta*tauc*taub
     CLv0 = 0   #because of the symmetric airfoil
     beta = radians(5)   
-    deltar = radians(40)
+    deltar = radians(deltarin)
     CLv = CLv0 + CLvbeta*beta+CLvdeltar*deltar 
     rho = 1.225  #takeoff air density
     Vmc = 1.13*Aircraft.ParAnFP.V_stall   #1.13*vstall!!!!!!
@@ -82,19 +82,46 @@ def fuselageopt(Aircraft,xht):
     Vc = anfp.V_cruise
     Kv = 1
     Wvt = Kv*(Svi*10.764)*(3.81*((Svi*10.764)**0.2*(Vd/0.5144)/1000/(cos(swhalf))**0.5)-0.287)*0.4536   
-    return(W_f_tor+mh+Wvt,Sh,Svi,l_fuselage)
+    return(W_f_tor+mh+Wvt)
     
 Wtab = []
-Shtab = []
-Svtab = []
-Lftab = []
-xhttab = list(range(5,35,1))
-for xht in range(5,35,1):
-    Wtab.append(fuselageopt(Conv,xht)[0])
-    Shtab.append(fuselageopt(Conv,xht)[1])
-    Svtab.append(fuselageopt(Conv,xht)[2])
-    Lftab.append(fuselageopt(Conv,xht)[3])
-    
+#Shtab = []
+#Svtab = []
+#Lftab = []
+xhttab = list(range(5,40,5))
+deltartab = list(range(0,45,5))
+Wtab = np.zeros(len(deltartab))
+for xht in range(5,40,5):
+#    print('hi')
+
+    Wtabsub = np.array([])
+    for deltarin in range(0,45,5):
+        Wtabsub = np.append(Wtabsub,fuselageopt(Conv,xht,deltarin))
+    Wtab = np.vstack((Wtab,Wtabsub))
+Wtab = Wtab[1:]
+#print(Wtab)
+#        print(fuselageopt(Conv,xht,deltarin))
+#        Wtab.append(fuselageopt(Conv,xht,deltarin))
+#    Shtab.append(fuselageopt(Conv,xht)[1])
+#    Svtab.append(fuselageopt(Conv,xht)[2])
+#    Lftab.append(fuselageopt(Conv,xht)[3])
+  
+
+contours=plt.contour(deltartab,xhttab,Wtab,levels=[0,75000,100000,125000,150000])
+plt.clabel(contours, inline=True, fontsize=14)
+plt.contourf(deltartab,xhttab,Wtab,cmap='Greys',levels=500)
+plt.colorbar()
+#plt.title(Weight,fontsize=18,horizontalalignment='center')
+plt.tick_params(labelsize=14)
+plt.xlabel('$\delta_{r}$ [$^{\circ}$]',fontsize=14)
+plt.ylabel('Tail Arm [m]',fontsize=14)
+plt.show()
+
+
+
+
+
+
 #plt.figure(1)
 #plt.plot(xhttab,Lftab)
 #plt.xlabel('Tail arm [m]')
@@ -106,21 +133,21 @@ for xht in range(5,35,1):
 #plt.show()
 #
 
-plt.figure(1)
-plt.plot(xhttab,Wtab)
-plt.xlabel('Tail arm [m]')
-plt.ylabel('Weight of Fuselage and Tail [kg]')
-plt.figure(2)
-plt.plot(xhttab,Lftab)
-plt.xlabel('Tail arm [m]')
-plt.ylabel('Fuselage Length [m]')
-plt.figure(3)
-plt.plot(xhttab,Shtab)
-plt.xlabel('Tail arm [m]')
-plt.ylabel('Horizontal Tail Surface Area [$m^2$]')
-plt.figure(4)
-plt.plot(xhttab,Svtab)
-plt.xlabel('Tail arm [m]')
-plt.ylabel('Vertical Tail Surface Area [$m^2$]')
-plt.show()
+#plt.figure(1)
+#plt.plot(xhttab,Wtab)
+#plt.xlabel('Tail arm [m]')
+#plt.ylabel('Weight of Fuselage and Tail [kg]')
+#plt.figure(2)
+#plt.plot(xhttab,Lftab)
+#plt.xlabel('Tail arm [m]')
+#plt.ylabel('Fuselage Length [m]')
+#plt.figure(3)
+#plt.plot(xhttab,Shtab)
+#plt.xlabel('Tail arm [m]')
+#plt.ylabel('Horizontal Tail Surface Area [$m^2$]')
+#plt.figure(4)
+#plt.plot(xhttab,Svtab)
+#plt.xlabel('Tail arm [m]')
+#plt.ylabel('Vertical Tail Surface Area [$m^2$]')
+#plt.show()
 
