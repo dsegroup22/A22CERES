@@ -47,6 +47,7 @@ def ctail(Aircraft):
     Lambda50v = (bv*tan(radians(Lambda25v))+0.25*ctv-0.25*crv)/bv
     Wvt = Kv*(Sv*10.764)*(3.81*((Sv*10.764)**0.2*(Vd/0.5144)/1000/(cos(Lambda50v))**0.5)-0.287)*0.4536
     mac_v= (2./3.) * crv * (1. + trv + trv**2.)/(1. + trv)
+
     y_MACv=bv*2/6*((1+2*trv)/(1+trv))
 
     #print(Lambda50v,Wvt)

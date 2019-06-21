@@ -181,15 +181,15 @@ def ComputeMaxAwStruct(Aircraft, ISA_model, height, V_constr,
                        Aw):
     
     # Constants
-    xtheta = 0.3                             # assumed
+    xtheta = 0.4                             # assumed
     rtheta = 0.4                             # assumed
     CLdelta = np.deg2rad(1.8)                # procedure from paper
     CMacdelta = -0.010
 #    n = Aircraft.ParStruc.n_stiff            #stiffeners
 #    A_stiff = Aircraft.ParStruc.A_stiff      # Area stiffeners
     S_ac = Aircraft.ParAnFP.S
-    t_skinLst = np.arange(0.0005, 0.0055, 0.0005)
-    t_ribLst = np.arange(0.0005, 0.0055, 0.0005)
+    t_skinLst = np.arange(0.001, 0.0055, 0.0005)
+    t_ribLst = np.arange(0.001, 0.0055, 0.0005)
 
     dim_des = []
     mass_des = []
