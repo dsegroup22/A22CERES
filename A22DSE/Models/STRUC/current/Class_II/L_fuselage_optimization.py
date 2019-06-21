@@ -7,6 +7,9 @@ Created on Sun Jun  9 21:04:59 2019
 
 from math import cos,tan,sqrt,radians,pi,degrees
 #from FuselageLength import GetTotalFuselageLength
+
+from A22DSE.Models.STRUC.current.Class_II.FuselageLength import GetTotalFuselageLength
+
 import numpy as np
 import matplotlib 
 import matplotlib.pyplot as plt
@@ -16,16 +19,19 @@ def fuselageopt(Aircraft,xht,deltarin):
     struc = Aircraft.ParStruc
     config = Aircraft.ParLayoutConfig
     
+    
 #    xht = 20
     xvt = xht
     tailarm = xht
-    l_freq = Conv.ParLayoutConfig.x_oe*Conv.ParAnFP.MAC+tailarm*1.8
+    l_freq = config.x_cg[1] + xht #Aircraft.ParLayoutConfig.x_oe*Conv.ParAnFP.MAC+tailarm*1.8
     
 #    l_freq = Conv.ParLayoutConfig.x_lemac+Conv.ParLayoutConfig.x_oe*Conv.ParAnFP.MAC+tailarm
     h_fuselage=config.h_fuselage    #[m]
     w_fuselage=config.w_fuselage    #[m]
-#    a=GetTotalFuselageLength(Conv, l_freq, 2, 0.01)   #[m]
-#    l_fuselage = sum(a[0])
+
+    a=GetTotalFuselageLength(Aircraft, l_freq, 2, 0.01)   #[m]
+    l_fuselage = sum(a[0])
+
     
     
 #    torenbeek method  (Chapter 8.3.3)  
@@ -107,15 +113,15 @@ Wtab = Wtab[1:]
 #    Lftab.append(fuselageopt(Conv,xht)[3])
   
 
-contours=plt.contour(deltartab,xhttab,Wtab,levels=[0,75000,100000,125000,150000])
-plt.clabel(contours, inline=True, fontsize=14)
-plt.contourf(deltartab,xhttab,Wtab,cmap='Greys',levels=500)
-plt.colorbar()
-#plt.title(Weight,fontsize=18,horizontalalignment='center')
-plt.tick_params(labelsize=14)
-plt.xlabel('$\delta_{r}$ [$^{\circ}$]',fontsize=14)
-plt.ylabel('Tail Arm [m]',fontsize=14)
-plt.show()
+#contours=plt.contour(deltartab,xhttab,Wtab,levels=[0,75000,100000,125000,150000])
+#plt.clabel(contours, inline=True, fontsize=14)
+#plt.contourf(deltartab,xhttab,Wtab,cmap='Greys',levels=500)
+#plt.colorbar()
+##plt.title(Weight,fontsize=18,horizontalalignment='center')
+#plt.tick_params(labelsize=14)
+#plt.xlabel('$\delta_{r}$ [$^{\circ}$]',fontsize=14)
+#plt.ylabel('Tail Arm [m]',fontsize=14)
+#plt.show()
 
 
 
@@ -132,11 +138,42 @@ plt.show()
 #plt.ylabel('Horizontal Tail Surface Area [$m^2$]')
 #plt.show()
 #
+    
+#fig, ax1 = plt.subplots()
+#color = 'tab:red'
+#ax1.set_xlabel('Tail arm [m]')
+#ax1.set_ylabel('Surface Area [$m^2$]', color='purple')
+#ax1.plot(xhttab,Shtab,color='purple',label='Sh')
+#ax1.plot(xhttab,Svtab,'--',color='purple',label='Sv')
+#ax1.tick_params(axis='y',labelcolor='purple')
+#
+#
+#ax2 = ax1.twinx()
+#
+#ax2.set_ylabel('Fuselage Length [m]', color='crimson')
+#ax2.plot(xhttab,Lftab,color='crimson',label='$l_{fuselage}$')
+#ax2.tick_params(axis='y',labelcolor='crimson')
+#
+#
+##fig.tight_layout()
+#plt.title('Sensitivity of Tail Arm')
+##plt.legend( lines, labels, loc = 'lower center', bbox_to_anchor = (0,-0.1,1,1),
+#          #  bbox_transform = plt.gcf().transFigure )
+#fig.legend(bbox_to_anchor = (-0.1,-0.12,1,1))
+#plt.show()
+
 
 #plt.figure(1)
 #plt.plot(xhttab,Wtab)
 #plt.xlabel('Tail arm [m]')
 #plt.ylabel('Weight of Fuselage and Tail [kg]')
+
+plt.figure(2)
+plt.plot(xhttab,Wtab)
+plt.xlabel('Tail arm [m]')
+plt.ylabel('Weight of Fuselage and Tail [kg]')
+plt.title('Fuselage & Tail Weight vs Tail Arm')
+
 #plt.figure(2)
 #plt.plot(xhttab,Lftab)
 #plt.xlabel('Tail arm [m]')

@@ -11,7 +11,7 @@ def loadingdiag(Aircraft):
     """DESCRIPTION: loading diagram based on SAED lecture
        INPUT: OEW, x_lemac, 
     """
-    rangecg = np.array([1,1.15,0.85])
+    rangecg = np.array([1,1.15,0.85])#,1.15,0.85])
     x_lemac = Aircraft.ParLayoutConfig.x_lemac
     xcg_fwd = []
     xcg_aft = []
@@ -39,6 +39,7 @@ def loadingdiag(Aircraft):
         wrange = [oew]
         
         xfuel = 0.5*MAC+x_lemac #assumptions
+        
         fuel_mlist = np.ones(int(fuel_mass))
         
         for i in range(int(fuel_mass)):
@@ -82,12 +83,13 @@ def loadingdiag(Aircraft):
 #        plt.axvline(x=min(cg_range_mac)-0.02, color='indianred', linestyle='--')
 #        plt.annotate('OEW',(x_oew_mac,oew))
 #        plt.show()
-        
+    x_lemac = Layout.x_lemac
 #    plt.plot(xcg_fwd,y)
 #    plt.plot(xcg_aft,y)
 #    plt.xlim(0,1)
 #    plt.show()
     
-    xcg_fwd_global = xcg_fwd[1]+x_lemac
-    xcg_aft_global = xcg_aft[1]+x_lemac
+    
+    xcg_fwd_global = xcg_fwd[0]*MAC+x_lemac
+    xcg_aft_global = xcg_aft[0]*MAC+x_lemac
     return xcg_fwd_global, xcg_aft_global
