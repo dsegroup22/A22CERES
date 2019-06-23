@@ -463,33 +463,31 @@ def stress(Aircraft,steps,t_skin,t_rib,EI):
     return x, q_up, q_low
     
     
-EI_list=[1500.06802,1600.06802,1800.06802,2000.06802]
-
-
-    
-a1,b1,c=stress(Conv,100,0.003,0.005,1500)
-a2,b2,c=stress(Conv,100,0.003,0.005,1600)
-a3,b3,c=stress(Conv,100,0.003,0.005,1800)
-a4,b4,c=stress(Conv,100,0.003,0.005,2000)
-
-plt.plot(a1,b1,label='10 stringers',color='purple')
-plt.plot(a2,b2,label='20 stringers',color='red')
-plt.plot(a3,b3,label='30 stringers',color='black')
-plt.plot(a4,b4,label='40 stringers',color='orange')
-ast=plt.hlines(580,xmin=-35,xmax=35,colors='black')
-plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
-           ncol=2, mode="expand", borderaxespad=0.)
-#plt.title('Vertical Shear Diagram')
-plt.xlabel('Span Position [m]')
-plt.ylabel('Maximum Bending Stress [MPa]')
-plt.show()
-
-
 #---------------------------------------------------------------------------------------------------------------------#
 #plotting etc
 #---------------------------------------------------------------------------------------------------------------------#
     
 
+
+#    
+#a1,b1,c=stress(Conv,100,0.003,0.005,1500)
+#a2,b2,c=stress(Conv,100,0.003,0.005,1600)
+#a3,b3,c=stress(Conv,100,0.003,0.005,1800)
+#a4,b4,c=stress(Conv,100,0.003,0.005,2000)
+#
+#plt.plot(a1,b1,label='10 stringers',color='purple')
+#plt.plot(a2,b2,label='20 stringers',color='red')
+#plt.plot(a3,b3,label='30 stringers',color='black')
+#plt.plot(a4,b4,label='40 stringers',color='orange')
+#ast=plt.hlines(580,xmin=-35,xmax=35,colors='black')
+#plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+#           ncol=2, mode="expand", borderaxespad=0.)
+##plt.title('Vertical Shear Diagram')
+#plt.xlabel('Span Position [m]')
+#plt.ylabel('Bending Stress [MPa]')
+#plt.show()
+#
+#
 
 
 #x=np.linspace(0.,0.005,10)
