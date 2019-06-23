@@ -4,14 +4,9 @@ Created on Mon Jun 10 21:59:07 2019
 
 @author: rickv
 """
-#data to run the file
 
 #upper skin airfoil
-
-
-
-
-
+import scipy.integrate as it
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
@@ -127,7 +122,7 @@ def skin_eq_lower(chord): #verified with data
     return func2
 
 
-def Area(chord): #verified
+def Area(chord): #needs verification
     ''' 
     DESCRIPTION: function that calculates the areas of the cells of the wing (A1,A2,A3)
     INPUT: chord length (chord)
@@ -242,8 +237,11 @@ def skin_moi(chord,Aircraft,t_skin): #fin
     
 def moi_root_stringers(chord, Aircraft): #multiple of 10, with min 20
     #initise
+    
     n=int(Aircraft.ParStruc.n_stiff)
-    A=Aircraft.ParStruc.A_stiff
+#    A=Aircraft.ParStruc.A_stiff
+    A=0.000109
+
     skin_upper_eq=skin_eq_upper(chord)
     skin_lower_eq=skin_eq_lower(chord)
 #    c1=0.2*chord
@@ -372,8 +370,8 @@ def Loading_Diagrams(Aircraft,steps,t_skin,t_rib):
     g=9.81
     m_engine=prop.Engine_weight
     y_engine1=Aircraft.ParLayoutConfig.y_eng_g2
-    y_engine2=Aircraft.ParLayoutConfig.y_eng_g3 #dummy
-    y_engine3=Aircraft.ParLayoutConfig.y_eng_g3+5. #dummy
+    y_engine2=Aircraft.ParLayoutConfig.y_eng_g2+1.5 
+    y_engine3=Aircraft.ParLayoutConfig.y_eng_g3 
     x=np.linspace(-b/2,b/2,steps)
     dx=b/steps
     MTOW=struc.MTOW*g
@@ -386,55 +384,55 @@ def Loading_Diagrams(Aircraft,steps,t_skin,t_rib):
     V_e5=-np.heaviside((x+y_engine2),1)*m_engine*g*4
     V_e6=-np.heaviside((x+y_engine3),1)*m_engine*g*4
     V_e=V_e1+V_e2+V_e3 +V_e4+V_e5+V_e6
+    #wing weight
+    W_wing=Aircraft.ParStruc.Wing_weight*g
+    wb=W_wing/b
     #lift
     liftdistr=4*MTOW/(np.pi*b)*np.sqrt(1-4*x**2/b**2)
     V_l=[]
     V_l_i=0
+    W_wing=[]
     for i in liftdistr:
         i=i+1
         V_l_i=V_l_i+i*dx
         V_l.append(V_l_i)
+        W_wing.append(-wb)
     #fuselage
     w_fuselage=V_l[-1]-6*m_engine*g*4
     V_f=-np.heaviside(x,1)*w_fuselage
+
+    
     #total shear
-    V=V_e+V_f+V_l
+    V=V_e+V_f+V_l+W_wing
     #moment
     M=[]
     M_l_i=0
     for j in V:
         M_l_i=M_l_i+j*dx
         M.append(M_l_i)
-    chordi=chord(x,Aircraft) 
-    
-    p = np.polyfit(x, M, 50)
-    M_po = np.poly1d(p)
-    EI_po = EI_pol(Aircraft, steps, t_skin, t_rib)
-    u_slope=1/EI_po*np.polyint(M_po)
-    u=np.polyint(u_slope)
-    
-#    u2= []
-#    u2_i = 0
-#    for k in range(len(x)):
-#        chord_i=chordi[k]
-#        EI_i=12669314 #EI(Aircraft,chord_i)
-#        M_i=M[k]
-#        u2_i = u2_i - 1/EI_i *M_i*dx
-#        u2.append(u2_i)
-#    u1=[]
-#    u2_mid=u2[int(steps/2)]
-#    for m in u2:
-#        m=m+u2_mid
-#        u1.append(m)
+    EI=244606802.81840357
+    int_M=it.cumtrapz(M,x)
+    u2=1/EI*int_M
+    u2=list(u2)
+    u2.append(u2[-1])
+    mid_u2=u2[int(steps/2)]
+    u1=[]
+    for value in u2:
+        value=abs(value-mid_u2)
+        u1.append(value)
+    u1=np.array(u1)
+
+    u0=it.cumtrapz(u1,x)
+    u0=list(u0)
+    u0.append(u0[-1])
+    mid_u0=u0[int(steps/2)]
+    u=[]
+    for value in u0:
+        value=abs(value-mid_u0)
+        u.append(value)
+    u=np.array(u1)
 #        
-#    u=[]
-#    u_i=0
-#    for l  in u1:
-#        u_i=u_i-l*dx
-#        u.append(u_i)
-#        
-#        
-    return x, V, M, u
+    return x, V, M, u0
 
 def defl(Aircraft, steps):
     x=Loading_Diagrams(Aircraft,steps)[0]
@@ -443,6 +441,55 @@ def defl(Aircraft, steps):
 #    EI_i = EI(Aircraft, chordi)
     
     return x, M, chordi#, EI
+
+
+def stress(Aircraft,steps,t_skin,t_rib,EI):
+    x, V, M, u0 = Loading_Diagrams(Aircraft, steps,t_skin,t_rib)
+    chordi=chord(x,Aircraft)
+    x=list(x)
+    M=list(M)
+
+    y_up=list(0.07*chordi)
+    y_low=list(0.05*chordi)
+    q_up=[]
+    q_low=[]
+    for i in range(len(x)):
+#        EI=2446.81840357
+#        EI=EI(Aircraft,chordi[i],t_skin,t_rib)
+        q_upi=M[i]*y_up[i]/EI
+        q_lowi=M[i]*y_low[i]/EI
+        q_up.append(q_upi)
+        q_low.append(q_lowi)
+    return x, q_up, q_low
+    
+    
+EI_list=[1500.06802,1600.06802,1800.06802,2000.06802]
+
+
+    
+a1,b1,c=stress(Conv,100,0.003,0.005,1500)
+a2,b2,c=stress(Conv,100,0.003,0.005,1600)
+a3,b3,c=stress(Conv,100,0.003,0.005,1800)
+a4,b4,c=stress(Conv,100,0.003,0.005,2000)
+
+plt.plot(a1,b1,label='10 stringers',color='purple')
+plt.plot(a2,b2,label='20 stringers',color='red')
+plt.plot(a3,b3,label='30 stringers',color='black')
+plt.plot(a4,b4,label='40 stringers',color='orange')
+ast=plt.hlines(580,xmin=-35,xmax=35,colors='black')
+plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+           ncol=2, mode="expand", borderaxespad=0.)
+#plt.title('Vertical Shear Diagram')
+plt.xlabel('Span Position [m]')
+plt.ylabel('Maximum Bending Stress [MPa]')
+plt.show()
+
+
+#---------------------------------------------------------------------------------------------------------------------#
+#plotting etc
+#---------------------------------------------------------------------------------------------------------------------#
+    
+
 
 
 #x=np.linspace(0.,0.005,10)
@@ -471,19 +518,19 @@ def defl(Aircraft, steps):
 
 
         
-#a,b,c=Loading_Diagrams(Conv,1000)
+#a,b,c,d=Loading_Diagrams(Conv,500,0.003,0.005)
 #plt.plot(a,b)
 #plt.title('Vertical Shear Diagram')
 #plt.xlabel('Span Position [m]')
 #plt.ylabel('Shear Force [N]')
 #plt.show()
-  
+#  
 #plt.plot(a,c)
 #plt.title('Bending Moment Diagram')
 #plt.xlabel('Span Position [m]')
 #plt.ylabel('Bending  Moment [Nm]')
 #plt.show()
-    
+#    
 #plotting contour
 #    
 #x=np.linspace(0.,0.005,10)
