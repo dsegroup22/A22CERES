@@ -191,8 +191,18 @@ def TorsionalStiffness(chord, Aircraft,t_skin,t_rib):  #verified
     T=1 #unit torque to run the numerical calculation
     dthetadz=TwistSolver(chord,Aircraft,t_skin,t_rib)
     K_theta = T/dthetadz
-
+    
     return K_theta
+
+def TorsionalStiffness1(chord, Aircraft,t_skin,t_rib):  #verified
+
+    G=Aircraft.ParStruc.G_comp
+    A1,A2,A3=Area(chord)
+    S1,S2,S3,h1,h2=S(chord)
+    K_theta = 4*A2**2*G*t_skin/(S2+h1+h2)
+    
+    return K_theta
+
 
 
 #moment of intertia calculator
