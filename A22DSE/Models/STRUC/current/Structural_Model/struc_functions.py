@@ -199,7 +199,7 @@ def TorsionalStiffness1(chord, Aircraft,t_skin,t_rib):  #verified
     G=Aircraft.ParStruc.G_comp
     A1,A2,A3=Area(chord)
     S1,S2,S3,h1,h2=S(chord)
-    K_theta = 4*A2**2*G*t_skin/(S2+h1+h2)
+    K_theta = 4*A2**2*G/((h1+h2)/t_rib+S2/t_skin)
     
     return K_theta
 
