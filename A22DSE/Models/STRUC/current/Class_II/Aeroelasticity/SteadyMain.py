@@ -63,7 +63,6 @@ def plotContour(X,Y, Z1, Z2):
 def FindDrivingConstraint(V1, V2, V3):
     V_constr = np.ones(np.shape(V1))
     
-    
     for i in range(len(V1[:][0])):
         for j in range(len(V1[0][:])):
 #            print(V1[i][j], V2[i][j], V3[i][j])
@@ -88,21 +87,7 @@ def ComputeElasticity(Aircraft, par, ISA_model, height, V_req, t_skinLst,
     '''
     V_req := Design velocity of aircraft
     '''
-#    # Constants
-#    xtheta = 0.4                             # assumed
-#    rtheta = 0.3                             # assumed
-#    CLdelta = np.deg2rad(1.8)                # procedure from paper
-#    CMacdelta = -0.010149
-#    n = Aircraft.ParStruc.n_stiff            #stiffeners
-#    A_stiff = Aircraft.ParStruc.A_stiff      # Area stiffeners
-#    
-#    # initialise airfoil object
-#    airfoil = AE.airfoilAE(0, 0, xtheta, 
-#                           rtheta, CLdelta, CMacdelta, Aircraft)
-    
-#    t_skinLst = np.arange(0.001,0.0045, 0.0005)               #X
-#    t_ribLst  = np.arange(0.001, 0.0045, 0.0005)              #Y
-    
+    corr_factor = 1
     SKIN, RIB = np.meshgrid(t_skinLst, t_ribLst)
     
     KthetaLst = np.ones(np.shape(SKIN))
@@ -113,12 +98,12 @@ def ComputeElasticity(Aircraft, par, ISA_model, height, V_req, t_skinLst,
                     par.c, Aircraft, t_skin, t_rib)))
             KhLst[i][j] = StrucFun.moi_wing(par.c, Aircraft, t_skin, t_rib)
     
-    Vdiv = AE.ComputeDivSpeed(par, KthetaLst, height, ISA_model)
-    Vcr  = AE.ComputeControlReversal(par, KthetaLst, height, 
-                                        ISA_model)
-    
-    Vfl  = AE.ComputeFlutter(par, KhLst, KthetaLst, height,
+    Vdiv = AE.ComputeDivSpeed(par, KthetaLst/corr_factor, height, ISA_model)
+    Vcr  = AE.ComputeControlReversal(par, KthetaLst/corr_factor, height, 
+                                        ISA_model)   
+    Vfl  = AE.ComputeFlutter(par, KhLst, KthetaLst/corr_factor, height,
                                 ISA_model)
+    
 #    print(Vdiv, Vcr, Vfl[0])
 #    print(KthetaLst, KhLst)
     V_constr = FindDrivingConstraint(Vdiv, Vcr, Vfl[0])
@@ -138,18 +123,14 @@ def ComputeElasticity(Aircraft, par, ISA_model, height, V_req, t_skinLst,
 def ComputeMinWB(Aircraft, par, ISA_model, height, V_constr, t_skinLst,
                  t_ribLst):
     
-    # contingency factorsCOM\Current\ceres.dat
-    
+    # contingency factor
     uncert = 0.15
-    
-#    t_skinLst = np.arange(0.001,0.0045, 0.0005)               #X
-#    t_ribLst  = np.arange(0.001, 0.0045, 0.0005)              #Y
     
     SKIN, RIB = np.meshgrid(t_skinLst, t_ribLst)
     
     V_AE = ComputeElasticity(Aircraft, par, ISA_model,
                                 height, V_constr, t_skinLst, t_ribLst, False)
-#    print(V_valid, V_constr)
+#    print(V_AE, V_constr)
     idx = np.where(V_AE > V_constr)
 
     if len(idx[0]) == 0:
@@ -171,9 +152,9 @@ def ComputeMinWB(Aircraft, par, ISA_model, height, V_constr, t_skinLst,
     
     dim_des = dimLst[argdes]
     
-    if massLst[argdes] > Aircraft.ParStruc.Weight_WingGroup * (1-uncert):
-#        print(massLst[argdes])
-        return [-1, -1]
+#    if massLst[argdes] > Aircraft.ParStruc.Weight_WingGroup * (1-uncert):
+##        print(massLst[argdes])
+#        return [-1, -1]
     
     return dim_des
 
@@ -181,15 +162,16 @@ def ComputeMaxAwStruct(Aircraft, ISA_model, height, V_constr,
                        Aw):
     
     # Constants
-    xtheta = 0.4                             # assumed
+    xtheta = 0.3                             # assumed
     rtheta = 0.4                             # assumed
-    CLdelta = np.deg2rad(1.8)                # procedure from paper
-    CMacdelta = -0.010
+#    CLdelta = 0.04186                       # procedure from paper
+    CLdelta = np.deg2rad(1.8)
+    CMacdelta = -0.0101
 #    n = Aircraft.ParStruc.n_stiff            #stiffeners
 #    A_stiff = Aircraft.ParStruc.A_stiff      # Area stiffeners
     S_ac = Aircraft.ParAnFP.S
-    t_skinLst = np.arange(0.001, 0.0055, 0.0005)
-    t_ribLst = np.arange(0.001, 0.0055, 0.0005)
+    t_skinLst = np.arange(0.001, 0.0035, 0.0005)
+    t_ribLst = np.arange(0.001, 0.0035, 0.0005)
 
     dim_des = []
     mass_des = []
@@ -199,20 +181,54 @@ def ComputeMaxAwStruct(Aircraft, ISA_model, height, V_constr,
         # initialise airfoil object
         a = AE.airfoilAE(b_ac, 0, 0, xtheta,
                                rtheta, CLdelta, CMacdelta, Aircraft)
-#        print(a.c, a.xtheta)
+#        print(a.c, a.Kh, a.Ktheta)
         dim_desi = ComputeMinWB(Aircraft, a, ISA_model, height, V_constr,
                                 t_skinLst, t_ribLst)
 #        print(dim_desi)
         dim_des.append(dim_desi)
         mass_des.append(StrucFun.wing_struc_mass(Aircraft, 
                                                  dim_desi[0], dim_desi[1]))
-    
     idmax = np.argmax(mass_des)
+    print(dim_des, mass_des)
+    
     
     return dim_des[idmax], Aw[idmax]
 
-
-#ComputeMaxAwStruct(Conv, ISA_model, 0, Conv.ParAnFP.V_cruise*1.15, np.arange(10, 16, 1))
+def GetPlotSens(Aircraft, ISA_model, height, Aw):
+    '''
+    Aw is an array of floats which is used to compute the constraining aero-
+    elastic velocity at the given aspect ratio. In the output plot the 
+    thicknesses are set constant.
+    '''
+    
+    #Constants
+    t_sk = Aircraft.ParStruc.t_skin
+    t_rib = Aircraft.ParStruc.t_rib
+    V_req = np.max([Aircraft.ParAnFP.V_dive, Aircraft.ParAnFP.V_cruise * 1.15])
+    xtheta = 0.3                             # assumed
+    rtheta = 0.4                             # assumed
+    CLdelta = np.deg2rad(1.8)                # procedure from paper
+    CMacdelta = -0.010
+    S_ac   = Aircraft.ParAnFP.S
+    
+    # open list for to store values
+    VconstrLst = []
+    
+    for Awi in Aw:
+        b_ac = np.sqrt(Awi * S_ac)
+        a = AE.airfoilAE(b_ac, 0, 0, xtheta, rtheta, CLdelta,
+                 CMacdelta, Aircraft)
+        
+        VconstrLst.append(float(ComputeElasticity(Aircraft, a, ISA_model, 
+                          height, V_req, [t_sk], [t_rib], False)))
+        
+#    
+    plt.figure()
+    plt.plot(Aw, VconstrLst, label = "Driving aeroelastic speed")
+    plt.legend()
+    plt.show()
+    
+    return VconstrLst, Aw
 
 
 

@@ -35,7 +35,7 @@ ASSUMPTIONS
 def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
 #    res = 500
     
-    CL_i = np.linspace(0.5, 1.0, res)
+    CL_i = np.linspace(0.3, 1.0, res)
     sweep_i = np.linspace(np.deg2rad(0), np.deg2rad(40), res)
     #tc_w  = np.linspace(0.10, 0.15, 4)
     TSFC = Aircraft.ParProp.SFC_cruise*3600
@@ -47,11 +47,10 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
 # =============================================================================
 #                       COMPUTE CONTOURS
 # =============================================================================
-    
     # wing penalty function contours
     FWP   = FormFuncs.ComputeFWP(Aircraft, Fprop, theta2, theta3, Aw, 
                                  CL, sweep)
-    
+#    print(FWP)
     # t/c contours
     tc_i = FormFuncs.Compute_tc_limit(Aircraft, CL, sweep) / np.cos(sweep)**2
     
@@ -120,18 +119,19 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
         plt.figure(2)
         cp = plt.contour(np.rad2deg(sweep), CL, FWP, 10,
                          linewidths = 2)
-        tp = plt.contour(np.rad2deg(sweep), CL, tc_i, 5, cmap = 'binary',
+        tp = plt.contour(np.rad2deg(sweep), CL, tc_i, 10, cmap = 'binary',
                          linewidths = 2)
         plt.plot(np.rad2deg(sweep_i), CL_optLst, color = 'r', 
                  linestyle ='dashed',
                  label = r'Partial optimum $\hat{C}_L$', linewidth = lwdth)
-        plt.axvline(np.rad2deg(sweep_opt), color = 'orange', 
-                    linestyle = 'dashdot',
-                    label = r'Partial optimum $\Lambda_w$', linewidth = lwdth)
+
         plt.axhline(CL_lim, linestyle = 'dotted', color = 'm',
                     label = 'Buffet Limit', linewidth = lwdth)
         plt.axhline(CL_climb, linestyle = 'solid', color = 'brown',
                     label = r'$C_{L_{climb}}$ constraint', linewidth = lwdth)
+        plt.axvline(np.rad2deg(sweep_opt), color = 'orange', 
+                    linestyle = 'dashdot',
+                    label = r'Partial optimum $\Lambda_w$', linewidth = lwdth)
         
         plt.axvline()
         plt.ylim((CL_i[0], CL_i[-1]))
@@ -142,7 +142,7 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
                   fontsize=12)
         plt.clabel(tp, inline=True, 
           fontsize=12)
-        plt.legend(loc = 3)
+        plt.legend(loc = 2)
         plt.title(r'WPF in $\Lambda_w$ - $\hat{C}_L$ design space')
     
     return CL_des, tc_des, FWP_opt

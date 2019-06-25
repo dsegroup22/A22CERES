@@ -26,45 +26,18 @@ class airfoilAE(object):
         
         self.m  = Aircraft.ParStruc.MTOW / b_ac
         self.c  = StrucFun.chord(0.75*b_ac/2, Aircraft)
-        self.xtheta = xtheta * self.c
+        self.xtheta = xtheta
         self.b  = self.c/2                              # half-chord
         self.Kh = Kh                                    #
         self.Ktheta = Ktheta                            #
         self.Stheta = self.m * self.xtheta * self.b     #
-        self.rtheta = rtheta * self.c                   #
+        self.rtheta = rtheta                            #
         self.Itheta = self.m*(self.rtheta*self.b)**2    #
         self.e      = 0.4                               # [-]
         self.S      = self.c                            # [m²]
         self.CLa    = Aircraft.ParAnFP.C_L_alpha_cruise #[rad^(-1)]
         self.CLdelta = CLdelta                          # -1.8 / rad
         self.CMacdelta = CMacdelta                      #
-
-def Init2DOFSS(par, Aircraft, ISA_model):
-    
-    # Constants
-    RegFact = 1.15
-    
-    M = np.matrix([[par.m, par.Stheta],
-               [par.Stheta, par.Itheta]])
-    K = np.matrix([[par.Kh, 0], [0, par.Ktheta]])
-    A0 = np.matrix([[0 -1* par.S * par.CLa],
-                    [0, 2 * par.S * par.e * par.b * par.CLa]])
-
-    V = np.min([Aircraft.ParAnFP.V_cruise*RegFact, Aircraft.ParAnFP.V_dive])
-    q = 0.5*ISA_model.ISAFunc([Aircraft.ParAnFP.h_cruise])[-1] * V**2
-
-    def ComputeConstants():
-        a4 = par.m * par.Itheta - par.Stheta**2
-        a0 = par.Kh * (par.Ktheta -2 * par.e * par.b * q * par.S * par.CLa)
-        a2 = (par.m * par.Ktheta + par.Itheta * par.Kh - (2* par.m * par.e *
-              par.b + par.Stheta) * q * par.S * par.CLa)
-        
-        return a0, a2, a4
-    
-    a0, a2, a4 = ComputeConstants()
-    
-    return M, K, A0, a0, a2, a4
-
 
 def ComputeDivSpeed(par, Ktheta, height, ISA_model):
     '''
@@ -74,19 +47,30 @@ def ComputeDivSpeed(par, Ktheta, height, ISA_model):
     result in unstable or marginally stable aircraft.
     '''
     q = Ktheta/(par.CLa * par.e * par.c * par.S)
+#    print(par.e, par.c, par.S)
     T, p, rho = ISA_model.ISAFunc([height])
-    
+#    print(rho)
     return np.sqrt(q/(0.5*rho))
 
 def ComputeControlReversal(par, Ktheta, height, ISA_model):
-
+    '''
+    INPUT: --
+    OUTPUT: returns control reversal speed
+    DESCRIPTION: Control reversal when control surfaces are ineffective in
+    resuming control over aircraft
+    '''    
     q = -par.CLdelta * Ktheta / (par.CLa * par.CMacdelta * par.c * par.S)
     T, p, rho = ISA_model.ISAFunc([height])
     
     return np.sqrt(q/(0.5*rho))
 
 def ComputeFlutter(par, Kh, Ktheta, height, ISA_model):
-    
+    '''
+    INPUT: --
+    OUTPUT: returns Flutter speed
+    DESCRIPTION: Speed at which high-frequency oscillations are divergent,
+    resulting in catastrophic failure of the aircraft.
+    '''
     # Dynamic Pressure
     T, p, rho = ISA_model.ISAFunc([height])
     q = 0.5 * rho
@@ -98,13 +82,14 @@ def ComputeFlutter(par, Kh, Ktheta, height, ISA_model):
     whwtheta = w_h/w_theta
     
     # two conditions 
-    REQ1 = par.xtheta * (par.xtheta + 2 * par.e - 2 * par.e * (whwtheta)**2 * \
-                         (1 + 2 * par.e * par.xtheta / par.rtheta**2))
-    
-    REQ2 = par.xtheta + 2 * par.e + whwtheta**2 * (par.xtheta - 2 * par.e + 
-            4 * par.e * (par.xtheta / par.rtheta)**2)
+#    REQ1 = par.xtheta * (par.xtheta + 2 * par.e - 2 * par.e * (whwtheta)**2 *\
+#                         (1 + 2 * par.e * par.xtheta / par.rtheta**2))
+#    
+#    REQ2 = par.xtheta + 2 * par.e + whwtheta**2 * (par.xtheta - 2 * par.e + 
+#            4 * par.e * (par.xtheta / par.rtheta)**2)
     
 #    print(REQ1, REQ2)
+    
     
     # Determine Constants
     C0 = (1 - (whwtheta)**2)**2 + 4 * (par.xtheta / par.rtheta)**2 * \

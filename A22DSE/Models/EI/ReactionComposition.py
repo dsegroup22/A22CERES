@@ -12,30 +12,41 @@ import numpy as np
 from A22DSE.Models.EI.FuelBurn import GetEngineProp, GetFuelBurn
 from A22DSE.Models.EI.classEILst import pollutantLst, pollutant
 
-def PollutantArrLow():
+def PollutantGWP():
     
     # array is defined as [GWP20, GWP100, GWP500]
-    CO2 = np.array([np.array([1,1,1]), np.array([1.985])])
-    CO  = np.array([np.array([2.8,4.4,0]), np.array([0.024])])
-    H2O = np.array([np.array([-0.004,0.002,0]), np.array([0.034])])      
-#    CH4 = pollutant('CH4', np.array([63,21,9]), 0.507)
-#    N2O = pollutant('N2O', np.array([270,290, 190]), 0.983)
-    H2 = np.array([np.array([0,0,0]), np.array([0])])
-    N2 = np.array([np.array([0,0,0]), np.array([0])])
-    O2 = np.array([np.array([0,0,0]), np.array([0])])
+    CO2 = np.array([1,1,1]) 
+    CO  = np.array([10, 3.0, 0]) #from IPCC paper
+    H2O = np.array([-0.001,0.0005,0]) #from Near-surface RF paper
+    N2O = np.array([268, 298, 190])   # IPCC
 
-#
-    return np.array([CO2, CO, H2O, H2, N2, O2])
+#    
+    return np.array([CO2, CO, H2O, N2O])
 
+def PollutantRF():
+    CO2 = np.array([1.985])  #IPCC 5ARF 2013
+    CO = np.array([0.024])   # CO paper
+    H2O = np.array([0.004])  #
+    N2O = np.array([0.193])  # IPCC 5ARF 2013
+    
+    return np.array([CO2, CO, H2O, N2O])
+
+def EmissionIndexLow():
+    
+                    #CO2, CO, H2O, N2O    
+    return np.array([3.16, 0.002, 1.24, 0.012])
+
+def EmissionIndexHigh():
+    
+                    #CO2, CO, H2O, N2O    
+    return np.array([3.16, 0.003, 1.24, 0.017])
 
 def PollutantArrHigh():
     
     # array is defined as [GWP20, GWP100, GWP500]
-    CO2 = np.array([np.array([1,1,1]), np.array([1.985])])
+    CO2 = np.array([np.array([1,1,1]), np.array([4.08])])
     CO  = np.array([np.array([14, 4.4, 0]), np.array([0.024])])
-    H2O = np.array([np.array([-0.001,0.0005,0]), np.array([0.14])])      
-#    CH4 = pollutant('CH4', np.array([63,21,9]), 0.507)
-#    N2O = pollutant('N2O', np.array([270,290, 190]), 0.983)
+    H2O = np.array([np.array([-0.001,0.0005,0]), np.array([0.004])])      
     H2 = np.array([np.array([0,0,0]), np.array([0])])
     N2 = np.array([np.array([0,0,0]), np.array([0])])
     O2 = np.array([np.array([0,0,0]), np.array([0])])
@@ -72,7 +83,7 @@ def GetReactionProducts(AF, FuelMass):
     for i, Ri in enumerate(R):
         f_O = 15.5
         if 0.90 < Ri <= 1.00:
-            print('In 0.90 < Ri < 1.00', Ri)             
+#            print('In 0.90 < Ri < 1.00', Ri)             
             #Mole per mole kerosene
             f_CO2 = 10
             f_H2O = 11
@@ -92,7 +103,7 @@ def GetReactionProducts(AF, FuelMass):
             out.append([CO2, CO, H2O, H2, N2, O2])
             
         elif 0.5 < Ri <= .90:
-            print('In 0.< Ri < .90', Ri)            
+#            print('In 0.< Ri < .90', Ri)            
             #Product Factors Constants       
             f_CO2 = 10
             f_H2O = 11
@@ -109,7 +120,7 @@ def GetReactionProducts(AF, FuelMass):
             out.append([CO2, CO, H2O, H2, N2, O2])
         
         elif 1.00 < Ri <= 1.55:
-            print('In Ri > 1.00', Ri)
+#            print('In Ri > 1.00', Ri)
             ## case when CO == 0
             
             #Mole per mole kerosene
@@ -134,7 +145,7 @@ def GetReactionProducts(AF, FuelMass):
             '''
             Not considered
             '''
-            print('In Ri > 1.55', Ri)
+#            print('In Ri > 1.55', Ri)
             CO2 = 0
             H2O = 0
             N2  = 0
@@ -144,7 +155,7 @@ def GetReactionProducts(AF, FuelMass):
             out.append([CO2, CO, H2O, H2, N2, O2])
         
         else:
-            print(Ri)
+#            print(Ri)
             return ValueError("Negative Air-to-Fuel ratio!")
         
     return out            
@@ -158,50 +169,41 @@ def GetEI(AF, mdot, time, Aircraft, ISA_model, Pollutants, Mair):
     the radiative forcing of the fuel burn [W/m2]
     DESCRIPTION:
     '''
-#    EngineProp=[]
-#    if len(AltitudeProfile)==len(MachProfile):
-#        for i in range(len(AltitudeProfile)): 
-#            EngineProp.append(GetEngineProp(AltitudeProfile[i],\
-#                                            MachProfile[i])[0,4])
-            
-#    else:
-#        raise "Error: length of Altitude Profile list and Mach Profile list\
-#        different"
-
-#    Fuel = GetFuelBurn(mdot, time)
-#    T, p, rho = ISA_model.ISAFunc([])
 
     Products = np.array(GetReactionProducts(AF, mdot))
-#        print(Producti)
-#    Products.append(Producti)
-#    Producti = np.array(Producti) #pollutantLst().CO2.GWP
     GWP = []
     RF = []
     M_atmos = 5.5e18
     dt = time[1:] - time[:-1]
-    print(len(Products))
+#    print(len(Products))
     for j, Product in enumerate(Products[1:]):
         for i, producti in enumerate(Product):
-            print(dt[j])
+#            print(dt[j])
             GWPi = producti * Pollutants[i][0] * dt[j]
             RFi  = producti*1e6/M_atmos * Pollutants[i][1]
             GWP.append(GWPi)
             RF.append(RFi)
     
-    EIGWP = np.array(GWP) * (time[1]- time[0])
-#    EIGWP = np.sum(np.array(time[1]-time[0]) * GWP) #TODO: don't think it works
+    EIGWP = np.array(GWP)
     EIRF = np.sum(RF)/len(RF)
 
     return EIGWP, EIRF
 
-#
-#def GetFuelBurn(mdot):
+# =============================================================================
+#                               LEGACY
+# =============================================================================
+
+#def PollutantArrLow():
 #    
-#    '''
-#    INPUT: air-to-fuel ratio, mass fuel flow
-#    OUTPUT: reaction products decomposition
-#    DESCRIPTION: Reads fuel burn from .txt file output 
-#    '''
-
-
-    
+#    # array is defined as [GWP20, GWP100, GWP500]
+#    CO2 = np.array([np.array([1,1,1]), np.array([1.985])])
+#    CO  = np.array([np.array([2.8,1.0,0]), np.array([0.024])])
+#    H2O = np.array([np.array([-0.004,0.002,0]), np.array([0.034])])      
+##    CH4 = pollutant('CH4', np.array([63,21,9]), 0.507)
+##    N2O = pollutant('N2O', np.array([270,298, 190]), 0.983)
+#    H2 = np.array([np.array([0,0,0]), np.array([0])])
+#    N2 = np.array([np.array([0,0,0]), np.array([0])])
+#    O2 = np.array([np.array([0,0,0]), np.array([0])])
+#
+##
+#    return np.array([CO2, CO, H2O, H2, N2, O2])

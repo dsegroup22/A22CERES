@@ -19,11 +19,12 @@ os.chdir(Path(__file__).parents[6])
 ASSUMPTIONS:
     - muT = 0.25 - CHANGED; CHECK TORENBEEK FOR ADDITIONAL WEIGHTS
     - omegaS = 210 N/m²
-    - e_curl = 0.80
+    - e_curl = 0.85
     - shape_factor = 3.0    (2.5 < x < 3.5)
     - d_(w+h) = 1.25        (total wing profile drag)
     - CDc = 0.0010
     - M* = 0.935           (2nd gen supercritical airfoils)
+    - Implicit eq boundary set 0.1 - 1.3; normally CL[0], CL[-1]
 '''
 
 def DynamicPressEq(Aircraft, ISA_model):
@@ -84,7 +85,7 @@ def ComputemuT(Aircraft):
     #todo: change np.min to np.MAX
     
     #ASSUMPTIONS AND CONSTANTS
-    T_TO = Aircraft.ParProp.T_cruise_available
+    T_TO = Aircraft.ParProp.T_sl
     N_engine = Aircraft.ParProp.N_engines
     NacelleFrac = 1.02
     
@@ -147,7 +148,7 @@ def Compute_tc_limit(Aircraft, CL, sweep):
     i.e.: it returns t/c * cos(sweep_w)**2
     '''
     # Constants
-    Mcrit = 0.935
+    Mcrit = 0.95
     Mdd = Aircraft.ParAnFP.Mdd
     
     tc_limit = (np.cos(sweep)**3*(Mcrit - Mdd * np.cos(sweep)) - 
@@ -167,10 +168,13 @@ def ComputeCDpCurl(Aircraft, CL, sweep):
         '''
         if np.abs((Aircraft.ParAnFP.h_cruise-20000)/20000) < 0.20:
             v = 0.0000143226
+        elif Aircraft.ParAnFP.h_cruise < 20000:
+            v = 0.0000143226
         else:
             ValueError("Not programmed yet\n")
         u = Aircraft.ParAnFP.V_cruise
         L = Aircraft.ParAnFP.MAC
+        
         return u*L/v
 
     def SkinFrict(Mcruise, Re):
@@ -180,7 +184,7 @@ def ComputeCDpCurl(Aircraft, CL, sweep):
     
     Cf = SkinFrict(Aircraft.ParAnFP.M_cruise, ComputeRe())
     shape_factor = 3.0
-    d_wh = 3.
+    d_wh = 1.25
     tc_limit = Compute_tc_limit(Aircraft, CL, sweep)
     return 2 * d_wh * (1 + shape_factor * tc_limit) * Cf
 
@@ -196,7 +200,7 @@ def Computetau(Aircraft, ISA_model):
     delta     = p/ISA_model.p0
     
     # Get Take-off thrust and cruise thrust
-    T_to = Aircraft.ParAnFP.T_to
+    T_to = Aircraft.ParProp.T_sl
     T_cruise = Aircraft.ParAnFP.Thrust
     
     tau = T_cruise/delta/T_to #thrust lapse rate
@@ -254,7 +258,8 @@ def ComputePartialSweepOpt(Aircraft):
     OUTPUT
     DESCRIPTION
     '''    
-    return np.arccos(0.75*0.935/Aircraft.ParAnFP.Mdd)
+    Mcrit = 0.935
+    return np.arccos(0.75*Mcrit/Aircraft.ParAnFP.Mdd)
 
 
 def ComputePartialCLopt(Aircraft, ISA_model, theta2, theta3, 
@@ -281,23 +286,24 @@ def ComputePartialCLopt(Aircraft, ISA_model, theta2, theta3,
         return (CLi - CDFactor * (1 + term2 + term3)**0.5)
     
     # Constants
-    eCurl    = 0.80
+    eCurl    = 0.85
     Fprop    = ComputeFprop(Aircraft, ISA_model, TSFC)
 #    
     # Find all optimum CL for given sweep
 #    CL_opt = fmin(lambda x: -CL_trans(x), 0.1, disp = False)
-    CL_opt = minimize_scalar(lambda x: -CL_trans(x), bounds = (CL[0], CL[-1]), 
-                             method = 'bounded')
+    CL_opt = minimize_scalar(lambda x: -CL_trans(x), bounds = (CL[0]*1.1,
+                             CL[-1]*1.1), method = 'bounded')
     return CL_opt
 
 def ComputePartialAwOpt(Aircraft, ISA_model,
                         theta2, theta3, Fprop, TSFC, sweep, CL):
     '''
-    
+    INPUT
+    OUTPUT
+    DESCRIPTION
     '''
-    
     # Constants
-    eCurl = 0.80
+    eCurl = 0.85
     Fprop = ComputeFprop(Aircraft, ISA_model, TSFC)
     Mcrit = 0.935
     Mdd   = Aircraft.ParAnFP.Mdd
