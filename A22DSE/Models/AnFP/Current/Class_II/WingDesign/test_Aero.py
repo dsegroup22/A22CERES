@@ -60,7 +60,7 @@ anfp.s_cruise                  = 2389080
 
 
 
-FWP = WPF.ComputePlanform(ac, ISA_model, 100, 8.43, True)[3]
+FWP = WPF.ComputePlanform(ac, ISA_model, 100, 8.43, True)
 
 
 
