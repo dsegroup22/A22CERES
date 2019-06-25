@@ -8,7 +8,7 @@ Created on Tue Jun  4 10:50:44 2019
 import os
 
 
-files = open("AIRFOIL.dat", "r") 
+files = open("sc20010.dat", "r") 
 file = files.readlines()
 files.close()
 heading = file[:3]
@@ -22,7 +22,7 @@ for i in range(len(data)):
 
 #os.remove("AIRFOIL.dat")
 
-f= open("AIRFOIL.dat","w+")
+f= open("sc20010.dat","w+")
 for i in range(1,int(len(data)/2-1)):
     for j in range(len(data[i])):
 #        print(data[i][j])

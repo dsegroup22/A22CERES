@@ -183,18 +183,6 @@ def TwistSolver(chord, Aircraft,t_skin,t_rib): #finished
     return dthetadz
 
 def TorsionalStiffness(chord, Aircraft,t_skin,t_rib):  #verified
-    ''' 
-    DESCRIPTION: function that calculates the torsional stiffness of wing section
-    INPUT: chord length (chord), t_skin(t_skin), rib thickness (t_rib)
-    OUTPUT: torsional stiffnes (Ktheta)
-    '''    
-    T=1 #unit torque to run the numerical calculation
-    dthetadz=TwistSolver(chord,Aircraft,t_skin,t_rib)
-    K_theta = T/dthetadz
-    
-    return K_theta
-
-def TorsionalStiffness1(chord, Aircraft,t_skin,t_rib):  #verified
 
     G=Aircraft.ParStruc.G_comp
     A1,A2,A3=Area(chord)
@@ -476,7 +464,21 @@ def stress(Aircraft,steps,t_skin,t_rib,EI):
 #---------------------------------------------------------------------------------------------------------------------#
 #plotting etc
 #---------------------------------------------------------------------------------------------------------------------#
-    
+# =============================================================================
+#                               LEGACY CODE
+# =============================================================================
+
+#def TorsionalStiffness(chord, Aircraft,t_skin,t_rib):  #verified
+#    ''' 
+#    DESCRIPTION: function that calculates the torsional stiffness of wing section
+#    INPUT: chord length (chord), t_skin(t_skin), rib thickness (t_rib)
+#    OUTPUT: torsional stiffnes (Ktheta)
+#    '''    
+#    T=1 #unit torque to run the numerical calculation
+#    dthetadz=TwistSolver(chord,Aircraft,t_skin,t_rib)
+#    K_theta = T/dthetadz
+#    
+#    return K_theta
 
 
 #    
