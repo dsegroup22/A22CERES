@@ -24,8 +24,7 @@ def fuselageopt(Aircraft,xht,deltarin):
     xvt = xht
     tailarm = xht
     l_freq = config.x_cg[1] + xht #Aircraft.ParLayoutConfig.x_oe*Conv.ParAnFP.MAC+tailarm*1.8
-    
-#    l_freq = Conv.ParLayoutConfig.x_lemac+Conv.ParLayoutConfig.x_oe*Conv.ParAnFP.MAC+tailarm
+    l_freq = Conv.ParLayoutConfig.x_lemac+Conv.ParLayoutConfig.x_oe*Conv.ParAnFP.MAC+tailarm
     h_fuselage=config.h_fuselage    #[m]
     w_fuselage=config.w_fuselage    #[m]
 

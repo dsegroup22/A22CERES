@@ -260,6 +260,7 @@ class Aircraft(object):
         self.ParLayoutConfig = ParLayoutConfig()
         self.ParProp = ParProp()
         self.ConversTool = ParConvLst()
+        self.ParClassII_CS = ParClassII_CS()
         
         
         

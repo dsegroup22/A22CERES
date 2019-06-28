@@ -20,7 +20,7 @@ ANYWHERE.
 import os
 from pathlib import Path
 os.chdir(Path(__file__).parents[2])
-
+import time
 
 from A22DSE.Parameters.Par_Class_Diff_Configs import (Conv, ClassIAircraft,\
 PrelimTail, ClassI_AndAHalf, ComputeCD0)
@@ -36,8 +36,8 @@ assert isinstance(Conv.ParCntrl, object)
 sc = Conv.ParCntrl
 Payload=Conv.ParPayload
 Payload.m_payload = 9700.
-
 def TotalAC(Conv):
+    start_time = time.time()
     #CLASS I
     ClassIAircraft(Conv)
     ClassI_AndAHalf(Conv)
@@ -52,6 +52,7 @@ def TotalAC(Conv):
     ClassIIWeightIteration(Conv)
     ClassII_Planform(Conv)
     
+    print("--- %s seconds ---" % (time.time() - start_time))
     
 TotalAC(Conv)
 # =============================================================================

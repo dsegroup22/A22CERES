@@ -84,7 +84,7 @@ def loadingdiag(Aircraft):
 #        plt.axvline(x=min(cg_range_mac)-0.02, color='indianred', linestyle='--')
 #        plt.annotate('OEW',(x_oew_mac,oew))
 #        plt.show()
-    x_lemac = Layout.x_lemac
+    #x_lemac = Layout.x_lemac
 #    plt.plot(xcg_fwd,y)
 #    plt.plot(xcg_aft,y)
 #    plt.xlim(0,1)
