@@ -15,5 +15,5 @@ from A22DSE.Parameters.Par_Class_Conventional import Conv
 def test_Cost():
     Cost = TotalC(Conv, ISA_model)[0]
     print(Cost)
-    #110 is maximum requirement
+    #110 is maximum requirement, model was tested by hand by T. Verduyn
     assert (Cost<110)
