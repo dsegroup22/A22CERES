@@ -189,7 +189,7 @@ def ComputeMaxAwStruct(Aircraft, ISA_model, height, V_constr,
         mass_des.append(StrucFun.wing_struc_mass(Aircraft, 
                                                  dim_desi[0], dim_desi[1]))
     idmax = np.argmax(mass_des)
-    print(dim_des, mass_des)
+#    print(dim_des, mass_des)
     
     
     return dim_des[idmax], Aw[idmax]

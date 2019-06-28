@@ -15,8 +15,8 @@ from A22DSE.Models.EI.classEILst import (pollutantLst)
 import A22DSE.Models.EI.ReactionComposition as EI
 from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 #from A22DSE.Models.SUAVE.testcase2 import main
-#from A22DSE.Parameters.Par_Class_Conventional  import Conv
-
+##from A22DSE.Parameters.Par_Class_Conventional  import Conv
+#
 #results = main()[0]  
 #actualresults = results.segments.values()
 #mdot=None
@@ -45,11 +45,11 @@ from A22DSE.Parameters.Par_Class_Diff_Configs import ISA_model
 #AF = rho*np.pi*(Conv.ParProp.Engine_diameter)**2/4*Conv.ParProp.N_engines/mdot
 #
 ##EIGWP_0, EIRF_0 = EI.GetEI(AF, mdot, time, Conv, ISA_model,PollutantsLow,Mair)
-#EIGWP_1, EIRF_1 = EI.GetEI(AF, mdot, time, Conv, ISA_model, PollutantsHigh,
-#                           Mair)
+EIGWP_1, EIRF_1 = EI.GetEI(AF, mdot, time, Conv, ISA_model, PollutantsHigh,
+                           Mair)
 ##
-EIGWP20_1 = np.sum(EIGWP_1[:,0])
-EIGWP100_1 = np.sum(EIGWP_1[:,1])
+#EIGWP20_1 = np.sum(EIGWP_1[:,0])
+#EIGWP100_1 = np.sum(EIGWP_1[:,1])
 
 n_ac = 12
 a1 = 8      # 8 aircraft / year
@@ -109,7 +109,7 @@ def ComputeEmissions(GWP, RF, Products, Mfuel):
     #compute for total operations
     t_mission   = 15 #years
     fpd         = 4  # flights per day
-    opertime    = 250 #days
+    opertime    = 250 #d43/2ays
     
     #copy emissionLst
     SumEmission = np.ones(np.shape(emissionLst))
@@ -133,7 +133,7 @@ def ComputeEmissions(GWP, RF, Products, Mfuel):
     SumEmission20 = SumEmission[:,0]
     SumEmission100 = SumEmission[:,1]
     
-    SumRF       = np.average(SumRF)/MassAtmos
+    SumRF       = np.sum(SumRF)/MassAtmos
     
     return np.sum(SumEmission20), np.sum(SumEmission100), SumRF, SumMfuel
 

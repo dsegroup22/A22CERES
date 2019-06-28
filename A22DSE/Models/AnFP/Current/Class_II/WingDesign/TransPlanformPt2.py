@@ -78,8 +78,8 @@ def ComputeAwPlanform(Aircraft, ISA_model, res, plot):
     WB = FormFuncs.ComputeSpanLoading(Aircraft, ISA_model, Fprop,theta2,theta3,
                                       TSFC, sweep_opt, CL_i)
         # Buffeting Limit
-    CL_buffet = 0.75  # NASA paper of airfoil  NASA SC( 2)-0714
-    onset_margin = .30 # Regulations require 30% margin betw. onset and cruise
+    CL_buffet = 0.92  # NASA paper of airfoil  NASA SC( 2)-0714
+    onset_margin = .35 # Regulations require 30% margin betw. onset and cruise
     CL_lim    = CL_buffet*(1-onset_margin) #+10% higher than certification
     
         # Climb CL constraint

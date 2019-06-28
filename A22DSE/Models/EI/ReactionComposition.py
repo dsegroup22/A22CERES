@@ -187,7 +187,7 @@ def GetEI(AF, mdot, time, Aircraft, ISA_model, Pollutants, Mair):
     EIGWP = np.array(GWP)
     EIRF = np.sum(RF)/len(RF)
 
-    return EIGWP, EIRF
+    return EIGWP, EIRF, Products
 
 # =============================================================================
 #                               LEGACY

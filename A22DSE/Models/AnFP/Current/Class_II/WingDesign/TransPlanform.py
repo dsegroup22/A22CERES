@@ -52,7 +52,7 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
                                  CL, sweep)
 #    print(FWP)
     # t/c contours
-    tc_i = FormFuncs.Compute_tc_limit(Aircraft, CL, sweep) / np.cos(sweep)**2
+#    tc_i = FormFuncs.Compute_tc_limit(Aircraft, CL, sweep) / np.cos(sweep)**2
     
     # L/D contours
     
@@ -119,16 +119,16 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
         plt.figure(2)
         cp = plt.contour(np.rad2deg(sweep), CL, FWP, 10,
                          linewidths = 2)
-        tp = plt.contour(np.rad2deg(sweep), CL, tc_i, 10, cmap = 'binary',
-                         linewidths = 2)
+#        tp = plt.contour(np.rad2deg(sweep), CL, tc_i, 10, cmap = 'binary',
+#                         linewidths = 2)
         plt.plot(np.rad2deg(sweep_i), CL_optLst, color = 'r', 
                  linestyle ='dashed',
                  label = r'Partial optimum $\hat{C}_L$', linewidth = lwdth)
 
         plt.axhline(CL_lim, linestyle = 'dotted', color = 'm',
                     label = 'Buffet Limit', linewidth = lwdth)
-        plt.axhline(CL_climb, linestyle = 'solid', color = 'brown',
-                    label = r'$C_{L_{climb}}$ constraint', linewidth = lwdth)
+#        plt.axhline(CL_climb, linestyle = 'solid', color = 'brown',
+#                    label = r'$C_{L_{climb}}$ constraint', linewidth = lwdth)
         plt.axvline(np.rad2deg(sweep_opt), color = 'orange', 
                     linestyle = 'dashdot',
                     label = r'Partial optimum $\Lambda_w$', linewidth = lwdth)
@@ -140,8 +140,8 @@ def ComputePlanform(Aircraft, ISA_model, res, Aw, plot):
         plt.ylabel(r'$\hat{C}_L$ [-]')
         plt.clabel(cp, inline=True, 
                   fontsize=12)
-        plt.clabel(tp, inline=True, 
-          fontsize=12)
+#        plt.clabel(tp, inline=True, 
+#          fontsize=12)
         plt.legend(loc = 2)
         plt.title(r'WPF in $\Lambda_w$ - $\hat{C}_L$ design space')
     
