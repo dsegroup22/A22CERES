@@ -14,7 +14,7 @@ from pathlib import Path
 os.chdir(Path(__file__).parents[5])
 
 #from A22DSE.Parameters.Par_Class_Conventional import Conv
-#from A22DSE.Parameters.Par_Class_Atmos import Atmos
+from A22DSE.Parameters.Par_Class_Atmos import Atmos
 
 anfp = Conv.ParAnFP
 struc = Conv.ParStruc
@@ -131,7 +131,7 @@ FinalRCs = np.zeros(1)
 mass=0
 Energy=np.zeros(1)
 i=0
-t=30
+t=60
 time = 0
 CL_tmin =np.zeros(1)
 #for i in range(len(He_ar)):
